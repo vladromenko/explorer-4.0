@@ -153,13 +153,13 @@ class TankSource:
                            '_sensor_packet':packet})
         return result
 
-    def send(self,requested,observation=None):
+    def send(self,requested,observation=None, *, autonomous_goal=False):
         if self.stop_requested():raise InterruptedError('STOP before command')
         if len(requested)!=2 or not all(math.isfinite(v) for v in requested):
             raise ValueError('Tank requires two finite velocity channels')
         intent = list(requested)
         goal = getattr(self.control, "goal", None)
-        autonomous = self.mode != "manual" or bool(goal and goal.active)
+        autonomous = self.mode != "manual" or autonomous_goal or bool(goal and goal.active)
         index=self.sequence;self.sequence+=1
         a=time.monotonic_ns()
         self.provenance['last_command_attempt']={'sequence':index,'requested':intent,'send_start_ns':a,'accepted':'unknown'}
@@ -170,7 +170,8 @@ class TankSource:
                 raise InterruptedError("STOP before command")
             now = time.monotonic_ns()
             if any(intent) and autonomous:
-                hold = autonomy_hold(observation, intent, now)
+                hold = ("Задание Tank завершено" if autonomous_goal and (goal is None or not goal.active)
+                        else autonomy_hold(observation, intent, now))
             elif observation is not None and now - observation['observation_timestamp_ns'] > 2_000_000_000:
                 hold = "Наблюдение Tank устарело"
             command = [0., 0.] if hold else intent
@@ -199,11 +200,12 @@ class TankSource:
         if goal is not None and goal.active and self.control.base_keys:
             self.control.cancel_goal('Перехват стрелками')      # the operator always wins
             goal=None
-        if goal is not None and goal.active:
+        goal_control = goal is not None and goal.active
+        if goal_control:
             requested=goal.command(observation['images']['front']['image'])
         else:
             requested=self.control.base_action()
-        action=self.send(requested,observation)
+        action=self.send(requested,observation,autonomous_goal=goal_control)
         if goal is not None:action['_goto']=goal.status()   # not recorded
         if action['motion_paused']:self.control.clear_base_inputs()
         return {**observation,**action,'frame_id':index,'teleoperation_phase':'paused' if action['motion_paused'] else 'following'}

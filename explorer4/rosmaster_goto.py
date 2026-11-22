@@ -56,6 +56,7 @@ class RosmasterGoTo:
 
     def _run(self):
         operator, goal = rosmaster_control.operator, self.goal
+        lease = operator.lease
         client = None
         last_health = 0.
         slide_end = 0.
@@ -130,19 +131,24 @@ class RosmasterGoTo:
                     dx = 0.
                     goal.message = f'Перед камерой препятствие в {near:.2f} м'
                 last_cmd = (dx, yaw)
-                operator.set_direct({'base': [float(dx), float(dy), float(yaw)]})
+                with operator.lock:
+                    if operator.owner != OWNER or operator.lease != lease or self.stop_event.is_set() or not goal.active:
+                        break
+                    operator.set_direct({'base': [float(dx), float(dy), float(yaw)]})
                 time.sleep(max(0., 1 / 15 - (time.monotonic() - started)))
         except Exception as exc:
             self.error = 'ROSMASTER: ' + str(exc)
             goal.cancel(self.error)
         finally:
             alive.set()
-            operator.set_direct({'base': [0., 0., 0.]})
+            with operator.lock:
+                if operator.owner == OWNER and operator.lease == lease:
+                    operator.set_direct({'base': [0., 0., 0.]})
             if sensors is not None:
                 sensors.close()
             if client is not None:
                 client.close()
-            if operator.owner == OWNER:
+            if operator.owner == OWNER and operator.lease == lease:
                 operator.stop('Подъезд завершён: ' + goal.status()['message'])
 
 

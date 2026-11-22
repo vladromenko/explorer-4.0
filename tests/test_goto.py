@@ -80,8 +80,11 @@ def test_rosmaster_lease_dispatches_only_after_complete_native_observation(monke
     def cancel(reason):
         goal.active, goal.message = False, reason
     def command(_rgb):
-        goal.active = False
         return .1, 0.
+    def dispatch(direct):
+        commands.append(direct["base"])
+        if any(direct["base"]):
+            goal.active = False
     goal.cancel, goal.command = cancel, command
     now = time.monotonic_ns()
     sample = {"rgb": np.zeros((480, 640, 3), np.uint8), "camera": {"received_ns": now},
@@ -100,8 +103,8 @@ def test_rosmaster_lease_dispatches_only_after_complete_native_observation(monke
         return {"meta": {"streams": {"depth": {"age_s": .7 if failure == "stale_depth" else 0., "unit": "m"}}},
                 "arrays": {"depth": np.ones((72, 112), np.float32)}, "received_ns": now, "request_elapsed_s": .002}
     http = SimpleNamespace(get=lambda url: SimpleNamespace(json=lambda: {}), close=lambda: None)
-    operator = SimpleNamespace(owner=runner.OWNER, lease="offline", input=lambda *args: None,
-                               set_direct=lambda direct: commands.append(direct["base"]), stop=lambda message: None)
+    operator = SimpleNamespace(owner=runner.OWNER, lease="offline", lock=__import__("threading").RLock(), input=lambda *args: None,
+                               set_direct=dispatch, stop=lambda message: None)
     monkeypatch.setattr(runner.rosmaster_control, "operator", operator)
     monkeypatch.setattr(runner.rosmaster_control, "connection", lambda _: http)
     monkeypatch.setattr(rosmaster_session, "native_sample", lambda _: sample)
