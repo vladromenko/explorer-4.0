@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 import pytest
-from explorer3 import trials
-from explorer3.recording import EpisodeWriter
+from explorer4 import trials
+from explorer4.recording import EpisodeWriter
 
 
 def test_replay_never_moves_to_a_distant_start_pose(tmp_path,monkeypatch):

@@ -1,7 +1,7 @@
 """M4: the drive identification recovers known parameters from synthetic logs."""
 import numpy as np
 
-from explorer3.simlab.sysid_base import fit_channel, simulate
+from explorer4.simlab.sysid_base import fit_channel, simulate
 
 
 def test_recovers_known_drive_parameters():

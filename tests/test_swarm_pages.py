@@ -6,7 +6,7 @@ import time
 import pytest
 
 PIL = pytest.importorskip('PIL')
-from explorer3 import episodes, fleet_map as fm, so101_handoff, swarm_pages, world_memory
+from explorer4 import episodes, fleet_map as fm, so101_handoff, swarm_pages, world_memory
 
 
 @pytest.fixture(autouse=True)

@@ -5,9 +5,9 @@ import sys
 import time
 from pathlib import Path
 import numpy as np
-from explorer3.paths import DATA,offline_environment
-from explorer3.training import train_command
-from explorer3.resources import ResourceLease
+from explorer4.paths import DATA,offline_environment
+from explorer4.training import train_command
+from explorer4.resources import ResourceLease
 from lerobot.datasets.lerobot_dataset import LeRobotDataset
 
 with ResourceLease('compute'):
@@ -36,6 +36,6 @@ with ResourceLease('compute'):
     (run/'DISCLAIMER.json').write_text(json.dumps({'synthetic':True,'hardware_opened':False,'physical_pass':False,'image_size':[64,64]}))
     subprocess.run(command,env=offline_environment(),check=True)
     checkpoint=output/'checkpoints/last/pretrained_model'
-    subprocess.run([sys.executable,'-m','explorer3.reload_check',str(checkpoint),str(root)],env=offline_environment(),check=True)
+    subprocess.run([sys.executable,'-m','explorer4.reload_check',str(checkpoint),str(root)],env=offline_environment(),check=True)
     (DATA/'validation/act-pass.json').write_text(json.dumps({'run':str(run),'synthetic':True,'steps':50,'physical_skill_verified':False}))
     print('SOFTWARE PASS:',run,flush=True)

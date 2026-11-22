@@ -3,8 +3,8 @@ import json
 import threading
 import time
 import pytest
-from explorer3 import catalog,resources
-from explorer3.cognitive import real_execution as module,store
+from explorer4 import catalog,resources
+from explorer4.cognitive import real_execution as module,store
 
 
 @pytest.fixture

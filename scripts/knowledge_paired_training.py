@@ -12,10 +12,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3.paths import DATA, offline_environment
-from explorer3.resources import ResourceLease, ExistingTrainingLease
-from explorer3 import datasets, training_drafts
-from explorer3.jobs import Jobs
+from explorer4.paths import DATA, offline_environment
+from explorer4.resources import ResourceLease, ExistingTrainingLease
+from explorer4 import datasets, training_drafts
+from explorer4.jobs import Jobs
 
 OUT = DATA / 'runs/knowledge-policy-v3-20261116/full'
 PROTOCOL = ROOT / 'configs/knowledge-policy-v3.json'
@@ -33,18 +33,18 @@ def rows():
 
 
 def provenance():
-    from explorer3.policy_catalog import smolvla_paths
-    paths = ('explorer3/sim/aligned.py', 'explorer3/sim/capture.py', 'explorer3/sim/import_episode.py',
-             'explorer3/sim/paired_capture.py', 'explorer3/training.py', 'explorer3/datasets.py',
-             'explorer3/policy_runtime.py', 'explorer3/sim/evaluate.py', 'explorer3/sim/factory.py',
-             'explorer3/sim/environment.py', 'configs/sim-profiles.json', 'scripts/knowledge_paired_training.py')
+    from explorer4.policy_catalog import smolvla_paths
+    paths = ('explorer4/sim/aligned.py', 'explorer4/sim/capture.py', 'explorer4/sim/import_episode.py',
+             'explorer4/sim/paired_capture.py', 'explorer4/training.py', 'explorer4/datasets.py',
+             'explorer4/policy_runtime.py', 'explorer4/sim/evaluate.py', 'explorer4/sim/factory.py',
+             'explorer4/sim/environment.py', 'configs/sim-profiles.json', 'scripts/knowledge_paired_training.py')
     return {'protocol_sha256': hashlib.sha256(PROTOCOL.read_bytes()).hexdigest(),
             'source_sha256': {p: hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths},
             'pretrained_sha256': [training_drafts.checkpoint_hash(p) for p in smolvla_paths()]}
 
 
 def collect(protocol, state):
-    from explorer3.sim.paired_capture import KNOWN, CONTROL
+    from explorer4.sim.paired_capture import KNOWN, CONTROL
     for seed in range(protocol['start_seed'], protocol['start_seed'] + protocol['max_attempts']):
         records = rows()
         if sum(r['outcome'] == 'success' for r in records) >= protocol['successful_pairs']:
@@ -64,7 +64,7 @@ def collect(protocol, state):
                 started = time.time()
                 args = ['systemd-run', '--user', '--scope', '--collect', '--unit', f'explorer-k-pair-{seed}',
                         '-p', 'MemoryMax=6144M', '-p', 'MemorySwapMax=2048M', '-p', 'OOMPolicy=kill',
-                        '/usr/bin/timeout', '600', str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer3.sim.paired_capture',
+                        '/usr/bin/timeout', '600', str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer4.sim.paired_capture',
                         '--seed', str(seed), '--output', str(output), '--external-spool']
                 with (OUT/f'{seed}.log').open('a') as log:
                     result = subprocess.run(args, cwd=ROOT, env={**offline_environment(), 'MUJOCO_GL': 'egl'},

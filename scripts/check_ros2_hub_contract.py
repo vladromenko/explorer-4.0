@@ -2,8 +2,8 @@
 import time
 import numpy as np
 from rclpy.serialization import serialize_message
-from explorer3.ros2_hub import Gateway
-from explorer3.fleet_live import ClockAlignment
+from explorer4.ros2_hub import Gateway
+from explorer4.fleet_live import ClockAlignment
 
 
 class Publisher:

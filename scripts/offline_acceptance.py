@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 import urllib.request
-from explorer3.paths import DATA,ROOT,offline_environment
+from explorer4.paths import DATA,ROOT,offline_environment
 
 env=offline_environment()
 probe=socket.socket()
@@ -21,9 +21,9 @@ lan=probe.connect_ex(('192.168.0.168',22))
 probe.close()
 if lan!=0:
     raise RuntimeError('Local LAN unavailable during offline test')
-ui_env={**env,'EXPLORER3_PORT':'8031','EXPLORER3_DATA':str(DATA/'validation/offline-ui')}
+ui_env={**env,'EXPLORER4_PORT':'8031','EXPLORER4_DATA':str(DATA/'validation/offline-ui')}
 with (DATA/'logs/offline-ui.log').open('w') as log:
-    process=subprocess.Popen([sys.executable,'-m','explorer3.app'],cwd=ROOT,env=ui_env,stdout=log,stderr=subprocess.STDOUT)
+    process=subprocess.Popen([sys.executable,'-m','explorer4.app'],cwd=ROOT,env=ui_env,stdout=log,stderr=subprocess.STDOUT)
     try:
         deadline=time.monotonic()+60
         health=None

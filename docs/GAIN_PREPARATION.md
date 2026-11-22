@@ -1,59 +1,59 @@
-# Общий оценщик пользы: подготовка без обучения
+# Total valuer: training without training
 
-`/sim/gain` готовит неизменяемый план из законченных сопоставимых симуляционных
-ветвей. Это отдельный малый оценщик; моторные ACT/SmolVLA/Diffusion остаются
-собственными для каждой платформы. Создание, просмотр и скачивание плана не
-создают training job. Отдельная кнопка с подтверждением вызывает ограниченный
-trainer `gain_model.fit_plan`; в текущей проверке она не запускалась.
+`/sim/gain` prepares an unchangeable plan from complete comparable simulations
+The branches are a separate small valuer; motor ACT /SmolVLA/Diffusion remains
+The design, viewing and downloading of the plan is not a matter of the same name.
+The separate validation button causes limited
+The tester `gain_model.fit_plan`; it was not launched in the current test.
 
-## Наблюдения и метки
+## Observations and labels
 
-`sim.branching` сохраняет `decision_context` до развилки: изменения команд,
-доступный отклик/ошибку слежения, возраст наблюдения/камеры, время отправки и
-задержку помощи. Используется нормировка по диапазонам управляющих каналов.
-Координаты кубика/цели, task phase, успех, параметры трения, скрытые сбои и
-идентификатор платформы не являются признаками. Tank без энкодеров получает
-маску отсутствия измеренного движения; интеграл команд не выдаётся за датчик.
-Симуляционные каналы явно маркированы observable proxy, не измерениями робота.
+`sim.branching` saves `decision_context` until fork: command changes,
+available response/scanner, age of observation/cams, time of dispatch and
+Delayed assistance: Normalization is used for control channels.
+Cube/target coordinates, task phase, success, friction parameters, hidden malfunctions and
+The platform identifier is not a sign. Tank without encoders receives
+The mask of no measured motion; the integrated command is not passed as a sensor.
+Simulation channels are clearly marked observable proxies, not robot measurements.
 
-Источник — только frozen-policy отчёт с проверенным replay, тремя завершёнными
-ветвями и зафиксированной историей решения. Diagnostic hold и censored исключены.
-Повторы не размножают метки; один lineage выбирается один раз. Одинаковая сцена
-(profile/seed/model), даже при других задержках/весах, остаётся в одном split.
-Отчёты с разными бюджетами/правилами помощи не объединяются. Все входные файлы
-проверяются по SHA при последующем запуске.
+Source: frozen-policy report with verified replay, three completed
+The decision was written in branches and history.
+Repeats do not reproduce tags; one lineage is selected once.
+(Profile /seed/model), even with other delays/weights, remains in one split.
+Reports with different budgets/aid rules are not combined. All input files
+shall be checked against SHA at subsequent launch.
 
-## Подготовленный trainer и inference
+## Prepared by Trainer and Inference
 
-Две LogisticRegression с StandardScaler дают P(success|continue) и
-P(success|bounded scripted correction); G — их разница. Это собственный простой
-baseline, не авторский AutoIntervene и не оценка пользы живого человека. Минимум
-пять независимых сцен — инженерный порог подготовки, не исследовательский
-размер выборки. В train обе ветви должны иметь оба исхода. Нормировка fit только
-на train; сцены взвешены одинаково, даже если задержек на одной сцене несколько.
-Предел 1000 итераций фиксирован; недостижение сходимости — ошибка, не расширение
-бюджета. Validation/test дают Brier и ошибку G, не эффект внедрения политики.
+Two LogisticRegression with StandardScaler give P(access \continue) and
+P(access ) well-established crimed control; G is their difference.
+Baseline, not a copyrighted AutoIntervene, nor an assessment of the benefits of a living person.
+Five Independent scenes — Engineering threshold of training, not research
+The two branches should have both results in the test.
+On the train, the scenes are weighed equally, even if there are several delays on the same stage.
+The limit of 1,000 iterations is fixed; non-accuracy is error, not expansion.
+The calidization of /test gives Brier and G error, not the effect of policy adoption.
 
-Для inference сохраняются только JSON коэффициенты, средние и масштабы —
-никакого исполняемого pickle. Совместный исполнитель может загрузить завершённый
-model job с проверкой SHA и бюджета. Пока это **shadow**: прогноз отображается,
-но решения Random/TD не меняет. Недостаточный оставшийся горизонт и numerical
-fixture явно дают «нет оценки». Без обученного файла никакой константы G нет.
-История и прогнозы входят в snapshot; отдельный reset очищает только свою историю.
+For inference, only JSON coefficients, averages and magnitudes are retained —
+No performance of the piccle.
+Model job with SHA and budget checks. While this is **shadow**: the projection is displayed,
+But Random /TD's decisions don't change.
+The fixture clearly gives no rating. Without a trained file, there is no G constant.
+History and projections are included in snapshot; a separate reset clears only its history.
 
-## Что проверено и что отложено
+## What's checked and what's postponed
 
-- 4 unit-теста: неизменяемый план/reload без вызова fit, разбиение сцены при
-  разных задержках, отсутствие будущих команд/неизмеренной скорости Tank,
-  JSON inference на явно заданных численных коэффициентах.
-- Native test: подключение shadow и snapshot не меняют assignment; изменение
-  model JSON после подготовки отвергается. Это численный fixture, не обучение.
-- Chromium: понятные причины отсутствия данных; подготовка без подходящих
-  сравнений и запуск без плана/подтверждения не создают никаких jobs.
+- 4 unit tests: unchangeable /reload without call mit, scene break at
+  different delays, no future commands/unmeasured speed of Tank,
+  JSON output on the clearly selected numerical coefficients.
+- Native test: connects the shadow and snapshot do not change the signature; change
+  model JSON is rejected after preparation. This is numerical fixture, not learning.
+- Chromium: understandable reasons for lack of data; training without suitable
+  No jobs are created by comparison and launch without plan/confirmation.
 
-Реальных подходящих branch-данных с актуальной обученной политикой пока нет.
-Trainer и обновление моторных политик НЕ запускались по указанию пользователя.
-Следовательно, качество G, перенос, калибровка вероятностей и эффект выбора
-помощи не проверены. Существующий анализ рандомизированных физических пилотов
-`research.py`/`research_value.py` остаётся отдельным: симуляционные парные метки
-не выдаются за фактические контрфактические исходы человеческого пилота.
+There is no real relevant Branch data with relevant trained policies.
+Trainer and motor policy updating were not launched at the user's direction.
+Therefore, quality G, transport, probability calibration and choice effect
+Existing analysis of randomized physical pilots
+`research.py` / `research_value.py` remains separate: Simulation steam tags
+Not to be granted for actual counter-factual outcomes of a human pilot.

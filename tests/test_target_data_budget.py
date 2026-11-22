@@ -3,7 +3,7 @@ import copy
 
 import pytest
 
-from explorer3 import datasets, training_drafts
+from explorer4 import datasets, training_drafts
 
 
 @pytest.fixture
@@ -51,7 +51,7 @@ def test_claimed_k_missing_holdout_and_duplicate_are_rejected(prepared):
 
 def test_transfer_draft_keeps_exact_target_budget_and_donor_weight_lineage(prepared,monkeypatch,tmp_path):
     import json
-    from explorer3 import transfer_preparation as transfer
+    from explorer4 import transfer_preparation as transfer
     partitions,_=prepared
     monkeypatch.setattr(transfer,'DATA',tmp_path)
     source={'id':'donor-pretraining','profile':'rosmaster_floor_pick_sim','policy':'smolvla',

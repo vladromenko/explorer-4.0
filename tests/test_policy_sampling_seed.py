@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import pytest
 torch = pytest.importorskip('torch')
 from lerobot.policies.common.flow_matching import sample_noise
-from explorer3.policy_runtime import PolicyCore
+from explorer4.policy_runtime import PolicyCore
 
 
 def test_explicit_reset_replays_flow_noise_without_previous_episode_leakage():

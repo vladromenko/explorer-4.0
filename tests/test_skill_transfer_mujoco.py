@@ -4,9 +4,9 @@ import numpy as np
 import pytest
 
 pytest.importorskip('mujoco')
-from explorer3.sim.factory import make
-from explorer3.sim.skill_transfer import RetargetedGrasp, RosmasterTransferInterface
-from explorer3.skill_packets import relative_pose
+from explorer4.sim.factory import make
+from explorer4.sim.skill_transfer import RetargetedGrasp, RosmasterTransferInterface
+from explorer4.skill_packets import relative_pose
 from test_skill_packets import packet_fixture
 
 
@@ -51,7 +51,7 @@ def test_incompatible_object_and_floor_target_are_rejected_before_motion():
 
 
 def test_stalled_variant_is_rejected_without_object_chasing(monkeypatch):
-    from explorer3.sim.skill_transfer import TransferRejected
+    from explorer4.sim.skill_transfer import TransferRejected
     env = make('rosmaster_floor_pick_sim')
     try:
         packet = packet_fixture()
@@ -71,9 +71,9 @@ def test_stalled_variant_is_rejected_without_object_chasing(monkeypatch):
 
 
 def test_existing_policy_evaluator_attaches_independent_physics_measurements(tmp_path, monkeypatch):
-    from explorer3.sim import evaluate
-    from explorer3.sim.aligned import ScriptedFloorPick
-    from explorer3 import training_drafts
+    from explorer4.sim import evaluate
+    from explorer4.sim.aligned import ScriptedFloorPick
+    from explorer4 import training_drafts
     env = make('rosmaster_floor_pick_sim', images=False)
     monkeypatch.setattr(evaluate, 'make', lambda *a, **kw: env)
     monkeypatch.setattr(training_drafts, 'checkpoint_hash', lambda p: 'a'*64)

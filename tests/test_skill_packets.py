@@ -3,7 +3,7 @@ import copy
 import numpy as np
 import pytest
 
-from explorer3.skill_packets import admission, relative_pose, retarget_pose, validate
+from explorer4.skill_packets import admission, relative_pose, retarget_pose, validate
 
 
 def packet_fixture():

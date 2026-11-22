@@ -1,5 +1,5 @@
 import pytest
-from explorer3 import fleet_runs
+from explorer4 import fleet_runs
 
 
 def test_fixture_config_is_explicit_and_has_no_training(monkeypatch):

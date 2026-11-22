@@ -15,7 +15,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-DATA = Path(os.environ.get('EXPLORER3_DATA', str(Path.home() / '.local/share/explorer3')))
+DATA = Path(os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA', str(Path.home() / '.local/share/explorer3'))))
 
 
 def load_sam3(root):

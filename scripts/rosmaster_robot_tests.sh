@@ -3,7 +3,7 @@
 # Usage: scripts/rosmaster_robot_tests.sh   (uses ~/.ssh/rosmaster-collector and the agent config host)
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
-DATA="${EXPLORER3_DATA:-$HOME/.local/share/explorer3}"
+DATA="${EXPLORER4_DATA:-${EXPLORER3_DATA:-$HOME/.local/share/explorer3}}"
 HOST=$(python3 -c "import json,sys;print(json.load(open('$DATA/configs/rosmaster-agent.json'))['host'])")
 KEY="$HOME/.ssh/rosmaster-collector"; R="ssh -i $KEY -o BatchMode=yes vlad@$HOST"
 SRC="$DATA/provenance/rosmaster-bridge-current"

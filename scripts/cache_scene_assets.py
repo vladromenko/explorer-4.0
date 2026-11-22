@@ -9,7 +9,7 @@ FILES=['LICENSE','robosuite/models/assets/objects/bottle.xml','robosuite/models/
     'robosuite/models/assets/objects/can.xml','robosuite/models/assets/objects/meshes/bottle.stl',
     'robosuite/models/assets/objects/meshes/lemon.msh','robosuite/models/assets/objects/meshes/can.msh',
     'robosuite/models/assets/textures/glass.png','robosuite/models/assets/textures/lemon.png','robosuite/models/assets/textures/soda.png']
-root=ROOT/'explorer3/sim/vendor_props';hashes={}
+root=ROOT/'explorer4/sim/vendor_props';hashes={}
 for name in FILES:
     relative=name.removeprefix('robosuite/models/assets/')
     path=root/relative;path.parent.mkdir(parents=True,exist_ok=True)

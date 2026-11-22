@@ -9,7 +9,7 @@ import time
 import numpy as np
 import pytest
 
-from explorer3 import episodes, knowledge, so101_handoff, swarm, world_memory
+from explorer4 import episodes, knowledge, so101_handoff, swarm, world_memory
 
 
 @pytest.fixture(autouse=True)
@@ -18,10 +18,10 @@ def isolated(monkeypatch, tmp_path):
     monkeypatch.setattr(world_memory, 'SNAPSHOTS', tmp_path / 'snap')
     monkeypatch.setattr(episodes, 'ROOT', tmp_path / 'episodes')
     monkeypatch.setattr(so101_handoff, 'CONFIG', tmp_path / 'handoff.json')
-    from explorer3 import knowledge
+    from explorer4 import knowledge
     monkeypatch.setattr(knowledge, 'STORE', tmp_path / 'knowledge.json')
-    from explorer3 import catalog
-    from explorer3.cognitive import store
+    from explorer4 import catalog
+    from explorer4.cognitive import store
     monkeypatch.setattr(catalog, 'DATA', tmp_path)
     monkeypatch.setattr(store, 'DATA', tmp_path)
     store.initialize()

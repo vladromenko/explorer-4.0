@@ -1,12 +1,13 @@
 import json
 import pytest
-from explorer3 import collection,catalog
+from explorer4 import collection,catalog
 
 
 @pytest.fixture
 def storage(tmp_path,monkeypatch):
     monkeypatch.setattr(catalog,'DATA',tmp_path)
     monkeypatch.setattr(collection,'DATA',tmp_path)
+    monkeypatch.setattr(collection,'_initialized',[False])
     catalog.initialize();collection.initialize()
     return tmp_path
 
@@ -42,7 +43,7 @@ def test_managed_episode_uses_existing_writer_and_automatic_readback(tmp_path):
     from pathlib import Path
     root=Path(__file__).resolve().parents[1]
     result=subprocess.run([sys.executable,'tests/rosmaster_fake_agent.py','rosmaster_pick_place','managed'],
-        cwd=root,env={**os.environ,'EXPLORER3_DATA':str(tmp_path),'PYTHONPATH':str(root)},
+        cwd=root,env={**os.environ,'EXPLORER4_DATA':str(tmp_path),'PYTHONPATH':str(root)},
         capture_output=True,text=True,timeout=150)
     assert result.returncode==0,result.stderr[-3000:]+result.stdout[-2000:]
     report=json.loads(result.stdout.strip().splitlines()[-1])['collection_report']
@@ -61,7 +62,7 @@ def test_remaining_default_profiles_read_back_with_all_streams(tmp_path,profile)
     from pathlib import Path
     root=Path(__file__).resolve().parents[1]
     result=subprocess.run([sys.executable,'tests/collection_writer_fixture.py',profile],cwd=root,
-        env={**os.environ,'EXPLORER3_DATA':str(tmp_path),'PYTHONPATH':str(root)},capture_output=True,text=True,timeout=120)
+        env={**os.environ,'EXPLORER4_DATA':str(tmp_path),'PYTHONPATH':str(root)},capture_output=True,text=True,timeout=120)
     assert result.returncode==0,result.stderr[-2000:]+result.stdout[-3000:]
     assert json.loads(result.stdout.strip().splitlines()[-1])['quality']=='pass'
 
@@ -71,7 +72,7 @@ def test_gap_is_quarantined_without_deleting_raw_recording(tmp_path):
     from pathlib import Path
     root=Path(__file__).resolve().parents[1]
     result=subprocess.run([sys.executable,'tests/collection_writer_fixture.py','tank_dock_rgbd_lidar','gap'],cwd=root,
-        env={**os.environ,'EXPLORER3_DATA':str(tmp_path),'PYTHONPATH':str(root)},capture_output=True,text=True,timeout=120)
+        env={**os.environ,'EXPLORER4_DATA':str(tmp_path),'PYTHONPATH':str(root)},capture_output=True,text=True,timeout=120)
     assert result.returncode==0,result.stderr[-2000:]+result.stdout[-3000:]
     report=json.loads(next((tmp_path/'validation/collection').glob('*/quality.json')).read_text())
     assert report['status']=='warning' and any('200' in p for p in report['problems'])

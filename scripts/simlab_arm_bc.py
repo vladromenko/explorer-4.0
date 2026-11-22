@@ -9,11 +9,11 @@ import json
 import numpy as np
 import torch
 
-from explorer3.paths import DATA
-from explorer3.simlab import artifact, scenario
-from explorer3.simlab.arm_demos import collect
-from explorer3.simlab.arm_warp import MAX_STEP
-from explorer3.simlab.ppo import ActorCritic
+from explorer4.paths import DATA
+from explorer4.simlab import artifact, scenario
+from explorer4.simlab.arm_demos import collect
+from explorer4.simlab.arm_warp import MAX_STEP
+from explorer4.simlab.ppo import ActorCritic
 
 
 def main():
@@ -50,8 +50,8 @@ def main():
     artifact.export(model.cpu(), meta, out, scenario='pick_place_v1', scenario_fingerprint=scenario.fingerprint('pick_place_v1'),
                     extra={'assumed_measurements': scenario.assumed_fields(), 'action': 'absolute_normalized_joint_target'})
     # evaluate the exported artifact through the numpy runtime, exactly as on the robot
-    from explorer3.sim.environment import SO101PickPlace
-    from explorer3.simlab import contract
+    from explorer4.sim.environment import SO101PickPlace
+    from explorer4.simlab import contract
     pol = artifact.Policy(out)
     env = SO101PickPlace()
     lo, hi = env.ranges[:, 0], env.ranges[:, 1]

@@ -6,8 +6,8 @@ import sys
 import time
 from pathlib import Path
 import torch
-from explorer3.paths import DATA,offline_environment
-from explorer3.resources import ResourceLease
+from explorer4.paths import DATA,offline_environment
+from explorer4.resources import ResourceLease
 from lerobot.configs.types import FeatureType,PolicyFeature
 from lerobot.policies.smolvla.configuration_smolvla import SmolVLAConfig
 from lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
@@ -49,7 +49,7 @@ with ResourceLease('compute'):
     del policy,optimizer,pre,post,batch,loss
     gc.collect()
     torch.cuda.empty_cache()
-    subprocess.run([sys.executable,'-m','explorer3.reload_check',str(checkpoint),str(root)],env=offline_environment(),check=True)
+    subprocess.run([sys.executable,'-m','explorer4.reload_check',str(checkpoint),str(root)],env=offline_environment(),check=True)
     (DATA/'validation/smolvla-pass.json').write_text(json.dumps({'run':str(run),'synthetic':True,'loss':loss_value,
         'forward_backward_reload':'PASS','physical_skill_verified':False,'batch':1}))
     print('SmolVLA SOFTWARE PASS',flush=True)

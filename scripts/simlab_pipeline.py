@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3.paths import DATA  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 PY = [sys.executable, '-u']
 TITLES = {'check': 'проверочный прогон', 'full': 'полное обучение', 'clone': 'клонирование учителя', 'eval': 'оценка и видео'}
@@ -36,7 +36,7 @@ def main():
     args = a.parse_args()
     stamp = time.strftime('%m%d_%H%M')
     name = args.name or (f'so101_bc_{stamp}' if args.robot == 'so101' else f'{args.robot}_dock_{args.kind}_{stamp}')
-    from explorer3.resources import ResourceLease
+    from explorer4.resources import ResourceLease
     lease = ResourceLease('compute')
     lease.__enter__()        # the real-training job queue waits while this holds the GPU (and vice versa)
     active = DATA / 'simlab' / 'active.json'

@@ -1,8 +1,8 @@
 """Explicit one-time downloads; normal analysis remains strictly local."""
 import argparse,json
 from pathlib import Path
-from explorer3.paths import ROOT,DATA
-from explorer3.vision_assets import verify,digest
+from explorer4.paths import ROOT,DATA
+from explorer4.vision_assets import verify,digest
 
 
 def main(method,download):

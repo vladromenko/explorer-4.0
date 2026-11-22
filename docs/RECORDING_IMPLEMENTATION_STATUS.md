@@ -1,22 +1,22 @@
-# Подготовка к записи — выполнение R0–R9
+# Preparation for Recording — Implementing R0–R9
 
-Руководящее задание: [RECORDING_READINESS_PROMPT_RU.md](handoffs/RECORDING_READINESS_PROMPT_RU.md).
-Исследовательское расширение и обучение отложены до сбора датасета.
-Старые системы :8020 и :8090 не изменяются. Агент не отправляет движения.
+Guidance: [RECORDING_READINESS_PROMPT.md](handoffs/RECORDING_READINESS_PROMPT.md).
+Research expansion and training are postponed until the dateset is collected.
+Old systems:8020 and:8090 are not changed. The agent does not send traffic.
 
-| Пакет | Состояние | Проверяемый результат |
+| Package| Status| Audited result|
 |---|---|---|
-| R0 — единый запуск проверок | PASS | `scripts/run_all_tests.sh`, изолированный каталог, JUnit и JSON |
-| R1 — единый fleet.json | PASS; миграция применена | миграция с архивом/откатом, один источник допуска |
-| R2 — Tank | установлен; программные проверки PASS | локальные пределы, USB-защёлка с подтверждением, датчики, установка |
-| R3 — ROSMASTER | PASS | серия/сцена передаются; фейковая запись и native-проверки; :8030 обновлён в простое |
-| R4 — SO-101 | PASS на фейках | подтверждаемая передача службы, владельца и возврат с HTTP-проверкой; физически не запускалось |
-| R5 — готовность | установлен; unit/browser PASS | /recording/readiness, измеряемые причины и действия, собственные наблюдатели обновлены |
-| R6 — сбор датасета | программные проверки PASS | /recording/collect, четыре профиля, автоматический readback и исключение проблемных записей |
-| R7 — сохранность | PASS; локальная копия проверена | SQLite backup API, manifest SHA, внешний incremental copy, резерв диска и восстановление |
-| R8 — физический мастер | unit/browser PASS | пошаговый read-only мастер; реальные шаги ещё не пройдены оператором |
-| R9 — передача | программная поставка завершена | инструкция дня записи, актуальный статус, итоговый отчёт тестов и Git |
+| R0 - Single start of checks| PASS | `scripts/run_all_tests.sh`, an isolated catalogue, JUNIT and JSON|
+| R1 is a single fleet.json| PASS; migration applied| Archives/reverse migration, one source of clearance|
+| R2 — Tank | PASS software checks| Local limits, USB validation latch, sensors, installation|
+| R3 — ROSMASTER | PASS | Scene/scenes are transferred; fairy and native checks;:8030 is updated in plain|
+| R4 — SO-101 | PASS on Fairies| Accompanied transfer of service, owner and return with HTTP check; not physically launched|
+| R5 - Ready| installed; unit /browser PASS| /recording/readiness, the causes and actions measured, the observers are updated|
+| R6 — Collection of the dataset| PASS software tests| /recording/collect, four profiles, automatic readback and deletion of problematic entries|
+| R7 - Safety| PASS; local copy checked| SQLite backup API, manifest SHA, external incremental copi, disk reserve and recovery|
+| R8 Hardware readiness wizard| unit/browser PASS | step-by-step read-only master; actual steps not yet covered by the operator|
+| R9 - Transfer| Programme delivery completed| Record day instruction, status, test results and Git|
 
-Физический PASS не выводится из успешной отправки команды. При USB-разрыве
-нулевая команда может не дойти до платы; восстановление связи и принятие нулей
-не доказывают остановку гусениц. После отказа требуется подтверждение оператора.
+Physical PASS is not released from successful command dispatch.
+Zero command may not reach the fee; re-establish communication and accept zeros
+The operator must be confirmed after the failure.

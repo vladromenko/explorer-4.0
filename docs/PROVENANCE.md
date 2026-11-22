@@ -1,31 +1,31 @@
-# Происхождение
+# Origin
 
-Скопирован только низкоуровневый SO-101 I/O из `/home/jetsonnx/Projects/so101_ai_learning/src/so101_lab/hardware.py`.
-SHA256 исходника: `c1bb47ffe68f994717a28d25a8bde2670dbc999c20429311d31ad7f630486075`.
-Рабочая копия: explorer3/hardware.py. Исходник сохранён локально вне Git.
-Авторство: существующий пользовательский проект so101_ai_learning; отдельная лицензия не обнаружена; публичное распространение не разрешено этим документом.
-Изменения: собственный каталог данных/калибровок, wrist-only, собственный resource lease. Backend/UI/trainer/данные не копировались.
-Оригинал не изменён. Это копия используемого службой I/O; физическая работоспособность копии проверена на этапе B (три настоящих показа; прежнее управление восстановлено).
-LeRobot устанавливается из PyPI как upstream dependency, Apache-2.0; не копируется из старой venv.
-Калибровки: собственные файлы вне Git, robot ID и моторы сохранены, хеши и источники в локальном calibration/manifest.json.
-PyTorch/torchvision: новые установки тех же версий 2.11.0+cu130/0.26.0+cu130, без изменения системной CUDA.
+Only the low-level SO-101 I /O of `/home/jetsonnx/Projects/so101_ai_learning/src/so101_lab/hardware.py` is copied.
+SHA256 Source: `c1bb47ffe68f994717a28d25a8bde2670dbc999c20429311d31ad7f630486075`.
+Copy: explorer3 /hardware.py. The source is stored locally outside Git.
+Authorship: existing user project so101_ai_learning; no separate licence detected; public distribution is not permitted by this document.
+Changes: own data catalogue/calibration, wrist-only, own resource release./UI/trainer/No data were copied.
+Original unchanged. This is a copy of the I /O service used; the physical functionality of the copy has been checked at stage B (three present displays; previous controls have been restored).
+LeRobot is installed from PyPI as a topstream dependency, Apache 2.0; not copied from the old venv.
+Calibration: own files outside Git, robot ID and motors retained, hashs and sources in local calibration /manifest.json.
+PyTorch /torchvision: New installations of the same versions 2.11.0+cu130 /0.26.0 +cu130, without modification of the system CUDA.
 
-Публичный SmolVLA base: revision 5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6.
+Public SmolVLA base: revision 5e8d12a6e2975b0e5e5e5fc7c8caf47c371d257b6.
 SmolVLM2-500M-Video-Instruct: revision 7b375e1b73b11138ff12fe22c8f2822d8fe03467.
-Взяты из стандартного локального Hub-кэша (не из старых проектов), развёрнуты обычными файлами в собственный cache.
-Хеши всех snapshot-файлов и ResNet18 сохранены в локальном cache/manifest.json.
+The ones taken from the standard local Hub Cash (not from old projects) are developed by the regular files in their own cache.
+Heshes of all snapshot files and ResNet18 are stored in local cache /manifest.json.
 
 
-Tank: установленные Hiwonder ROS2 driver/controller и ros_robot_controller изучены read-only; отдельные Board SDK и Aurora930 executable/library скопированы внутрь /home/ubuntu/explorer3/vendor. Авторы — Hiwonder / Deptrum; лицензия на распространение SDK не установлена (package.xml содержит TODO), бинарные пакеты в Git не включены. Собственные glue/safety/HTTP файлы находятся в agents/tank. Оригиналы не исправлялись. Manifest с исходными путями и SHA256 — локальный runtime/provenance/tank-vendor-manifest.json. Геометрия/знаки/лимиты воспроизведены из реально установленного controller, коррекции прочитаны из robot_correction_factors.yaml без изменения. Новый namespace /explorer3/tank; ROS-домен и дистрибутив сохранены. Новая venv использует неизменяемые системные ROS/OpenCV, не старое окружение приложения. Источники документации и ограничения — docs/TANK.md.
+Tank: installed by Hiwonder ROS2 driver/controller and ros_robot_controller studied read-only; selected Board SDK and Aurora930 exectuable/library Copyed inside /home/ubuntu/explorer3/vendor. The authors are Hiwonder / Deptrum; SDK distribution license is not established (package.xml contains TODO), and the bin bags in Git are not included./safety/HTTP files are in agents/tank. Originals were not corrected. Manifest with reference routes and SHA256 with local ringtime/provenance/tank-vendor-manifest.json. Geometry/signs/limites are reproduced from a real controller, corrections read from robot_correction_factors.yaml New namespace. /explorer3/tankNew venv uses unchangeable systems ROS/OpenCVThe source of the documentation and the restrictions are docs./TANK.md.
 
-После отказа первой физической проверки дополнительно скопирована полная низкоуровневая цепочка controller/ros_robot_controller с необходимыми конфигами, всего 12 файлов. Manifest source/copy SHA256: runtime/provenance/tank-native-chain/native-manifest.json. Скопированные оригиналы вне Git; авторские заголовки сохранены. Изменены только пути конфигов на собственные. Own native_driver.py исполняет оригинальные классы/конструкторы/ROS callbacks; прежняя собственная функция кинематики удалена. Зависимости сообщений ROS используются как неизменяемые установленые библиотеки; старый веб-backend не используется. Два теста с памятью вместо serial не считаются физической приёмкой.
-
-
-### Локальный адаптер выбранной Console8090 (2026-11-12)
-
-agents/rosmaster/control_adapter.py содержит два метода `_manual_step` и `_mirror_step`, скопированные без изменений из снимка mirror-fix-20261112/candidate/cubebot/web/server.py, соответствующего выполненному откату. Исходный SHA256 и отдельные хеши методов — control-adapter-provenance.json. Native CartesianJog, MirrorMapper, ArmModel и конфигурация переиспользуются из собственного native/cubebot; старый веб-backend не импортируется. Обёртка только разделяет профили базы/руки, проверяет вход и истечение команд. Нет изменения знаков/нули/лимитов, сглаженного приведения или отклонённого partial-feedback патча. start-agent.sh установлен 2026-11-12: domain30, собственный DDS profile/vendor, без MoveIt. Собственный агент запущен только для наблюдения, без serial/publisher. Живой моторный runtime и handoff остаются отдельной незавершённой аппаратной интеграцией.
-
-Точная копия шести модулей низкоуровневого bridge снята на Homebrain, хеши в agents/rosmaster/bridge-provenance.json; исходники и реальные конфигурации хранятся в private runtime/provenance/rosmaster-bridge-current. Первые пять совпали с прежней собственной копией на роботе, fake_board добавлен для будущих программных проверок. Обнаруженный fallback к старому каталогу калибровки ещё требуется изолировать перед запуском собственного bridge; текущий read-only Observer этих модулей не импортирует.
+After the first physical check failed, the complete low-level controller chain was further copied/ros_robot_controller With the necessary seizures, only 12 files./copy SHA256: runtime/provenance/tank-native-chain/native-manifest.json. Copyed originals outside Git; the copyrights are saved. Only the ways of confiscation are changed to their own. native_driver.py Performs original classes/constructions/ROS Callbacks; old own kinetic function deleted. The ROS messages are used as unchangeable established libraries; the old webbackend is not used. Two memory tests instead of a serial are not considered physical.
 
 
-Моторная интеграция ROSMASTER: Runtime использует копию BaseIO/VelocityShaper/ObstacleGuard/CartesianJog/MirrorMapper, транспортную копию native BridgeCore+Link и неизменённые nominal коэффициенты из собственного config. bridge_ros.py не импортируется; его старый fallback недостижим. LeasedCore добавляет только владение сессией, сброс цели и проверку freshness; знак/диапазон не меняет. Keyboard/gamepad раскладка в rosmaster_control.py адаптирована из выбранного cubebot/web/page.py: те же оси и ручные кнопки, без mission/preset действий. Собственная камера запускает скопированный camera-rgbd.launch.py и установленную отдельную копию Orbbec1.5.22 с прежними аргументами. Handoff меняет только active состояние служб на время владения, исходные unit/source/config не редактирует.
+### Local adapter of the selected Console8090 (2026-11-12)
+
+agents/rosmaster/control_adapter.py contains two methods `_manual_step` and `_mirror_step`copied without change from the mirror-fix 20261112/candidate/cubebot/web/server.pyThe original SHA256 and selected heches of methods - control-adapter-provenance.json. Native CartesianJog, MirrorMapper, ArmModel and configuration are re-used from their own native/cubebotThe wrapping only separates the database/hand profiles, checks the entry and end of the commands. No change in the signs/zero/limite, smooth ghost or rejected partial-feedback patches. start-agent.sh 2026-11-12: Domain30, own DDS file/vendorThe asset is only launched for observation, without a serial./publisher. The live motor ringtime and handoff remain separate uncompleted hardware integration.
+
+A precise copy of six low-level bridge modules is available on Homebrain, hashs in /rosmaster/bridge-provenance.json; the source and actual configurations are stored in a private ringime /provenance/rosmaster-bridge-current.; the first five are similar to the previous robot version; the fake_board is added for future software tests. The detected fallback to the old calibration catalogue is still required to be isolated before launching its own bridge; the current read-only Observer does not import these modules.
+
+
+ROSMASTER: Runtime uses a copy of BaseIO/VelocityShaper/ObstacleGuard/CartesianJog/MirrorMapper, transport copy of the native BridgeCore+Link and unchanged nominal coefficients from its own config. bridge_ros.py The same is true of the same thing as the other one./gamepad Set-up in rosmaster_control.py adapted from selected cubebot/web/page.py: same axles and hand buttons, no mission/preset The own chamber starts a copied camera-rgbd.launch.py and the established separate Orbbec1.5.22 with the old arguments. Handoff only changes the active state of the services during the tenure, the original unit./source/config It doesn't edit.

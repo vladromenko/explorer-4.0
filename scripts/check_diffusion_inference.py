@@ -7,9 +7,9 @@ from lerobot.configs.types import FeatureType,PolicyFeature,NormalizationMode
 from lerobot.policies.diffusion.configuration_diffusion import DiffusionConfig
 from lerobot.policies.diffusion.modeling_diffusion import DiffusionPolicy
 from lerobot.policies.factory import make_pre_post_processors
-from explorer3.paths import DATA
-from explorer3.resources import ResourceLease
-from explorer3.act_client import PolicyClient
+from explorer4.paths import DATA
+from explorer4.resources import ResourceLease
+from explorer4.act_client import PolicyClient
 
 
 def main():

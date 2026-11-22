@@ -1,104 +1,104 @@
-# Протокол Explorer 4.0, версия 1
+# Explorer 4.0 Protocol, Version 1
 
-Дата фиксации: 2026-11-11. До физического пилота. Публикационные утверждения отсутствуют.
+Date of lockdown: 2026-11-11. Before physical pilot. No public statements.
 
-## Вопрос и оцениваемая величина
-Рабочее название: «Перенос оценки полезности человеческого вмешательства между разными роботами при ограниченном времени оператора».
-Проверяется добавочная польза короткой истории измеренного физического ответа для переноса оценщика с SO-101 и Tank на ROSMASTER при задержке помощи.
-G(h,d)=P(успех | назначенная коррекция после d,h)−P(успех | без коррекции,h).
-Это условный эффект по группе испытаний, не известная контрфактическая метка одной попытки.
-Приоритет: max(0,G)/(ожидаемое переключение + коррекция). В сравнениях одинаковые правила очереди и учёт стоимости.
+## Question and value estimated
+Working title: "Transfer of assessment of the utility of human intervention between different robots with limited operator time".
+The added value of a short history of measured physical response is being tested to transfer the valuer from SO-101 and Tank to ROSMASTER with delay of assistance.
+G(h,d)=P(s) = assigned correction after d,h) to P(s) without correction,h.
+It's a conditional effect for a group of tests, not known for the counterfactual mark of one attempt.
+Priority: max(0,G)/(expected switch + correction). Comparisons are the same turn rules and value accounting.
 
-## Политики и данные
-Четыре независимых ACT: so101_pick_place, tank_dock, rosmaster_dock, rosmaster_pick_place.
-Отдельные action/state schemas, dataset, train statistics и checkpoints. Суставы и команды шасси не объединять.
-На ROSMASTER режимы руки и базы раздельны. Никаких неподтверждённых каналов/синтетической одометрии.
-Начало: 3 настоящих показа, чтение batch → 50 шагов smoke → save → новый процесс reload/inference без команд.
-Первичный ориентир: 50 качественных показов/профиль; это не обещание устойчивого навыка.
-Split ~80/10/10 по целым session/scene группам, freeze до обучения; статистики только train.
-При недостаточном числе групп ограничение явно показывается. Соседние кадры не независимы.
-SmolVLA — дополнительный профиль SO-101 на тех же splits, после реального forward/backward/reload.
+## Policies and data
+Four independent ACTs: so101_pick_place, Tank_doc, rosmaster_doc, rosmaster_pick_place.
+Individual actions /state schemas, dataset, train statistics and kheckpoints.
+On ROSMASTER, the arms and bases are separated. No unconfirmed channels/synthetic odometers.
+Start: 3 real demonstrations, reading batch ~ 50 steps smoke ~ save ~ new process reload /inference without command.
+Primary benchmark: 50 quality displays/ Profiles; this is not a promise of sustainable skills.
+Split ~80/10/10 for the entire session /scene groups, freeze before training; statistics only train.
+When there are few groups, the limitation is clearly shown.
+SmolVLA is an additional SO-101 profile on the same splits, after the real forward /backward/reload.
 
-## Диагностический пилот
-Зафиксировать checksum политики, настройки сцены, допустимые безопасные точки и поведение ожидания (сначала hold).
-Один независимый от будущего исхода случайный выбор на эпизод: коррекция / без коррекции, исходно вероятность 0.5.
-Ориентир: ≥20 эпизодов в каждой ветви на профиль для диагностики и оценки дисперсии, не подтверждения мощности.
-Лимит коррекции ≤10 секунд уточнить физически по профилю; безопасные задержки заранее зафиксировать после пилота.
-Сохранять назначение, вероятность, реальное вмешательство, нарушения назначения, аварийные вмешательства отдельно.
-Регистрировать decision/request/human_control_start/end/deadline, сеть, очередь, реакцию человека раздельно; переключение, resets, полный цикл и исход.
-Не продолжать опасное движение ради рандомизации. Аварийная помощь имеет приоритет.
-Повторение сцены не создаёт точную пару контрфактических состояний.
+## Diagnostic pilot
+Record the checksum of politics, scene settings, acceptable safe points and waiting behaviour (first, Hold).
+One random choice for an episode independent of the future: correction / no correction, probability of 0.5.
+Direction: ≥20 episodes in each branch per profile for diagnosis and variance estimation, not for power validation.
+Retrofit restriction ≤ 10 seconds to specify physically by profile; secure delays to be recorded in advance after pilot.
+Maintain destination, probability, real intervention, assignment irregularities, emergency intervention separately.
+Record /request/human_control_start/end/deadline, network, line, human response separate; switch, resets, complete cycle and output.
+Do not continue the dangerous movement for re-domination. Emergency assistance has priority.
+A repeat scene doesn't create exactly a couple of counter-fact states.
 
-## Признаки и модель
-Две небольшие scikit-learn модели вероятности успеха для ветвей вмешательства; разность прогнозов — оценка G.
-Входы: прошлые изменения нормированных команд, измеренный ответ и остаточная ошибка там, где реально доступны, возраст сенсоров, компоненты задержки, доступный online-прогресс.
-Отсутствие измерения кодировать mask, не командой вместо feedback. Командная оценка не подтверждает физический ответ.
-Нормировка только по train, источник и бюджет явно записаны. Совместимость по физическому смыслу, не индексу мотора.
-Один замороженный ResNet-18 допустим как общий visual baseline. Прогресс — оценка, не истинная метка.
-Нет будущих кадров, исхода эпизода или внешней оценочной камеры во входах online-модели.
+## Signs and model
+Two small scikit-learn models of success for intervention branches; the difference in projections is the G estimate.
+Entrances: Past changes in normalized commands, measured response and residual error where available, sensor age, delay components, available online progress.
+The lack of measurement to encode the mask, not by command instead of the Feedback. Command evaluation does not confirm the physical response.
+The standard is only for train, source and budget is clearly recorded, compatibility in physical sense, not the motor index.
+One frozen ResNet-18 is allowed as a general visual baseline, progress is an estimate, not a true label.
+No future footage, episode output or external assessment camera at the online model entrances.
 
-## Перенос
-Source: SO-101 + Tank. Все ROSMASTER эпизоды обоих режимов исключены из source обучения оценщика.
-Target: 0, затем фиксированные 10 и 20 эпизодов ROSMASTER; сравнить target-only на тех же 10/20.
-Политика ROSMASTER учится отдельно на собственных показах; zero-shot относится только к оценщику.
-Учитывать общий объём source/target данных, нормировку и доступные сенсоры. Равный target-бюджет не равен равному общему бюджету.
+## Transfer
+Source: SO-101 + Tank. All ROSMASTER episodes of both modes are excluded from the source of the evaluator's training.
+Target: 0, then fixed 10 and 20 episodes of ROSMASTER; compare the Target-only to the same 10 /20.
+ROSMASTER is taught separately in its own shows; zero-shot refers only to the evaluator.
+To count the total source /target data, the standard and the available sensors. The equal target budget is not equal to the total budget.
 
-## Сравнения
-Случайный/очередной выбор; риск/прогресс; G без физических признаков; G с ними; transfer против target-only.
-Отдельно сравнить общий всем роботам набор сенсоров, исключить объяснение robot ID/камерой/дополнительными данными.
-Для scheduler-сравнения control policies заморожены.
-Для обучения каждый метод стартует с одинакового checkpoint, получает равные секунды помощи, взаимодействия и trainer updates. Коррекции между группами не смешиваются.
-Основной итог обучения — автономный успех на новых испытаниях без человека; assisted success отдельно.
-Три независимо обученных ACT как uncertainty baseline — только после измерения стоимости. Повтор детерминированного ACT не uncertainty.
+## Comparisons
+Random/priority choice; risk/progress; G without physical signs; G with them; transfer versus Target-only.
+A separate comparison of all robots is made between the sensor set, and delete the explanation of Robot ID/cam/additional data.
+For the sceduler-comparison, control policies are frozen.
+For learning, each method starts with the same checkpoint, gets equal seconds of help, interaction, and trainer updates. Adjustments between groups are not mixed.
+The main outcome of the training is self-contained success in new tests without human beings; assisted access separately.
+Three independently trained ACTs as unceertainty baseline are only after value measurement. Repeating the determinized ACT is not uncertainty.
 
-## Отчёт и ограничения
-Результаты по профилям и macro-average; минуты человека, переключения, ожидание, resets, полное время; калибровка вероятностей; bootstrap CI по сессиям/эпизодам.
-Размер подтверждающего эксперимента определить по пилоту и зафиксировать до test. Не менять гипотезу по результату test.
-Не заявлять перенос моторного навыка или «роевой интеллект» по переносу оценщика.
+## Report and limitations
+Profiles and macro-overage results; human minutes, switching, waiting, resettles, full time; probability calibration; bootstrap CI session/epizodes.
+The size of the validation experiment is determined by pilot and recorded to test. Do not change the hypothesis by test result.
+Do not claim motor skills or "roman intelligence" for the transfer of the valuer.
 
-Близкие работы: [Fleet-DAgger](https://proceedings.mlr.press/v205/hoque23a.html), [ThriftyDAgger](https://proceedings.mlr.press/v164/hoque22a.html), [Sirius-Fleet](https://arxiv.org/abs/2410.22689), [ARMADA](https://arxiv.org/abs/2510.02298), [ASA](https://proceedings.mlr.press/v270/akcin25a.html).
-RESCUE arXiv:2610.13516: оригинал и сравнение новизны не проверены; это ограничивает публикационные заявления, не инженерную подготовку.
+Close work: [Fleet-Dagger]](https://proceedings.mlr.press/v205/hoque23a.html), [ThriftyDAgger](https://proceedings.mlr.press/v164/hoque22a.html), [Sirius-Fleet](https://arxiv.org/abs/2410.22689), [ARMADA](https://arxiv.org/abs/2510.02298), [ASA](https://proceedings.mlr.press/v270/akcin25a.html).
+RESCUE arXiv:2610.13516: The original and comparison of the novel is not verified; this limits the publication statements, not engineering training.
 
 
-## Программная реализация локального анализа (2026-11-12)
+## Local analysis programme implementation (2026-11-12)
 
-Модуль explorer3/research.py, страница /research. Проект пилота создаётся с хешем выбранной политики, но безопасные задержки и точки решения требуют отдельной физической проверки; сохранение проекта не запускает исследование или движение. Журнал SQLite допускает одно назначение на эпизод и упорядоченные monotonic-события Homebrain. Reset допускается после отметки конечного исхода. Иностранные monotonic timestamps не принимаются за часы Homebrain.
+Explor3 module/research.pypage /research. The pilot project is created with a hesh of the chosen policy, but safe delays and decision points require separate physical verification; the project is not allowed to be saved by research or movement. SQLite allows one appointment for an episode and streamlined monotonic event Homebrain. Reset is allowed after the end result point. Foreign monotonic timeamps are not accepted for Homebrain hours.
 
-Признаки используют только последние три секунды уже полученной телеметрии до решения. Изменения команд/измерений нормируются на физический масштаб каналов и время, чтобы 20/30 Hz сами по себе не были признаком конструкции. Остаточная ошибка сопоставляет текущее измерение только с предыдущей отправленной командой. Оценка положения по команде не создаёт измеренный физический ответ. Каждый отсутствующий признак имеет отдельный mask. Онлайн-прогресс по умолчанию отсутствует; визуальный прогресс или истинный успех не выдумываются.
+The signs only use the last three seconds of telemetry already received before the decision. Command/measure changes are normalized to the physical scale of the channels and time so that 20 /30 Hz is not a sign of design per se. The residual error compares the current measurement only to the previous command sent. Command position estimation does not create a measured physical response. Each missing item has a separate mask. The default progress is missing; visual progress or true success is not made.
 
-Две logistic regression с StandardScaler обучаются по назначенной ветви, с учётом вероятности назначения. Emergency/deviations сохраняются; для завершённых исходов назначение не переименовывается по факту вмешательства. Aborted/неизвестные исходы показываются как attrition, а не скрыто превращаются в failure. Это подготовка intention-to-treat анализа, не гарантия причинной идентификации при пропусках исходов/нарушениях протокола.
+Two logical responses with StandardScaler are trained by the assigned branch, taking into account the likelihood of a mission. The Emergency /deviations is retained; for the final outcomes, the assignment is not renamed by intervention. Aborted/unknown outcomes are shown as attribution, not hidden by a failure. This is an introduction-to-treat analysis, not a guarantee of causal identification in the event of a failure to release/disruption of protocol.
 
-Исходное обучение исключает оба режима ROSMASTER. Для transfer/target-only используются одни и те же выбранные 10/20 целевых эпизодов; число source/target фиксируется отдельно. При недостатке ветвей/классов вариант помечается insufficient_data, а не заменяется константной вероятностью. Нормировка только по train каждого варианта. Hold-out не пересекается с train по эпизоду, сессии или расстановке, включая транзитивные связи. Bootstrap использует такие независимые группы. Признаки robot ID не используются. Вариант commands исключает response/tracking и соответствующие masks, служит общим набором сенсоров.
+The initial training excludes both ROSMASTER modes./target-only the same selected 10/20 target episodes; number of source/target If branches/classes are not sufficient, the option is marked as inofficient_data, not replaced by constant probability. The only rule is that each option is tran. Holding-out does not overlap with tran for episode, session or location, including transit links. Bootstrap uses such independent groups. Robot ID is not used./tracking and corresponding masks, is a common sensor set.
 
-Отчёт сохраняет калибровочные корзины, Brier по назначенной ветви, успех по профилям/macro-average, интервалы по группам, фактически зарегистрированные длительности и число наблюдений каждого тайминга. Отсутствующий тайминг — null, не ноль. Пока нет настоящих рандомизированных эпизодов, UI объясняет отсутствие данных и не обучает G на обычных демонстрациях.
+The report keeps calibration baskets, Brier on the assigned branch, success on /macro-average profiles, group intervals, actually recorded lengths and number of observations for each time. The missing timeting is null, not zero. As long as there are no actual random episodes, UI explains the lack of data and does not train G at regular demonstrations.
 
-Random/FIFO/risk/G selectors реализованы как чистые функции при одинаковом учёте стоимости переключения/коррекции; они не запускают роботов. Физическое сравнение scheduler и последующего автономного обучения не выполнено. Фикстуры тестов не попадают в каталог физических данных.
+Random /FIFO/risk/G devices are implemented as clean functions with equal switching/correction costs; they do not start robots. Physical comparison of sceduler and subsequent autonomous learning is not complete. Test records are not included in the physical data catalogue.
 
-## Агентная помощь: подготовленный протокол AG2
+## Agent assistance: AG2 protocol prepared
 
-- M0: фиксированный план без модели/межэпизодной памяти.
-- M1: локальная модель без межэпизодной памяти.
-- M2: память с отключённым фильтром совместимости получателя.
-- M3: память с точной проверкой навыка, камеры, калибровки, сцены и domain.
+- M0: fixed plan without model/interapine memory.
+- M1: Local model without interepisode memory.
+- M2: Memory with the recipient's compatibility filter disabled.
+- M3: memory with accurate testing of skills, cameras, calibration, scenes and domain.
 
-Во всех режимах одинаковы admission, ownership, свежесть, отмена, фиксированная
-цель и лимиты: 4 шага решения, одна коррекция формата, максимум 2 перепланирования
-причины и 5 случаев памяти. В текущем законченном S1 перепланирования не нужны:
-после ошибки выполняется hold/отмена. Нельзя объявлять M2 вариантом «без безопасности».
+All modes have the same admission, boardship, freshness, cancellation, fixed
+Purpose and limits: 4 steps of decision, 1 format correction, maximum 2 re-plannings
+In the current complete S1 replanning, no need is needed:
+After an error, the gold/undo is performed.
 
-До модельного вызова сохраняется experiment.json: версия оценщика и навыков,
-scene/model hashes, точная модель/конфигурация, seed, замороженный снимок памяти,
-источники и бюджеты. Диагностические повторы имеют split=diagnostic и явные обновления
-памяти. Для научной hold-out серии память должна быть заморожена и обновления отключены;
-текущая кнопка `/team` не запускает такую серию и не вычисляет причинный эффект.
+experiment.json: version of the valuer and skills,
+scene /model hashes, exact model/configration, seed, frozen memory image,
+The diagnostic re-runs have split=diagnostic and clear updates
+For the scientific gold-out series, memory must be frozen and the upgrade disabled;
+The current `/team` button does not start this series and does not calculate the causal effect.
 
-В S1 старый случай изменяет допустимый выбор помощника: прямой проверенный ракурс
-вместо ограниченного поиска. Это всё равно требует нового RGB-наблюдения. Результаты
-helper/recipient/task разделены. Наблюдение цели не доказывает продолжение политики;
-fixed_outcome_verifier оценивает фактическую остановку после подъезда. Неуспех камеры
-сохраняется как contradicted, получатель при этом не запускается. G=null/unavailable
-до пригодного обученного артефакта. Вероятности модельным текстом не заменяются.
+In S1, the old case changes the acceptable choice of assistant: direct, verified perspective
+This still requires a new RGB surveillance.
+Help /recipient/task is separated. Target monitoring does not prove the continuation of policy;
+Fixed_outcome_verifier estimates actual stop after approach.
+is retained as contracted, the recipient is not started./unavailable
+The probability of being replaced by a model text is not replaced by a suitable trained artifact.
 
-Нынешний DockExpert — privileged scripted teacher. Тест доказывает работу
-оркестрации и памяти, не выученный навык, не перенос VLA и не научное превосходство.
-Обучение, fine-tuning и обновление весов запрещены до отдельного разрешения.
+The current DockExpert is a previleged scripted tagter.
+Orchestras and memory, untrained, not transferable VLA, not scientific superiority.
+Training, fine-tuning and updating weights are prohibited until a separate permit is granted.

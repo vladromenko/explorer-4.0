@@ -3,9 +3,9 @@ import asyncio,json,os,sqlite3
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
 
-DATA=Path(os.environ['EXPLORER3_CHECK_DATA']).resolve()
-BASE=os.environ['EXPLORER3_CHECK_URL']
-OUT=Path(os.environ['EXPLORER3_CHECK_OUTPUT'])
+DATA=Path(os.environ['EXPLORER4_CHECK_DATA' if 'EXPLORER4_CHECK_DATA' in os.environ else 'EXPLORER3_CHECK_DATA']).resolve()
+BASE=os.environ['EXPLORER4_CHECK_URL' if 'EXPLORER4_CHECK_URL' in os.environ else 'EXPLORER3_CHECK_URL']
+OUT=Path(os.environ['EXPLORER4_CHECK_OUTPUT' if 'EXPLORER4_CHECK_OUTPUT' in os.environ else 'EXPLORER3_CHECK_OUTPUT'])
 if 'validation' not in DATA.parts:raise ValueError('Use isolated validation storage')
 
 

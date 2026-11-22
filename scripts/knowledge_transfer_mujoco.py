@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT))
 
 
 def run(seed, condition):
-    from explorer3.sim.aligned import RosmasterFloorPick, ScriptedFloorPick
+    from explorer4.sim.aligned import RosmasterFloorPick, ScriptedFloorPick
     env = RosmasterFloorPick(vary_objects=True)
     objs = sorted(RosmasterFloorPick.OBJECTS)
     env.reset(seed=seed, options={'object': objs[seed % len(objs)]})
@@ -89,8 +89,8 @@ def main():
         ap.error('Positive episode count and nonnegative seed required')
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    sources = ['scripts/knowledge_transfer_mujoco.py', 'explorer3/sim/aligned.py',
-               'explorer3/sim/models.py', 'explorer3/sim/vendor_rosmaster/arm_model.py',
+    sources = ['scripts/knowledge_transfer_mujoco.py', 'explorer4/sim/aligned.py',
+               'explorer4/sim/models.py', 'explorer4/sim/vendor_rosmaster/arm_model.py',
                'configs/sim-alignment.json']
     def hashes():
         return {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in sources}

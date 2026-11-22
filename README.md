@@ -13,8 +13,8 @@ Explorer runs on Homebrain, a Jetson Orin NX workstation. An operator can record
 
 ## From a demonstration to a measured result
 
-1. **Record.** The operator selects a task, checks the platform and records one attempt per episode. An episode associates images and measured state with actions, timestamps, scene identity, outcome and interventions. Control of the physical arm requires an explicit handover. [Recording guide](docs/RECORDING_DAY_RU.md)
-2. **Prepare the dataset.** Collection checks flag unreadable frames, timing gaps and invalid measurements. Related sessions and layouts are grouped when assigning training, validation and test episodes. The split, source episodes and training recipe can be inspected before a job starts. [Dataset guide](docs/DATASET_GUIDE_RU.md)
+1. **Record.** The operator selects a task, checks the platform and records one attempt per episode. An episode associates images and measured state with actions, timestamps, scene identity, outcome and interventions. Control of the physical arm requires an explicit handover. [Recording guide](docs/RECORDING_DAY.md)
+2. **Prepare the dataset.** Collection checks flag unreadable frames, timing gaps and invalid measurements. Related sessions and layouts are grouped when assigning training, validation and test episodes. The split, source episodes and training recipe can be inspected before a job starts. [Dataset guide](docs/DATASET_GUIDE.md)
 3. **Train and replay.** Homebrain runs the pinned LeRobot trainer, saves checkpoints and reloads the selected weights for evaluation. In MuJoCo, two methods can try the same starting scenes. The resulting per-scene outcomes reveal whether a lower imitation error actually improves a grasp. [Simulation models](docs/SIM_MODELS.md)
 4. **Test a request for help.** Change one piece of information, such as the target position or the direction in which the gripper should close. Compare independent action, selective assistance and a fixed helper on the same task. A physical trial has its own approval and outcome record. [Fleet execution](docs/FLEET_EXECUTION.md)
 
@@ -35,8 +35,8 @@ The first two experiments link to evidence in Git. The November 22 trajectory, a
 | Path | Contents |
 | --- | --- |
 | [`explorer3/`](explorer3/) | Main Python application. `app.py` serves the NiceGUI/FastAPI interface. `recording.py`, `datasets.py`, `training.py` and `evaluation.py` implement the recording-to-evaluation workflow. |
-| [`explorer3/sim/`](explorer3/sim/) · [`explorer3/simlab/`](explorer3/simlab/) | MuJoCo environments, robot models, scripted teachers and policy replay. SimLab also contains docking scenarios, system identification and PPO experiments. |
-| [`explorer3/cognitive/`](explorer3/cognitive/) | Records observations, decisions and requests for assistance so that an intervention can be traced to a task outcome. |
+| [`explorer4/sim/`](explorer4/sim/) · [`explorer4/simlab/`](explorer4/simlab/) | MuJoCo environments, robot models, scripted teachers and policy replay. SimLab also contains docking scenarios, system identification and PPO experiments. |
+| [`explorer4/cognitive/`](explorer4/cognitive/) | Records observations, decisions and requests for assistance so that an intervention can be traced to a task outcome. |
 | [`agents/`](agents/) | Robot-side adapters for ROSMASTER and Tank, Homebrain service definitions and the ROS 2 observation bridge. |
 | [`hub/`](hub/) | Browser launcher for the Homebrain robot consoles and services. |
 | [`configs/`](configs/) | Fleet inventory, task and simulation profiles, training settings, deployment thresholds and pinned dependencies. |
@@ -55,6 +55,6 @@ bash scripts/setup-sim.sh
 bash scripts/install_service.sh
 ```
 
-On a configured host, `./start.sh` and `./stop.sh` control the UI service. Open `http://localhost:8030`. Use `/recording/readiness` and `/recording/collect` for physical demonstrations, `/learn` for training, `/sim` for simulation and `/swarm` for fleet missions. The test runner is `./scripts/run_all_tests.sh`. [Operator guide](docs/OPERATOR_GUIDE.md) · [Test environments](docs/SOFTWARE_TESTS_RU.md)
+On a configured host, `./start.sh` and `./stop.sh` control the UI service. Open `http://localhost:8030`. Use `/recording/readiness` and `/recording/collect` for physical demonstrations, `/learn` for training, `/sim` for simulation and `/swarm` for fleet missions. The test runner is `./scripts/run_all_tests.sh`. [Operator guide](docs/OPERATOR_GUIDE.md) · [Test environments](docs/SOFTWARE_TESTS.md)
 
-The product is **Explorer 4.0**. Existing installations use the Python import name `explorer3`, the service `explorer3-ui.service` and the data directory `~/.local/share/explorer3`. Set `EXPLORER3_DATA` to use a different data directory. Raw recordings, calibration files, checkpoints and job logs live there, outside the Git checkout. Restarting the UI can interrupt an active job.
+New code imports `explorer4` and uses `EXPLORER4_DATA` to select the data directory. Existing installations can still import `explorer3` and use `EXPLORER3_DATA`. The deployed systemd unit names, ROS 2 topic namespace and default data directory (`~/.local/share/explorer3`) are shared with earlier installations. Raw recordings, calibration files, checkpoints and logs live outside the Git checkout. Restarting the UI can interrupt an active job.

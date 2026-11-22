@@ -3,8 +3,8 @@ start from the real rest/observation pose, no debug markers in the policy camera
 import numpy as np
 import pytest
 
-from explorer3.profiles import profile
-from explorer3.training_drafts import semantic_contract
+from explorer4.profiles import profile
+from explorer4.training_drafts import semantic_contract
 
 
 def _contract(name):
@@ -24,8 +24,8 @@ mujoco = pytest.importorskip('mujoco')
 
 @pytest.mark.parametrize('name', ['so101_handover_sim', 'rosmaster_floor_pick_sim'])
 def test_expert_solves_the_task_from_the_real_start_pose(name):
-    from explorer3.sim.aligned import alignment
-    from explorer3.sim.factory import make, EXPERTS
+    from explorer4.sim.aligned import alignment
+    from explorer4.sim.factory import make, EXPERTS
     env = make(name)
     start = alignment('so101_handover' if name.startswith('so101') else 'rosmaster_floor_pick')
     start = np.array(start.get('rest_pose') or start['start_pose'])
@@ -43,7 +43,7 @@ def test_expert_solves_the_task_from_the_real_start_pose(name):
 
 
 def test_no_debug_markers_in_policy_camera():
-    from explorer3.sim.factory import make
+    from explorer4.sim.factory import make
     env = make('rosmaster_floor_pick_sim', images=True)
     env.reset(seed=1)
     im = env.render()

@@ -3,8 +3,8 @@ import time
 
 import pytest
 
-from explorer3 import catalog, datasets, knowledge, paths, training_drafts
-from explorer3.cognitive import registry, store
+from explorer4 import catalog, datasets, knowledge, paths, training_drafts
+from explorer4.cognitive import registry, store
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def evaluation(tmp_path, monkeypatch):
             db.execute('INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?)',
                        (ident,'rosmaster_floor_pick_sim','smolvla','completed',json.dumps(cfg),time.time(),None,'/fixture/weights'))
     report = {'domain':'sim', 'policy':'smolvla', 'independent_grasp_verification':True, 'checkpoint_bundle_sha256':'a'*64,
-              'verifier_sha256':registry.file_hash('explorer3/sim/skill_transfer.py'),
+              'verifier_sha256':registry.file_hash('explorer4/sim/skill_transfer.py'),
               'model':{'xml_sha256':'b'*64}, 'trials':[]}
     for seed in range(5):
         report['trials'].append({'seed':seed, 'outcome':'success', 'donor_online':False, 'geometric_correction':False,

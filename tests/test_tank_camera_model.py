@@ -5,8 +5,8 @@ import xml.etree.ElementTree as ET
 import mujoco
 import numpy as np
 
-from explorer3.paths import ROOT,DATA
-from explorer3.sim.tank_model import camera_attributes,installed_geometry_matches
+from explorer4.paths import ROOT,DATA
+from explorer4.sim.tank_model import camera_attributes,installed_geometry_matches
 
 
 def test_rendered_points_project_to_measured_pixels():
@@ -37,7 +37,7 @@ def test_geometry_evidence_is_bound_to_exact_assets():
 
 
 def test_intrinsic_randomization_and_restore():
-    from explorer3.sim.mobile import MobileDock
+    from explorer4.sim.mobile import MobileDock
     env=MobileDock('tank')
     try:
         base=env.model.cam_intrinsic.copy()

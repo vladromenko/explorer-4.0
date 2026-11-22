@@ -2,8 +2,8 @@ import copy
 import json
 import math
 import pytest
-from explorer3 import gain_preparation as gp,gain_model
-from explorer3.research import FEATURES,matrix
+from explorer4 import gain_preparation as gp,gain_model
+from explorer4.research import FEATURES,matrix
 
 
 def report(seed):

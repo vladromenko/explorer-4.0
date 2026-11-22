@@ -1,6 +1,6 @@
 """Read a recorded episode; never open hardware."""
 import argparse
-from explorer3.validation import validate
+from explorer4.validation import validate
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

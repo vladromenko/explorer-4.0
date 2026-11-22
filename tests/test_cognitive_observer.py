@@ -4,10 +4,10 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 from PIL import Image
-from explorer3 import catalog,resources
-from explorer3.cognitive import observer,store,experiments
-from explorer3.cognitive.schemas import ObservationEvidence
-from explorer3.jobs import Jobs
+from explorer4 import catalog,resources
+from explorer4.cognitive import observer,store,experiments
+from explorer4.cognitive.schemas import ObservationEvidence
+from explorer4.jobs import Jobs
 
 
 @pytest.fixture
@@ -84,7 +84,7 @@ def test_comparison_freezes_memory_and_equal_choices_no_queue(db):
 
 
 def test_real_preparation_is_shadow_and_cannot_bypass_incident(db,monkeypatch):
-    from explorer3.cognitive import real_preparation
+    from explorer4.cognitive import real_preparation
     monkeypatch.setattr(real_preparation,'DATA',db)
     e=frame(db);ident,result=real_preparation.prepare('rosmaster_dock',[e.id])
     assert result['mode']=='shadow' and result['motion_authorized'] is False
@@ -94,7 +94,7 @@ def test_real_preparation_is_shadow_and_cannot_bypass_incident(db,monkeypatch):
 
 
 def test_assistance_uses_conditions_cost_and_rejects_model_claims(db):
-    from explorer3.cognitive.assistance import select
+    from explorer4.cognitive.assistance import select
     e=frame(db)
     payload={'conditions':{'recipient_can_continue':True,'observation_skill_available':True},
         'risk':.9,'gain':.4,'gain_status':'available','operator_cost':{'switch_seconds':2,'correction_seconds':8}}

@@ -5,16 +5,16 @@ Requires a reachable, operator-authorized Tank sensor observer; never acquires m
 import os,subprocess,tempfile,time,json,urllib.request,shutil,argparse
 from pathlib import Path
 parser=argparse.ArgumentParser();parser.add_argument('--robot',choices=('tank','rosmaster'),default='tank');robot=parser.parse_args().robot
-root=Path(__file__).resolve().parents[1];real=Path(os.environ.get('EXPLORER3_DATA',str(Path.home()/'.local/share/explorer3')))
+root=Path(__file__).resolve().parents[1];real=Path(os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA',str(Path.home()/'.local/share/explorer3'))))
 data=Path(tempfile.mkdtemp(prefix='explorer3-sensors-ui-'));(data/'configs').mkdir()
 (data/'configs/workflow.json').write_text(json.dumps({'stage':'C','allowed_robots':[],'hardware_connections':False,'training_authorized':False}))
 shutil.copyfile(real/f'configs/{robot}-agent.json',data/f'configs/{robot}-agent.json');os.chmod(data/f'configs/{robot}-agent.json',0o600)
 (data/'configs/sensor-observation-enabled.json').write_text(json.dumps({'robots':[robot]}))
 if (real/'ros2-hub/status.json').exists():
  (data/'ros2-hub').mkdir();shutil.copyfile(real/'ros2-hub/status.json',data/'ros2-hub/status.json')
-env={**os.environ,'EXPLORER3_DATA':str(data),'EXPLORER3_PORT':'8035'}
+env={**os.environ,'EXPLORER4_DATA':str(data),'EXPLORER4_PORT':'8035'}
 with (data/'ui.log').open('w') as log:
- p=subprocess.Popen([str(root/'.venv/bin/python'),'-m','explorer3.app'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+ p=subprocess.Popen([str(root/'.venv/bin/python'),'-m','explorer4.app'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
  try:
   for i in range(55):
    try:

@@ -14,8 +14,8 @@ from datetime import date
 import mujoco
 import numpy as np
 
-from explorer3.paths import DATA
-from explorer3.sim.factory import make
+from explorer4.paths import DATA
+from explorer4.sim.factory import make
 
 TASKS = ['tank_dock_sim', 'rosmaster_dock_sim', 'so101_pick_place_sim', 'rosmaster_pick_place_sim']
 

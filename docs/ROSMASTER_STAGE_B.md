@@ -1,64 +1,64 @@
-# ROSMASTER: этап B и связь с ROS
+# ROSMASTER: Phase B and ROS liaison
 
-Актуально на 2026-11-14: разрешён ROSMASTER, идёт физическая приёмка B.
-Оператор подтвердил ручное управление рукой и шасси, STOP и остановку базы
-при смене вкладки. Далее — реальные показы обеих задач и readback без обучения;
-зеркало не является условием этапа. Полная приёмка B не завершена.
-Последовательность исправлений и ограничения — в STATE.md; сведения о первом
-подключении ниже исторические. Программная подготовка —
+It's 2026-11-14: authorized by ROSMASTER, and is being physically adopted by B.
+Operator confirmed manual control of hand and chassis, STOP and base stop.
+And then you show both the problems and the readback without learning.
+The mirror is not a condition of the stage. Full acceptance B is not complete.
+Synopsis of corrections and limitations in STATE.md; first
+The connection is below historical.
 [ROSMASTER_OFFLINE_PREPARATION.md](ROSMASTER_OFFLINE_PREPARATION.md).
 
-Ветка соседнего диалога уже входит в main; повторного копирования старого
-снимка не делали. На роботе проверены SHA agent/runtime/control_adapter/
-leased_core/observer: пять файлов совпали с репозиторием. Учтены исправления
-EXPIRED, начальной позы у пределов, provenance записей, emergency пилота и
-подготовка идентификации по отдельным реальным логам.
+The branch of the next-door dialogue is already part of the main; re-copying of the old
+No shot taken. On the robot, SHA agent /runtime/control_adapter/ checked
+Leased_core /observer: Five files match the repository. Corrections taken into account
+EXPIRED, initial positions at limits, design of records, pilot's tempency and
+Preparation of identification for individual real lobes.
 
-## Фактическая архитектура
+## Actual architecture
 
-- Homebrain: браузер Explorer → оператор/запись/замороженная политика → HTTP
-  агенту ROSMASTER. Политики и датасеты LeRobot живут на Homebrain.
-- Агент в покое: только ROS 2 подписки `/arm_servo_state`, `/odom_raw`,
-  `/battery`, `/camera/color/image_raw`. Публикаторов моторных команд нет;
-  serial не открывается. Наблюдение не проверяет готовность команд контроллера.
-- При явном включении: handoff сохраняет прежние службы, останавливает старого
-  владельца, открывает единственный serial и свою камеру. Команды идут через
-  скопированный штатный протокол и локальный lease/watchdog. Измерения руки,
-  скорости и батареи при этом берутся напрямую из контроллера; изображение
-  продолжает приходить через ROS 2. Поэтому ROS topics старого моста не
-  считаются активными во время владения Explorer.
-- MuJoCo: отдельные модели/физика на Homebrain, одинаковый контракт каналов
-  действий/наблюдений через адаптеры Explorer. Непосредственного общего ROS
-  topic bridge «sim ↔ robot» и Gazebo в текущей цепочке нет. Переключать ROS
-  topic на физический мотор без передачи владения нельзя.
-- Связь модели с реальным устройством: геометрия/камера/единицы действий,
-  записанные измеренные траектории, sysid и отдельная проверка переноса.
-  Это ещё не полностью идентифицированный цифровой двойник.
+- Homebrain: browser Explorer ♪ operator/record/frozen policy ♪ HTTP
+  The policy and datasets of LeRobot live on Homebrain.
+- Agent in peace: only ROS 2 subscriptions `/arm_servo_state`, `/odom_raw`
+  `/battery`, `/camera/color/image_raw`. No engine commands are available;
+  The watch doesn't check the controller's readiness.
+- When explicitly activated: handoff retains previous service, stops the old service
+  The owners are opening up the only seral and their camera.
+  Copyed full-time protocol and local lease /watchdog. Hand measurements,
+  The speed and the batteries are taken directly from the controller;
+  So ROS topics of the old bridge is not
+  are considered active during the ownership of the Explorer.
+- MuJoCo: selected models/physics on Homebrain, same channel contract
+  Direct total ROS
+  There is no new new new new line for "sim ~ robot" and Gazebo in the current chain.
+  You can't go to the physical motor without the transfer of possession.
+- Relationship of the model to the actual device: geometry/cam/acting unit,
+  recorded trajectory, sysid and separate transfer verification.
+  It's not yet a fully identified digital double.
 
-## Начальная проверка без движения
+## Initial check without movement
 
-2026-11-13: агент запущен инертно, прежний rosmaster-bridge остался владельцем
+2026-11-13: Agent launched inert, former rosmaster-brige remained owner
 `/dev/ttyUSB0` (PID2507). Agent `hardware_open=false`, `armed=false`.
-Наблюдение за 5 с: камера 640×480/14.9 Гц, odom50Гц, battery2Гц, arm messages
-380.7Гц суммарно; все 6 приводов дали конечные значения. Батарея12.237В,
-измеренная скорость[0,0,0]. Это напряжение не переводится в проценты заряда.
-Плечо/локоть вне рабочего диапазона модели: рука сложена. Существующий код
-автоматически начинает подъём после явного включения arm/manual, поэтому
-первая физическая проверка должна учитывать движение сразу после включения.
+5 s surveillance: camera 640×480 /14.9 Hz, odom50Hz, battery2Hz, armmes
+380.7Hz summation; all 6 drive units gave the final values.
+measured speed[0.0.0] This voltage is not transferred to the percentage charge.
+Shoulder/locoal outside the model operating range: arm folded. Existing code
+automatically starts the rise after the distinct activation of the arm /manual, therefore
+The first physical inspection shall take into account movement immediately after activation.
 
-Runtime workflow переведён в B с `allowed_robots=[rosmaster]`; local-only
-сохранён для остальных устройств. Scope проверяется раньше исторических
-разрешений, поэтому старые Tank/SO флаги не открывают эти машины. Старый
-SO/Wristlab :8020 не затрагивался. Обучение не запускалось.
+Runtime workflow is translated into B with `allowed_robots=[rosmaster]`; local-only
+Saved for other devices.
+The old Tank /SO flags do not open these machines.
+SO /Wristlab:8020 was not affected. No training was started.
 
-В скопированной панели добавлен выбор «только рукой / только шасси / рукой
-и шасси»; изменение выбора посылает STOP. Профиль применяется на агенте,
-а не только скрывает кнопки. Для записи по-прежнему используются отдельные
-задачи. Старую Console8090 не меняли.
+In the copied panel, a choice has been added "only with the hand / only with the chassis / hand
+The profile is applied to the agent,
+The writing is still separate from the writing of the buttons.
+The old Console8090 hasn't been changed.
 
-Далее необходима физическая проверка оператора: свободное пространство,
-отключённый зарядник, пустой захват; профиль «только рукой», включение и STOP
-в начале подъёма. Потом отдельно направления руки, отпускание/потеря вкладки,
-шасси и три настоящих показа каждой задачи. Реальные моторные команды в этом
-блоке ассистент не отправлял; фактическая остановка пока не подтверждена.
-Артефакты — runtime `validation/corrective-b/`.
+Then there's the physical check of the operator: free space,
+Unset charger, empty hold; hand-only profile, activation and STOP
+Then separate arm direction, release/loss of tabs,
+The chassis and three real displays of each task.
+No assistant sent to the unit; no actual stop has yet been confirmed.
+Artifacts are the ringtime `validation/corrective-b/`.

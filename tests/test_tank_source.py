@@ -9,7 +9,7 @@ import httpx
 import numpy as np
 import pytest
 
-from explorer3 import tank, local_work, trials
+from explorer4 import tank, local_work, trials
 
 
 @pytest.fixture
@@ -73,7 +73,7 @@ def test_cached_action_does_not_insert_neutral_between_every_frame(source):
 
 def test_tank_permission_does_not_enable_other_robots(tmp_path,monkeypatch):
     monkeypatch.setattr(local_work,'DATA',tmp_path)
-    from explorer3 import fleet_config, permission_migration
+    from explorer4 import fleet_config, permission_migration
     permission_migration.migrate(tmp_path)
     fleet_config.update_robot('so101',enabled=False,root=tmp_path)
     fleet_config.update_robot('rosmaster',enabled=False,root=tmp_path)

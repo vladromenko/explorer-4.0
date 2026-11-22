@@ -1,7 +1,7 @@
 """Actual process locks, no robot imports or commands."""
 import pytest
-from explorer3 import resources,catalog,control
-from explorer3.resources import ResourceLease,ResourceBusy
+from explorer4 import resources,catalog,control
+from explorer4.resources import ResourceLease,ResourceBusy
 
 
 def test_two_manual_robots_share_activity_but_exclude_heavy_worker(tmp_path,monkeypatch):

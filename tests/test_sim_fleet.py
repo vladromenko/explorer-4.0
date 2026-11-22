@@ -1,8 +1,8 @@
 """Actual shared-world dynamics; no optimization and no hardware."""
 import copy
 import numpy as np
-from explorer3.sim.fleet import FleetWorld
-from explorer3.fleet_allocation import FleetAllocator
+from explorer4.sim.fleet import FleetWorld
+from explorer4.fleet_allocation import FleetAllocator
 
 
 def test_shared_dynamics_complete_and_partial_reset_preserves_other_robots():

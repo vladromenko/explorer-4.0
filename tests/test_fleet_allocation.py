@@ -6,7 +6,7 @@ import types
 from pathlib import Path
 import numpy as np
 import pytest
-from explorer3.fleet_allocation import FleetAllocator,effort_metrics
+from explorer4.fleet_allocation import FleetAllocator,effort_metrics
 
 SOURCE=Path('/home/jetsonnx/.local/share/explorer3/cache/source/ifl_benchmark')
 

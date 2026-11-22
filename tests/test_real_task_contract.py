@@ -3,8 +3,8 @@ import copy
 
 import pytest
 
-from explorer3 import datasets, training_drafts
-from explorer3.profiles import profile
+from explorer4 import datasets, training_drafts
+from explorer4.profiles import profile
 
 
 def legacy_series(name, instruction):

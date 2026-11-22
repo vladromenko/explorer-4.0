@@ -1,4 +1,4 @@
-"""Fit the MuJoCo task scenes to the real demonstrations (blocks 3 and 4 of DATASET_RECORDING_RU.md).
+"""Fit the MuJoCo task scenes to the real demonstrations (blocks 3 and 4 of DATASET_RECORDING.md).
 
 The recorded joint angles go through the same MuJoCo arm model (forward kinematics), so we measure
 where the real arm started, where it closed the gripper on the object and where it opened it for
@@ -25,7 +25,7 @@ SPLIT = {}
 
 def demos(profile, words):
     """Successful, not excluded real demonstrations whose series is this block."""
-    from explorer3 import catalog
+    from explorer4 import catalog
     with catalog.connect() as db:
         series = {r[0]: (r[1] or '', r[2] or '') for r in db.execute('SELECT id, description, instruction FROM collection_series')}
     out = []
@@ -37,7 +37,7 @@ def demos(profile, words):
             out.append(e)
     # Only the part that training will use: the same grouped split (sessions/layouts, seed 1000)
     # as datasets.freeze, so validation/test never shape the simulated scene.
-    from explorer3.datasets import grouped_split
+    from explorer4.datasets import grouped_split
     try:
         keep = {e['id'] for e in grouped_split(out, 1000)['train']}
         SPLIT['used'] = 'train part of the frozen grouping (seed 1000)'
@@ -62,7 +62,7 @@ def fk(env, state):
 
 
 def so101(fps=30):
-    from explorer3.sim.aligned import SO101Handover
+    from explorer4.sim.aligned import SO101Handover
     env = SO101Handover()
     found = demos('so101_pick_place', ('передач', 'hand over'))
     starts, grasps, gives = [], [], []
@@ -82,7 +82,7 @@ def so101(fps=30):
 
 
 def rosmaster(fps=20):
-    from explorer3.sim.aligned import RosmasterFloorPick
+    from explorer4.sim.aligned import RosmasterFloorPick
     env = RosmasterFloorPick()
     found = demos('rosmaster_pick_place', ('взять с пола', 'pick up'))
     starts, grasps = [], []

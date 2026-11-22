@@ -6,7 +6,7 @@ import json
 import numpy as np
 import pytest
 
-from explorer3 import catalog, datasets, knowledge, so101_geometry as geometry, so101_packet_builder as builder
+from explorer4 import catalog, datasets, knowledge, so101_geometry as geometry, so101_packet_builder as builder
 
 
 @pytest.fixture

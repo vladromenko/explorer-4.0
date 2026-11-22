@@ -7,10 +7,10 @@ episodes are not demonstrations and never enter the research catalogue.
 Usage: EXPLORER3_DATA=<isolated dir> python scripts/rosmaster_pipeline_check.py
 """
 import json, os, sys, time
-from explorer3.paths import DATA, prepare
-from explorer3 import catalog
-from explorer3.rosmaster_session import RosmasterSession, PROFILES
-from explorer3.jobs import Jobs
+from explorer4.paths import DATA, prepare
+from explorer4 import catalog
+from explorer4.rosmaster_session import RosmasterSession, PROFILES
+from explorer4.jobs import Jobs
 
 assert 'pipeline-check' in str(DATA), 'Run only in an isolated pipeline-check data directory'
 prepare(); catalog.initialize()
@@ -35,7 +35,7 @@ for name in PROFILES:
         if status['error']:
             raise SystemExit(f'{name}: {status["error"]}')
         catalog.exclude(status['episode'], False)  # isolated catalogue only: allow the smoke trainer to read it
-        from explorer3.validation import validate
+        from explorer4.validation import validate
         result = validate(status['episode'])
         episodes.append({k: result[k] for k in ('episode_id', 'frames', 'actual_hz', 'interval_ms_p50_p95_max',
                                                  'reused_camera_frames', 'camera_age_ms_p95', 'readback')})

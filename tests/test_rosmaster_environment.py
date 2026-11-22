@@ -6,8 +6,8 @@ import sys
 import time
 import pytest
 
-from explorer3.rosmaster_session import attach_environment,control_profile
-from explorer3.sensors import SensorFeed
+from explorer4.rosmaster_session import attach_environment,control_profile
+from explorer4.sensors import SensorFeed
 from rosmaster_sensor_fixture import FixtureFeed
 
 
@@ -37,7 +37,7 @@ def test_environment_uses_past_and_refuses_stale_sensor_streams():
 @pytest.mark.parametrize('name',['rosmaster_dock_rgbd_lidar','rosmaster_pick_place_rgbd_lidar'])
 def test_real_lerobot_roundtrip_with_environment_fixture(tmp_path,name):
     root=Path(__file__).resolve().parents[1]
-    env={**os.environ,'EXPLORER3_DATA':str(tmp_path),'PYTHONPATH':str(root)}
+    env={**os.environ,'EXPLORER4_DATA':str(tmp_path),'PYTHONPATH':str(root)}
     out=subprocess.run([sys.executable,'tests/rosmaster_fake_agent.py',name],cwd=root,env=env,
                        capture_output=True,text=True,timeout=120)
     assert out.returncode==0,out.stderr[-3500:]+out.stdout[-1000:]

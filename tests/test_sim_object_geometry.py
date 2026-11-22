@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 mujoco = pytest.importorskip('mujoco')
-from explorer3.sim.aligned import RosmasterFloorPick
+from explorer4.sim.aligned import RosmasterFloorPick
 
 
 def test_runtime_resizing_matches_independently_compiled_geometry():
@@ -48,7 +48,7 @@ def test_new_geometry_is_a_distinct_training_revision():
 
 
 def test_knowledge_and_control_receive_the_same_scene_but_different_task_text():
-    from explorer3.sim.factory import make
+    from explorer4.sim.factory import make
     known = make('rosmaster_floor_pick_knowledge_sim')
     control = make('rosmaster_floor_pick_noknowledge_sim')
     try:
@@ -68,7 +68,7 @@ def test_knowledge_and_control_receive_the_same_scene_but_different_task_text():
 
 @pytest.mark.parametrize('name', RosmasterFloorPick.GRASPABLE)
 def test_full_information_teacher_lifts_wide_objects_without_sweeping_them_away(name):
-    from explorer3.sim.aligned import ScriptedFloorPick
+    from explorer4.sim.aligned import ScriptedFloorPick
     env = RosmasterFloorPick(vary_objects=True)
     try:
         env.reset(seed=9000, options={'object': name})

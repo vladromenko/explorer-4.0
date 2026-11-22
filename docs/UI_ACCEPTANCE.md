@@ -1,59 +1,59 @@
-# Браузерная приёмка
+# Browser reception
 
-13 ноября 2026, корректирующий этап A. Матрица заполняется проверенными сценариями; вся стадия пока не принята.
+On 13 November 2026, the correction phase A. The matrix is filled with the scenarios tested; the entire phase has not yet been adopted.
 
-| Сценарий | Результат / свидетельство |
+| Scenario| Result / Certificate|
 |---|---|
-| SO-101 sim: Studio → физическое движение модели → STOP → reset | PASS, настоящий Chromium и MuJoCo, `scripts/check_sim_browser.py` |
-| SO-101 sim: начать запись → шаги физики → закончить → LeRobot readback | PASS, отдельный runtime `validation/browser-sim`, без данных физического робота |
-| Интернет не требуется этому сценарию | Все запросы вне localhost блокировались; список внешних запросов пуст |
-| Визуальное оформление | Проверен скриншот `validation/corrective-a/browser/scene.png`: общая палитра, крупная сцена, камера справа, отдельные карточки управления и обучения |
-| ACT train/save/new-process reload/rollout | Проверен программно на 3 настоящих sim-показах, 0/3 успехов после 50 шагов; браузерные кнопки полной цепочки ещё требуют приёмки |
-| PPO полный конечный бюджет | 16384 шага, save/new-process reload, 0/20; штатное задание `9499e889f0c04594a16050b49f2201d9` |
-| Domain-switch, второй оператор, скрытие вкладки, unwritable disk, cold restart | Итоговая матрица ещё не выполнена |
-| ROSMASTER, Tank, общая сцена, R2/R3/R5 из UI | Не принято, в реализации |
+| SO-101 sim: Studio ♪ physical motion of the model ♪ STOP ♪ reset| PASS, real Chromium and MuJoCo, `scripts/check_sim_browser.py`|
+| SO-101 sim: Start recording   ♪ steps of physics ♪ finish ♪ LeRobot readback| PASS, separate Runtime `validation/browser-sim`, without physical robot data|
+| The Internet is not required by this scenario| All requests outside localhost were blocked; the list of external queries was empty|
+| Visualization| Screen check `validation/corrective-a/browser/scene.png`: total palette, large scene, camera on the right, selected control and learning cards|
+| ACT train/save/new-process reload/rollout | Tested program on 3 real sim shows, 0 /3 success after 50 steps; browser buttons full chain still require acceptance|
+| PPO Total Final Budget| 16684 steps, save /new-process reload, 0 /20; regular task `9499e889f0c04594a16050b49f2201d9`|
+| Domain-switch, second operator, tab opening, unwirtable disk, Cold resstart| The total matrix is not yet implemented|
+| ROSMASTER, Tank, Common Scene, R2 /R3/R5 from UI| Not accepted, in implementation|
 
-Trace сохраняется при каждом браузерном прогоне; на ошибке сохраняется screenshot. Исторические `failure.png/errors.json` могут оставаться от ранней ошибки embedding, актуальный исход определяется `result.json` последнего прогона и trace. Проверка HTTP 200 не подменяет этот сценарий. Физические машины в приёмке этапа A не использовались.
+The track is stored at each browser run; the screenshot is stored on error. The historical `failure.png/errors.json` can be left from an early error embedding, the relevant outcome is defined by `result.json` last run and trade. The HTTP 200 check does not replace this scenario. Physical machines were not used in the A-phase application.
 
-## Дополнение: четыре индивидуальные сцены и контакты
+## Supplement: four individual scenes and contacts
 
-`browser-tank` и `browser-rosmaster-dock`: реальное движение силовой модели, отпускание, запись/сохранение, второй browser-context не перехватывает оператора, pagehide освобождает владение без автоматического возобновления — PASS. `browser-so101-contacts` и `browser-rosmaster-contacts`: Studio и запись/сохранение после новой геометрии/контактов. Все запросы вне localhost заблокированы, внешних запросов и console errors нет. Скриншоты и traces лежат в runtime `validation/corrective-a/`.
+`browser-tank` and `browser-rosmaster-dock`: Real motion of the power model, release, recording/save, second brower-context does not intercept the operator, page releases possession without automatic renewal, PASS. `browser-so101-contacts` and `browser-rosmaster-contacts`: Studio and recording/maintainment after new geometry/comments. All requests outside localhost are blocked, external queries and collective errors are not available. `validation/corrective-a/`.
 
-Проверка численной физики идёт отдельно от UI: `contacts-final` и `tests/test_rosmaster_sim_contacts.py` для обеих рук. Она проверяет удержание до раскрытия и контакты на каждом подшаге. Обучение для этих проверок не запускалось. Общая сцена/исследовательские UI/полная fault-матрица ещё не приняты.
+The verification of numerical physics is separate from UI: `contacts-final` and `tests/test_rosmaster_sim_contacts.py` for both hands. It checks the retention until the discovery and contact on each step. The training for these tests has not been started. The overall scene/research UI/full results matrix has not yet been accepted.
 
-Финальные `browser-laboratory` и `browser-demo`: новая клетчатая сцена, переключение nominal/varied, полный scripted показ, STOP без самопуска — PASS. Во всех этих прогонах кнопки обучения не нажимались.
+The final `browser-laboratory` and `browser-demo`: new celled stage, switching nominal /varied, full scripted display, STOP without self-launching - PASS. All these runs did not press the training buttons.
 
-`browser-fleet`: фактический общий MuJoCo мир в Explorer, три scripted успеха, snapshot→restore в паузу, singleton allocation при двух заданных запросах; PASS, внешние HTTP/console errors отсутствуют. Камера общего вида в первой проверке была приближена к ROSMASTER; framing расширен на три зоны. Полные learned rounds и физическая приёмка не заявляются.
+`browser-fleet`: actual MuJoCo world in Explorer, three snapshotshots success, snapshot ray, singleton allocation at two requests; PASS, external HTT /console errors are missing; the general camera was approaching ROSMASTER in the first test; framing extended to three zones. Full-lined rund runds and physical receivers are not declared.
 
-## Команда · AG2, до последующего изменения размещения SO-101
+## Command · AG2 until further change of SO-101 position
 
-`/team`: настоящий Chromium, реальные Qwen ToolCallingAgent и FleetWorld/MuJoCo.
+`/team`: Real Chromium, Real Qwen ToolCallingAgent and FleetWorld /MuJoCo.
 M1 job `0333f92cc612449395854b7f1465d019`, M3 job `efdc95f2f25841f99fa71cd6c11df2b8`:
-план → свежая камера помощника → допуск получателя → измеренная остановка → case →
-повтор с памятью. Отдельно просмотрены четыре раздела, журнал и исходы. STOP и
-visibilitychange отменяют задачу; скрытие в headless моделировалось штатным DOM event.
-Настоящее закрытие браузера также отменило текущую миссию; позднего самопуска нет.
-Отчёт `validation/cognitive/team-browser.json`, desktop/mobile/results PNG, browser
-errors=[], внешних browser requests нет, overflow на 390 px нет. Обучение и физические
-команды отсутствуют. Изменения после запрета запусков отмечаются отдельно как непроверенные.
+Plan   ♪ fresh assistant camera ♪ admission ♪ measured stop ♪ case ♪
+Replay with memory. Four sections, logs and outputs are separately reviewed.
+The problem is cancelled; the opening in the headless was modelled by the DOM event.
+The present closure of the browser also cancelled the current mission; there is no late-entry self-sustainment.
+`validation/cognitive/team-browser.json` report, desktop /mobile/results PNG, browser
+======================================================================================================================================================================================================================================================================))))))))))))))))=======================================================================================================================================================
+No command. Changes after the ban on launches are recorded separately as unverified.
 
-## Подготовка датасета и агентных заданий · 14 ноября, после уточнения разрешения
+## Preparation of the dataset and the task of the agents · 14 November, after the authorization has been clarified
 
-Три Chromium-сценария в отдельном процессе :8038, без подключения исполнительных
-контроллеров и без Jobs.tick: `check_training_draft_browser.py`,
+Three Chromium scripts in separate process:8038, without executive connection
+And without Jobs.tick: `check_training_draft_browser.py`
 `check_real_preparation_browser.py`, `check_cognitive_preparation_browser.py`.
-Использованы копии исходных real записей/датчиков и исторических sim записей.
-Новые данные сцены не генерировались. Проверены подготовка и повторное открытие
-плана, сброс подтверждения, отказ недостаточного real корпуса, мобильная
-инструкция, исходные RGB кадры, замороженный M0–M3 план и неполный отчёт,
-real TaskGraph из прежних replay trials, сброс при изменении выбора,
-отказ R4 без пригодного ACT validation. Кнопки выполнения не нажимались.
-Jobs неизменны, model calls=0, simulation runs=0, physical commands=0,
-external requests=0, page errors=0. Артефакты:
+Copies of original records/sensors and historical sims have been used.
+No new scene data were generated.
+plan, drop confirmation, failure of the insufficient real hull, mobile
+instruction, RGB reference frames, M0-M3 frozen plan and incomplete report,
+Real TaskGraph from the old replay lines, drop when you change your choice,
+R4 failure without a suitable ACT validation. The execution buttons were not pressed.
+Jobs are constant, model calls=0, simulation runes=0, phisical communities=0,
+Extranal requirements=0, page errors=0.
 `validation/dataset-release-20261114/browser/` (JSON, PNG, Chromium traces).
 
-Программные тесты: `final-software-tests.xml` — 92 PASS + 2 subtests,
-2 model-forward теста исключены; поздние затронутые контракты дополнительно
-проверены в `final-changed-contracts.xml`, `noise-target-tests.xml`.
-Эти результаты не доказывают качество новой VLM генерации, физическую
-совместимость роботов или успешность новых симуляционных траекторий.
+Program tests: `final-software-tests.xml` - 92 PASS + 2 subtests
+2 model-forward tests excluded; late contracts affected additional
+Checked at `final-changed-contracts.xml`, `noise-target-tests.xml`.
+These results do not prove the quality of the new VLM generation, physical
+The compatibility of robots or the success of new simulations.

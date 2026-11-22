@@ -7,7 +7,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from agents.tank.sensors import SensorStore,decode_image,make_app
-from explorer3.sensors import decode_packet,environment_features,SensorArchive,CHANNELS
+from explorer4.sensors import decode_packet,environment_features,SensorArchive,CHANNELS
 
 
 def packet():
@@ -103,7 +103,7 @@ def test_real_act_uses_environment_input_without_training(environment_channels):
 
 
 def test_multimodal_fixture_official_dataset_roundtrip(tmp_path,monkeypatch):
-    from explorer3 import recording,catalog,profiles
+    from explorer4 import recording,catalog,profiles
     from lerobot.datasets.lerobot_dataset import LeRobotDataset
     monkeypatch.setattr(recording,'DATA',tmp_path)
     monkeypatch.setattr(catalog,'add_episode',lambda row:None)
@@ -126,7 +126,7 @@ def test_multimodal_fixture_official_dataset_roundtrip(tmp_path,monkeypatch):
     assert {r['sensor_packet'] for r in rows}=={'sensors/000000.npz'}
     assert all('_sensor_packet' not in r for r in rows)
     assert json.loads((writer.root/'provenance.json').read_text())['synthetic']
-    from explorer3 import validation,datasets
+    from explorer4 import validation,datasets
     monkeypatch.setattr(datasets,'DATA',tmp_path)
     monkeypatch.setattr(validation,'DATA',tmp_path);(tmp_path/'validation').mkdir()
     monkeypatch.setattr(catalog,'rows',lambda table:[{'id':writer.id,'dataset':str(writer.root),'frames':4,'outcome':'aborted'}])
@@ -134,7 +134,7 @@ def test_multimodal_fixture_official_dataset_roundtrip(tmp_path,monkeypatch):
 
 
 def test_smolvla_cannot_silently_ignore_environment():
-    from explorer3.policy_catalog import validate_recipe
+    from explorer4.policy_catalog import validate_recipe
     with pytest.raises(ValueError,match='environment_state'):validate_recipe('smolvla','tank_dock_rgbd_lidar')
 
 

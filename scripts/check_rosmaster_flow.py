@@ -7,10 +7,10 @@ Nothing is sent to a robot: the policy is loaded and asked for one action on a R
 import json, math, sys
 from pathlib import Path
 import numpy as np
-from explorer3.paths import DATA
-from explorer3 import catalog, trials
-from explorer3.validation import validate
-from explorer3.datasets import freeze
+from explorer4.paths import DATA
+from explorer4 import catalog, trials
+from explorer4.validation import validate
+from explorer4.datasets import freeze
 
 assert 'pipeline-check' in str(DATA) or 'fixture' in str(DATA), 'isolated data dir only'
 report = {'data': str(DATA), 'training_started': False, 'motor_commands_sent': False, 'profiles': {}}

@@ -1,134 +1,66 @@
-# Explorer 4.0 — инструкция оператора
+# Explorer 4.0 operator guide
 
-Ваша часть — показывать задачи роботам, отмечать исход и запускать готовые шаги кнопками.
-Всё остальное (камеры, синхронизация, форматы, разбиение на train/validation/test, обучение,
-проверки, анализ) Explorer делает сам на Homebrain. Ничего не нужно настраивать руками.
+The operator sets up the scene, demonstrates the task and records the outcome. Homebrain coordinates sensor timing, dataset formatting, the train/validation/test split, training and evaluation. The interface uses Russian labels. Their English meanings appear here.
 
-## 0. Где что
+| Page | Address |
+| --- | --- |
+| Explorer on the local network | http://192.168.0.168:8030 |
+| Explorer over Tailscale | http://100.95.83.3:8030 |
+| ROSMASTER control panel | http://192.168.0.168:8030/rosmaster/control |
+| Research pilot | http://192.168.0.168:8030/research |
+| CubeBot console | http://192.168.0.177:8090 |
 
-| Что | Адрес |
-|---|---|
-| Explorer (дома, Wi-Fi) | http://192.168.0.168:8030 |
-| Explorer (вне дома, Tailscale) | http://100.95.83.3:8030 — работает, но с задержкой ~0,5 с; показы лучше записывать из дома |
-| Панель ROSMASTER отдельно | …:8030/rosmaster/control (та же панель встроена во вкладку «Управление») |
-| Исследование (пилот, оценщик) | …:8030/research |
-| Старая консоль CubeBot | http://192.168.0.177:8090 — только когда ресурсы у неё; одновременно с Explorer нельзя |
+Use the local connection for demonstrations. The remote connection has shown approximately half a second of delay. The CubeBot console and Explorer require exclusive ownership of the robot.
 
-Красная кнопка **STOP** (и пробел/Esc в панели ROSMASTER) останавливает всё. Переход в другую
-вкладку браузера или другое окно — тоже STOP. Открытие страницы или перезапуск ничего не двигает.
+The red **STOP** button stops control. In the ROSMASTER panel, Space and Esc also stop motion. Switching to another browser tab or window triggers a stop. Opening a page or restarting Explorer leaves motion disabled.
 
-## 1. Как это устроено внутри (коротко)
+## What Explorer records
 
-1. Вы показываете задачу. Робот исполняет ваши команды через свою копию рабочего управления.
-2. Explorer 20–30 раз в секунду сохраняет **кадр камеры + измеренное состояние робота + реально
-   отправленную команду** в формате LeRobotDataset на Homebrain (`~/.local/share/explorer3/datasets`).
-   Рядом — журнал исследования: что вы хотели, что прошло ограничения, что ушло в контроллер,
-   что измерено, возраст каждого датчика, напряжение.
-3. Каждый эпизод проверяется (чтение обратно, причинность «наблюдение → команда», видео).
-4. Обучение: для каждой задачи своя модель ACT. После 3 показов — короткая проверка тракта
-   (smoke, ~1 мин). После 50 хороших показов — основное обучение (~22 ч на задачу на Homebrain).
-   Данные делятся на train/validation/test целыми сессиями/расстановками и замораживаются.
-5. Испытания: обученная политика управляет роботом сама; вы смотрите и отмечаете исход.
-6. Исследование: во время испытаний программа в заранее заданный момент случайно решает
-   «помочь / не помогать». Если «помочь» — робот ждёт заданную задержку, затем управление на
-   ≤10 с у вас, затем снова у политики. Из этих данных учится оценщик пользы помощи G и
-   проверяется его перенос с SO-101 и Tank на ROSMASTER.
+Each episode associates camera frames, measured state and commands with the times they were captured and sent. The recorded data uses LeRobotDataset on Homebrain under `~/.local/share/explorer3/datasets`. A separate research log records the requested command, applied limits, the command sent to the controller, measured feedback, sensor age and voltage.
 
-## 2. ROSMASTER — показы
+The pipeline reads episodes back and checks video and observation-to-command timing. It groups related sessions and layouts before making the train, validation and test split. Each task has its own ACT training recipe. The initial smoke test runs 50 steps and checks that a checkpoint can be reloaded for inference with motion disabled.
 
-Подготовка: ROSMASTER включён (подождать 2–3 мин загрузки), заряжен (≥11 В), зарядник отключён, рядом свободно.
-Консоль 8090 должна быть выключена (две программы одновременно управлять роботом не могут).
+## ROSMASTER demonstrations
 
-Панель: http://192.168.0.168:8030/rosmaster/control (или Explorer → «Выбрать ROSMASTER» → «Управление»).
-Щёлкните мышью по панели — клавиши работают, только когда окно панели в фокусе.
+1. Turn on the robot and allow two to three minutes for startup. Check that the battery is at least 11 V, disconnect the charger and clear the space. Close control in the CubeBot console.
+2. Open the ROSMASTER panel, click inside it to focus keyboard input, and acknowledge that you are beside the robot and the space is clear.
+3. If the arm is folded after startup, use the arm card to raise it once. Then enable manual control. Use **STOP** or Space to stop.
+4. Drive with `W A S D` and turn with `Q E`, or use the on-screen arrows. For joints, use `J/L` for the base, `I/K` for the shoulder, `R/F` for the elbow, comma and period for wrist pitch, brackets for wrist roll, and `N/M` for the gripper. Hold Shift for slow movement.
+5. The Leader mirror is optional. Enable it to follow SO-101 Leader and disable it to return to the keyboard. Check the direction and gripper settings if a joint moves backwards or the gripper fails to close.
+6. Select a task and layout, start recording, demonstrate, and mark success, failure or abort. For cube-to-box, keep the base still, pick up the cube, place it in the box and retract the arm. For approach, set the observation pose before recording, approach one visible target and stop in the marked zone.
+7. Stop before resetting the scene. The reset occurs between recordings. Mark failed demonstrations accurately so the research log can retain them and the training split can exclude them.
 
-1. Сверху: отметьте **«Я рядом, место свободно»**.
-2. После включения робота рука сложена — один раз **«Поднять руку»** (карточка «Рука»).
-3. **«▶ Включить»** — ручное управление. **«■ STOP»** или пробел — остановка всего.
-4. Управление:
-   - колёса: `W A S D` (езда), `Q E` (поворот) или кнопки-стрелки;
-   - рука: кнопка «Суставы» (проще) или «Захват XYZ»; `J/L` основание, `I/K` плечо, `R/F` локоть,
-     `,/.` кисть, `[/]` поворот кисти, `N/M` клешня; **Shift** — медленно.
-5. Зеркало Leader: **«Включить зеркало»** — рука повторяет SO-101 Leader. «Выключить зеркало» — снова клавиатура.
-   Если сустав идёт в обратную сторону или клешня не закрывается: раскройте «Настройка направлений и клешни» (один раз).
-6. **Запись показа:** выберите задачу («Кубик → коробка» или «Подъезд к цели»), расстановку (`scene-01`…) →
-   **«● Начать запись»** → покажите задачу → **«✓ Успех»**, **«✗ Неуспех»** или **«Прервать»**.
-   - Кубик → коробка: база стоит; взять кубик, положить в коробку, отвести руку.
-   - Подъезд: рука в позе «Обзор» (нажать до записи); из разных стартов подъехать к одной видимой цели и остановиться в зоне.
-7. Сброс сцены между записями не записывается.
+## SO-101 demonstrations
 
-Хорошие показы: спокойные, без лишних пауз, одна цель, разные стартовые положения.
-Неудачные честно отмечайте «Неуспех»: в обучение политики они не попадут, но нужны исследованию.
+1. Connect the Leader, Follower and wrist camera. Power the arms and set up the cube and box.
+2. In Explorer, select SO-101 and hand over control from the existing service on port 8020. Test teleoperation and stop.
+3. In Recording, select `so101_pick_place`, a session and a layout. Start a demonstration, use the Leader to pick up the cube, place it in the box and retract. Mark the outcome.
 
-## 3. SO-101 — показы (Leader-рука)
+## Tank demonstrations
 
-1. Подключены Leader, Follower и wrist-камера, блоки питания включены; кубик и коробка на месте.
-2. Explorer → «Выбрать SO-101» → «Управление» → **«Explorer 4.0»** (передача управления) →
-   «Проверить телеперацию» → STOP.
-3. «Запись»: задача `so101_pick_place`, сессия (одна на серию), расстановка → **«Начать показ»**.
-4. Ведите Leader: взять кубик → в коробку → отвести руку. **«Закончить · успех/неуспех»** или «Прервать».
+On November 13, a motor-controller USB disconnect prevented delivery of a stop command. The operator turned the robot off manually. One successful demonstration from that session was saved and read back. Use the current hardware checklist before recording. [Tank hardware acceptance](PHYSICAL_ACCEPTANCE.md) · [Incident record](TANK_INCIDENT.md)
 
-## 4. Tank
+1. Select Tank, enable control and wait for readiness. Use the on-screen arrows or the keyboard. Releasing the controls requests zero motion. Space or **STOP** ends control.
+2. In Recording, set the session and layout. Start a demonstration, approach the visible target and stop in the marked zone. Mark the outcome, wait for the save, and stop before resetting the scene.
+3. Tank records at 20 Hz and can repeat camera frames when the camera runs more slowly. The state includes the previous command. Prolonged video delay zeros the motion command, and control requires a fresh key press after recovery.
+4. Return control to the Hiwonder app through the phone-app control panel if needed. Keep one controller in charge at a time.
+5. The correction pilot requires a validated policy and a physically checked decision point and delay. During the correction window, use the arrows and select the completion action to hand control back before the 10-second limit. **STOP** aborts the trial. The Tank correction pilot still requires physical acceptance.
 
-13 ноября, во втором настоящем показе, моторный контроллер Tank отключился от USB; STOP не был доставлен. Оператор выключил питание вручную. **До устранения отказа запись и движение заблокированы.** Один успешный показ сохранён и прочитан. Приёмка прежнего STOP при исправной связи остаётся историческим фактом, а не доказательством остановки при потере USB.
+## Training budget and controls
 
-После отдельной повторной приёмки рабочий путь такой:
+For each task, the initial target is three usable demonstrations and a smoke test. The standard starting budget is 50 usable demonstrations per task spread across independent layouts. A split needs at least three independent groups.
 
-1. «Выбрать Tank» → «Включить управление», дождаться готовности. Восемь экранных стрелок или WASD/стрелки; две клавиши дают дугу, ↙/↘ — обратную дугу. Отпускание задаёт нули. Пробел и STOP у стрелок закрывают управление Tank.
-2. «Запись» → обозначить сессию/расстановку → «Начать показ». Подъехать к одной видимой цели и остановиться в отмеченной зоне. «Закончить · успех/неуспех» → дождаться сохранения. Сброс сцены делать после остановки.
-3. Камера 640×400; запись 20 Гц может честно повторять кадры более медленной камеры. Состояние Tank — предыдущая команда, **не измеренная скорость колёс**. Длительная задержка видео в ручном режиме обнуляет движение; после восстановления требуется отпустить и снова нажать стрелку.
-4. После трёх успешных показов выбрать ACT smoke во вкладке «Обучение». Во время обучения Tank можно выключить. Основной рецепт и испытания — отдельные шаги.
-5. Для возврата телефона: «Управление» → раскрыть «Приложение телефона и диагностика» → «Вернуть управление приложению Hiwonder». Не включать оба контроллера одной машины одновременно.
-6. Пилот коррекций: сначала проверенная политика, безопасная точка ожидания и задержки на странице «Исследование». Затем выбрать план и пилот во вкладке «Испытания». Во время сообщения «Ваша коррекция» управляйте стрелками; «Коррекция готова» вернёт политику раньше лимита 10 секунд. STOP прерывает попытку. Физически этот пилот Tank ещё не принят.
+Open Datasets to check the data and video or change exclusion status. In Training, select the task and choose the 50-step ACT smoke test or the main ACT recipe. A past Homebrain estimate for the main recipe was roughly 22 hours per task. The trainer runs offline and the robots can be switched off. Finish any recording session before launching training.
 
-## 5. Сколько показов
+## Physical policy trials
 
-| Задача | Сначала | Рабочий ориентир |
-|---|---|---|
-| `rosmaster_pick_place` | 3 → smoke | 50 хороших |
-| `rosmaster_dock` | 3 → smoke | 50 хороших |
-| `so101_pick_place` | есть 3 → smoke сделан | 50 хороших |
-| `tank_dock` | 1 прочитан; ещё 2 после устранения USB-отказа | 50 |
+1. Select a completed training job and prepare a checkpoint trial from the Trials tab. For replay, select the saved recording and prepare its command sequence.
+2. Approve the trial plan while you are beside the robot. The approval is valid for three hours.
+3. In the ROSMASTER panel, open Trials and Research, select the plan and start the trial. Watch the robot with **STOP** available, then record success, failure or abort.
 
-Нужно не меньше трёх разных сессий/расстановок, иначе честное разбиение невозможно (программа скажет).
-50 показов — стартовый бюджет, не гарантия навыка.
+## Randomized assistance pilot
 
-## 6. Обучение (кнопки)
-
-Вкладка «Датасеты»: просмотр, «Проверить данные и видео», «Исключить / вернуть в обучение».
-Вкладка «Обучение»: выберите задачу (сверху «Задача») →
-- **«ACT · smoke 50 шагов»** после 3 показов — проверка тракта (checkpoint, перезагрузка, inference без движения);
-- **«ACT · основное обучение»** после ~50 показов — ~22 ч; можно выключить роботов. Один trainer одновременно;
-  во время записи обучение не запускается.
-
-## 7. Испытание политики на роботе
-
-1. «Обучение» → выберите завершённое обучение → вкладка «Испытания» → **«Подготовить испытание checkpoint»**
-   (или «Подготовить повтор записи» — робот повторит записанные команды).
-2. **«Разрешить план (я рядом с роботом)»** — разрешение на 3 часа.
-3. ROSMASTER: панель → раскрыть «Испытания и исследование» → выбрать план → «Запустить». Политика ведёт робота
-   (через те же ограничения скорости, пределы суставов, проверку столкновений и лидар).
-   Вы смотрите; STOP — в любой момент. Затем «Успех / Неуспех / Прервать».
-
-## 8. Исследование (пилот) — по шагам
-
-1. Страница **/research** → выберите замороженную политику → «Сохранить проект пилота».
-2. Короткая физическая проверка со мной: в какой момент робот может безопасно ждать помощи и
-   сколько секунд задержки допустимо. Затем выберите пилот в таблице → укажите
-   «Точка решения» (например 3 с) и «Задержки» (например `0, 3`) → **«Подтвердить точку решения и задержки»**.
-3. Испытания с пилотом: панель ROSMASTER → «Испытания и исследование» → план + пилот → «Запустить».
-   - Если программа назначила помощь: сверху красная полоса «Робот ждёт помощи», затем
-     **«ВАША КОРРЕКЦИЯ… осталось N с»** — исправьте ситуацию клавишами (≤10 с) → «Коррекция готова → политике».
-   - Если не назначила — просто смотрите.
-   - В конце — «Успех / Неуспех / Прервать». Если пришлось вмешаться ради безопасности —
-     **«Аварийное вмешательство»** (это записывается отдельно, не как назначенная помощь).
-4. Нужно ≥20 испытаний в каждой ветви на задачу (это пилот для оценки разброса, не окончательный эксперимент).
-5. После сбора — /research → **«Обучить оценщики и сравнить перенос 0/10/20»** → отчёт.
-   Сравниваются: случайный выбор, риск/прогресс, G без физических признаков, G с ними,
-   перенос с SO-101+Tank против обучения только на ROSMASTER.
-
-## 9. Что я (программа) не умею без вас
-
-- Включать роботов, ставить кубик/коробку, сбрасывать сцену.
-- Делать показы и оценивать исход.
-- Подтверждать физически безопасные точки решения и задержки для пилота.
+1. In `/research`, select a frozen policy and save a pilot project.
+2. Confirm a physically safe point where the robot can wait and the delays it can tolerate. Enter the decision time and allowed delays, then save them.
+3. In the ROSMASTER panel, select both the trial plan and the pilot. If assistance is assigned, wait for the correction prompt. Correct the situation within the 10-second window and return control to the policy. Otherwise, observe the trial. Mark emergency intervention separately from scheduled assistance.
+4. Collect at least 20 pilot trials per condition and task to estimate variation. The analysis compares random selection, risk and progress rules, the learned help-value model G, and transfer from SO-101 and Tank against ROSMASTER-only training. The pilot interface offers the 0/10/20 target-demonstration comparison.

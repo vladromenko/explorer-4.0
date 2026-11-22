@@ -15,18 +15,18 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 IMPLEMENTATION_SHA256 = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in
-    ('explorer3/sim/skill_transfer.py', 'explorer3/sim/aligned.py', 'scripts/skill_transfer_preflight.py')}
+    ('explorer4/sim/skill_transfer.py', 'explorer4/sim/aligned.py', 'scripts/skill_transfer_preflight.py')}
 import numpy as np
-from explorer3.paths import DATA, offline_environment
-from explorer3.sim.capture import SimCapture
-from explorer3.sim.factory import make, EXPERTS
-from explorer3.sim.skill_transfer import body_pose, tcp_pose, so101_jaw_measurement, RetargetedGrasp, TransferVerifier, TransferRejected
-from explorer3.skill_packets import relative_pose, admission
-from explorer3.cognitive.store import digest
+from explorer4.paths import DATA, offline_environment
+from explorer4.sim.capture import SimCapture
+from explorer4.sim.factory import make, EXPERTS
+from explorer4.sim.skill_transfer import body_pose, tcp_pose, so101_jaw_measurement, RetargetedGrasp, TransferVerifier, TransferRejected
+from explorer4.skill_packets import relative_pose, admission
+from explorer4.cognitive.store import digest
 
 
 def ingest(root):
-    subprocess.run([str(ROOT / '.venv/bin/python'), '-m', 'explorer3.sim.import_episode', str(root)],
+    subprocess.run([str(ROOT / '.venv/bin/python'), '-m', 'explorer4.sim.import_episode', str(root)],
                    cwd=ROOT, env=offline_environment(), check=True)
     return json.loads((root / 'imported.json').read_text())
 
@@ -151,13 +151,13 @@ if __name__ == '__main__':
     parser.add_argument('--packet', type=Path, help='Reuse a verified donor artifact without collecting it again')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
-    from explorer3.resources import ResourceLease
+    from explorer4.resources import ResourceLease
     with ResourceLease('compute'):
         packet = json.loads(args.packet.read_text()) if args.packet else source_packet(args.donor_seed, args.output)
-        from explorer3.knowledge import add_packet
+        from explorer4.knowledge import add_packet
         add_packet(packet)
         report = recipient(packet, args.recipient_seed, args.output)
         if args.acquisition_request:
-            from explorer3.cognitive.broker import record_transfer_attempt
+            from explorer4.cognitive.broker import record_transfer_attempt
             record_transfer_attempt(args.acquisition_request, args.output / 'recipient.json')
     print(json.dumps({'outcome': report['outcome'], 'packet_sha256': digest(packet), 'output': str(args.output)}), flush=True)

@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 import cv2
 import mujoco
-from explorer3.sim.factory import make,EXPERTS
-from explorer3.sim.contact_audit import ContactAudit
+from explorer4.sim.factory import make,EXPERTS
+from explorer4.sim.contact_audit import ContactAudit
 
 
 def check(profile,output):

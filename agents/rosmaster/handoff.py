@@ -69,4 +69,4 @@ class Handoff:
 
 if __name__=='__main__':
     import os
-    print(json.dumps(Handoff(os.environ.get('EXPLORER3_ROOT','/home/vlad/explorer3')).restore()))
+    print(json.dumps(Handoff(os.environ.get('EXPLORER4_ROOT', os.environ.get('EXPLORER3_ROOT','/home/vlad/explorer3'))).restore()))

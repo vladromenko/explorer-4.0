@@ -4,7 +4,7 @@ gripper clamp angle, base correction and in-hand check."""
 import numpy as np
 import pytest
 
-from explorer3 import rosmaster_arm as ra
+from explorer4 import rosmaster_arm as ra
 
 K = np.array([[480.7, 0, 322.3], [0, 480.7, 245.6], [0, 0, 1.]])
 SERVO = ra.SEARCH_NEAR
@@ -66,8 +66,8 @@ def test_learned_pick_runs_only_an_admitted_policy_and_checks_holding(monkeypatc
     the result is the gripper stall, not the policy's word."""
     import types
     import numpy as np
-    import explorer3.rosmaster_arm as ra
-    from explorer3 import deploy_gate, policy_runtime
+    import explorer4.rosmaster_arm as ra
+    from explorer4 import deploy_gate, policy_runtime
 
     sent = []
 

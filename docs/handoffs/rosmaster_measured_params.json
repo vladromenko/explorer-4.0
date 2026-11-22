@@ -29,5 +29,5 @@
     "mecanum base dynamics (traction, acceleration, latency command->wheel) — not identified; requires a permitted motion log",
     "Homebrain->agent->controller command latency on this robot — not measured in motion"
   ],
-  "applied_to_sim": {"explorer3/sim/models.py front_cam fovy": "60 -> 53.06", "explorer3/sim/mobile.py ROSMASTER front_cam fovy": "60 -> 53.06"}
+  "applied_to_sim": {"explorer4/sim/models.py front_cam fovy": "60 -> 53.06", "explorer4/sim/mobile.py ROSMASTER front_cam fovy": "60 -> 53.06"}
 }

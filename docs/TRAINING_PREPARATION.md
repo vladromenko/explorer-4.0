@@ -1,32 +1,32 @@
-# Ручная подготовка обучения без автоматического запуска
+# Hand-made training without automatic start-up
 
-Дополнение 14.11: тот же конструктор расширен на физические профили в
-`/training/prepare`, инструкция — `docs/DATASET_GUIDE_RU.md` и `/datasets/guide`.
-Основной физический набор сохраняет прежний минимум 50 показов и 3 независимых
-группы; sim→real не смешивается с обычным дообучением. Доступные рецепты в форме
-фильтруются действующим policy_catalog. Эта новая часть написана, но не запускалась
-по указанию оператора; прежние PASS ниже относятся к симуляционному пути до изменения.
-Контрольная сумма теперь включает сырые `.npz` датчиков. Старый мультимодальный
-план с прежним хешем может потребовать повторной подготовки; он не переписывается.
+Supplement 14.11: The same design has been extended to physical profiles in
+`/training/prepare`, instruction: `docs/DATASET_GUIDE.md` and `/datasets/guide`.
+The basic physical set retains a minimum of 50 demonstrations and 3 independents
+The standard is not mixed with the normal pre-education.
+This new part is written but not started.
+As instructed by the operator; the former PASS below refers to the simulation path before the change.
+The reference amount now includes raw `.npz` sensors.
+A plan with the previous hash may require re-training; it is not rewritten.
 
-В `/sim/training` пользователь выбирает задачу SO/Tank, ACT/SmolVLA/Diffusion, успешные показы/исправления, конечное число обновлений, размер пакета, seed и CPU/GPU. «Подготовить план» только проверяет данные и сохраняет неизменяемый документ. Очередь trainer при этом не пополняется. Сохранённый документ открывается после перезапуска; полный план доступен для скачивания. Форма создания скрывается при просмотре готового плана, чтобы её текущие значения нельзя было перепутать с параметрами запуска.
+In `/sim/training`, the user selects the SO /Tank, ACT /SmolVLA/Diffusion, successful display/correction, final number of updates, package size, seed and CPU /GPU. "Preparation the plan" only checks the data and saves the unchangeable document. The control line does not complete the document. The saved document is open after reset; the complete plan is available for download. The form of creation is hidden when you view the plan that is ready so that its current values cannot be confused with the start-up parameters.
 
-План фиксирует dataset fingerprints, разделение train/validation/test, профиль и версию физики. Выбранные симуляционные данные должны дать минимум три независимые группы; отсутствие 50 показов не блокирует явно заданный малый эксперимент. Это технический минимум корректного split, не обещание достаточных данных для обучения навыку. Прежние требования физических профилей не изменены.
+The plan captures dataset fingerprints, division of train /validation/test, profile and version of physics. The selected simulation data should give at least three independent groups; the absence of 50 demonstrations does not block a clearly defined small experiment. This is a technical minimum of correct split, not a promise of sufficient data to teach skills. The old physical profile requirements have not been changed.
 
-Запуск — отдельная кнопка с явной отметкой оператора. Перед постановкой в очередь и перед выполнением перепроверяются исходные данные, план и checkpoint. Рецепт вызывает официальный `lerobot_train`; бюджет и batch фиксированы, незаметного OOM fallback нет. Эта работа не нажимала запуск: настоящий training/fine-tune результат ещё не получен.
+Start is a separate button with a clear operator mark. Before and before the line is set, the initial data, plan and kheckpoint are rechecked. The recipe calls the official `lerobot_train`; budget and batch are fixed, OOM fallsback is not visible. This work has not pressed the launch: the real training /fine-tune has not yet been achieved.
 
-## Дообучение и удержание прежних задач
+## Retraining and retention of previous tasks
 
-Выбранный завершённый checkpoint того же профиля/модели → новый immutable dataset plan, новый optimizer. Исходные веса и их preprocessors закрепляются общим хешем файлов. Прежние данные включаются вместе с новыми; отчёт показывает количество старых и новых train frames. Сэмплирование равномерное по объединённым кадрам, без скрытых весов/oversampling. Нормировка пересчитывается только на новой train-части; это действительное поведение официального LeRobot 0.6.1 для non-resume (`lerobot_train.py`, processor stats override).
+The selected completed checkpoint of the same profile/model \ new mmutable dataet plan, new optimizer. The reference weights and their preprocessors are fixed by the common file sheches. The old data are included with the new ones; the report shows the number of old and new tran frameworks. Sampling is evenly aligned, without hidden weights /oversampling. The norm is converted to a new tran parts only; this is the true behaviour of the official LeRobot 0.6.1 for non-resume (`lerobot_train.py`, testor states override).
 
-Connected groups вычисляются по session ИЛИ scene, транзитивно. Старые группы сохраняют роли: сцена, на которой checkpoint уже обучался, не становится новым hold-out. Если новый сегмент связывает прежний train с validation/test, смесь отклоняется. Прежние контрольные данные сохраняются для проверки удержания; test не используется в train или выборе по validation. Планы разных версий физики/контрактов не объединяются молча: перенос sim→real остаётся отдельным незавершённым протоколом.
+Connected groups are listed by session or scene, transiting. Old groups retain roles: a scene where sheckpoint has already been trained does not become a new gold-out. If a new segment links the previous train to the validation /test, the mixture is rejected. The old control data are retained to check retention; test is not used in tran or choice by walida. Plans of different versions of physics/contracts do not come together silently: the transfer of sim\real remains a separate uncompleted protocol.
 
-Resume — отдельное действие у прежнего прерванного задания; оно сохраняет optimizer/scheduler и тот же план. Resume дообучения теперь допускается только как продолжение того же job ID, а не как незаметное смешивание нового initial checkpoint и чужого optimizer.
+Resume is a separate action in a previous interrupted task; it retains the optimizer /scheduler and the same plan. Resume further education is now allowed only as a continuation of the same job ID, not as an invisible mixing of the new initial kheckpoint and the other's optimizer.
 
-## Проверено без обучения
+## Checked out without training
 
-- 14 tests: роли старых/новых групп, отбраковка транситивной утечки, закрепление/изменение checkpoint, контроль бюджета, recipes, existing workflow/revision checks.
-- Браузер, изолированный DATA: три реальные симуляционные записи с official readback; подготовлен ACT-план на 1234 обновления, по одной независимой группе train/validation/test; сохранён/скачан/повторно открыт. Состав очереди jobs до и после строго одинаковый, подтверждение запуска выключено, page errors/external HTTP отсутствуют.
-- Для браузерного теста записаны два конечных scripted Tank dock при seeds15/16: 137/130 кадров. Это не обучение; данные находятся в изолированном каталоге программной приёмки.
+- 14 testes: roles of old/new groups, rejection of transitive leakage, fixation/change of sheckpoint, budget control, receps, existing workflow /revision checks.
+- Browser, isolated DATA: three real simulations from official readback; ACT plan for 1,234 updates, one independent group train /validation/test; saved/swing/reopened. Jobs line pre- and post-op strictly the same, no confirmation of launch, page errors /external HTTP is missing.
+- For the browser test, two final scripted Tank docks are recorded at seeds15 /16: 137 /130 frames. This is not learning; the data are in an isolated program application catalogue.
 
-Дальше нужны исполнение обученных политик в общем мире, онлайн R3 и отдельный sim→real fine-tune/retention protocol. Основные обучения по решению пользователя пока не запускать.
+Next, we need a trained politician in the world, an online R3 and a separate sim\real fiine-tune /retention protocol.

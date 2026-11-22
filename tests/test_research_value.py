@@ -1,6 +1,6 @@
 """IPW value of fixed help rules matches the analytic truth on randomized data."""
 import numpy as np
-from explorer3.research_value import ipw_value, threshold_rule
+from explorer4.research_value import ipw_value, threshold_rule
 
 
 def rows(n=20000, seed=1):

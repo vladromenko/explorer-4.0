@@ -40,7 +40,7 @@ def test_udev_monitor_filters_controller_events():
 def test_front_scan_response_is_not_command_odometry():
     import time
     import numpy as np
-    from explorer3.tank_response import ScanResponse
+    from explorer4.tank_response import ScanResponse
     now=time.monotonic_ns();angles=np.linspace(-.3,.3,61)
     def packet(distance,stamp):
         return {'received_ns':stamp,'request_elapsed_s':0.,'arrays':{'scan':distance/np.cos(angles),'imu':np.zeros(6)},

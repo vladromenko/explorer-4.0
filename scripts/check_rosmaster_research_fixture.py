@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CODE = r'''
 import json, sys, time, uuid
 import numpy as np
-from explorer3 import catalog, research
+from explorer4 import catalog, research
 catalog.initialize(); research.initialize()
 rng = np.random.default_rng(7)
 N, G = int(sys.argv[2]), int(sys.argv[3])
@@ -44,7 +44,7 @@ print(json.dumps({'scope': result['scope'], 'profiles': result['profiles'], 'var
 def main():
     size, groups = (sys.argv[1], sys.argv[2]) if len(sys.argv) > 2 else ('70', '6')
     data = Path(tempfile.mkdtemp(prefix='explorer3-research-fixture-'))
-    env = {**os.environ, 'EXPLORER3_DATA': str(data), 'PYTHONPATH': str(ROOT)}
+    env = {**os.environ, 'EXPLORER4_DATA': str(data), 'PYTHONPATH': str(ROOT)}
     out = subprocess.check_output([str(ROOT / '.venv/bin/python'), '-c', CODE, str(data / 'analysis'), size, groups], cwd=ROOT, env=env, text=True)
     report = {'fixture_size_per_profile': int(size), 'fixture_groups_per_profile': int(groups), 'domain': 'fixture', 'research_result': False, 'robot_touched': False, 'data': str(data), **json.loads(out.strip().splitlines()[-1])}
     (ROOT / f'docs/handoffs/rosmaster-research-fixture-{size}x{groups}.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))

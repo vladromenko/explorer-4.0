@@ -1,74 +1,74 @@
-# Совместное исполнение на Homebrain
+# Joint execution on Homebrain
 
-`/sim/fleet/policies` запускает конечный прогон отдельных замороженных ACT,
-SmolVLA или Diffusion в одном MuJoCo мире. Обучение и подключение физических
-роботов в этом маршруте отсутствуют. `fleet_runs.prepare` фиксирует веса,
-модель данных, камеру, калибровку оценщика, seed и бюджет. Старые веса с другой
-геометрией доступны только через явную программную проверку переноса.
+`/sim/fleet/policies` starts the final run of individual frozen ACTs,
+SmolVLA or Diffuse in one MuJoCo world.
+There are no robots in this route. `fleet_runs.prepare` records the weights,
+Data model, camera, calibrating of the valuer, seed and budget.
+Geometry is only available through a clear programme verification of transport.
 
-## Исполнение и помощь
+## Implementation and assistance
 
-`sim/fleet_execution.py` выдаёт команды на родной частоте каждой задачи
-(SO-101 30 Гц, Tank 20 Гц). Политики получают только собственное изображение
-и наблюдаемые каналы состояния. Общая физика ждёт inference: скорость этого
-прогона не подтверждает возможность управления физическим роботом в реальном
-времени. Для Tank камера сохраняет исходные 640×400 пикселей.
+`sim/fleet_execution.py` gives commands on the home frequency of each task
+(SO-101 30 Hz, Tank 20 Hz) Policymakers only get their own image
+And the observed channels of state. The general physics is waiting for inference: the speed of this.
+running does not confirm the ability to control a physical robot in real time
+For Tank, the camera keeps the original 640x400 pixels.
 
-AutoIntervene-adapted проверяет ACT proposals в ходе исполнения. Память и
-пороги должны соответствовать конкретным весам и отложенным данным; файлы
-закреплены хешами. Калибровки numerical fixture не принимаются для рабочих
-весов. Если подходящей калибровки нет, оценщик явно отсутствует. Fixture-режим
-использует тот же алгоритм, но с отдельными тестовыми признаками и порогами.
+AutoIntervene-adapted checks the ACT proposals during execution.
+thresholds should be appropriate for specific weights and deferred data; files
+The calibrations are not accepted for workers.
+If there is no appropriate calibration, the evaluator is clearly absent.
+uses the same algorithm, but with separate test signs and thresholds.
 
-При запросе очищаются очереди действий, робот удерживается, запрос получает
-deadline. Random или TD из Fleet-DAgger выбирают единственный слот помощи.
-Программный эксперт работает ограниченное время, после принятия действий
-оценщиком управление возвращается политике. Исчерпание бюджета не даёт
-автоматического разрешения продолжать неподдержанные действия. Бесконечная
-дистанция вне поддержки маркируется отдельно; 1e12 используется только как
-конечный вход сортировки TD, а не вероятность отказа.
+When requested, the action lines are cleaned, the robot is held, the request is received
+The band is a single aid slot.
+Programme expert limited time after action
+The evaluation office returns to politics.
+The automatic authorization to continue unsupported actions.
+distance outside support marked separately; 1e12 is used only as
+The final entry of the TD sorting is not the probability of failure.
 
-Snapshot содержит общую физику, состояния задач, очереди и RNG всех политик,
-окна оценщиков, накопленную историю TD, расписание, незавершённые команды и
-состояние эксперта. Восстановление в интерактивном режиме оставляет паузу.
-Повтор в отчёте сравнивает физику, события, счётчики и полные состояния политик.
+Snapshot contains the general physics, the status of the tasks, the sequences and the RNG of all politicians,
+The evaluation windows, the accumulated history of TD, the schedule, the unfinished teams and
+Expert condition: On-line recovery leaves a pause.
+The report's re-matching physics, events, counters, and full state of politics.
 
-## Исправления и следующий раунд
+## Corrections and next round
 
-Каждый отдельный экспертный сегмент сохраняется со снимком до шага передачи
-управления и общим lineage. Все сегменты одного прогона остаются одной группой
-разбиения. Общая физика получает собственный model hash: такие данные нельзя
-неявно смешать с записями индивидуальной среды.
+Each individual expert segment shall be retained with the picture to the transfer step
+All segments of one run remain the same
+General physics receives its own model hash: such data cannot be obtained
+I don't know if I can mix it with the individual media records.
 
-Сегменты не добавляются в датасет автоматически. Интерфейс показывает кадры
-и исход; допускает только успешный сегмент, полученный при исполнении
-замороженных весов, после явной проверки оператором. Numerical fixtures,
-незавершённые задачи и изменённые после проверки файлы не допускаются.
-Импорт использует существующий официальный LeRobot writer/readback, затем
-пользователь отдельно готовит план следующего раунда в `/sim/training`.
-Никакого скрытого запуска обучения при сохранении нет.
+The segments are not automatically added to the dataset.
+and outcome; only allowed for a successful segment achieved in execution
+frozen weights after a clear check by the operator.
+Uncompleted tasks and modified files after checking are not allowed.
+Imports use the existing official LeRobot writer /readback, then
+The user is preparing a plan for the next round in `/sim/training` separately.
+There is no hidden start-up of the training while saving it.
 
-## Метрики и пределы результата
+## Metrries and limits of result
 
-Отчёт содержит ROHE по формуле Fleet-DAgger, исходные награды по задачам,
-ожидание и время программной коррекции. Награды разных задач не нормируются
-произвольно: сравнение допустимо только при одинаковом наборе задач и горизонте.
-Переключение/сброс в этом конечном симуляционном прогоне мгновенные; это не
-измеренное время человека. Причинная оценка G не заменяется support-distance:
-до отдельного обученного файла она явно недоступна; подготовленный маршрут `/sim/gain` и shadow inference описаны в `GAIN_PREPARATION.md`.
+The report contains a ROHE based on the Fleet-Dagger formula, the original task awards,
+The rewards of different tasks are not normal
+Arbitrary: Comparison is only permissible with the same set of tasks and horizon.
+Switch/set in this final simulation run is instantaneous; it is not
+The reason for the G estimate is not replaced by support-distance:
+The route `/sim/gain` and Shadow inference are described in `GAIN_PREPARATION.md`.
 
-Проверено без обучения:
+Checked out without training:
 
-- 16 native/contract/lineage tests: частоты, один слот, восстановление,
-  отдельный reset, запрет fixtures и изменение файлов после проверки.
-- Две реальные сохранённые ACT одновременно: 9 команд SO и 6 Tank за 0,3 с
-  симуляции; восстановление восьми границ с нулевой ошибкой положения и тем
-  же состоянием политик. Это старые smoke-веса, не подтверждение навыка.
-- Chromium: запуск, два запроса помощи, сохранённые отдельные сегменты,
-  запрет их импорта из fixture, скачивание/повторное открытие отчёта и STOP;
-  внешних запросов и ошибок страницы нет.
+- 16 native /contract/lineage tests: frequencies, one slot, recovery,
+  The individual reset, the prohibition of fixtures and the re-fixing of files after verification.
+- Two real stored ACT simultaneously: 9 SO and 6 Tank commands for 0.3 s
+  simulations; restoration of eight boundaries with zero error of position and themes
+  It's an old smoke-weight, not a proof of skill.
+- Chromium: launch, two help requests, saved separate segments,
+  Prohibition of their import from fixture, downloading/reopening of the report and STOP;
+  There are no external queries and errors.
 
-Артефакты: runtime `validation/corrective-a/fleet-real-policies-final` и
-`validation/corrective-a/browser-fleet-policies`. Калибровка на новых обученных
-политиках и эффект последовательных раундов не заявлены: пользователь запретил
-обучение. Это программная готовность тракта, не завершённое исследование.
+Artifacts: ringtime `validation/corrective-a/fleet-real-policies-final` and
+`validation/corrective-a/browser-fleet-policies`: Calibration of new trained
+Policymakers and the effect of consecutive rounds are not declared: user prohibited
+It's a program readiness for the tract, an incomplete study.

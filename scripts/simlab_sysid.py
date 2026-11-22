@@ -15,8 +15,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from explorer3.paths import DATA
-from explorer3.simlab import sysid_base
+from explorer4.paths import DATA
+from explorer4.simlab import sysid_base
 
 GYRO_Z, IMU_VALID = 36 + 36 + 48 + 48 + 2, 36 + 36 + 48 + 48 + 6
 FRONT = [0, 1, 2, 34, 35]
@@ -32,7 +32,7 @@ def episodes(dataset, robot):
         if env[:, IMU_VALID].mean() > 0.9:
             yaw.append((act[:, -1], env[:, GYRO_Z]))
         if robot == 'rosmaster' and env.shape[1] > 200:
-            from explorer3.sensors import ROSMASTER_CHANNELS
+            from explorer4.sensors import ROSMASTER_CHANNELS
             i = ROSMASTER_CHANNELS.index('odom_vx')
             if env[:, ROSMASTER_CHANNELS.index('odom_valid')].mean() > 0.9:
                 fwd.append((act[:, 0], env[:, i]))

@@ -3,7 +3,7 @@
 For each arm skill (SO-101 hand-over pick, ROSMASTER floor pick) and each policy (SmolVLA, ACT):
   1. expert demonstrations in MuJoCo, written in exactly the real dataset format (sim_of profiles);
   2. training through Explorer's own job queue (same trainer as for real data);
-  3. closed-loop evaluation on unseen MuJoCo seeds through explorer3.policy_runtime — the runtime
+  3. closed-loop evaluation on unseen MuJoCo seeds through explorer4.policy_runtime — the runtime
      that real trials and the swarm use;
   4. the trained checkpoint on REAL robot inputs, no motors: recorded SO-101 frames, and live
      ROSMASTER camera + servo readings in shadow mode (actions computed, never sent).
@@ -25,11 +25,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from explorer3 import catalog  # noqa: E402
-from explorer3.paths import DATA, offline_environment  # noqa: E402
-from explorer3.profiles import profile  # noqa: E402
+from explorer4 import catalog  # noqa: E402
+from explorer4.paths import DATA, offline_environment  # noqa: E402
+from explorer4.profiles import profile  # noqa: E402
 
-# the MuJoCo tasks that mirror recording blocks 4 and 3 (explorer3/sim/aligned.py)
+# the MuJoCo tasks that mirror recording blocks 4 and 3 (explorer4/sim/aligned.py)
 SKILLS = ['so101_handover_sim', 'rosmaster_floor_pick_sim']
 POLICIES = ['smolvla', 'act']
 
@@ -40,13 +40,13 @@ def log(*a):
 
 def current_model(name):
     """Physics version of the newest demonstration (old proxy-geometry versions are not pooled)."""
-    from explorer3.datasets import simulation_model_hash
+    from explorer4.datasets import simulation_model_hash
     eps = sorted((e for e in catalog.rows('episodes') if e['profile'] == name), key=lambda e: e['created'])
     return simulation_model_hash(eps[-1]) if eps else None
 
 
 def successes(name, model=None):
-    from explorer3.datasets import simulation_model_hash
+    from explorer4.datasets import simulation_model_hash
     model = model or current_model(name)
     return [e for e in catalog.rows('episodes') if e['profile'] == name and e['outcome'] == 'success' and not e.get('excluded')
             and simulation_model_hash(e) == model]
@@ -55,7 +55,7 @@ def successes(name, model=None):
 def collect(name, need, workers=2, log_dir=None):          # 3 renderers + a model hit the 16 GB OOM limit
     # Read today's physics, not the most recently recorded (possibly obsolete) episode.
     probe = subprocess.run([str(ROOT / '.venv-sim/bin/python'), '-c',
-                            'import sys; from explorer3.sim.factory import make; '
+                            'import sys; from explorer4.sim.factory import make; '
                             'e=make(sys.argv[1]); print(e.manifest["xml_sha256"]); e.close()', name],
                            cwd=ROOT, env=offline_environment(), capture_output=True, text=True,
                            check=True, timeout=60)
@@ -78,7 +78,7 @@ def collect(name, need, workers=2, log_dir=None):          # 3 renderers + a mod
         start = 2000 + (int(time.time()) + round_ * 7919) % 100000          # fresh seeds every run
         with contextlib.ExitStack() as stack:
             logs = [log_dir / f'{name}-round{round_}-worker{i}.log' for i in range(workers)]
-            procs = [subprocess.Popen([str(ROOT / '.venv-sim/bin/python'), '-m', 'explorer3.sim.collect', '--start', str(start + i * per),
+            procs = [subprocess.Popen([str(ROOT / '.venv-sim/bin/python'), '-m', 'explorer4.sim.collect', '--start', str(start + i * per),
                                        '--count', str(per), '--profile', name], cwd=ROOT, env=env,
                                       stdout=stack.enter_context(path.open('w')), stderr=subprocess.STDOUT)
                      for i, path in enumerate(logs)]
@@ -110,7 +110,7 @@ def wait_job(ident, timeout_h=8):
 def real_inputs_check(checkpoint, real_profile, instruction=None, shadow_steps=40):
     """The trained policy through the shared runtime on real robot inputs. No motor command is sent."""
     import numpy as np
-    from explorer3.policy_runtime import PolicyCore
+    from explorer4.policy_runtime import PolicyCore
     cfg = profile(real_profile)
     core = PolicyCore(checkpoint, 'cuda', instruction=instruction)
     out = {'profile': real_profile, 'policy': core.type, 'source': None, 'steps': 0, 'latency_s_p50_max': None,
@@ -137,7 +137,7 @@ def real_inputs_check(checkpoint, real_profile, instruction=None, shadow_steps=4
             states.append(state)
     elif real_profile == 'rosmaster_pick_place':
         import cv2
-        from explorer3 import rosmaster_control
+        from explorer4 import rosmaster_control
         try:
             client = rosmaster_control._connection(4)
         except Exception as exc:
@@ -172,7 +172,7 @@ def real_inputs_check(checkpoint, real_profile, instruction=None, shadow_steps=4
         out.update(steps=len(actions), latency_s_p50_max=[round(float(np.median(lat)), 3), round(float(max(lat)), 3)],
                    finite=bool(np.isfinite(A).all()), max_jump_deg=round(float(np.abs(A[:, :5] - S[:, :5]).max()), 1))
         if real_profile == 'rosmaster_pick_place':
-            from explorer3.sim.vendor_rosmaster.arm_model import SERVO_LIMITS
+            from explorer4.sim.vendor_rosmaster.arm_model import SERVO_LIMITS
             out['within_limits'] = bool(all(lo - 1 <= v <= hi + 1 for a in A for v, (lo, hi) in zip(a, SERVO_LIMITS)))
         else:
             out['within_limits'] = bool((np.abs(A[:, :5]) <= 180).all() and (A[:, 5] >= -1).all() and (A[:, 5] <= 101).all())
@@ -191,7 +191,7 @@ def main():
     a = ap.parse_args()
     out = DATA / 'simlab' / 'rehearsal' / time.strftime('%Y%m%d-%H%M%S')
     out.mkdir(parents=True, exist_ok=True)
-    from explorer3.jobs import Jobs
+    from explorer4.jobs import Jobs
     jobs = Jobs(None)
     report = {'started': time.time(), 'smoke': a.smoke, 'results': []}
     need = a.demonstrations if a.demonstrations is not None else 6 if a.smoke else 50
@@ -228,7 +228,7 @@ def main():
                 entry['real_inputs'] = real_inputs_check(train['checkpoint'], real)
                 log(name, policy, json.dumps(entry['real_inputs'], ensure_ascii=False))
                 log(name, policy, '«Допуск к роботу»')
-                from explorer3 import deploy_gate
+                from explorer4 import deploy_gate
                 gate = deploy_gate.run(ident)
                 entry['deploy_gate'] = {'verdict': gate['verdict'], 'checks': {k: {'status': c['status'], 'message': c['message']}
                                                                               for k, c in gate['checks'].items()}}

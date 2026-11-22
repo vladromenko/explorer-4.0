@@ -1,78 +1,78 @@
-# Подготовка этапа B без робота
+# Preparation of stage B without robot
 
-13 ноября 2026. Страница Homebrain: `/rosmaster/preparation`.
-Обучение не запускалось, к роботам в этом блоке не подключались. Изменения
-соседнего ROSMASTER-диалога сохранены. Console 8090 и Wristlab :8020 не менялись.
+November 13, 2026 Homebrain page: `/rosmaster/preparation`.
+The training was not started, the robots in this block were not connected.
+The ROSMASTER-dialogue is still in place.
 
-## Что реализовано
+## What's been realized
 
-- Проверка местного каталога для отдельных задач руки и шасси. Видны причины
-  исключения диагностических, синтетических и неуспешных записей. Diagnostic
-  pipeline-check не становится показом даже при ошибочной отметке success.
-- Перенос ACT/SmolVLA/Diffusion из совместимого sim-checkpoint: проверяются
-  семантика и порядок каналов, единицы, камера, частота, фактические размеры
-  входов/выходов и тип весов. Это подготовка, не разрешение физического rollout.
-- Два неизменяемых плана: инициализация sim-весами и обучение с нуля на одном
-  real-only разбиении и одинаковом бюджете. Нормализация только real train;
-  новый optimizer, без смешивания sim-кадров с физическими. Можно скачать,
-  повторно открыть и отдельно запустить выбранный план. Запуск не проверялся
-  обучением из-за прямого запрета пользователя.
-- Для пилотного плана нужны минимум три независимые группы настоящих показов.
-  Общая сессия **или** расстановка связывает записи, включая транзитивные связи.
-  Три группы обеспечивают разбиение, но не достаточную выборку для навыка.
-  Обычный порог полного real-плана (50 показов) не изменён.
-- Неизменяемый план сверки отклика: команды, измерения, индивидуальные времена
-  измерений приводов, раздельные группы подгонки и проверки. Минимум две
-  независимые группы с измеренным движением. Сохранённый план можно открыть
-  после перезагрузки страницы; изменение файлов обнаруживается до расчёта.
-  Результат содержит ошибки исходной, простой и расширенной модели на
-  отложенных траекториях. Отдельная кнопка считает параметры по файлам;
-  они не применяются к модели автоматически и не отправляются роботу.
-- Физические trial-планы фиксируют также config/normalization checkpoint,
-  а подтверждение относится к точному хешу плана. Старые планы с хешем только
-  весов нужно пересоздать. Неполная/нечисловая первая поза не допускается.
-- Закрытый аппаратный scope охватывает камеру, WebSocket-наблюдение и ранее
-  открытое соединение оператора. Камера возвращает 503 без сетевого клиента;
-  панель показывает «локальная подготовка». Это не доказательство физической
-  остановки: закрывать scope во время движения вместо STOP нельзя.
+- Checking local catalogue for individual hand and chassis tasks.
+  The exclusion of diagnostic, synthetic and unsuccessful records.
+  pipeline-check does not become a display even when the message is mist.
+- Transport of ACT /SmolVLA/Diffusion from compatible sim-cheskpoint: checked
+  Semantics and channel order, units, camera, frequency, actual dimensions
+  Incomings/outputs and weight type. This is preparation, not physical rollout resolution.
+- Two unchangeable plans: initialization of sim weight and learning from scratch on one
+  Real-only broken and the same budget.
+  new optimizer, without mixing sim frames with physical.
+  Reopen and separate start the selected plan.
+  The training is due to a direct user ban.
+- A pilot plan requires at least three independent teams of real shows.
+  The General Session **or** the placement links records, including transit links.
+  Three groups provide break-up, but not enough sample to be skilled.
+  The normal threshold of a complete real plan (50 demonstrations) is unchanged.
+- Unchangeable response matching plan: commands, measurements, individual times
+  At least two different groups of fitment and verification.
+  Independent groups with measured movement.
+  After rebooting the page; file changes are detected before calculation.
+  The result contains errors of the reference, simple and extended model on
+  The separate button considers the parameters from the files;
+  They don't automatically apply to the model or send a robot.
+- Physical treal plans also capture config /normalization kheckpoint,
+  The confirmation is for the exact heck of the plan.
+  Weights must be re-created. Not full/unnumbered first position is allowed.
+- Closed hardware scope covers camera, WebSocket surveillance and previously
+  Open operator connection: The camera returns 503 without a network client;
+  The panel shows "local preparation." This is not proof of physical fitness.
+  Stop: No stop while moving, instead of STOP.
 
-## Проверено на Homebrain
+## Checked on Homebrain
 
-31 целевая проверка управления, доступа, переноса, split, trial и sysid прошла;
-ещё 2 проверки повторного открытия плана сверки/изменения исходных файлов прошли.
-Нейросети не обучались; численные sysid-тесты используют искусственные fixtures.
-Браузер открывает обе задачи, объясняет отсутствие настоящих данных, не создаёт
-jobs без готового плана и подтверждения, показывает локальный режим управления.
-Прямой запрос камеры в этом режиме — 503. Внешних запросов браузера нет.
+31 targeted control, access, transfer, split, trial and sysid checks passed;
+2 further checks on re-opening the reconciliation plan/change of the original files have been completed.
+Neylrosethi were not trained; numerical Sysid tests use artificial nuxtures.
+Brouser opens both tasks, explains the lack of real data, doesn't create
+Jobs without a plan and confirmation, shows local control.
+The direct request for the camera in this mode is 503. There are no external request for the browser.
 
-Доказательства вне Git: `validation/corrective-b/offline-readiness.json`,
+Evidence outside Git: `validation/corrective-b/offline-readiness.json`,
 `validation/corrective-b/offline-browser/{result.json,page.png,offline-control.png,trace.zip}`.
-Повторяемая проверка браузера: `scripts/check_rosmaster_preparation_browser.py`.
+Repeated browser check: `scripts/check_rosmaster_preparation_browser.py`.
 
-По фактическому каталогу пригодных настоящих показов ROSMASTER: **0 для руки,
-0 для шасси**, пригодных независимых групп движения также 0. Старые ACT
-checkpoints из симуляции совместимы по контрактам; это не доказательство навыка
-или точности текущей модели. Новые реальные планы по фиктивным данным не созданы.
+Based on the actual catalogue of suitable real show ROSMASTER: **0 for hand,
+0 for chassis** suitable independent traffic groups also 0. Old ACT
+kheckpoints from simulations are contractually compatible; it's not proof of skill
+No new real plans for false data have been established.
 
-## Что остаётся для выхода B
+## What remains for exit B
 
-1. По возвращении оператора открыть scope только ROSMASTER и заново проверить
-   свежесть камеры/шести приводов/одометрии/питания без движения. Прошлые
-   измерения не описывают текущее состояние машины.
-2. Отдельно принять руку и базу: направления, отпускание, STOP, потерю оператора
-   и отсутствие самовозобновления. Включение arm/manual сейчас может сразу
-   поднимать сложенную руку; начать с проверки остановки этого подъёма.
-3. Сохранить по три настоящих показа каждой задачи, с отдельными сессиями и
-   расстановками для независимой проверки. Прочитать видео/действия/feedback;
-   после первого показа каждой задачи проверить файл до продолжения.
-4. Сверить модель с этими логами: положения, задержки, скорость и камера;
-   оценить на других траекториях. Статус неподтверждённых параметров сохранить
-   явно. Сначала исправить ошибки управления, если они проявятся.
-5. Проверить возврат прежнего управления и зафиксировать фактическую приёмку.
-   Обучение/smoke и проверка обученного навыка остаются отложенными по просьбе
-   пользователя; готовые программы их запуска не являются результатом обучения.
+1. When the operator returns, only ROSMASTER and recheck
+   The freshness of the chamber/six drive/odometer/driving.
+   The measurements do not describe the current state of the machine.
+2. Separately accept hand and base: directions, release, STOP, loss of operator
+   and no self-renewal./manual Now it can be right away.
+   Raise the folded arm; start by checking that this lift is stopped.
+3. Save three of these presentations of each task, with separate sessions and
+   Read the video/action /feedback;
+   After the first display of each task check the file before continuation.
+4. Check the model against these logs: positions, delays, speed and camera;
+   The value of the unconfirmed parameters should be maintained.
+   First, correct the control errors if they show up.
+5. Check the return of the previous control and record the actual acceptance.
+   Training of /smoke and testing of trained skills remain postponed upon request
+   The user; the completed programmes are not the result of training.
 
-Затем ROSMASTER выключается и начинается C — Tank. Предыдущий USB-инцидент Tank
-и отсутствие доказанной независимой остановки при потере моторной платы
-остаются открытыми. Включение Tank не означает разрешения движения; сначала
-осмотр журналов/версии агента/документированного timeout без моторных команд.
+ROSMASTER then turns off and starts C - Tank.
+and lack of proven independent stopover when motor charges are lost
+The use of Tank does not mean that the movement is permitted;
+Inspection of the logs/agent version/documented timeout without motor commands.

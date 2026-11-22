@@ -2,8 +2,8 @@
 import copy
 import numpy as np
 import pytest
-from explorer3.sim.fleet_execution import FleetExecution
-from explorer3.sim import state_codec
+from explorer4.sim.fleet_execution import FleetExecution
+from explorer4.sim import state_codec
 
 
 def test_native_periods_online_monitor_single_slot_and_full_restore(tmp_path):
@@ -47,9 +47,9 @@ def test_partial_reset_does_not_change_other_policy_or_physics(tmp_path):
 
 
 def test_correction_capture_uses_pre_step_full_state_and_fixture_cannot_enter_training(tmp_path,monkeypatch):
-    from explorer3.sim.fleet_capture import FleetCorrections
-    from explorer3.sim import capture
-    from explorer3 import fleet_corrections
+    from explorer4.sim.fleet_capture import FleetCorrections
+    from explorer4.sim import capture
+    from explorer4 import fleet_corrections
     monkeypatch.setattr(capture,'DATA',tmp_path);monkeypatch.setattr(fleet_corrections,'DATA',tmp_path)
     runner=FleetExecution({'so101':{'kind':'fixture'},'tank':{'kind':'fixture'}},tmp_path/'run',delay_s=0)
     records=FleetCorrections(runner,1);runner.before_action=records.observe
@@ -71,8 +71,8 @@ def test_correction_capture_uses_pre_step_full_state_and_fixture_cannot_enter_tr
 
 def test_gain_shadow_never_changes_assignment_and_is_part_of_snapshot(tmp_path):
     import json
-    from explorer3.research import FEATURES,matrix
-    from explorer3.vision_assets import digest
+    from explorer4.research import FEATURES,matrix
+    from explorer4.vision_assets import digest
     _,names=matrix([{'features':{n:None for n in FEATURES}}])
     head={'mean':[0.]*len(names),'scale':[1.]*len(names),'coef':[0.]*len(names),'intercept':0.}
     # Explicit numerical inference fixture; no fitting or learned-quality claim.

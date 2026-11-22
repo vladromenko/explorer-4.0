@@ -1,6 +1,6 @@
 import json
 import pytest
-from explorer3.datasets import select_simulation_revision
+from explorer4.datasets import select_simulation_revision
 
 
 def test_changed_physics_cannot_silently_mix_with_old_geometry(tmp_path):

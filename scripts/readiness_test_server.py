@@ -1,15 +1,15 @@
 """Isolated UI: no hardware controllers, job worker or scheduled execution."""
 from nicegui import ui
-from explorer3 import catalog, training_pages
-from explorer3.paths import prepare
-from explorer3.jobs import Jobs
+from explorer4 import catalog, training_pages
+from explorer4.paths import prepare
+from explorer4.jobs import Jobs
 
 prepare()
 catalog.initialize()
 training_pages.install('', Jobs(None))
-from explorer3 import recording_pages, fleet_config
-from explorer3.recording_readiness import evaluate,item
-from explorer3.paths import DATA,ROOT
+from explorer4 import recording_pages, fleet_config
+from explorer4.recording_readiness import evaluate,item
+from explorer4.paths import DATA,ROOT
 fleet_config.atomic_write(fleet_config.path(DATA), __import__('json').loads((ROOT/'configs/fleet.json').read_text()))
 class FixtureReadiness:
     at=0

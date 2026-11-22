@@ -3,14 +3,14 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
-from explorer3.control import Control
-from explorer3.training import split_episodes,train_command
-from explorer3.resources import ResourceLease,ResourceBusy
-from explorer3 import resources
+from explorer4.control import Control
+from explorer4.training import split_episodes,train_command
+from explorer4.resources import ResourceLease,ResourceBusy
+from explorer4 import resources
 
 class Contracts(unittest.TestCase):
     def test_startup_and_selection_disarm(self):
-        with patch('explorer3.control.catalog.event'):
+        with patch('explorer4.control.catalog.event'):
             c=Control()
             self.assertTrue(c.expired())
             with patch.object(c,'authorized',return_value=False):

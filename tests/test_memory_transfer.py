@@ -2,9 +2,9 @@
 import json
 import time
 import pytest
-from explorer3 import catalog
-from explorer3.cognitive import registry,store,transfer
-from explorer3.cognitive.schemas import ObservationEvidence,AssistanceCase,CompatibilityRecord
+from explorer4 import catalog
+from explorer4.cognitive import registry,store,transfer
+from explorer4.cognitive.schemas import ObservationEvidence,AssistanceCase,CompatibilityRecord
 
 
 def test_cross_platform_transfer_keeps_new_scope_unverified(tmp_path,monkeypatch):

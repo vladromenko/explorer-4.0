@@ -1,8 +1,8 @@
 """Prepared regression cases; not executed under the operator's launch freeze."""
 import hashlib
 import pytest
-from explorer3.cognitive import protocol,shadow,store
-from explorer3.cognitive.schemas import ObservationEvidence
+from explorer4.cognitive import protocol,shadow,store
+from explorer4.cognitive.schemas import ObservationEvidence
 
 
 def test_memory_does_not_change_actions_or_instruction():

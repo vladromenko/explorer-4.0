@@ -2,7 +2,7 @@
 import copy
 import numpy as np
 import pytest
-from explorer3.autointervene import Memory,Settings,SupportMonitor,calibrate
+from explorer4.autointervene import Memory,Settings,SupportMonitor,calibrate
 
 
 def data():
@@ -57,7 +57,7 @@ def test_memory_roundtrip_and_local_windows_do_not_rewind(tmp_path):
 
 def test_calibration_job_rejects_smoke_before_opening_dataset(monkeypatch):
     import json
-    from explorer3 import act_support
+    from explorer4 import act_support
     job={'status':'completed','policy':'act','checkpoint':'unused','profile':'arm',
          'config':json.dumps({'kind':'train','plan_id':'frozen'})}
     monkeypatch.setattr(act_support,'load_plan',lambda ident:{'smoke':True,'splits':{'validation':[]}})

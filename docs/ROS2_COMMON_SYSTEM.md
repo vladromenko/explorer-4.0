@@ -1,90 +1,90 @@
-# Общая система ROS 2 на Homebrain
+# Common ROS 2 system on Homebrain
 
-14 ноября 2026. Реализована и запущена общая **шина наблюдений**. Это ещё не
-приёмка совместного автономного движения и не готовая общая карта.
-Обучение не запускалось.
+14 November 2026. Common **-stars are operational**.
+Taking a joint autonomous movement and not a ready common map.
+The training was not started.
 
-## Связь компонентов
+## Component linkages
 
 ```text
-Tank: ROS 2 Humble, штатный domain 0 ──┐
+Tank: ROS 2 Humble, default domain 0 ──┐
                                      ├─ authenticated read-only observers
-ROSMASTER: ROS 2 Jazzy, domain 30 ─────┘           │ HTTP, исходные timestamps
+ROSMASTER: ROS 2 Jazzy, domain 30 ─────┘           │ HTTP, source timestamps
                                                 ▼
-                          Homebrain: отдельный ROS 2 Jazzy hub, domain 73
+                          Homebrain: separate ROS 2 Jazzy hub, domain 73
                           /explorer3/robots/tank/*
                           /explorer3/robots/rosmaster/*
                           /explorer3/fleet/status
 ```
 
-Страница `/fleet/live` показывает связь, возраст потоков, оценку согласования
-времени и наличие подходящей пары кадров. Из неё открываются существующие
-панели управления и страницы окружения. Общий STOP использует существующие
-контроллеры Explorer. Шина датчиков не приобретает владение устройствами и
-не публикует `/cmd_vel`, цели руки или команды моторам.
+Page `/fleet/live` shows link, age of flow, estimate of alignment
+It opens up the existing ones.
+The general STOP uses existing controls and environmental pages.
+Explorer controllers. Sensor tyres do not acquire the ownership of devices and
+does not publish `/cmd_vel`, the purpose of the arm or the engine command.
 
-Старые ROS-домены и программы не менялись. У каждого робота остаются
-собственный контроллер, срок действия команд, STOP и физический допуск.
-Подключить всё к одному domain ID недостаточно: это обеспечивает discovery,
-но не калибровку, согласование часов, владение исполнительными устройствами
-или гарантии остановки. ROS 2 не заменяет эти механизмы.
+Old ROS houses and programs have not changed.
+own controller, validity of commands, STOP and physical clearance.
+Connecting everything to one domain ID is not enough: it provides a discovery,
+but not calibration, timing, ownership of executive devices
+ROS 2 does not replace these mechanisms.
 
-## Реализованные контракты
+## Contracts implemented
 
-- RGB и числовая depth/IR → `sensor_msgs/Image`; CameraInfo сохраняет K/P/R/D.
-- Передний/задний сканы → отдельные `LaserScan`, IMU → `Imu`, магнитометр →
-  `MagneticField`, измеренная одометрия ROSMASTER → `Odometry`.
-- Положения сервоприводов ROSMASTER → `servo_feedback_rad` (`JointState`).
-  Это преобразованные из градусов **сырые углы сервоприводов**, а не
-  откалиброванные относительно URDF joint positions. Они не подключены к
-  robot_state_publisher автоматически.
-- Облако производителя → `cloud_display` (`PointCloud2`), с сохранением
-  факта прореживания; напряжение → `BatteryState`, неизвестный процент — NaN.
-- Статические TF производителя имеют префиксы `tank/` и `rosmaster/`.
-  Одинаковые `base_link` двух роботов не смешиваются. Трансформы `world→robot`
-  не выдуманы и не публикуются. Динамическая объединённая карта ещё не готова.
-- Повторные и устаревшие измерения не публикуются заново. Ошибки преобразования
-  видны в статусе и не позволяют считать наблюдения полностью готовыми.
+- RGB and the numerical dept /IR  ♪ `sensor_msgs/Image` ♪; CameraInfo Saves K /P/R/D.
+- Front/Reversal scans ♪ individual `LaserScan` ♪ IMU ♪ `Imu` ♪ Magnetometer ♪
+  `MagneticField`, measured odometer ROSMASTER ♪ `Odometry`.
+- Positions of servo-drives ROSMASTER ♪ `servo_feedback_rad` (`JointState`)
+  These are converted from degrees **red angles of servo-drives**, not
+  calibrated relative to the URDF point positions.
+  Robot_state_publisher automatically.
+- Manufacturer's cloud   ♪ `cloud_display` (`PointCloud2` ), with conservation
+  cutting; voltage `BatteryState`, unknown percentage is NaN.
+- Static TF manufacturers have the prefixes `tank/` and `rosmaster/`.
+  Same `base_link` Two robots don't mix. `world→robot`
+  The dynamic integrated map is not ready yet.
+- Re- and outdated measurements are not re-published.
+  Seen in status and not fully ready for observation.
 
-## Время
+## Time
 
-Каждый наблюдатель возвращает связанную пару ROS time / monotonic time,
-boot ID и длительность измерения. Homebrain измеряет HTTP round trip,
-выбирает малозадержанную оценку из последних 15 секунд и повторяет замер
-каждые 3 секунды. Учитывается инженерный запас дрейфа 250 ppm; это **не
-измеренная характеристика генератора**. Перезагрузка, скачок часов >50 мс
-и `use_sim_time` у физического источника сбрасывают/отклоняют согласование.
+Each observer returns the bound ROS time pair.
+Boot ID and the measurement time. Homebrain measures HTTP root treep,
+Selects a low-delay rating from the last 15 seconds and repeats measurement
+The engineering reserve of 250 ppm is taken into account; this is **not
+measured generator characteristic**. Reloading, clock jump >50 ms
+and `use_sim_time` at the physical source, drop/distort alignment.
 
-В ROS header публикуется исходное время измерения, переведённое на шкалу
-Homebrain. Без исходного header используется явно обозначенное время прихода
-в наблюдатель. Исходные timestamps и frame IDs остаются в диагностических
-пакетах и статусе. Камеры аппаратно не синхронизированы.
+ROS header publishes the reference time of measurement translated to scale
+Homebrain. Without a source header, a clearly defined time of arrival is used
+The reference numbers and the frame IDs remain in the diagnostics.
+The cameras are not synchronized.
 
-Сопоставитель кадров выбирает пару по исходным RGB timestamps, расширяя
-разницу на погрешность обоих часов. По умолчанию допустима сумма ≤100 мс;
-нет подходящей пары — нет утверждения о согласованном наблюдении. После
-перезапуска Tank обе настоящие платформы получены одновременно; сопоставление
-нашло пару с оценкой расхождения около 64 мс. Это текущий замер, не гарантия.
+The human resources matching selects the pair from the original RGB timetamps, expanding
+The difference is both hours. The default is the sum ≤ 100 ms;
+No suitable pair, no agreed observation.
+Tank restarting both real platforms received simultaneously; comparison
+Found a couple with an estimate of the discrepancy of about 64 ms. This is an ongoing measurement, not a guarantee.
 
-## Запуск и проверка
+## Start and check
 
-Docker image собирается из `agents/ros2_hub/Dockerfile` на закреплённом digest
-официального ROS Jazzy base. Пользовательская служба
-`explorer3-ros2-hub.service` включена на Homebrain. Контейнер без устройств,
-без capabilities, с read-only root и исходниками; запись только в собственный
-каталог статуса и временную память. Конфиги с токенами монтируются read-only,
-не входят в образ или Git.
+Docker image is collected from `agents/ros2_hub/Dockerfile` on fixed digest
+Official ROS Jazzy Base.
+`explorer3-ros2-hub.service` is on Homebrain.
+No capacilitations, with read-only root and source; entry only in its own
+Status and time memory catalogues.
+is not part of the image or Git.
 
-Имена `.local` разрешаются через libnss-mdns и сокет Avahi Homebrain,
-подключённый в контейнер отдельно. Иначе Docker не разрешал имя Tank, хотя
-тот же запрос на хосте работал. IP не закреплён искусственно в коде.
+`.local` is allowed via libns-mdns and the Avahi Homebrain,
+The Docker did not allow the name Tank, although
+The same host request was running. The IP is not artificially stored in the code.
 
-DDS ограничен loopback-интерфейсом Homebrain. `fastdds.xml` использует UDP
-и явный локальный unicast discovery, чтобы отдельный контейнер-потребитель
-работал без общей `/dev/shm`. `fastdds-hub.xml` дополнительно задаёт уникальный
-prefix единственного hub; потребители используют **fastdds.xml**, не hub-файл.
+DDS is limited to a loopback-interface Homebrain. `fastdds.xml` uses UDP
+and a clear local unicast discovery to make a separate consumer container
+worked without a common `/dev/shm`. `fastdds-hub.xml` adds unique
+====Prepix ====The only hub is prefix; consumers use **fastdds.xml**, not hub file.
 
-Проверка отдельным настоящим ROS-подписчиком:
+Verification by a separate, present ROS subscriber:
 
 ```sh
 docker run --rm --network host --user 1000:1000 \
@@ -93,81 +93,81 @@ docker run --rm --network host --user 1000:1000 \
   explorer3-ros2-hub:jazzy python3 scripts/check_ros2_hub.py
 ```
 
-Проверены реальные RGB/depth, оба скана, IMU, servo feedback и odometry
-ROSMASTER; стандартная сериализация ROS, разные frame IDs, свежесть и
-отсутствие моторных топиков у hub. Проверка синтетических сообщений не
-публикует DDS и запускается отдельно через `check_ros2_hub_contract.py`.
-Chromium проверил страницу ROSMASTER, запись/повтор и общий обзор на мобильном.
+Checked real RGB /depth, both scans, IMU, servo feedback and odomery
+ROSMASTER; standard ROS serrification, different frame IDs, freshness and
+No motor tops in Hub. Verification of synthetic messages not
+The DDS is published and launched separately through `check_ros2_hub_contract.py`.
+Chromium checked the ROSMASTER page, recording/repeating and general overview on the mobile.
 
-## Что остаётся
+## What remains
 
-1. Проверить стабильность потоков при будущей разрешённой физической сессии.
-   Обновлённые observers уже стоят на обоих роботах; одновременно проверены
-   реальные ROS-подписки на 13 потоков двух машин (без моторных команд).
-2. Измерить преобразования датчиков/оснований, выбрать общую карту и метод
-   локализации. Не приравнивать командную интеграцию Tank к измеренной одометрии.
-3. После отдельных физических допусков подключить совместное исполнение
-   задач к проверенному механизму владения и STOP. Сейчас физический
-   автономный координатор не включён; симуляционный — отдельный компонент.
-4. SO-101 подключить своим адаптером после отдельной приёмки. Не требуется
-   устанавливать ROS на USB-сервоприводы; его узел может жить на Homebrain.
+1. Check the stability of the flow at a future authorized physical session.
+   Updated observers are already standing on both robots; simultaneously checked
+   Real ROS subscriptions to 13 streams of two cars (without motor commands).
+2. Measure sensor/base conversions, select common map and method
+   Do not equate the command integration of Tank with the measured odometer.
+3. After individual physical tolerances, connect joint execution
+   The current process of physical verification of the requirements of the approved ownership mechanism and STOP is now a physical one.
+   The autonomous coordinator is not included; the simulation is a separate component.
+4. SO-101 is not required to be connected by its adapter after a separate application.
+   Set the ROS on USB-servo drive; its node can live on Homebrain.
 
-Основания: [ROS 2 Clock and Time](https://design.ros2.org/articles/clock_and_time.html),
-[официальный пример unicast discovery](https://github.com/ros2/ros2_dds_profiles_examples/blob/main/fastdds/unicast_discovery_from_another_host.xml),
+Grounds: [ROS 2 Clock and Time](https://design.ros2.org/articles/clock_and_time.html),
+[Official example unicat discovery](https://github.com/ros2/ros2_dds_profiles_examples/blob/main/fastdds/unicast_discovery_from_another_host.xml),
 [Fast DDS Initial Peers](https://fast-dds.docs.eprosima.com/en/2.x/fastdds/use_cases/wifi/initial_peers.html).
 
-## Сбой памяти Tank и разделение версий ROS
+## Tank Memory Malfunction and ROS Dissociation
 
-В загрузке `f061ccd6-50b9-433c-bfa5-bd25c2b945df` журнал ядра подтвердил
-исчерпание памяти и массовое завершение ROS-процессов. `joy_node` занимал
-около 2,6 ГБ RSS, `hand_gesture` — около 3,8 ГБ; камера, MCU bridge и лидар
-тоже завершились. Пинг продолжал работать при недоступных SSH/HTTP.
+In the download of `f061ccd6-50b9-433c-bfa5-bd25c2b945df`, the core log confirmed
+Exhaustion of memory and mass completion of the ROS processes. `joy_node` occupied
+:: approximately 2.6 GB RSS, `hand_gesture` – about 3.8 GB; camera, MCU Bridge and lidar
+Ping continued to operate with the unaffordable SSH /HTTP..
 
-На Tank установлены Fast DDS/typesupport пакеты февраля 2024. Известен
-[дефект межверсионного discovery Humble/Jazzy](https://github.com/ros2/rmw_fastrtps/issues/797),
-исправление для Humble [влито в сентябре 2025](https://github.com/ros2/rosidl_typesupport_fastrtps/pull/133).
-Мой ранний просмотр ROS-топиков ROSMASTER без явного domain ID мог вызвать
-такой контакт с Tank. Это вероятное объяснение, а не доказанная трассировкой
-первопричина; опасный сценарий на роботе повторно не воспроизводился.
+The Fast DDS /typesupport packages were installed on Tank.
+[Defect of the interversial discovery Humble /Jazzy](https://github.com/ros2/rmw_fastrtps/issues/797),
+The correction for Humble [in September 2025](https://github.com/ros2/rosidl_typesupport_fastrtps/pull/133)].
+My early view of ROS-topics ROSMASTER without a clear domain ID could have caused
+It's a possible explanation, not a proven router.
+The root; the dangerous scenario on the robot was not repeated.
 
-Собственные observers теперь проверяют ROS_DISTRO и явно задают домен:
-Tank Humble/0, ROSMASTER Jazzy/30; hub и его проверки требуют Jazzy/73 и
-localhost-only. Обмен между ними идёт по HTTP. Штатный ROS не обновлялся,
-прошивка, пороги питания и зуммер не менялись. Оператор перезапустил Tank;
-на новой загрузке восстановились штатные датчики, доступно около 6 ГБ RAM,
-новых OOM в проверенном окне нет. Это не закрывает отдельный моторный USB-инцидент.
+The personal observators now check ROS_DISTRO and clearly ask the domain:
+Tank Humble /0, ROSMASTER Jazzy /30; Hub and its verifications require Jazzy /73 and
+Localhost-only. Exchange between them is HTTP.
+The stitch, power thresholds and the zummer have not changed.
+The new download has recovered the regular sensors, available around 6 GB RAM,
+This does not close a separate engine USB incident.
 
-## Общая запись и просмотр
+## General recording and viewing
 
-На `/fleet/live` есть «Записать датчики» на 15/30/60 секунд. Независимый
-контейнер подписывается только на фиксированный список топиков domain 73,
-без доступа к устройствам и конфигам роботов. Формат MCAP (rosbag2), до
-512 МиБ сериализованных сообщений, разбиение по 64 МиБ; перед началом
-требуется 1 ГБ свободного места. Реальная длительность и достигнутый лимит
-записаны в отчёте. Отсутствующая машина не подменяется синтетическими данными.
+`/fleet/live` has "Place Sensors" for 15 /30/60 seconds.
+The container only signs on a fixed list of domain 73 tops,
+No access to robot devices and seizures.
+512 MIB seriated messages, 64 MIBs; before starting
+1 GB of space required.
+The missing machine is not replaced by synthetic data.
 
-По завершении официальный `rosbag2_py` повторно читает каждый файл и
-сверяет число сообщений по потокам. В отчёте есть перечень реально полученных
-машин, source/receive timestamps, frame IDs и число подходящих пар часов.
-`clock-status.json` сохраняет оценки погрешности и boot IDs в процессе записи.
-Числовая глубина Aurora публикуется как стандартная `16UC1` в миллиметрах;
-оригинальное `mono16` остаётся в исходных диагностических пакетах.
+Upon completion of the official `rosbag2_py` read each file again and
+Checks the number of messages by stream.
+The number of cars, the source /receive timeamps, the frame IDs and the number of hours that are suitable.
+`clock-status.json` maintains error and Boot IDs during the recording process.
+Aurora numerical depth is published as the standard `16UC1` in millimeters;
+The original `mono16` remains in the original diagnostic packages.
 
-«Смотреть вместе» открывает камеры, глубину и лидары двух роботов на одной
-временной шкале. Это просмотр из сохранённого MCAP, а не обращение к роботам
-и не ROS playback-публикатор. Для удобства сохранены JPEG-превью примерно
-раз в секунду; изображения старше 1,5 с к выбранному моменту скрываются.
-Числовые исходники остаются в MCAP. Превью не используются для обучения.
+"Looking together" opens up cameras, depths and lidars of two robots on one.
+This is a view from a stored MCAP, not a robotic approach.
+And not ROS Playback.
+Once per second; images above 1.5 seconds are hidden by the selected time.
+The numerical reference points remain in MCAP. Prevew is not used for learning.
 
-Каталог: `~/.local/share/explorer3/fleet-captures/<id>/`. Архивы помечены
-`diagnostic_rosbag`, `training_eligible=false`. Запись наблюдений без действий
-не является обучающим показом. Для показов с действиями используются отдельные
-профили Tank/ROSMASTER в LeRobot; они сохраняют исходные пакеты датчиков.
+Catalogue: `~/.local/share/explorer3/fleet-captures/<id>/`. Archives marked
+`diagnostic_rosbag`, `training_eligible=false`. Recording of observations without action
+It is not a teaching show.
+Tank /ROSMASTER profiles in LeRobot; they store the original sensors.
 
-Обновление агентного слоя: Homebrain `cognitive.real_execution` использует
-существующие Session/ROSMASTER Operator и авторизованные trials. Командный
-тракт остаётся прежним собственным API/SDK; read-only ROS 2 hub не превращён
-в общий издатель motor-команд. Так сохраняются действующие watchdog/STOP
-на устройстве и изоляция Humble/Jazzy. Модель только предлагает закрытый
-план, исходные датчики дают evidence; некалиброванная общая карта не
-подменяется выдуманным world transform.
+Update the service layer: Homebrain `cognitive.real_execution`
+The current Session /ROSMASTER Operator and authorized triales.
+The tractor remains the same API /SDK; read-only ROS 2 Hub is not transformed
+To the general publisher of the motor team./STOP
+on the device and insulation of the Humble /Jazzy. only offers a closed model
+plan, reference sensors give an indication; uncalibrated common map
+replaces by a fake world transform.

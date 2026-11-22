@@ -4,8 +4,8 @@ import json
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from explorer3 import permission_migration
-from explorer3.paths import DATA
+from explorer4 import permission_migration
+from explorer4.paths import DATA
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--data',type=Path,default=DATA)

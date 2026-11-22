@@ -5,7 +5,7 @@ import time
 import numpy as np
 import pytest
 
-from explorer3 import episodes, fleet_map as fm, sim2d, so101_handoff, swarm, swarm_pages, swarm_sim, world_memory
+from explorer4 import episodes, fleet_map as fm, sim2d, so101_handoff, swarm, swarm_pages, swarm_sim, world_memory
 
 
 class _NoLocalizer:
@@ -30,10 +30,10 @@ def real(monkeypatch, tmp_path):
     monkeypatch.setattr(episodes, 'ROOT', tmp_path / 'episodes')
     monkeypatch.setattr(so101_handoff, 'CONFIG', tmp_path / 'handoff.json')
     monkeypatch.setattr(swarm_sim, 'SIM', tmp_path / 'sim')
-    from explorer3 import knowledge
+    from explorer4 import knowledge
     monkeypatch.setattr(knowledge, 'STORE', tmp_path / 'knowledge.json')
-    from explorer3 import catalog
-    from explorer3.cognitive import store
+    from explorer4 import catalog
+    from explorer4.cognitive import store
     monkeypatch.setattr(catalog, 'DATA', tmp_path)
     monkeypatch.setattr(store, 'DATA', tmp_path)
     store.initialize()
@@ -92,7 +92,7 @@ def test_team_finds_an_object_in_the_virtual_room(real):
 
 
 def test_search_trial_is_journaled_and_confirmed_by_the_operator(real, monkeypatch):
-    from explorer3 import research_log
+    from explorer4 import research_log
     monkeypatch.setattr(research_log, 'LOG', real / 'research' / 'search_trials.jsonl')
     team = swarm_sim.enter(seed=11)
     team.search_trial('sock', 'A3', 'S01', 200)
@@ -109,7 +109,7 @@ def test_search_trial_is_journaled_and_confirmed_by_the_operator(real, monkeypat
 def test_knowledge_gap_calls_the_so101_station_and_the_recipient_uses_it(real):
     """ROSMASTER does not know how to grasp the cookie -> the SO-101 station measures it -> the
     recipient grasps with that knowledge; the help case is verified by the recipient's result."""
-    from explorer3 import knowledge
+    from explorer4 import knowledge
     team = swarm_sim.enter(seed=3)
     team.command('принеси печенье', executor='geometric_baseline')
     end = time.monotonic() + 300

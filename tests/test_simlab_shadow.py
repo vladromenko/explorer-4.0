@@ -15,18 +15,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def fake_policy(path):
-    from explorer3.simlab import contract
+    from explorer4.simlab import contract
     dim = contract.size('tank') * 3
     np.savez(path / 'policy.npz', norm_mean=np.zeros(dim), norm_var=np.ones(dim), w0=np.zeros((2, dim)), b0=np.array([0.5, 0.0]))
     import hashlib
-    info = {'format': 'explorer3.simlab.mlp_elu.v1', 'robot': 'tank', 'contract_version': contract.VERSION,
+    info = {'format': 'explorer4.simlab.mlp_elu.v1', 'robot': 'tank', 'contract_version': contract.VERSION,
             'contract_hash': contract.contract_hash('tank'), 'history': 3, 'layers': 1, 'scenario': 'dock_v1',
             'scenario_fingerprint': 'x', 'weights_sha256': hashlib.sha256((path / 'policy.npz').read_bytes()).hexdigest()}
     (path / 'policy.json').write_text(json.dumps(info))
 
 
 def fake_dataset(path, n=12):
-    from explorer3.sensors import CHANNELS
+    from explorer4.sensors import CHANNELS
     (path / 'meta').mkdir(parents=True)
     (path / 'meta/info.json').write_text(json.dumps({'fps': 20, 'features': {'observation.environment_state': {}, 'action': {}}}))
     env = np.zeros((n, len(CHANNELS)), np.float32)

@@ -1,9 +1,9 @@
 """Stage B read-only motor/calibration probe; no torque or position writes."""
 import fcntl,json,termios,time
 from dataclasses import asdict
-from explorer3.paths import DATA
-from explorer3.hardware import JOINTS,hardware_settings,hardware_paths,calibration_snapshot,CameraCapture
-from explorer3.resources import ResourceLease,assert_hardware_available
+from explorer4.paths import DATA
+from explorer4.hardware import JOINTS,hardware_settings,hardware_paths,calibration_snapshot,CameraCapture
+from explorer4.resources import ResourceLease,assert_hardware_available
 from lerobot.motors import Motor,MotorCalibration,MotorNormMode
 from lerobot.motors.feetech import FeetechMotorsBus
 cfg=hardware_settings()

@@ -53,7 +53,7 @@ def main():
     # Read the finished MCAP with the official reader: no playback publisher.
     reader=rosbag2_py.SequentialReader()
     reader.open(rosbag2_py.StorageOptions(uri=str(root/'bag'),storage_id='mcap'),rosbag2_py.ConverterOptions('cdr','cdr'))
-    from explorer3.fleet_replay import ReplayIndex
+    from explorer4.fleet_replay import ReplayIndex
     replay=ReplayIndex(root)
     counts={};frames={}
     while reader.has_next():

@@ -4,7 +4,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from playwright.async_api import async_playwright,expect
 
-DATA=Path(os.environ['EXPLORER3_CHECK_DATA']);BASE=os.environ['EXPLORER3_CHECK_URL'];OUT=Path(os.environ['EXPLORER3_CHECK_OUTPUT'])
+DATA=Path(os.environ['EXPLORER4_CHECK_DATA' if 'EXPLORER4_CHECK_DATA' in os.environ else 'EXPLORER3_CHECK_DATA']);BASE=os.environ['EXPLORER4_CHECK_URL' if 'EXPLORER4_CHECK_URL' in os.environ else 'EXPLORER3_CHECK_URL'];OUT=Path(os.environ['EXPLORER4_CHECK_OUTPUT' if 'EXPLORER4_CHECK_OUTPUT' in os.environ else 'EXPLORER3_CHECK_OUTPUT'])
 if 'validation' not in DATA.parts:raise ValueError('Isolated validation storage required')
 
 

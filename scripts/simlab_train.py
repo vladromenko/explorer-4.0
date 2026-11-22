@@ -7,10 +7,10 @@ import argparse
 import json
 from functools import partial
 
-from explorer3.paths import DATA
-from explorer3.simlab import artifact, scenario
-from explorer3.simlab.dock_gpu import DockBatch
-from explorer3.simlab.ppo import train
+from explorer4.paths import DATA
+from explorer4.simlab import artifact, scenario
+from explorer4.simlab.dock_gpu import DockBatch
+from explorer4.simlab.ppo import train
 
 
 def main():
@@ -27,13 +27,13 @@ def main():
     name = a.name or f'{a.robot}_{task}_s{a.seed}'
     out = DATA / 'simlab/runs' / name
     if a.robot == 'so101':
-        from explorer3.simlab.arm_warp import ArmBatch
+        from explorer4.simlab.arm_warp import ArmBatch
         make = lambda n, seed, curriculum: ArmBatch(n=n, seed=seed, curriculum=curriculum)
     else:
         make = partial(DockBatch, a.robot)
     extra = {}
     if a.robot == 'so101' and a.demos:
-        from explorer3.simlab.arm_demos import collect
+        from explorer4.simlab.arm_demos import collect
         import numpy as np
         cache = DATA / f'simlab/demos/so101_{a.demos}.npz'
         if cache.exists():

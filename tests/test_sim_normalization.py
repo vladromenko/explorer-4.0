@@ -2,8 +2,8 @@
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv,VecNormalize
-from explorer3.sim.environment import SO101PickPlace,StateTeacher
-from explorer3.sim import checkpoints
+from explorer4.sim.environment import SO101PickPlace,StateTeacher
+from explorer4.sim import checkpoints
 
 
 def test_policy_and_frozen_normalization_roundtrip_without_training(tmp_path):

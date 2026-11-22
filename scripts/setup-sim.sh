@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-sim_data="${EXPLORER3_DATA:-$HOME/.local/share/explorer3}"
+sim_data="${EXPLORER4_DATA:-${EXPLORER3_DATA:-$HOME/.local/share/explorer3}}"
 python3 -m venv .venv-sim
 .venv-sim/bin/python -m pip install -r configs/sim-requirements.lock.txt
 source_dir="$sim_data/cache/source/mujoco_menagerie"

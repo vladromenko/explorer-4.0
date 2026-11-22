@@ -1,24 +1,24 @@
-# Вычислительный бюджет симуляции (M0, 14.11.2026)
+# Simulation calculation budget (M0, 14.11.2026)
 
-Homebrain: Jetson Orin NX 16 ГБ, MuJoCo 4.0.1, mujoco_warp 4.0.1, warp 1.18.
-Скрипты: `scripts/sim_benchmark.py` (CPU и Warp без графов),
-`scripts/sim_benchmark_warp_graph.py` (Warp с CUDA graph). Сырые числа:
+Homebrain: Jetson Orin NX 16 GB, MuJoCo 4.0.1, mujoco_warp 4.0.1, warp 1.18.
+Scripts: `scripts/sim_benchmark.py` (CPU and Warp without graphs),
+`scripts/sim_benchmark_warp_graph.py` (Warp with CUDA graft) Raw numbers:
 `~/.local/share/explorer3/validation/sim-benchmark-2026-11-14.json`.
 
-| Задача | Физика, шаг | Подшагов на управление | CPU, 1 процесс | Warp без графа, 64 мира | Warp + CUDA graph |
+| Objective| Physics, step| Control pads| CPU, 1 process| Warp without graph, 64 worlds| Warp + CUDA graph |
 |---|---|---|---|---|---|
-| Tank dock | 2 мс | 25 (20 Гц) | 976 упр./с (49× реального времени) | 3.7 тыс. физ./с | 2.11 млн физ./с при 4096 мирах (около 84 тыс. упр./с) |
-| ROSMASTER dock | 2 мс | 25 (20 Гц) | 744 упр./с | 3.7 тыс. физ./с | как Tank (та же плоская модель) |
-| SO-101 pick-place | 0.5 мс | 67 (30 Гц) | 338 упр./с | 4.4 тыс. физ./с | 0.46 млн физ./с при 1024 мирах (около 6.9 тыс. упр./с) |
-| ROSMASTER pick-place | 0.5 мс | 100 (20 Гц) | 177 упр./с | 3.0 тыс. физ./с | ожидается порядка SO-101 |
+| Tank dock | 2 ms| 25 (20 Hz)| 976 hp/s (49× real time)| 3.7 thousand physical/s| 2.11 million physical/s in 4,096 worlds (about 84,000 ap/s)|
+| ROSMASTER dock | 2 ms| 25 (20 Hz)| 744 hrs/s| 3.7 thousand physical/s| like Tank.|
+| SO-101 pick-place | 0.5 ms| 67 (30 Hz)| 338 a.m./s.| 44,000 physicals/s| 0.46 million physicals/s in 1,024 worlds (about 6.9 thousand ap/s)|
+| ROSMASTER pick-place | 0.5 ms| 100 (20 Hz)| 177 a.m./s.| 3.0 thousand physicals/s| order of SO-101 expected|
 
-## Выводы
-- Без CUDA graph Warp на Orin упирается в задержку запуска ядер и медленнее
-  одного ядра CPU. **С графом** — выигрыш около 86× (базы) и около 20× (руки).
-- Решение: учитель PPO — векторная среда целиком на GPU (Warp + torch через
-  `wp.to_torch`, шаг физики захвачен в граф), без копий через CPU.
-  CPU-среды остаются для оценки, теневого режима, рендера и тестов.
-- Первая компиляция ядер Warp — минуты (кэш в `~/.cache/warp`).
-- Ориентир объёма: база — 100 млн шагов управления за около 20–30 мин
-  физики; рука — 50 млн шагов управления за около 2 ч физики (без учёта сети
-  и логики среды; уточнить в M6).
+## Conclusions
+- Without CUDA graft warp on Orin, it is held back and slower
+  The first one is the CPU.
+- Decision: PPO teacher is a vector medium that is fully on GPU (Warp + Torch through
+  `wp.to_torch`, a step of physics captured in the graph), without copies via CPU.
+  The CPU media remain for evaluation, shadow mode, rendezvous and tests.
+- The first compilation of Warp kernels is a minute (chash in `~/.cache/warp`).
+- :: Volume orientation: Base 100 million control steps in about 20-30 minutes
+  Physics; hand: 50 million steps of control for about 2 hours of physics (without network accounting)
+  and environmental logic; specify in M6.

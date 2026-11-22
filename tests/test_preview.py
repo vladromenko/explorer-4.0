@@ -4,8 +4,8 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
-from explorer3.preview import LivePreview
-from explorer3.control import Control
+from explorer4.preview import LivePreview
+from explorer4.control import Control
 
 class PreviewTests(unittest.IsolatedAsyncioTestCase):
     async def test_slow_consumer_receives_latest_not_a_backlog(self):
@@ -44,7 +44,7 @@ class PreviewTests(unittest.IsolatedAsyncioTestCase):
         self.assertLess(max(b-a for a,b in zip(ticks,ticks[1:])),.1)
 
     async def test_cleanup_preserves_actual_stop_reason(self):
-        with patch('explorer3.control.catalog.event'):
+        with patch('explorer4.control.catalog.event'):
             c=Control()
             with patch.object(c,'authorized',return_value=True):
                 c.acquire('browser')

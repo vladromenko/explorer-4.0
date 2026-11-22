@@ -4,10 +4,10 @@ from types import SimpleNamespace
 import cv2,httpx,numpy as np,uvicorn
 from fastapi import FastAPI,Request
 from fastapi.responses import StreamingResponse
-from explorer3.hardware import CameraCapture,hardware_settings
-from explorer3.preview import LivePreview
-from explorer3.resources import ResourceLease
-from explorer3.paths import DATA
+from explorer4.hardware import CameraCapture,hardware_settings
+from explorer4.preview import LivePreview
+from explorer4.resources import ResourceLease
+from explorer4.paths import DATA
 
 async def main():
     cfg=hardware_settings()

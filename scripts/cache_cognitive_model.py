@@ -3,7 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 from huggingface_hub import snapshot_download
-from explorer3.paths import ROOT,DATA
+from explorer4.paths import ROOT,DATA
 
 cfg=json.loads((ROOT/'configs/cognitive-model.json').read_text())
 root=DATA/'cache/cognitive/qwen3-vl-2b'

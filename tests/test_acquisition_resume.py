@@ -2,8 +2,8 @@
 import time
 import pytest
 
-from explorer3 import catalog, knowledge, world_memory
-from explorer3.cognitive import broker, registry, store
+from explorer4 import catalog, knowledge, world_memory
+from explorer4.cognitive import broker, registry, store
 from test_swarm import isolated, make, wait, Arm
 from test_mission_goal import zone, measurement
 

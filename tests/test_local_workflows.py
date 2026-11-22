@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 import numpy as np
 import pytest
-from explorer3.datasets import grouped_split
-from explorer3.research import features, fit, predict, report, prioritize
+from explorer4.datasets import grouped_split
+from explorer4.research import features, fit, predict, report, prioritize
 
 
 def test_split_blocks_transitive_session_or_scene_leakage():

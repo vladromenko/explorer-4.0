@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 cv2 = pytest.importorskip('cv2')
-from explorer3.simlab.perception import MarkerDetector, TargetTracker, cube_on_table
+from explorer4.simlab.perception import MarkerDetector, TargetTracker, cube_on_table
 
 K = np.array([[415.3, 0, 320], [0, 416.1, 200], [0, 0, 1]])   # Tank camera intrinsics (640x400)
 

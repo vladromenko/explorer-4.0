@@ -10,7 +10,7 @@ import time
 import uuid
 
 ROOT=Path(__file__).resolve().parents[1]
-DATA=Path(os.environ.get('EXPLORER3_DATA',str(Path.home()/'.local/share/explorer3')))
+DATA=Path(os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA',str(Path.home()/'.local/share/explorer3'))))
 SSH=['ssh','-o','BatchMode=yes','-o','ConnectTimeout=2','-o','ConnectionAttempts=1',
      '-o','ServerAliveInterval=2','-o','ServerAliveCountMax=1','hiwonder-tank']
 

@@ -81,8 +81,8 @@ def main():
     report = {'domain': 'fixture', 'robot_touched': False, 'data': str(data), '_dir': data}
     py = str(ROOT / '.venv/bin/python')
     agent = subprocess.Popen([py, str(ROOT / 'scripts/fake_rosmaster_agent.py'), str(AGENT_PORT)], cwd=ROOT)
-    ui = subprocess.Popen([py, '-m', 'explorer3.app'], cwd=ROOT, env={**os.environ, 'EXPLORER3_DATA': str(data),
-                          'EXPLORER3_PORT': str(UI_PORT), 'EXPLORER3_HOST': '127.0.0.1'}, stdout=open(data / 'ui.log', 'w'), stderr=subprocess.STDOUT)
+    ui = subprocess.Popen([py, '-m', 'explorer4.app'], cwd=ROOT, env={**os.environ, 'EXPLORER4_DATA': str(data),
+                          'EXPLORER4_PORT': str(UI_PORT), 'EXPLORER4_HOST': '127.0.0.1'}, stdout=open(data / 'ui.log', 'w'), stderr=subprocess.STDOUT)
     try:
         wait_http(f'http://127.0.0.1:{AGENT_PORT}/health'); wait_http(UI + '/rosmaster/control')
         asyncio.run(scenario(report))

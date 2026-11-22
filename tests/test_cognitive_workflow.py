@@ -3,8 +3,8 @@ import json
 import time
 import uuid
 import pytest
-from explorer3 import catalog,resources
-from explorer3.cognitive import run,store,registry,broker
+from explorer4 import catalog,resources
+from explorer4.cognitive import run,store,registry,broker
 
 
 @pytest.fixture

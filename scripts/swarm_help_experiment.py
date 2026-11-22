@@ -36,8 +36,8 @@ OLD_VERSION = 'e' * 64          # «an earlier version of ROSMASTER's grasp»: m
 
 
 def episode(seed, comparison, prompt, memory_db, *, frozen=True, in_place=False, old_skill=False, vanish=False):
-    from explorer3 import catalog, fleet_map, world_memory, episodes, so101_handoff, swarm_sim, fleet_agents
-    from explorer3.cognitive import store
+    from explorer4 import catalog, fleet_map, world_memory, episodes, so101_handoff, swarm_sim, fleet_agents
+    from explorer4.cognitive import store
     tmp = Path(tempfile.mkdtemp())
     if in_place:                        # building the memory: write into the shared database itself
         tmp = Path(memory_db).parent
@@ -86,8 +86,8 @@ def main():
     a = ap.parse_args()
     out = Path(a.out) / time.strftime('%Y%m%d-%H%M%S')
     out.mkdir(parents=True, exist_ok=True)
-    from explorer3.cognitive import store
-    from explorer3 import catalog
+    from explorer4.cognitive import store
+    from explorer4 import catalog
     base = out / 'memory-start.sqlite3'
     if a.seed_memory:
         copy_db(a.seed_memory, base)

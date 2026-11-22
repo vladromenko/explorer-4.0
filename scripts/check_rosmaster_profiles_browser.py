@@ -163,8 +163,8 @@ def main():
     procs=[]
     try:
         for args,env,name in [([str(ROOT/'.venv/bin/python'),str(ROOT/'scripts/fake_rosmaster_agent.py'),'8050'],os.environ,'agent'),
-                ([str(ROOT/'.venv/bin/python'),str(ROOT/'tests/rosmaster_sensor_fixture.py')],{**os.environ,'EXPLORER3_DATA':str(data),'PYTHONPATH':str(ROOT)},'sensors'),
-                ([str(ROOT/'.venv/bin/python'),'-m','explorer3.app'],{**os.environ,'EXPLORER3_DATA':str(data),'EXPLORER3_PORT':'8051','EXPLORER3_HOST':'127.0.0.1'},'ui')]:
+                ([str(ROOT/'.venv/bin/python'),str(ROOT/'tests/rosmaster_sensor_fixture.py')],{**os.environ,'EXPLORER4_DATA':str(data),'PYTHONPATH':str(ROOT)},'sensors'),
+                ([str(ROOT/'.venv/bin/python'),'-m','explorer4.app'],{**os.environ,'EXPLORER4_DATA':str(data),'EXPLORER4_PORT':'8051','EXPLORER4_HOST':'127.0.0.1'},'ui')]:
             procs.append(subprocess.Popen(args,cwd=ROOT,env=env,stdout=open(data/(name+'.log'),'w'),stderr=subprocess.STDOUT))
         wait(AGENT+'/health');wait(UI+'/api/health')
         result=asyncio.run(scenario());(OUT/'profiles-browser.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))

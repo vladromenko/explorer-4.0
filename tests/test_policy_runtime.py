@@ -9,7 +9,7 @@ import pytest
 
 torch = pytest.importorskip('torch')
 pytest.importorskip('lerobot')
-from explorer3.paths import DATA
+from explorer4.paths import DATA
 
 CANDIDATES = sorted(glob.glob(str(DATA / 'checkpoints' / '*-b*/checkpoints/*/pretrained_model')))
 ACT = next((Path(c) for c in CANDIDATES if json.loads((Path(c) / 'config.json').read_text()).get('type') == 'act'
@@ -18,9 +18,9 @@ ACT = next((Path(c) for c in CANDIDATES if json.loads((Path(c) / 'config.json').
 
 @pytest.mark.skipif(ACT is None, reason='no ACT checkpoint on this machine')
 def test_robot_path_and_mujoco_path_agree(tmp_path):
-    from explorer3.policy_runtime import PolicyCore
-    from explorer3.act_client import ACTClient
-    from explorer3 import trials
+    from explorer4.policy_runtime import PolicyCore
+    from explorer4.act_client import ACTClient
+    from explorer4 import trials
     cfg = json.loads((ACT / 'config.json').read_text())
     key = next(k for k in cfg['input_features'] if k.startswith('observation.images.'))
     h, w = cfg['input_features'][key]['shape'][1:]

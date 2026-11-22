@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from explorer3.datasets import grouped_split
-from explorer3.sim.paired_capture import KNOWN, CONTROL, control_copy
+from explorer4.datasets import grouped_split
+from explorer4.sim.paired_capture import KNOWN, CONTROL, control_copy
 
 
 def test_paired_splits_are_independent_of_episode_uuids():
@@ -37,7 +37,7 @@ def test_control_derivative_preserves_pixels_actions_and_pairing(tmp_path):
 
 
 def test_donor_lineage_is_grouped_transitively_across_generated_scenes():
-    from explorer3.datasets import connected_groups
+    from explorer4.datasets import connected_groups
     episodes = [dict(id='a', session='s1', scene='c1', lineage_sources=['donor-1']),
                 dict(id='b', session='s2', scene='c2', lineage_sources=['donor-1', 'donor-2']),
                 dict(id='c', session='s3', scene='c3', lineage_sources=['donor-2']),
@@ -49,7 +49,7 @@ def test_donor_lineage_is_grouped_transitively_across_generated_scenes():
 
 
 def test_donor_lineage_is_read_from_immutable_recording_provenance(tmp_path):
-    from explorer3.datasets import connected_groups
+    from explorer4.datasets import connected_groups
     rows = []
     for index in range(2):
         root = tmp_path / str(index)
@@ -61,7 +61,7 @@ def test_donor_lineage_is_read_from_immutable_recording_provenance(tmp_path):
 
 
 def test_external_capture_mount_is_required_before_simulation(tmp_path, monkeypatch):
-    from explorer3.sim import paired_capture
+    from explorer4.sim import paired_capture
     monkeypatch.setattr(paired_capture.os.path, 'ismount', lambda path: False)
     with pytest.raises(ValueError, match='not mounted'):
         paired_capture.collect_seed(50000, tmp_path / 'result.json', external_spool=True)

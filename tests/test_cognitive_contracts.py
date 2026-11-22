@@ -2,9 +2,9 @@ import json
 import time
 import uuid
 import pytest
-from explorer3 import catalog,resources
-from explorer3.cognitive import store,broker,registry
-from explorer3.cognitive.schemas import ObservationEvidence,AssistanceCase,CompatibilityRecord,TaskGraph
+from explorer4 import catalog,resources
+from explorer4.cognitive import store,broker,registry
+from explorer4.cognitive.schemas import ObservationEvidence,AssistanceCase,CompatibilityRecord,TaskGraph
 
 
 @pytest.fixture

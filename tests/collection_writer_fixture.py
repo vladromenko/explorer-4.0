@@ -1,10 +1,10 @@
 """Synthetic timestamps/images only: managed four-profile recording, no robot/model."""
 import io,json,sys,time
 import numpy as np
-from explorer3 import catalog,collection,profiles
-from explorer3.recording import EpisodeWriter
-from explorer3.paths import prepare
-from explorer3.sensors import decode_packet,environment_features
+from explorer4 import catalog,collection,profiles
+from explorer4.recording import EpisodeWriter
+from explorer4.paths import prepare
+from explorer4.sensors import decode_packet,environment_features
 
 mode=sys.argv[2] if len(sys.argv)>2 else 'normal'
 name=sys.argv[1];task=name.removesuffix('_rgbd_lidar')
