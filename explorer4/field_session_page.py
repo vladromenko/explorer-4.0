@@ -64,3 +64,7 @@ def install():
             )
             ui.link("Параметры метки кубика SO-101", "/recording/collect?task=so101_pick_place")
             ui.link("Проверка камеры SO-101", "/workspace#field-checks")
+            ui.label(
+                "Оставьте AprilTag №1 на том же 29-мм кубике. При STOP покажите его камере ROSMASTER и проверьте, виден ли №1 на сохранённом RGB. Исходный кадр SO-101 уже есть."
+            )
+            ui.link("Проверить метку кубика на ROSMASTER", "/rosmaster/sensors?object_marker=true")

@@ -1,4 +1,5 @@
 """Local sensor inspection, with no ownership or movement controls."""
+import asyncio
 import base64
 import math
 import time
@@ -79,7 +80,7 @@ def install():
         return FileResponse(path,media_type='audio/wav',headers={'Cache-Control':'no-store'})
 
     @ui.page('/{robot}/sensors')
-    async def page(robot:str,recording: str | None=None):
+    async def page(robot:str,recording: str | None=None,object_marker: bool=False):
         if robot not in feeds:raise HTTPException(404)
         feed=feeds[robot]
         robot_name='Tank' if robot=='tank' else 'ROSMASTER'
@@ -107,7 +108,48 @@ def install():
         ui.label('Камеры, глубина и лазерный обзор. Подключение только для чтения: движение не запускается.').classes('muted')
         state=ui.label('Нажмите «Подключить датчики»').classes('text-teal-200')
         archive=None;last_packet=None;started=0.;busy=False
-        def connect():feed.start();state.set_text('Подключение к датчикам '+robot_name+'…')
+        marker_view = object_marker and robot == 'rosmaster' and not recording
+        if marker_view:
+            from . import rosmaster_object_marker as marker
+
+            ui.label('Метка предмета на камере ROSMASTER').classes('text-lg')
+            marker_status = ui.label('При STOP покажите кубик камере и нажмите «Подключить датчики». За одно нажатие проверяется один кадр.')
+            marker_links = ui.row().classes('gap-3')
+        async def connect():
+            feed.start()
+            state.set_text('Подключение к датчикам '+robot_name+'…')
+            if not marker_view:
+                return
+            connect_button.disable()
+            marker_links.clear()
+            try:
+                card = marker.registered_card()
+                target = f"{card['instance_id']} · {card['marker_dictionary']} №{card['marker_id']}"
+                marker_status.set_text(target + ' · ожидаем новый кадр')
+                checkpoint = await run.io_bound(marker.clock_checkpoint)
+                deadline = time.monotonic() + 3.
+                packet = None
+                while time.monotonic() < deadline:
+                    candidate = feed.latest
+                    if candidate is not None and candidate['received_ns'] > checkpoint['after_ns']:
+                        packet = candidate
+                        if marker.check_source(packet, checkpoint) == 'fresh':
+                            break
+                    await asyncio.sleep(.05)
+                if packet is None:
+                    marker_status.set_text(target + ' · после запроса не поступил новый пакет камеры. Повторите подключение при готовности датчиков.')
+                    return
+                report = await run.io_bound(marker.measure, packet, checkpoint, card)
+                marker_status.set_text(target + ' · ' + marker.STATES[report['status']] + '. Проверяется только ID на изображении.')
+                with marker_links:
+                    prefix = '/simlab-media/reports/rosmaster-object-marker-v1/' + report['id']
+                    if report.get('png_sha256'):
+                        ui.link('Сохранённый RGB', prefix + '/rgb.png')
+                    ui.link('Протокол кадра и SHA-256', prefix + '/result.json')
+            except Exception as exc:
+                marker_status.set_text('Не удалось получить измерение · '+str(exc))
+            finally:
+                connect_button.enable()
         def record():
             nonlocal archive,started
             if archive:return
@@ -120,7 +162,7 @@ def install():
                 archive.finish();save_state.set_text(f'Сохранено {archive.count} пакетов · запись доступна в списке ниже');archive=None
         if not recording:
             with ui.row().classes('items-center gap-3'):
-                ui.button('Подключить датчики',on_click=connect,color='teal')
+                connect_button = ui.button('Подключить датчики',on_click=connect,color='teal')
                 ui.button('Записать датчики · до 60 с',on_click=record,color='teal').props('outline')
                 ui.button('Закончить запись',on_click=stop_record).props('flat')
         else:
