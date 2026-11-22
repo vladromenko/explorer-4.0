@@ -1,6 +1,7 @@
 """Bounded assistance decisions reuse measured-history features and G ranking."""
 import math
 from explorer4 import research
+from .action_value import observed_choice
 
 SOURCES={'execution_monitor','policy_support_monitor','recorded_execution_history'}
 
@@ -54,7 +55,12 @@ def select(options,observations):
     needs_help=signal.get('support_alarm') is True or (risk is not None and risk>=.5) or (gain is not None and gain>0)
     order=('observe','recovery','human','continue') if needs_help or not verified.get('recipient_can_continue') else ('continue','observe','human','recovery')
     selection=next((v for v in order if v in candidates),'wait')
-    return {'candidates':candidates,'rejected':rejected,'selection':selection,'evidence_ids':ids,
+    choice = {"action":selection,"source":"fallback","scores":{}}
+    if candidates:
+        domains = {item.domain for item in observations if hasattr(item, "domain")}
+        if len(domains) == 1:
+            choice = observed_choice(observations, admissible=candidates, fallback=selection, domain=domains.pop())
+    return {'candidates':candidates,'rejected':rejected,'selection':choice["action"],'evidence_ids':ids,'action_value':choice,
         'baseline':'measured_conditions_v2','gain':gain,'gain_status':'available' if gain is not None else 'unavailable',
         'gain_per_operator_second':priority,'risk':risk,'history_signals':len(signals),
         'execution_started':False,'reason':'Verified continuation conditions and bounded monitor signals; no LLM confidence score'}

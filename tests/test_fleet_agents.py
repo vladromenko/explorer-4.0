@@ -73,3 +73,32 @@ def test_contradicted_help_is_avoided_and_help_is_limited(agents):
 def test_roles_report_state(agents):
     names = [r['role'] for r in agents.status()['roles']]
     assert names == fleet_agents.ROLES and agents.status()['plan']
+
+
+def test_action_value_in_normal_broker_requires_bound_same_domain_calibration(agents, tmp_path):
+    import hashlib
+    import json
+    import time
+    from explorer4.cognitive.action_value import observed_choice
+    actions = ["ask:tank", "recovery", "human"]
+    model = tmp_path / "fit.json"
+    model.write_text(json.dumps({"version": 1, "calibration": [15, 28], "domain": "sim", "actions": actions}))
+    sha = hashlib.sha256(model.read_bytes()).hexdigest()
+    scope = {"recipient": "rosmaster", "skill": "pick_floor", "object": "cookie", "reason": "pick_failed"}
+    forecasts = {name: {"p_success": .5, "elapsed_s": seconds, "help_cost": 0, "uncertainty": .1,
+                        "support": 12, "verified": True, "domain": "sim", "model_sha256": sha}
+                 for name, seconds in zip(actions, [4, 1, 8])}
+    payload = {"action_value": {"scope": scope, "domain": "sim", "model_sha256": sha, "time_weight": .02,
+                                "help_weight": .01, "forecasts": forecasts}}
+    now = time.time()
+    evidence = store.put_evidence(dict(id="forecast1", domain="sim", robot="rosmaster",
+        source="recorded_execution_history", sample_id="history1", frame_id="fleet", received_timestamp_ns=1,
+        clock_domain="sim", created_at=now-1, expires_at=now+90, status="observed", artifact_ref=model.name,
+        artifact_sha256=sha, content_sha256=store.digest(payload), payload=payload))
+    choice = agents.assist("rosmaster", "pick_floor", "cookie", "pick_failed", ["tank"], [evidence.id])
+    assert (choice["option"], choice["action_value"]["source"]) == ("retry", "forecast")
+    args = dict(admissible=actions, fallback="ask:tank", domain="sim", scope=scope)
+    assert observed_choice([evidence], **{**args, "scope": {}})["source"] == "fallback"
+    assert observed_choice([evidence], **{**args, "admissible": actions + ["ask:rosmaster"]})["source"] == "fallback"
+    model.write_text("{}")
+    assert observed_choice([evidence], **args)["source"] == "fallback"

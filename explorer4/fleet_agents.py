@@ -273,12 +273,10 @@ class FleetAgents:
             stats[case['assistance_type']][0] += case['status'] == 'supported_in_scope'
             stats[case['assistance_type']][1] += 1
         options = []
-        donors = [h for h in helpers if h != recipient]
-        if donors:
-            options.append(('observation', donors[0]))
+        donors = list(dict.fromkeys(h for h in helpers if h != recipient and h in ('tank', 'rosmaster')))
+        options.extend(('observation', h) for h in donors)
         options.append(('recovery', recipient))
         options.append(('human', None))
-        options = options[:3]
         # a compatible case that the verifier contradicted is negative experience for that kind of help
         by_id = {c['id']: c for c in store.cases()} if found['rejected'] else {}
         contradicted = {by_id[r['id']]['assistance_type'] for r in found['rejected']
@@ -288,11 +286,23 @@ class FleetAgents:
             s, n = stats.get(o[0], (0, 0))
             base = {'observation': 2., 'recovery': 1., 'human': 0.}[o[0]]   # fixed baseline order
             return (s / n if n else 0.) * 3 + base - (2. if o[0] in contradicted else 0.)
-        option, donor = max(options, key=score)
+        from .cognitive.action_value import observed_choice
+        keys = {('ask:'+robot if kind=='observation' else kind): (kind, robot) for kind, robot in options}
+        fallback_pair = max(options, key=score)
+        fallback = next(k for k,pair in keys.items() if pair == fallback_pair)
+        try:
+            observed = store.evidence(evidence_ids, domain=self.domain()) if evidence_ids else []
+        except ValueError:
+            observed = []
+        choice = observed_choice(observed, admissible=list(keys), fallback=fallback, domain=self.domain(),
+                                 scope={"recipient":recipient,"skill":skill,"object":prompt,"reason":reason})
+        option, donor = keys[choice["action"]]
         incompatible = len(found['rejected']) - sum(1 for r in found['rejected'] if r['reasons'] == ['Memory is contradicted'])
         why = (f'память: {len(found["accepted"])} совместимых случаев, {incompatible} отклонено как несовместимые с навыком получателя'
                + (f', опровергнуто: {", ".join(sorted(contradicted))}' if contradicted else '')
                if found['accepted'] or found['rejected'] else 'в памяти нет совместимых случаев — базовый порядок')
+        if choice["source"] == "forecast":
+            why = 'Выбрано по прогнозу исхода и цене доступных действий'
         self.helps += 1
         case = None
         if option != 'human' and evidence_ids:
@@ -300,7 +310,7 @@ class FleetAgents:
         b.note(option, f'{recipient} не смог ({reason}): ' + {'observation': f'{donor} посмотрит ещё раз', 'recovery': f'{recipient} попробует снова',
                                                               'human': 'нужен человек'}[option] + f' · {why}', case=case)
         return {'option': {'observation': 'helper_observe', 'recovery': 'retry', 'human': 'human'}[option],
-                'donor': donor, 'why': why, 'case': case}
+                'donor': donor, 'why': why, 'case': case, 'action_value':choice}
 
     def gaps(self, assessed, available):
         """MissionCoordinator: the recipient's knowledge gaps before acting and who can fill each."""
