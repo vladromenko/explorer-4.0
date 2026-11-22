@@ -16,13 +16,14 @@ def test_resume_never_repeats_completed_trials_and_rejects_changed_protocol(tmp_
     argv = ['experiment', '--episodes', '1', '--start-seed', '12000', '--out', str(tmp_path)]
     monkeypatch.setattr(experiment.sys, 'argv', argv)
     experiment.main()
-    assert len(calls) == 3
+    expected = [(12000, name) for name in ('privileged', 'none', 'so101', 'so101_yaw')]
+    assert calls == expected
     original = (tmp_path / 'results.jsonl').read_bytes()
     summary = json.loads((tmp_path / 'summary.json').read_text())
     assert summary['completed'] and summary['privileged']['success_rate'] == 1
     monkeypatch.setattr(experiment.sys, 'argv', argv + ['--resume'])
     experiment.main()
-    assert len(calls) == 3 and (tmp_path / 'results.jsonl').read_bytes() == original
+    assert calls == expected and (tmp_path / 'results.jsonl').read_bytes() == original
     monkeypatch.setattr(experiment.sys, 'argv', argv + ['--resume', '--episodes', '2'])
     with pytest.raises(SystemExit) as error:
         experiment.main()
