@@ -1,0 +1,302 @@
+"""Operator pages; refresh only reads diagnostics, no automatic hardware acquisition."""
+import asyncio
+import json
+from nicegui import ui
+from . import fleet_config
+from .paths import DATA
+from .recording_readiness import Service,NAMES
+
+STYLE='''
+.nicegui-content{max-width:1280px;width:100%;margin:auto;padding:24px;box-sizing:border-box}
+.w-full{width:100%}.ready-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:18px;width:100%}
+.ready-card{background:#192331;border:1px solid #344253;border-radius:14px;padding:20px;min-width:0;width:100%;box-sizing:border-box}
+.ready-item{border-bottom:1px solid #344253;padding:10px 0;width:100%;overflow-wrap:anywhere}
+.ready-red{color:#ffb5a7}.ready-green{color:#7dd3c7}.ready-action{color:#ffe0a2;font-size:14px}
+'''
+
+
+def install(service=None):
+    service=service or Service()
+
+    @ui.page('/recording/readiness')
+    async def readiness_page():
+        ui.add_css(STYLE);ui.dark_mode().enable();ui.colors(primary='#2b9c8f',negative='#d45050')
+        with ui.row():
+            ui.link('Explorer','/');ui.link('Сбор датасета','/recording/collect');ui.link('Инструкция','/datasets/guide')
+        ui.label('Готовность парка').style('font-size:30px;font-weight:650')
+        ui.label('Проверка связи и данных каждые 2 секунды. Открытие страницы не включает роботов.').style('color:#a6b6c6')
+        from . import data_safety
+        with ui.expansion('Резервная копия').classes('ready-card'):
+            ui.label('Без внешнего диска сохраняются SQLite и хеши, но не вторая копия самих видео. Автоматическая копия — ежедневно.')
+            external=ui.input('Папка внешнего диска',placeholder='/media/…/explorer3-backup').classes('w-full')
+            async def save_destination():
+                try:
+                    await asyncio.to_thread(data_safety.configure_external,external.value or '')
+                    ui.notify('Путь сохранён')
+                except Exception as exc:ui.notify(str(exc),type='negative')
+            async def copy_now():
+                copy_button.disable()
+                try:
+                    result=await asyncio.to_thread(data_safety.backup_now,force=True)
+                    ui.notify(result.get('warning') or 'Копия создана, хеши проверены')
+                    service.at=0
+                except Exception as exc:ui.notify('Не удалось сохранить копию: '+str(exc),type='negative')
+                finally:copy_button.enable()
+            ui.button('Сохранить путь',on_click=save_destination)
+            copy_button=ui.button('Сделать копию сейчас',on_click=copy_now)
+        stamp=ui.label('Собираем состояние…')
+        general=ui.column().classes('ready-card')
+        panels={}
+        with ui.element('div').classes('ready-grid'):
+            for robot,name in NAMES.items():
+                with ui.column().classes('ready-card'):
+                    ui.label(name).style('font-size:23px;font-weight:650')
+                    async def toggle(event,r=robot):
+                        try:
+                            await asyncio.to_thread(fleet_config.update_robot,r,enabled=bool(event.value),root=DATA)
+                            service.at=0
+                        except Exception as exc:ui.notify(str(exc),type='negative')
+                    try:enabled=fleet_config.load(DATA)['robots'][robot]['enabled']
+                    except ValueError:enabled=False
+                    ui.switch('Разрешить '+name,value=enabled,on_change=toggle)
+                    panels[robot]=ui.column().classes('w-full')
+                    with ui.row():
+                        ui.link('Включить управление','/rosmaster/control' if robot=='rosmaster' else '/?robot='+robot)
+                        ui.link('Проверка «всё ездит»','/recording/check/'+robot)
+        busy=False
+        def show(container,checks):
+            container.clear()
+            with container:
+                for check in checks:
+                    with ui.column().classes('ready-item'):
+                        ui.label(('✓ ' if check['status']=='green' else '• ')+check['label']).classes('ready-'+check['status'])
+                        value=check['value']
+                        ui.label(json.dumps(value,ensure_ascii=False) if isinstance(value,(dict,list)) else str(value)).style('font-size:13px;color:#b9c9d8')
+                        if check['action']:ui.label(check['action']).classes('ready-action')
+        async def refresh():
+            nonlocal busy
+            if busy:return
+            busy=True
+            try:
+                report=await asyncio.to_thread(service.snapshot)
+                show(general,report['general'])
+                for robot in NAMES:show(panels[robot],report['robots'][robot]['checks'])
+                stamp.set_text('Обновлено · физическая приёмка выполняется отдельно')
+            except Exception as exc:stamp.set_text('Не удалось обновить: '+str(exc))
+            finally:busy=False
+        ui.timer(2,refresh);await refresh()
+    return service
+
+
+def install_collection():
+    from fastapi import HTTPException
+    from fastapi.responses import FileResponse
+    from nicegui import app
+    from urllib.parse import urlencode
+    from . import collection,catalog
+
+    @app.get('/recording/media/{episode}/{kind}')
+    def media(episode:str,kind:str):
+        import re
+        if not re.fullmatch('[a-f0-9]{32}',episode):raise HTTPException(404)
+        if kind in {'first','last'}:path=DATA/'validation/collection'/episode/(kind+'.jpg')
+        elif kind=='video':
+            entry=next((r for r in catalog.rows('episodes') if r['id']==episode),None)
+            if entry is None:raise HTTPException(404)
+            root=__import__('pathlib').Path(entry['dataset']).resolve()
+            if not root.is_relative_to(DATA/'datasets'):raise HTTPException(404)
+            path=next((root/'videos').rglob('*.mp4'),None)
+        else:raise HTTPException(404)
+        if path is None or not path.is_file():raise HTTPException(404)
+        return FileResponse(path)
+
+    @ui.page('/recording/collect')
+    async def collection_page():
+        ui.add_css(STYLE);ui.dark_mode().enable();ui.colors(primary='#2b9c8f',negative='#d45050')
+        with ui.row():
+            ui.link('Explorer','/');ui.link('Готовность парка','/recording/readiness');ui.link('Инструкция','/datasets/guide')
+        ui.label('Сбор датасета').style('font-size:30px;font-weight:650')
+        ui.label('Полный сравнительный набор: 10 расстановок × 5 показов. Для переноса сначала нужны три диагностических показа; бюджет обучения задаётся отдельно. Повтор расстановки остаётся в той же группе.').style('color:#a6b6c6')
+        selected=[None];last_report=[None];loading=[False]
+        with ui.column().classes('ready-card'):
+            task=ui.select({k:v[0] for k,v in collection.TASKS.items()},value='tank_dock',label='Задача').classes('w-full')
+            variant=ui.select({},label='Вариант потоков').classes('w-full')
+            operator=ui.input('Оператор',value='operator').classes('w-full')
+            description=ui.input('Что изменилось в расстановке').classes('w-full')
+            instruction=ui.input('Команда для робота (англ.; подставится из описания)').classes('w-full')
+            def suggest(_=None):
+                if not instruction.value or instruction.value==getattr(instruction,'_auto',''):
+                    value=collection.suggest_instruction(task.value,description.value) or ''
+                    instruction._auto=value;instruction.set_value(value)
+            description.on_value_change(suggest)
+            repeat=ui.select({'':'Новая расстановка'},value='',label='Расстановка').classes('w-full')
+            choice=ui.select({},label='Продолжить серию').classes('w-full')
+            notice=ui.label('Выберите серию или создайте новую')
+            async def create():
+                try:
+                    record=await asyncio.to_thread(collection.create_series,task.value,variant.value,operator.value,description.value,repeat.value or None,instruction.value)
+                    setup();choice.set_value(record['id']);open_series()
+                except Exception as exc:ui.notify(str(exc),type='negative')
+            new_button=ui.button('Новая серия',on_click=create)
+        with ui.expansion('Опыт SO-101 для переноса захвата').classes('ready-card'):
+            from . import so101_geometry
+            from .paths import ROOT
+            cfg = so101_geometry.configuration()
+            ui.label('Для трёх пробных показов используйте Leader/Follower, камеру запястья и верхнюю C920. Tank и ROSMASTER здесь не нужны.')
+            ui.label('Расположите метку №7 по центру верхней грани твёрдого кубика. Измерьте её чёрный квадрат после печати. Верхнюю камеру и основание SO-101 не перемещайте.')
+            ui.button('Скачать метку №7 · чёрный квадрат 20 мм',
+                      on_click=lambda: ui.download.file(ROOT/'assets/so101_donor_marker_7.svg')).props('outline no-caps')
+            geometry_enabled = ui.checkbox('Сохранять верхнюю камеру и геометрию в следующих показах SO-101', value=cfg.get('enabled', False))
+            instance = ui.input('Экземпляр кубика', value=cfg.get('instance_id', '')).classes('w-full')
+            dimensions = cfg.get('size_m', [.032] * 3)
+            sizes = [ui.number(label, value=dimensions[i]*1000, min=10, max=100).classes('w-full')
+                     for i, label in enumerate(('Ширина, мм', 'Длина, мм', 'Высота, мм'))]
+            marker_size = ui.number('Измеренная сторона чёрной метки, мм', value=cfg.get('marker_side_m', .020)*1000, min=5, max=100).classes('w-full')
+            def save_geometry():
+                try:
+                    so101_geometry.configure_capture(enabled=bool(geometry_enabled.value), instance_id=instance.value,
+                        marker_side_m=float(marker_size.value)/1000, size_m=[float(v.value)/1000 for v in sizes])
+                    ui.notify('Настройки следующего показа сохранены. Робот не включён.')
+                except Exception as exc:
+                    ui.notify(str(exc), type='negative')
+            ui.button('Сохранить подготовку', on_click=save_geometry).props('no-caps')
+            def prepare_donor_series():
+                task.set_value('so101_pick_place')
+                description.set_value('донорский захват: кубик — подход, захват, подъём, удержание')
+                instruction.set_value('Grasp the cube, lift it at least 5 cm, hold for 2 seconds, then put it back on the table.')
+                ui.notify('Поля серии заполнены. Проверьте размеры и создайте новую серию; запись ещё не начата.')
+            ui.button('Заполнить серию пробных захватов', on_click=prepare_donor_series).props('no-caps outline')
+            ui.label('Каждый показ: подведите захват, возьмите кубик, поднимите не меньше чем на 5 см, удержите 2 секунды и верните на стол. Затем отметьте исход. Это отдельная команда захвата, не передача человеку и не прежнее «в коробку».')
+
+            ui.label('Это исходные измерения. Перед созданием пакета отдельно проверяются положение камеры, погрешность геометрии, метрическое раскрытие губок и удержание предмета. Закрытие захвата само по себе успех не подтверждает.').classes('ready-action')
+        counters=ui.label('').style('font-size:18px')
+        progress=ui.label('')
+        ui.label('В панели ниже: «Начать показ», затем «Успех», «Неуспех» или «Прервать». F9 — начать, F10 — успех, F11 — неуспех; пробел — STOP. Клавиши записи работают при фокусе в панели.').style('color:#a6b6c6')
+        frame=ui.element('iframe').props('id="collection-control" src="about:blank" allow="gamepad"').style('width:100%;height:1250px;border:1px solid #344253;border-radius:14px;background:#10161f')
+        ui.add_body_html('''<script>window.addEventListener('keydown',e=>{
+          if(e.code==='Space'){
+            if(!['INPUT','TEXTAREA'].includes(e.target.tagName))e.preventDefault();document.getElementById('collection-control')?.contentWindow.postMessage({explorerRecordingStop:true},location.origin);
+          }
+        });</script>''')
+        review=ui.column().classes('ready-card')
+        review_key=[None]
+        def setup():
+            existing=collection.series(task.value)
+            variants=collection.TASKS[task.value][1]
+            chosen=existing[0]['profile'] if existing else variants[0]
+            variant.set_options({v:v for v in variants},value=chosen)
+            variant.set_enabled(not existing)
+            repeat.set_options({'':'Новая расстановка',**{s['layout']:s['layout']+' · общая группа' for s in existing}},value='')
+            choice.set_options({s['id']:s['id']+' · '+s['description']+(' · «'+s['instruction']+'»' if s.get('instruction') else '') for s in existing},value=None)
+        def open_series():
+            if not choice.value:return
+            record=next(s for s in collection.series(task.value) if s['id']==choice.value)
+            selected[0]=record['id'];review_key[0]=None
+            robot=record['task'].split('_')[0]
+            url=('/rosmaster/control' if robot=='rosmaster' else '/')+'?'+urlencode(
+                {'robot':robot,'series':record['id'],'profile':record['profile'],'layout':record['layout']})
+            frame.props('src='+json.dumps(url))
+            notice.set_text(record['id']+' · '+record['layout']+' · '+record['description'])
+        def task_changed():
+            selected[0]=None;frame.props('src="about:blank"');setup()
+        task.on_value_change(task_changed);choice.on_value_change(open_series);setup()
+        async def refresh():
+            if loading[0] or not selected[0]:return
+            loading[0]=True
+            try:
+                report=await asyncio.to_thread(collection.summary,selected[0]);last_report[0]=report
+                c=report['current'];t=report['total']
+                counters.set_text(f"Серия: {c['success']} успех / {c['failure']} неуспех / {c['aborted']} прервано · всего: {t['success']} / {t['failure']} / {t['aborted']} · до 50: {report['to_50']} · групп с проверенными показами: {report['groups_with_accepted_data']} из {report['independent_groups']} расстановок")
+                active=any(a['phase'] in {'preparing','recording'} for a in report['attempts'])
+                for element in (task,choice,new_button):element.set_enabled(not active)
+                latest=report['attempts'][-1] if report['attempts'] else None
+                estimate=report['estimated_remaining_bytes']
+                space='оценка появится после первого показа' if estimate is None else f"на оставшиеся: {estimate/1024**3:.2f} ГБ"
+                progress.set_text((latest['phase']+' · '+latest['streams'] if latest else 'Записей пока нет')+
+                    f" · средняя длительность: {report['mean_duration_s']} с · {space}")
+                key=tuple((a['id'],a['phase'],a['quality']) for a in report['attempts'])
+                if key!=review_key[0]:
+                    review_key[0]=key;review.clear()
+                    with review:
+                        ui.label('Посмотрите 1–2 записи этой серии').style('font-size:20px')
+                        for attempt in reversed(report['attempts']):
+                            if attempt['phase']=='saved':
+                                quality=json.loads(attempt['quality'] or '{}')
+                                ui.label(attempt['outcome']+' · '+str(attempt['frames'])+' кадров')
+                                if quality.get('status')!='pass':
+                                    ui.label(' · '.join(quality.get('problems',[]))).classes('ready-action')
+                                if attempt['episode']:
+                                    episode=attempt['episode']
+                                    ui.button('Исключить из обучения',on_click=lambda e=episode:collection.exclude(e))
+                                    with ui.row():
+                                        for kind in quality.get('thumbnails',[]):ui.image(f'/recording/media/{episode}/{kind}').style('width:150px;max-width:100%')
+                                    with ui.expansion('Посмотреть запись').classes('w-full'):
+                                        ui.video(f'/recording/media/{episode}/video').props('preload="none"').style('width:100%;max-width:640px')
+            except Exception as exc:progress.set_text('Не удалось обновить серию: '+str(exc))
+            finally:loading[0]=False
+        ui.timer(1,refresh)
+
+
+def install_physical(local_reader=lambda:{}):
+    from .physical_acceptance import Run,Reader,STEPS
+    from .paths import ROOT
+
+    @ui.page('/recording/check/{robot}')
+    async def physical_page(robot:str):
+        if robot not in STEPS:
+            ui.label('Выберите SO-101, Tank или ROSMASTER');return
+        ui.add_css(STYLE);ui.dark_mode().enable();ui.colors(primary='#2b9c8f',negative='#d45050')
+        with ui.row():
+            ui.link('Готовность парка','/recording/readiness');ui.link('Сбор датасета','/recording/collect',new_tab=True)
+        ui.label('Проверка «всё ездит» · '+NAMES[robot]).style('font-size:28px;font-weight:650')
+        ui.label(('Только вперёд и назад. ' if robot=='tank' else 'Около 10 минут. ')+'Мастер только читает датчики. Управляете вы в панели ниже; оставайтесь рядом с выключателем.').classes('ready-action')
+        if robot=='tank':
+            ui.label('Зарядник должен быть отсоединён. Напряжение само по себе не доказывает это — нужно ваше подтверждение.').classes('ready-action')
+        run=Run(robot,lambda:Reader(robot,local_reader))
+        steps=dict(STEPS[robot])
+        selector=ui.select({k:str(i+1)+'. '+v for i,(k,v) in enumerate(STEPS[robot])},value=STEPS[robot][0][0],label='Шаг').classes('w-full')
+        instruction=ui.label(steps[selector.value]).style('font-size:18px')
+        confirmation=ui.checkbox('Я выполнил шаг и лично увидел указанный результат')
+        status=ui.label('Измерение ещё не началось')
+        result_box=ui.column().classes('ready-card')
+        def selected():
+            instruction.set_text(steps[selector.value]);confirmation.value=False
+            confirmation.set_text('Зарядник физически отсоединён' if selector.value=='charger' else 'Я выполнил шаг и лично увидел указанный результат')
+        selector.on_value_change(selected);selected()
+        def start():
+            try:
+                run.start(selector.value);selector.disable();start_button.disable();confirmation.value=False
+                status.set_text('Измерение идёт. Выполните шаг в панели, затем подтвердите результат.')
+            except Exception as exc:ui.notify(str(exc),type='negative')
+        async def finish():
+            finish_button.disable()
+            try:
+                result=await asyncio.to_thread(run.finish,confirmation.value)
+                result_box.clear()
+                with result_box:
+                    ui.label(result['result']).classes('ready-green' if result['result']=='PASS' else 'ready-red')
+                    for check in result['checks']:
+                        ui.label(('✓ ' if check['pass'] else '• ')+check['label']+((' · '+str(check['value'])) if 'value' in check else ''))
+                        if check['action']:ui.label(check['action']).classes('ready-action')
+                    ui.label('Сохранено: '+str(run.path.relative_to(DATA)))
+                    ui.label('FAIL можно повторить. Автоматического продолжения управления нет.')
+                selector.enable();start_button.enable()
+                status.set_text('Шаг сохранён; выберите следующий или повторите этот')
+            except Exception as exc:ui.notify(str(exc),type='negative')
+            finally:finish_button.enable()
+        with ui.row():
+            start_button=ui.button('Начать измерение шага',on_click=start)
+            finish_button=ui.button('Проверить и сохранить результат',on_click=finish)
+        progress=ui.label('0 показаний')
+        def refresh():
+            with run.lock:samples=list(run.samples)
+            progress.set_text(str(len(samples))+' показаний'+(' · '+samples[-1]['read_error'] if samples and samples[-1].get('read_error') else ''))
+            if run.thread and not run.thread.is_alive() and run.current:status.set_text('Чтение закончено; подтвердите и сохраните результат или отметьте FAIL')
+        ui.timer(.5,refresh)
+        ui.label('Панель управления · движение только по вашим кнопкам').style('font-size:20px')
+        src='/rosmaster/control' if robot=='rosmaster' else '/?robot='+robot
+        control_frame=ui.element('iframe').props('id="physical-control" src='+json.dumps(src)+' allow="gamepad"').style('width:100%;height:1250px;border:1px solid #344253;border-radius:14px;background:#10161f')
+        ui.add_body_html('''<script>window.addEventListener('keydown',e=>{
+          if(e.code==='Space'){e.preventDefault();document.getElementById('physical-control')?.contentWindow.postMessage({explorerRecordingStop:true},location.origin);}
+        });</script>''')
+        ui.context.client.on_disconnect(lambda:run.done.set())

@@ -1,0 +1,543 @@
+"""Tank agent: the factory controller (copied native code) driven from the Explorer panel.
+
+Always active: speed clamps, mild acceleration ramp, command TTL (zero when commands stop),
+STOP, immediate stop when the motor USB disappears. Camera, lidar, IMU and battery are
+reported but never required for driving; a lost link ends the session and the next start
+simply reopens the controller.
+"""
+import asyncio
+import hmac
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+import signal
+import subprocess
+import threading
+import time
+import uuid
+from typing import Literal
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import Response
+from pydantic import BaseModel
+
+if __package__:
+    from .native_client import NativeDriver
+    from .limits import load as load_limits, Ramp, guard as sensor_guard, sector_distance, tilt_degrees, depth_obstacle
+    from .motor_link import LinkState,UdevMonitor,controller_present
+    from .motion_permission import require_motion_permission, limited_command, bench_authorized
+else:
+    from native_client import NativeDriver
+    from limits import load as load_limits, Ramp, guard as sensor_guard, sector_distance, tilt_degrees, depth_obstacle
+    from motor_link import LinkState,UdevMonitor,controller_present
+    from motion_permission import require_motion_permission, limited_command, bench_authorized
+
+ROOT=Path(__file__).resolve().parent
+CONFIG=json.loads((ROOT/'config.json').read_text()) if (ROOT/'config.json').exists() else {}
+
+
+
+class Hardware:
+    def __init__(self):
+        self.software={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+            for name in ('agent.py','native_driver.py','native_client.py','limits.py','motor_link.py','motion_permission.py','sensors.py') if (ROOT/name).is_file()}
+        self.limits=load_limits(ROOT)
+        self.ramp=Ramp(self.limits)
+        self.scan_front=None;self.scan_rear=None;self.scan_time=None
+        self.depth_front=None;self.depth_time=None;self.depth_floor=False
+        self.minimum_battery=None;self.minimum_load_battery=None;self.initial_battery=None
+        self.guard_reason=None;self.requested_action=[0.,0.]
+        self.limit_events=0;self.last_serial_write=None
+        self.lock=threading.RLock()
+        self.lifecycle=threading.RLock()
+        self.cancel_start=threading.Event()
+        self.board=None
+        self.camera=None
+        self.lidar=None
+        self.environment=False
+        self.node=None
+        self.ros_thread=None
+        self.ros_stop=threading.Event()
+        self.armed=False
+        self.lease=None
+        self.expires=0.
+        self.last_sequence=-1
+        self.last_action=[0.,0.]
+        self.reason='Not started'
+        self.link=LinkState(ROOT)
+        self.fault=None
+        self.recovery_enabled=False;self.last_recovery=0.
+        self.recovery_needed=False;self.recovery_thread=None
+        self.udev=UdevMonitor(self.usb_removed)
+        self.neutral_written=None
+        self.mode='manual';self.task_profile=''
+        self.motion_paused=False
+        self.image=None
+        self.image_info=None
+        self.frame_sequence=0
+        self.camera_timing={}
+        self.battery=None
+        self.battery_time=None
+        self.imu=None
+        self.imu_time=None
+        self.done=threading.Event()
+        self.watchdog=threading.Thread(target=self.watch,daemon=True)
+        self.watchdog.start()
+
+    def status(self):
+        with self.lock:
+            return {'robot':'tank','software':self.software,'armed':self.armed,'hardware_open':self.board is not None,
+                    'sensor_errors':getattr(self,'sensor_errors',{}),'lidar':{'running':lidar_alive(),'error':LIDAR_STATE['error'],'restarts':LIDAR_STATE['restarts']},
+                    'motion_paused':self.motion_paused,'depth_guard':{'front_m':self.depth_front,'floor':self.depth_floor,'age_s':None if self.depth_time is None else round((time.monotonic_ns()-self.depth_time)/1e9,2)},'mode':self.mode,'task_profile':self.task_profile,
+                    'reason':self.reason,'action':self.last_action,'motor_acknowledged':False,
+                    'fault':self.fault,'neutral_written':self.neutral_written,
+                    'motor_link':self.link.status(),'usb_monitor_error':self.udev.error,
+                    'physical_stop_confirmed':False,'wheel_feedback':'unavailable','odometry':'not_used_command_integral_is_not_measurement',
+                    'monotonic_ns':time.monotonic_ns(),'camera':self.image_info,
+                    'camera_timing':dict(self.camera_timing),
+                    'battery_voltage':self.battery,'battery_received_ns':self.battery_time,
+                    'imu':self.imu,'imu_received_ns':self.imu_time,
+                    'limits':self.limits,'limit_events':self.limit_events,'guard_reason':self.guard_reason,'last_write':self.last_serial_write,
+                    'initial_battery_voltage':self.initial_battery,'minimum_battery_voltage':self.minimum_battery,
+                    'minimum_battery_under_load':self.minimum_load_battery,
+                    'front_distance_m':self.scan_front,'rear_distance_m':self.scan_rear,'scan_received_ns':self.scan_time}
+
+    def latch_fault(self,reason):
+        """Recoverable STOP latch; link recovery never recreates a moving lease."""
+        with self.lock:
+            self.fault='motor_link_lost: '+str(reason)
+            self.recovery_enabled=False
+            self.armed=False;self.lease=None;self.expires=0.
+            self.reason=self.fault
+            try:
+                self.link.lost(self.fault);self.link.pending=False;self.link.save()   # history only, never a gate
+            except OSError:pass
+            # Independent of that history flag: as soon as the board is back on USB (it re-enumerates
+            # after a stall/brown-out, possibly as another ttyACM), write neutral three times. The
+            # board otherwise keeps its last velocity (15.11.2026: Tank kept circling after EIO).
+            self.recovery_needed=True
+            if self.recovery_thread is None or not self.recovery_thread.is_alive():
+                self.recovery_thread=threading.Thread(target=self._auto_recover,daemon=True,name='tank-link-recovery')
+                self.recovery_thread.start()
+
+    def _auto_recover(self):
+        end=time.monotonic()+120
+        while self.recovery_needed and time.monotonic()<end:
+            if controller_present() and self.recover_link():return
+            time.sleep(.2)
+
+    def usb_removed(self):
+        with self.lock:
+            if self.board is not None and not controller_present():
+                self.latch_fault('USB моторной платы отключён')
+
+    def recover_link(self):
+        if not self.fault or not (self.link.pending or self.recovery_needed):return False
+        if not controller_present():return False
+        if not self.lifecycle.acquire(blocking=False):return False
+        driver=None
+        try:
+            with self.lock:old=self.board;self.board=None
+            if old is not None:
+                try:old.close()
+                except Exception:pass  # Original STOP failure is already retained in the latch.
+                if getattr(old,'process',None) is not None and old.process.poll() is None:
+                    with self.lock:self.board=old
+                    return False
+            driver=NativeDriver();driver.start()
+            for _ in range(3):driver.stop()
+            driver.close();driver=None
+            with self.lock:
+                self.link.neutral_restored(3)
+                self.recovery_needed=False
+                self.neutral_written=True;self.last_action=[0.,0.];self.requested_action=[0.,0.]
+                self.reason=(self.fault or '')+'; плата снова на связи, записан ноль ×3'
+                self.ramp.reset();self.recovery_enabled=False
+            return True
+        except Exception as exc:
+            with self.lock:self.reason=self.fault+'; восстановление: '+str(exc)
+            return False
+        finally:
+            if driver is not None:
+                try:driver.close()
+                except Exception:pass
+            self.lifecycle.release()
+
+    def acknowledge_link(self,stationary):
+        self.fault=None
+        if not self.link.pending:return self.status()
+        if not self.link.recovered:self.recover_link()
+        with self.lock:
+            self.link.acknowledge(stationary)
+            self.fault=None;self.reason='Связь восстановлена. Включите управление заново.'
+            self.recovery_enabled=False
+        # Release the ended camera/session before the next explicit user start.
+        self.close()
+        return self.status()
+
+    def stop(self,reason):
+        with self.lock:
+            if self.armed or self.reason in (None,'Not started'):self.reason=reason
+            self.armed=False
+            self.ramp.reset();self.requested_action=[0.,0.]
+            self.expires=0.
+            self.lease=None
+            if self.board is not None:
+                try:
+                    self.board.stop()
+                    self.neutral_written=True
+                    self.last_action=[0.,0.]
+                except Exception as exc:
+                    self.neutral_written=False
+                    message='STOP не доставлен моторному контроллеру. Выключите питание Tank. '+str(exc)
+                    self.latch_fault(message)
+                    self.reason=message
+                    raise RuntimeError(message) from exc
+
+    def watch(self):
+        while not self.done.wait(.02):
+            with self.lock:
+                if self.board is not None and self.fault is None:
+                    try:
+                        native=self.board.status()
+                        self.battery=native['battery_voltage']
+                        self.battery_time=native['battery_received_ns']
+                        self.imu=native['imu']
+                        self.imu_time=native['imu_received_ns']
+                        if self.armed and self.battery is not None:
+                            self.minimum_battery=self.battery if self.minimum_battery is None else min(self.minimum_battery,self.battery)
+                            if any(self.last_action):
+                                self.minimum_load_battery=self.battery if self.minimum_load_battery is None else min(self.minimum_load_battery,self.battery)
+                        if self.armed:
+                            now=time.monotonic_ns()
+                            if native['latched']:
+                                self.stop('Драйвер моторов остановлен: '+str(native['reason']))
+                            elif time.monotonic()>self.expires and any(self.last_action):
+                                # No command for command_ttl_s: zero, but keep the session open.
+                                self.ramp.reset();self.requested_action=[0.,0.]
+                                self.last_action=self.board.command(0.,0.)['action']
+                                self.expires=time.monotonic()+self.limits['command_ttl_s']
+                    except Exception as exc:
+                        self.latch_fault('Связь с моторным контроллером потеряна: '+str(exc))
+                        try:
+                            self.stop(self.fault)
+                        except Exception as stop_error:
+                            self.reason=self.fault+'; '+str(stop_error)
+
+
+
+    def start_camera(self):
+        import cv2
+        import numpy as np
+        import rclpy
+        from rclpy.node import Node
+        from rclpy.qos import QoSProfile,ReliabilityPolicy
+        from sensor_msgs.msg import Image, LaserScan, PointCloud2
+        rclpy.init()
+        self.node=Node('explorer3_tank_camera_receiver',namespace='/explorer3/tank')
+        self.ros_stop.clear()
+        self.camera_timing={}
+        def frame(msg):
+            received=time.monotonic_ns()
+            self.camera_timing['callback_started_ns']=received
+            if msg.encoding not in ('rgb8','bgr8'):
+                return
+            array=np.frombuffer(msg.data,dtype=np.uint8).reshape(msg.height,msg.step)[:,:msg.width*3].reshape(msg.height,msg.width,3)
+            bgr=cv2.cvtColor(array,cv2.COLOR_RGB2BGR) if msg.encoding=='rgb8' else array
+            ok,jpeg=cv2.imencode('.jpg',bgr,[cv2.IMWRITE_JPEG_QUALITY,80])
+            encoded=time.monotonic_ns()
+            if ok:
+                with self.lock:
+                    self.camera_timing.update(encode_ms=round((encoded-received)/1e6,2),lock_wait_ms=round((time.monotonic_ns()-encoded)/1e6,2))
+                    self.frame_sequence+=1
+                    self.image=jpeg.tobytes()
+                    self.image_info={'sequence':self.frame_sequence,'received_ns':received,
+                        'source_timestamp_ns':msg.header.stamp.sec*1_000_000_000+msg.header.stamp.nanosec,
+                        'source_clock':'tank_ros_realtime','width':msg.width,'height':msg.height,
+                        'encoding':'jpeg','measured':True}
+        self.subscription=self.node.create_subscription(Image,'/explorer3/tank/front/image_raw',frame,
+            QoSProfile(depth=1,reliability=ReliabilityPolicy.BEST_EFFORT))
+        def scan(msg):
+            with self.lock:
+                self.scan_front=sector_distance(msg.ranges,msg.angle_min,msg.angle_increment,msg.range_min,msg.range_max,
+                    half_angle=self.limits['sector_half_angle_deg'])
+                self.scan_rear=sector_distance(msg.ranges,msg.angle_min,msg.angle_increment,msg.range_min,msg.range_max,
+                    rear=True,half_angle=self.limits['sector_half_angle_deg'])
+                self.scan_time=time.monotonic_ns()
+        self.scan_subscription=self.node.create_subscription(LaserScan,'/explorer3/tank/scan_raw',scan,
+            QoSProfile(depth=1,reliability=ReliabilityPolicy.BEST_EFFORT))
+        # Depth camera: low obstacles below the lidar plane (chair legs and wheels, bags) — the
+        # floor is fitted in every cloud, so the camera tilt need not be known (limits.depth_obstacle)
+        def cloud(msg):
+            try:
+                fields={f.name:f for f in msg.fields}
+                dtype=np.dtype({'names':['x','y','z'],'formats':[('>' if msg.is_bigendian else '<')+'f4']*3,
+                                'offsets':[fields[k].offset for k in ('x','y','z')],'itemsize':msg.point_step})
+                pts=np.frombuffer(bytes(msg.data),dtype=dtype)[::23]
+                pts=np.stack([pts['x'],pts['y'],pts['z']],axis=1).astype(float)
+                distance,floor=depth_obstacle(pts)
+                with self.lock:
+                    self.depth_front,self.depth_floor,self.depth_time=distance,floor,time.monotonic_ns()
+            except Exception as exc:
+                self.sensor_errors['depth_guard']=f'{type(exc).__name__}: {exc}'[:200]
+        for topic in ('/explorer3/tank/camera/points2','/explorer3/tank/camera/depth0/points','/ascamera/camera_publisher/depth0/points'):
+            setattr(self,'cloud_subscription_'+topic.split('/')[-1]+str(len(topic)),
+                    self.node.create_subscription(PointCloud2,topic,cloud,QoSProfile(depth=1,reliability=ReliabilityPolicy.BEST_EFFORT)))
+        # After a power cycle the factory MentorPi node may own the lidar (same CCW 0..360 sweep)
+        self.factory_scan_subscription=self.node.create_subscription(LaserScan,'/scan_raw',scan,
+            QoSProfile(depth=1,reliability=ReliabilityPolicy.BEST_EFFORT))
+        def spin():
+            while not self.ros_stop.is_set():
+                rclpy.spin_once(self.node,timeout_sec=.1)
+        self.ros_thread=threading.Thread(target=spin,daemon=True);self.ros_thread.start()
+        log=(ROOT/'camera.log').open('ab')
+        try:
+            self.camera=subprocess.Popen([str(ROOT/'vendor/camera/bin/aurora930_node'),'--ros-args',
+                '-r','__ns:=/explorer3/tank/camera','--params-file',str(ROOT/'camera.yaml'),
+                '-r','/aurora/rgb/image_raw:=/explorer3/tank/front/image_raw',
+                '-r','/explorer3/tank/camera/rgb/image_raw:=/explorer3/tank/front/image_raw'],
+                stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+            (ROOT/'camera-active.json').write_text(json.dumps({'pid':self.camera.pid,'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}))
+        finally:
+            log.close()
+
+    def start(self,mode='manual',environment=False,profile=None):
+        if mode not in {'manual','policy','replay'}:raise ValueError('Unknown control mode')
+        if profile not in {None,'tank_dock','tank_dock_rgbd_lidar'}:raise ValueError('Unknown Tank task')
+        if not self.lifecycle.acquire(blocking=False):
+            raise RuntimeError('Another lifecycle operation is in progress')
+        try:
+            if self.board is not None:raise RuntimeError('Hardware session already open; close it first')
+            self.cancel_start.clear()
+            self.task_profile=profile or ''
+            self.environment=environment
+            return self._start(mode)
+        finally:
+            self.lifecycle.release()
+
+    def _start(self,mode):
+        self.fault=None
+        marker=ROOT/'handoff-active.json'
+        if not marker.exists() or json.loads(marker.read_text()).get('boot_id')!=Path('/proc/sys/kernel/random/boot_id').read_text().strip():
+            raise PermissionError('Factory control must release hardware in the current boot')
+        if self.board is not None:
+            raise RuntimeError('Hardware session already open; close it first')
+        (ROOT/'hardware-active.json').unlink(missing_ok=True)   # stale marker from a crashed process
+        try:
+            driver=NativeDriver()
+            try:driver.start()
+            except Exception:
+                driver.close();raise
+            with self.lock:self.board=driver
+            if self.cancel_start.is_set():raise RuntimeError('STOP during native startup')
+            (ROOT/'hardware-active.json').write_text(json.dumps({'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}))
+            self.scan_time=None;self.scan_front=None;self.scan_rear=None
+            self.depth_front=None;self.depth_time=None;self.depth_floor=False
+            self.sensor_errors={}
+            # Camera and lidar are optional for driving: a failure is reported, not fatal.
+            try:self.start_camera()
+            except Exception as exc:self.sensor_errors['camera']=str(exc)
+            # Lidar is always on (keep_lidar thread): read-only, needed for fleet localization too.
+            if not lidar_alive():self.sensor_errors['lidar']=LIDAR_STATE.get('error') or 'Лидар перезапускается'
+            deadline=time.monotonic()+3          # short wait so the first camera frame is usually there
+            while time.monotonic()<deadline and not self.cancel_start.is_set():
+                with self.lock:
+                    if self.image_info is not None:break
+                time.sleep(.05)
+            with self.lock:
+                if self.cancel_start.is_set():raise RuntimeError('STOP во время запуска')
+                self.lease=uuid.uuid4().hex
+                self.last_sequence=-1
+                self.expires=time.monotonic()+self.limits['command_ttl_s']
+                self.armed=True
+                self.reason=None
+                self.mode=mode;self.motion_paused=False
+                self.ramp.reset();self.initial_battery=self.battery;self.minimum_battery=self.battery;self.minimum_load_battery=None
+                self.limit_events=0;self.guard_reason=None
+                return {'lease':self.lease,**self.status()}
+        except Exception:
+            self.close()
+            raise
+
+    def guarded(self,v,w):
+        now=time.monotonic_ns()
+        age=lambda stamp:float('inf') if stamp is None else max(0.,(now-stamp)/1e9)
+        # Factory SDK returns acceleration in g and gyro in degrees/s.
+        acceleration=[x*9.80665 for x in self.imu[:3]] if self.imu and len(self.imu)>=6 else None
+        autonomous=self.mode!='manual'
+        if autonomous and v!=0. and (self.scan_time is None or age(self.scan_time)>.5):
+            # autonomy without a fresh lidar: no translation (turning in place stays allowed)
+            return (0.,w),'Нет свежего лидара: автономная езда вперёд/назад запрещена'
+        front=self.scan_front
+        if autonomous and v>0. and self.depth_time is not None and age(self.depth_time)<1.:
+            if self.depth_front is not None:
+                front=self.depth_front if front is None else min(front,self.depth_front)
+        return sensor_guard(self.limits,v,w,battery=self.battery,front=front,rear=self.scan_rear,
+                            autonomous=autonomous)
+
+    def command(self,lease,sequence,v,w):
+        with self.lock:
+            now=time.monotonic()
+            if not self.armed or lease!=self.lease:
+                raise PermissionError(self.reason or 'Сессия не запущена: нажмите «Включить управление»')
+            if sequence<=self.last_sequence:
+                raise ValueError('Stale command sequence')
+            if not all(math.isfinite(value) for value in (v,w)):
+                raise ValueError('Nonfinite command')
+            requested=(v,w)
+            v,w=limited_command(ROOT,v,w,mode=self.mode)
+            if requested!=(v,w):self.limit_events+=1
+            self.requested_action=[v,w]
+            (v,w),self.guard_reason=self.guarded(v,w)
+            v,w=self.ramp.apply(v,w)
+            try:sent=self.board.command(v,w)
+            except PermissionError:raise
+            except Exception as exc:
+                self.latch_fault('Ошибка передачи команды моторному контроллеру: '+str(exc))
+                try:self.stop(self.fault)
+                except Exception as stop_error:
+                    raise RuntimeError(str(stop_error)) from exc
+                raise RuntimeError(self.fault) from exc
+            self.last_serial_write={k:sent[k] for k in ('send_start_ns','send_end_ns') if k in sent}
+            self.last_action=sent['action'];self.last_sequence=sequence;self.expires=now+self.limits['command_ttl_s']
+            return {**sent,'sequence':sequence,'accepted_by_agent':True,'motor_acknowledged':False,
+                    'motion_paused':self.guard_reason is not None,
+                    'pause_reason':self.guard_reason,
+                    'limits':self.limits,'limited':requested!=tuple(sent['action'])}
+
+    def close(self):
+        self.cancel_start.set()
+        errors=[]
+        try:self.stop('Explicit STOP / session closed')
+        except Exception as exc:errors.append('Neutral command failed: '+str(exc))
+        with self.lifecycle:
+            self._close(errors)
+        if errors:raise RuntimeError('; '.join(errors))
+
+    def _close(self,errors):
+        self.ros_stop.set()
+        if self.camera is not None:
+            try:
+                self.camera.send_signal(signal.SIGINT)
+                try:self.camera.wait(timeout=4)
+                except subprocess.TimeoutExpired:
+                    self.camera.kill();self.camera.wait(timeout=2)
+                self.camera=None
+                (ROOT/'camera-active.json').unlink(missing_ok=True)
+            except Exception as exc:errors.append('Camera close: '+str(exc))
+        if self.ros_thread is not None:
+            self.ros_thread.join(timeout=2)
+            if self.ros_thread.is_alive():errors.append('Camera receiver did not stop')
+            else:self.ros_thread=None
+        if self.node is not None and self.ros_thread is None:
+            import rclpy
+            try:
+                self.node.destroy_node();self.node=None;rclpy.shutdown()
+            except Exception as exc:errors.append('ROS close: '+str(exc))
+        with self.lock:
+            if self.board is not None:
+                board=self.board
+                try:board.close()
+                except Exception as exc:errors.append('Native driver close: '+str(exc))
+                finally:
+                    # Never poll a closed HTTP client; retain the incident, not a dead driver object.
+                    if getattr(board,'process',None) is None or board.process.poll() is not None:
+                        self.board=None
+            if not errors:(ROOT/'hardware-active.json').unlink(missing_ok=True)
+            self.image=None;self.image_info=None;self.battery=None;self.battery_time=None
+            self.imu=None;self.imu_time=None
+
+
+LIDAR_STATE={'lidar':None,'error':None,'restarts':0}
+
+
+def lidar_alive():
+    lidar=LIDAR_STATE['lidar']
+    return lidar is not None and lidar.process is not None and lidar.process.poll() is None
+
+
+def keep_lidar(done):
+    """MS200 runs for the whole agent lifetime (read-only scans for docking and fleet
+    localization); a crashed driver is restarted. It never touches the motor port."""
+    if __package__:from .lidar import Lidar
+    else:from lidar import Lidar
+    while not done.is_set():
+        if not lidar_alive():
+            try:
+                if LIDAR_STATE['lidar'] is not None:LIDAR_STATE['lidar'].close()
+                lidar=Lidar();lidar.start(ROOT)
+                LIDAR_STATE.update(lidar=lidar,error=None,restarts=LIDAR_STATE['restarts']+1)
+            except Exception as exc:
+                LIDAR_STATE.update(lidar=None,error=str(exc))
+        done.wait(5)
+
+
+hardware=None
+@asynccontextmanager
+async def lifespan(app):
+    global hardware
+    hardware=Hardware()
+    hardware.udev.start()
+    (ROOT/'agent.pid').write_text(str(os.getpid()))
+    keeper=threading.Thread(target=keep_lidar,args=(hardware.done,),daemon=True);keeper.start()
+    yield
+    try:hardware.close()
+    finally:
+        hardware.done.set();hardware.watchdog.join(timeout=2);hardware.udev.close()
+        if LIDAR_STATE.get('lidar') is not None:
+            try:LIDAR_STATE['lidar'].close()
+            except Exception:pass
+
+app=FastAPI(lifespan=lifespan)
+@app.middleware('http')
+async def guard(request:Request,call_next):
+    if request.client.host not in CONFIG.get('allowed_clients',[]) or not hmac.compare_digest(request.headers.get('X-Explorer-Token',''),CONFIG.get('token','missing')):
+        return Response(status_code=403)
+    return await call_next(request)
+
+class Command(BaseModel):
+    lease:str
+    sequence:int
+    v:float
+    w:float
+
+class SessionStart(BaseModel):
+    mode:Literal['manual','policy','replay']='manual'
+    environment:bool=False
+    profile:Literal['tank_dock','tank_dock_rgbd_lidar']|None=None
+
+@app.get('/health')
+def health():return hardware.status()
+@app.get('/frame.jpg')
+def image():
+    with hardware.lock:
+        if hardware.image is None:raise HTTPException(503,'No camera frame')
+        return Response(hardware.image,media_type='image/jpeg',headers={'X-Explorer-Camera':json.dumps(hardware.image_info),'X-Explorer-Observation':json.dumps(hardware.status()),'Cache-Control':'no-store'})
+@app.post('/session')
+def start(value:SessionStart|None=None):
+    try:
+        options={}
+        if value and value.environment:options['environment']=True
+        if value and value.profile:options['profile']=value.profile
+        return hardware.start(value.mode if value else 'manual',**options)
+    except (PermissionError,RuntimeError) as exc:raise HTTPException(409,str(exc)) from exc
+@app.post('/command')
+def command(value:Command):
+    try:return hardware.command(value.lease,value.sequence,value.v,value.w)
+    except (PermissionError,ValueError,RuntimeError) as exc:raise HTTPException(409,str(exc)) from exc
+@app.post('/stop')
+def stop():
+    try:hardware.close()
+    except RuntimeError as exc:raise HTTPException(409,str(exc)) from exc
+    return hardware.status()
+
+class LinkConfirmation(BaseModel):
+    stationary:bool=False
+
+@app.post('/motor-link/continue')
+def acknowledge_link(value:LinkConfirmation):
+    try:return hardware.acknowledge_link(value.stationary)
+    except (PermissionError,RuntimeError) as exc:raise HTTPException(409,str(exc)) from exc

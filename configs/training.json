@@ -1,0 +1,50 @@
+{
+  "lerobot_version": "0.6.1",
+  "act": {
+    "batch_size": 8,
+    "oom_batch_fallback": [
+      4,
+      2,
+      1
+    ],
+    "smoke_steps": 50,
+    "steps": 40000,
+    "seed": 1000,
+    "push_to_hub": false,
+    "vision_backbone": "resnet18",
+    "note": "Orin NX: ~1 s/step at batch 8 (measured 2026-11-14) -> ~11 h; 40k steps is enough for ~50 episodes of one task"
+  },
+  "smolvla": {
+    "profile": "so101_pick_place",
+    "base_model": "lerobot/smolvla_base",
+    "enabled": true,
+    "status": "measured on Orin NX 2026-11-14: train 1.56 s/step at batch 8 (3.6 GB), inference 0.8 s per 50-action chunk (1 GB)",
+    "batch_size": 8,
+    "push_to_hub": false,
+    "profiles": "so101_pick_place, rosmaster_pick_place (RGB variant; SmolVLA does not use depth/lidar)",
+    "oom_batch_fallback": [
+      4,
+      2,
+      1
+    ],
+    "smoke_steps": 50,
+    "steps": 20000,
+    "seed": 1000
+  },
+  "concurrency": 1,
+  "split": {
+    "train": 0.8,
+    "validation": 0.1,
+    "test": 0.1,
+    "unit": "session_scene_group",
+    "statistics": "train_only"
+  },
+  "diffusion": {
+    "batch_size": 4,
+    "smoke_steps": 50,
+    "steps": 100000,
+    "seed": 1000,
+    "push_to_hub": false,
+    "status": "recipe_prepared_no_training"
+  }
+}

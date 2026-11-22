@@ -1,0 +1,325 @@
+{
+  "version": 1,
+  "declared_before_full_training": true,
+  "so101_pick_place_sim": {
+    "demonstration_seeds": [
+      1,
+      51
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 8000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "upstream_pickcube_ppo": {
+      "iterations": 256,
+      "steps_per_environment": 32,
+      "nworld": 1,
+      "device": "cpu",
+      "seed": 1000
+    },
+    "pick_place_ppo": {
+      "timesteps": 16384,
+      "nworld": 1,
+      "device": "cpu",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 20,
+    "interpretation": "Finite initial pilot budget, not a promise of convergence. Deadline is failure. Upstream pickcube is not pick-place success.",
+    "smolvla": {
+      "steps": 5000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "rehearsal_note": "Pipeline rehearsal before real demos: same dataset format, trainer, runtime (explorer3.policy_runtime) and evaluation path as the robots. Orin NX: ACT ~1 s/step, SmolVLA 1.56 s/step at batch 8."
+  },
+  "rosmaster_pick_place_sim": {
+    "demonstration_seeds": [
+      1,
+      51
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 8000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "pick_place_ppo": {
+      "timesteps": 16384,
+      "nworld": 1,
+      "device": "cpu",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 20,
+    "interpretation": "Finite initial pilot budget, not a promise of convergence. Deadline is failure. Upstream pickcube is not pick-place success.",
+    "smolvla": {
+      "steps": 5000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "rehearsal_note": "Pipeline rehearsal before real demos: same dataset format, trainer, runtime (explorer3.policy_runtime) and evaluation path as the robots. Orin NX: ACT ~1 s/step, SmolVLA 1.56 s/step at batch 8."
+  },
+  "rosmaster_dock_sim": {
+    "demonstration_seeds": [
+      1,
+      21
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 2000,
+      "batch_size": 4,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "pick_place_ppo": {
+      "timesteps": 16384,
+      "nworld": 1,
+      "device": "cpu",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 20,
+    "interpretation": "Finite initial pilot budget, not a promise of convergence. Deadline is failure. Upstream pickcube is not pick-place success.",
+    "smolvla": {
+      "steps": 2000,
+      "batch_size": 1,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    }
+  },
+  "tank_dock_sim": {
+    "demonstration_seeds": [
+      1,
+      21
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 2000,
+      "batch_size": 4,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "pick_place_ppo": {
+      "timesteps": 16384,
+      "nworld": 1,
+      "device": "cpu",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 20,
+    "interpretation": "Finite initial pilot budget, not a promise of convergence. Deadline is failure. Upstream pickcube is not pick-place success.",
+    "smolvla": {
+      "steps": 2000,
+      "batch_size": 1,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    }
+  },
+  "so101_handover_sim": {
+    "demonstration_seeds": [
+      1,
+      51
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 8000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 30,
+    "interpretation": "Task mirrors the real recording block (explorer3/sim/aligned.py). Finite pilot budget, deadline is failure.",
+    "smolvla": {
+      "steps": 10000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "rehearsal_note": "Pipeline rehearsal before real demos: same dataset format, trainer, runtime (explorer3.policy_runtime) and evaluation path as the robots. Orin NX: ACT ~1 s/step, SmolVLA 1.56 s/step at batch 8.",
+    "pretraining_note": "Pre-training for real fine-tuning (jobs.enqueue from_sim): weights start the real block-3/4 training."
+  },
+  "rosmaster_floor_pick_sim": {
+    "demonstration_seeds": [
+      1,
+      51
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 8000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 25,
+    "interpretation": "Task mirrors the real recording block (explorer3/sim/aligned.py). Finite pilot budget, deadline is failure.",
+    "smolvla": {
+      "steps": 12000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "rehearsal_note": "Pipeline rehearsal before real demos: same dataset format, trainer, runtime (explorer3.policy_runtime) and evaluation path as the robots. Orin NX: ACT ~1 s/step, SmolVLA 1.56 s/step at batch 8.",
+    "pretraining_note": "Pre-training for real fine-tuning (jobs.enqueue from_sim): weights start the real block-3/4 training."
+  },
+  "rosmaster_floor_pick_knowledge_sim": {
+    "demonstration_seeds": [
+      1,
+      51
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 8000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 25,
+    "interpretation": "Knowledge-gap root: varied modelled objects (aligned.py OBJECTS); Task mirrors the real recording block (explorer3/sim/aligned.py). Finite pilot budget, deadline is failure.",
+    "smolvla": {
+      "steps": 12000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "rehearsal_note": "Pipeline rehearsal before real demos: same dataset format, trainer, runtime (explorer3.policy_runtime) and evaluation path as the robots. Orin NX: ACT ~1 s/step, SmolVLA 1.56 s/step at batch 8.",
+    "pretraining_note": "Pre-training for real fine-tuning (jobs.enqueue from_sim): weights start the real block-3/4 training."
+  },
+  "rosmaster_floor_pick_noknowledge_sim": {
+    "demonstration_seeds": [
+      1,
+      51
+    ],
+    "split": "session_scene_group",
+    "act": {
+      "steps": 8000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "evaluation_seeds": [
+      10000,
+      10020
+    ],
+    "success_criterion": {
+      "minimum_success_fraction": 0.8,
+      "episodes": 20
+    },
+    "deadline_s": 25,
+    "interpretation": "Knowledge-gap root: varied modelled objects (aligned.py OBJECTS); Task mirrors the real recording block (explorer3/sim/aligned.py). Finite pilot budget, deadline is failure.",
+    "smolvla": {
+      "steps": 12000,
+      "batch_size": 8,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "diffusion": {
+      "steps": 2000,
+      "batch_size": 2,
+      "device": "cuda",
+      "seed": 1000
+    },
+    "rehearsal_note": "Pipeline rehearsal before real demos: same dataset format, trainer, runtime (explorer3.policy_runtime) and evaluation path as the robots. Orin NX: ACT ~1 s/step, SmolVLA 1.56 s/step at batch 8.",
+    "pretraining_note": "Pre-training for real fine-tuning (jobs.enqueue from_sim): weights start the real block-3/4 training."
+  }
+}
