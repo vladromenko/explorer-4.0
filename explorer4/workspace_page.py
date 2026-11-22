@@ -171,11 +171,22 @@ def methods():
                 evidence_link("YOLOE и SAM 3 на 12 кадрах", REPORT + "cube-detector-comparison-v1/result.json")
                 ui.link("Проверка зрения", "/sim/vision")
         with ui.element("section").classes("work-box"):
-            ui.label("Библиотеки на Homebrain и роботах").classes("work-name")
+            ui.label("Обучение с подкреплением · Tank").classes("work-name")
+            archived_ppo = "policies/tank_dock_smoke2/eval-0.5.json"
+            episodes = read(MEDIA / archived_ppo).get("episodes", [])
+            if episodes:
+                held = sum(row["outcome"] == "success" for row in episodes)
+                ui.label(f"PPO обучалась управлять двумя командами шасси за награду. В архивной проверке — {held}/{len(episodes)} стыковок.")
+                ui.label("В той серии положение цели имитировал датчик с шумом. Проверка по настоящим изображениям симулятора учитывается отдельно.").classes("work-muted")
+                evidence_link("PPO · исходы и ошибки положения", archived_ppo)
+                evidence_link("PPO и геометрическое управление по одной камере", REPORT + "tank-ppo-camera-v1/result.json")
+            ui.label("Управление по показам и обратной связи").classes("work-name")
             ui.label("LeRobot ACT и Diffusion обучены на показах ROSMASTER. Внешнюю ACT для SO-101 проверяли по ранее записанным действиям оператора.")
             with ui.row().classes("work-links"):
                 evidence_link("ACT и Diffusion · исходы", REPORT + "conditioned-grasp-v1/summary.json")
                 evidence_link("Внешняя ACT · воспроизведение", REPORT + "so101-external-shadow.json")
+                evidence_link("Коррекция по новому кадру · смещение кубика", REPORT + "grasp-look-refresh-development-v1-1/result.json")
+                evidence_link("DAgger · коррекция на состояниях ученика", REPORT + "grasp-dagger-v1/result.json")
             ui.label("ROS 2 и Nav2 · в проверке Tank и ROSMASTER поступали лидары и одометрия. Для штатной навигации нужны привязка карты и доступный сервер NavigateToPose.")
             with ui.row().classes("work-links"):
                 evidence_link("Что ответило по ROS 2", register + "nav2-readiness.json")
