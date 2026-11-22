@@ -446,16 +446,28 @@ def install(jobs, css):
             from .station_check import capture
 
             reading = await asyncio.to_thread(capture)
-            station_note.set_text(
-                ("Камера SO-101 · ошибка %.2f px" % reading["control"]["error_px"])
-                if reading["ok"]
-                else "Камера SO-101 · " + reading["reason"]
-            )
+            if not reading['ok']:
+                station_note.set_text("Камера SO-101 · " + reading['reason'])
+                return
+            message = "Камера SO-101 · ошибка %.2f px." % reading["control"]["error_px"]
+            from . import so101_geometry
+            from .so101_station import read_registered_object
+            settings = so101_geometry.configuration()
+            if settings.get('enabled') and settings.get('instance_id'):
+                found = await asyncio.to_thread(read_registered_object, reading, settings['object_class'], settings['instance_id'])
+                if found['ok']:
+                    sizes = " × ".join(f"{1000 * found[k]:g}" for k in ("width_m", "length_m", "height_m"))
+                    message += f" Видна метка {found['object_instance']}. Размеры по записи оператора: {sizes} мм."
+                else:
+                    message += " " + found['reason']
+            station_note.set_text(message)
 
         with ui.row().classes("work-links"):
             ui.button(
                 "Проверить камеру SO-101 без движения", on_click=check_station
             ).props("outline no-caps")
+            evidence_link("Распознавание кубика SO-101 в реальном показе",
+                          REPORT + "so101-instance-replay-v3/first-frame.png")
             ui.link("Совместный подъезд и лист-мишень", "/peer-dock-real")
             ui.link("Подготовить физическую проверку", "/team/real")
             ui.link("Записать показ", "/recording/collect")

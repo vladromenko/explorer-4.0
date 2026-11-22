@@ -67,9 +67,22 @@ def record_use(knowledge_id, robot, success, note=''):
     return None
 
 
-def best(prompt, domain='real'):
+def valid_dimensions(item):
+    params = item.get("params") or {}
+    return all(
+        type(value) in (int, float) and math.isfinite(value) and value > 0
+        for value in (params.get("width_m"), params.get("height_m"))
+    )
+
+
+def best(prompt, domain='real', *, object_instance=None, require_dimensions=False):
     """Most useful grasp knowledge for the object: verified (success) first, newest, not refuted by uses."""
-    cands = [it for it in _load() if it['prompt'] == prompt and it['domain'] == domain and it['success'] is not False]
+    cands = [
+        item for item in _load()
+        if item['prompt'] == prompt and item['domain'] == domain and item['success'] is not False
+        and item.get('object_instance') == object_instance
+        and (not require_dimensions or valid_dimensions(item))
+    ]
     def score(it):
         uses = it['uses']
         good = sum(u['success'] for u in uses)
@@ -91,28 +104,27 @@ def assess(robot, prompt, domain='real', *, context=None, executor=None):
     from .cognitive.registry import acquired_pick
     context = context or {}
     out = {'gaps': [], 'reasons': {}, 'readiness': {}, 'executor': executor}
-    item = world_memory.target_for(None, prompt, WHERE_MAX_AGE_S)
+    instance = context.get('object_instance')
+    # The mobile sighting schema records a class box, not an observed instance ID.
+    item = None if instance else world_memory.target_for(None, prompt, WHERE_MAX_AGE_S)
     uncertainty = item.get('uncertainty_m') if item else None
     unknown_location = item is None or type(uncertainty) not in (int, float) or not math.isfinite(uncertainty)
     poor_location = not unknown_location and uncertainty > WHERE_MAX_UNCERTAINTY_M
     if unknown_location or poor_location:
         out['gaps'].append('where')
-        out['reasons']['where'] = 'не знает где: нет свежего положения с известной допустимой погрешностью'
+        out['reasons']['where'] = (f'Камера получателя не связала экземпляр «{instance}» с его координатами'
+                                   if instance else 'не знает где: нет свежего положения с известной допустимой погрешностью')
     out['where'] = item
     out['readiness']['where_missing'] = unknown_location or poor_location
-    measured = best(prompt, domain)
-    if measured is not None and context.get('object_instance') and measured.get('object_instance') != context['object_instance']:
-        measured = None
+    measured = best(prompt, domain, object_instance=instance, require_dimensions=True)
     out['how'] = measured
-    properties = measured.get('params', {}) if measured else {}
-    properties_missing = any(type(properties.get(key)) not in (int, float) or not math.isfinite(properties[key]) or properties[key] <= 0
-                             for key in ('width_m', 'height_m'))
+    properties_missing = measured is None
     if robot == 'rosmaster' and properties_missing:
         out['gaps'].append('how')
         out['reasons']['how'] = f'не хватает измерений подходящего экземпляра «{prompt}»'
     out['readiness']['object_properties_missing'] = properties_missing
     out['property_uncertainty_m'] = (measured or {}).get('evidence', {}).get('size_sigma_m')
-    out['readiness']['object_identity_unknown'] = not context.get('object_instance')
+    out['readiness']['object_identity_unknown'] = True  # current recipient detectors observe classes only
     # Only a proved constraint can establish infeasibility. Unknown mechanics
     # produces uncertainty, not a fabricated impossibility or success.
     feasibility = context.get('feasibility') or {}

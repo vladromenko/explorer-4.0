@@ -58,14 +58,36 @@ def footprint(mask, z):
     return {'center_m': [float(cx), float(cy)], 'sides_m': sorted([float(a), float(b)]), 'yaw_deg': float(yaw)}
 
 
-def measure(prompt, image=None, device='cuda'):
+def measure(prompt, image=None, device='cuda', *, object_instance=None, settings=None, output_root=None):
     """Returns {'ok', 'width_m', 'length_m', 'height_m', 'center_m', 'score', 'image', ...} or {'ok': False, 'reason'}."""
+    import tempfile
     from ..perception import analyze
-    out = DATA / 'so101_station' / time.strftime('%Y%m%d-%H%M%S')
-    out.mkdir(parents=True, exist_ok=True)
+    from .. import so101_geometry
+    from .instances import marker_in_mask, metric_component, select_silhouette
+    station_dir = Path(output_root) if output_root is not None else DATA / 'so101_station'
+    station_dir.mkdir(parents=True, exist_ok=True)
+    out = Path(tempfile.mkdtemp(prefix=time.strftime('%Y%m%d-%H%M%S-'), dir=station_dir))
     if image is None:
         image = out / 'overview.jpg'
         capture(image)
+    calib = json.loads(CALIBRATION.read_text())
+    settings = so101_geometry.configuration() if settings is None else settings
+    configured = settings.get('instance_id') and settings.get('object_class') == prompt
+    if object_instance and (not configured or settings['instance_id'] != object_instance):
+        return {'ok': False, 'reason': 'Для этого экземпляра не настроена метка SO-101', 'dir': str(out)}
+    marker = None
+    if configured and (object_instance or settings.get('enabled')):
+        import cv2
+        bgr = cv2.imread(str(image))
+        if bgr is None:
+            raise ValueError("Не удалось открыть снимок SO-101")
+        pose = so101_geometry.marker_object_pose(cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB), calib, settings)
+        if pose['valid']:
+            marker = {'instance_id': settings['instance_id'], 'marker_id': settings['marker_id'],
+                      'marker_dictionary': settings.get('marker_dictionary', 'DICT_4X4_50'),
+                      'corners_px': pose['marker_corners_px']}
+        elif object_instance:
+            return {'ok': False, 'reason': 'Метка экземпляра не подтверждена: ' + pose['reason'], 'dir': str(out)}
     # SAM 3 is sensitive to wording: the source project used phrases like «small colored cube»
     for text in (prompt, f'small {prompt}', f'small colored {prompt}', f'a {prompt} on the table'):
         rep = analyze(image, out, 'sam3', text, device=device)
@@ -73,14 +95,20 @@ def measure(prompt, image=None, device='cuda'):
             break
     if not rep['scores']:
         return {'ok': False, 'reason': f'SAM 3 не нашёл «{prompt}» на столе SO-101', 'dir': str(out)}
-    masks = np.load(rep['masks'])['masks']
-    i = int(np.argmax(rep['scores']))
-    if masks[i].sum() < 150:
+    with np.load(rep['masks'], allow_pickle=False) as stored:
+        masks = stored['masks']
+    try:
+        i = select_silhouette(masks, rep['scores'], marker['corners_px'] if object_instance else None)
+        silhouette = metric_component(masks[i])
+    except ValueError as exc:
+        return {'ok': False, 'reason': str(exc), 'dir': str(out)}
+    if marker is not None and not marker_in_mask(silhouette, marker['corners_px']):
+        return {'ok': False, 'reason': 'Виден ещё один предмет этого класса: обнаруженный силуэт не содержит метку зарегистрированного экземпляра', 'dir': str(out)}
+    if silhouette.sum() < 150:
         return {'ok': False, 'reason': 'силуэт предмета слишком мал для измерения', 'dir': str(out)}
     from .cuboid_vision import fit_upright_cube, fit_upright_cuboid
-    calib = json.loads(CALIBRATION.read_text())
     try:
-        box = fit_upright_cuboid(masks[i], calib)
+        box = fit_upright_cuboid(silhouette, calib)
     except ValueError as exc:
         return {'ok': False, 'reason': f'силуэт не годится для измерения: {exc}', 'dir': str(out)}
     model = 'cuboid'
@@ -90,16 +118,18 @@ def measure(prompt, image=None, device='cuda'):
         # Assume a cube-like height (= mean side) and refit the footprint with it fixed, twice.
         h = sides
         for _ in range(2):
-            box = fit_upright_cuboid(masks[i], calib, height_m=h)
+            box = fit_upright_cuboid(silhouette, calib, height_m=h)
             h = (box['width_m'] + box['length_m']) / 2
         box['height_measured'] = False
         model = 'cuboid, height assumed'
     try:                                  # the source project's validated cube fit, when it explains the silhouette
-        _, ev = fit_upright_cube([(masks[i], calib)])
-        if abs(ev['size_m'] - box['width_m']) < .004:
-            box.update(width_m=ev['size_m'], length_m=ev['size_m'], height_m=ev['size_m'], height_measured=True,
+        _, ev = fit_upright_cube([(silhouette, calib)])
+        if (abs(ev['size_m'] - box['width_m']) < .004
+                and abs(ev['size_m'] - box['length_m']) < .004
+                and (box.get('height_measured') is False or abs(ev['size_m'] - box['height_m']) < .004)):
+            box.update(width_m=ev['size_m'], length_m=ev['size_m'], height_m=ev['size_m'],
                        silhouette_rmse_px=ev['silhouette_rmse_px'])
-            model = 'cube'
+            model = 'cube, height assumed' if box.get('height_measured') is False else 'cube'
     except ValueError:
         pass
     w = box['width_m']
@@ -109,6 +139,8 @@ def measure(prompt, image=None, device='cuda'):
               'height_m': round(box['height_m'], 4), 'height_sigma_m': box.get('height_sigma_m'),
               'height_measured': bool(box.get('height_measured', True)),
               'center_m': box['center_m'], 'yaw_rad': box['yaw_rad'], 'silhouette_rmse_px': round(box['silhouette_rmse_px'], 2),
+              'selection': {'proposal_index': i, 'proposal_count': len(masks), 'marker': marker,
+                            'image_sha256': rep['input_sha256']},
               'score': float(rep['scores'][i]), 'image': str(image), 'overlay': rep['overlay'], 'dir': str(out),
               'calibration': str(CALIBRATION)}
     (out / 'measure.json').write_text(json.dumps(result, indent=1))

@@ -41,3 +41,17 @@ def test_map_has_robots_objects_station_and_seen_floor(isolated):
     assert (30, 62, 66) in px                                         # seen floor
     assert any(p == swarm_pages.COLORS['so101'] for p in px)          # station
     assert any(p == swarm_pages.COLORS['rosmaster'] for p in px)
+
+
+def test_named_selection_requires_a_matching_current_registration(monkeypatch):
+    from explorer4 import so101_geometry
+    entry = {'enabled': True, 'instance_id': 'tagged-cube', 'object_class': 'cube'}
+    monkeypatch.setattr(so101_geometry, 'configuration', lambda: entry)
+    assert swarm_pages.instance_context('cube', '') == {}
+    assert swarm_pages.instance_context('cube', 'tagged-cube') == {'object_instance': 'tagged-cube'}
+    for target, instance in [('sock', 'tagged-cube'), ('cube', 'unknown')]:
+        with pytest.raises(ValueError, match='метка'):
+            swarm_pages.instance_context(target, instance)
+    entry['enabled'] = False
+    with pytest.raises(ValueError, match='метка'):
+        swarm_pages.instance_context('cube', 'tagged-cube')

@@ -173,6 +173,11 @@ class Swarm:
             raise ValueError('Unknown grasp executor')
         self.pick_executor = executor
         self.task_context = dict(task_context or {})
+        if 'object_instance' in self.task_context and self.task_context['object_instance'] is not None:
+            instance = self.task_context['object_instance']
+            if not isinstance(instance, str) or not instance.strip():
+                raise ValueError('Укажите идентификатор экземпляра или оставьте задачу по классу')
+            self.task_context['object_instance'] = instance.strip()
         if kind == 'fetch' and executor is None and 'terminal_goal' not in self.task_context:
             from .mission_goal import first_floor_goal
             from . import swarm_sim
@@ -277,7 +282,11 @@ class Swarm:
         outcome, message = 'error', ''
         try:
             fn = {'explore': self._explore, 'find': self._find, 'fetch': self._fetch, 'goto': self._goto}[kind]
-            outcome, message = fn(prompt, text, stages)
+            instance = self.task_context.get('object_instance')
+            if instance and kind in ('find', 'goto'):
+                outcome, message = self._await_instance(prompt, instance, stages)
+            else:
+                outcome, message = fn(prompt, text, stages)
         except InterruptedError as exc:
             outcome, message = 'cancelled', str(exc)
         except Exception as exc:
@@ -397,6 +406,56 @@ class Swarm:
         self._end_stage(stages, goal.state == 'arrived', goal.message)
         return ('done' if goal.state == 'arrived' else goal.state), goal.message
 
+    def _station_measurement(self, prompt, instance=None):
+        """A passive donor response must belong to the requested domain, class and instance."""
+        from . import knowledge
+        domain = self.agents.domain()
+        def log(message):
+            self.say('learn', message)
+
+        try:
+            station = self.station_factory(log) if self.station_factory else None
+            if station is None:
+                if domain != 'real':
+                    return {'ok': False, 'reason': 'Станция симуляции недоступна'}
+                from .so101_station import SO101Station
+                station = SO101Station(log=log)
+            result = station.practice(prompt, object_instance=instance) if instance else station.practice(prompt)
+            if result.get('ok'):
+                item = result.get('knowledge') or {}
+                if (item.get('prompt') != prompt or item.get('domain') != domain
+                        or item.get('object_instance') != instance or not knowledge.valid_dimensions(item)):
+                    return {'ok': False, 'reason': 'Размеры донора не подтверждены для запрошенного предмета'}
+            return result
+        except Exception as exc:
+            return {'ok': False, 'reason': f'{type(exc).__name__}: {exc}'}
+
+    def _await_instance(self, prompt, instance, stages, *, measure=False, stored=None):
+        """Current GoTo and ArmSkills can follow a class box only, including after an occlusion."""
+        row = {'stage': 'recipient_identity', 'object_instance': instance,
+               'recipient_instance_verified': False, 'recipient_outcome': None}
+        allowed = getattr(self, 'helpers', None)
+        dimensions = stored
+        if stored:
+            row['dimension_observation'] = 'stored'
+        elif measure and (allowed is None or 'so101' in allowed):
+            self._check()
+            self.say('learn', f'SO-101 проверяет экземпляр «{instance}» на своей станции')
+            result = self._station_measurement(prompt, instance)
+            self._check()
+            if result.get('ok'):
+                dimensions = result['knowledge']
+                row['dimension_observation'] = 'station_response'
+            else:
+                row['donor_reason'] = result['reason']
+        if dimensions:
+            row.update(dimension_knowledge_id=dimensions['id'], dimension_source=dimensions['source'])
+        stages.append(row)
+        note = ('Сохранена запись размеров этого экземпляра. ' if dimensions
+                else (row['donor_reason'] + '. ' if 'donor_reason' in row else ''))
+        return 'awaiting_recipient_identity', (note + f'Для «{instance}» нужен исполнитель, который распознаёт '
+                'метку в камере получателя и ведёт этот же предмет до цели. Сейчас мобильная камера различает только класс.')
+
     def _fetch(self, prompt, text, stages):
         from . import so101_handoff
         context = getattr(self, 'task_context', {})
@@ -419,7 +478,10 @@ class Swarm:
             request = prepare_acquisition(self.agents.mission, text, 'rosmaster', prompt, gaps, domain=domain, context=context)
             self.state['acquisition'] = request
             self.agents.role('LearningAndExperimentCurator').note(request['state'], request['title'], request_id=request['id'])
-            return 'awaiting_skill', request['title'] + '. ' + request['operator_next']
+            if gaps['readiness']['physically_infeasible'] or not context.get('object_instance'):
+                return 'awaiting_skill', request['title'] + '. ' + request['operator_next']
+        if context.get('object_instance'):
+            return self._await_instance(prompt, context['object_instance'], stages, measure=True, stored=gaps['how'])
         if terminal_goal is not None:
             from .mission_goal import preparation_reason
             reason = preparation_reason(terminal_goal, domain)
@@ -445,16 +507,9 @@ class Swarm:
         if executor == 'geometric_baseline' and 'how' in gaps['gaps'] and (allowed is None or 'so101' in allowed):
             # the SO-101 station studies the object on its table WHILE the mobile robots search
             self.say('learn', f'ROSMASTER не знает, как брать «{prompt}»: SO-101 измеряет; проверенный опыт захвата учитывается отдельно')
-            station = self.station_factory(lambda m: self.say('learn', m)) if self.station_factory else None
-            if station is None:
-                from .so101_station import SO101Station
-                station = SO101Station(log=lambda m: self.say('learn', m))
             learning = {'started': time.time()}
             def learn():
-                try:
-                    learning['result'] = station.practice(prompt)
-                except Exception as exc:
-                    learning['result'] = {'ok': False, 'reason': f'{type(exc).__name__}: {exc}'}
+                learning['result'] = self._station_measurement(prompt)
             learning['thread'] = threading.Thread(target=learn, daemon=True, name='so101-station')
             learning['thread'].start()
         # 1. where is it

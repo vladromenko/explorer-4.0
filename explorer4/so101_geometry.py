@@ -118,6 +118,27 @@ def marker_object_pose(rgb, calibration, settings):
             'orientation_ambiguous': gap is None or gap < .2, 'uncertainty_calibrated': False}
 
 
+def registered_dimensions(rgb, calibration, settings, prompt, instance_id):
+    """Identify a marked object and retrieve its operator-entered dimensions from that same registration."""
+    if (not instance_id or settings.get('instance_id') != instance_id
+            or settings.get('object_class') != prompt):
+        return {'ok': False, 'reason': 'Для этого экземпляра не настроена метка SO-101'}
+    size = np.asarray(settings.get('size_m'), dtype=float)
+    if size.shape != (3,) or not np.isfinite(size).all() or np.any(size <= 0):
+        return {'ok': False, 'reason': 'В карточке экземпляра нет трёх измеренных размеров'}
+    observation = marker_object_pose(rgb, calibration, settings)
+    if not observation['valid']:
+        return {'ok': False, 'reason': 'Метка экземпляра не подтверждена: ' + observation['reason']}
+    return {
+        'ok': True, 'object_instance': instance_id, 'model': 'registered_dimensions',
+        'dimension_source': 'operator_entered_on_registration',
+        'width_m': float(size[0]), 'length_m': float(size[1]), 'height_m': float(size[2]),
+        'marker': {'dictionary': settings.get('marker_dictionary', 'DICT_4X4_50'),
+                   'id': settings['marker_id'], 'corners_px': observation['marker_corners_px'],
+                   'reprojection_rmse_px': observation['reprojection_rmse_px']},
+    }
+
+
 class DonorGeometryRecorder:
     def __init__(self, directory, settings):
         self.directory = Path(directory) / 'donor_geometry'

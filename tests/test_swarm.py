@@ -202,6 +202,76 @@ def test_fetch_without_taught_handover_ends_with_rosmaster_holding():
     assert not any(c[0] == 'place' for c in arms[0].calls)
 
 
+@pytest.mark.parametrize('donor_instance', ['cube-A', 'cube-B'])
+def test_named_fetch_records_donor_only_and_never_picks_class_neighbour(donor_instance):
+    from types import SimpleNamespace
+    world_memory.POSES['rosmaster'].fix(0., 0., 0.)
+    world_memory.record('rosmaster', 'кубик на полу', 'cube', .7, 0.)
+    arms, requests = [], []
+    team, ros, tank = make(arms)
+
+    def observe(prompt, *, object_instance):
+        requests.append(object_instance)
+        item = knowledge.add(prompt, 'so101_station', {'width_m': .029, 'height_m': .029},
+                             object_instance=donor_instance)
+        return {'ok': True, 'knowledge': item}
+
+    team.station_factory = lambda log: SimpleNamespace(practice=observe)
+    team.command('принеси кубик', executor='geometric_baseline',
+                 task_context={'object_instance': 'cube-A', 'recipient_instance_verified': True})
+    wait(team)
+    assert requests == ['cube-A']
+    assert team.state['stage'] == 'awaiting_recipient_identity'
+    assert not arms and not ros.started and not tank.started
+    episode = episodes.load()[0]
+    assert not episode['success']
+    stage = episode['stages'][-1]
+    assert stage['recipient_instance_verified'] is False and stage['recipient_outcome'] is None
+    item = knowledge.best('cube', object_instance=donor_instance)
+    assert item['uses'] == []
+    assert stage.get('dimension_knowledge_id') == (item['id'] if donor_instance == 'cube-A' else None)
+    assert knowledge.best('cube') is None
+
+
+@pytest.mark.parametrize('command', ['найдите кубик', 'подъедь к кубику'])
+def test_named_navigation_never_uses_a_class_box(command):
+    team, ros, tank = make([])
+    team.command(command, task_context={'object_instance': 'cube-A'})
+    wait(team)
+    assert team.state['stage'] == 'awaiting_recipient_identity'
+    assert not ros.started and not tank.started
+
+
+def test_cached_dimensions_and_pending_skill_remain_separate_from_recipient_identity():
+    arms = []
+    team, ros, tank = make(arms)
+    team.station_factory = lambda log: pytest.fail('A matching size record is already present')
+    item = knowledge.add('cube', 'operator', {'width_m': .029, 'height_m': .029}, object_instance='cube-A')
+    team.command('принеси кубик', task_context={'object_instance': 'cube-A'})
+    wait(team)
+    assert team.state['stage'] == 'awaiting_recipient_identity'
+    assert team.state['acquisition']['training_started'] is False
+    stage = episodes.load()[0]['stages'][-1]
+    assert (stage['dimension_knowledge_id'], stage['dimension_observation'], stage['dimension_source']) == (
+        item['id'], 'stored', 'operator')
+    assert stage['recipient_outcome'] is None and not arms and not ros.started and not tank.started
+
+
+def test_unnamed_grasp_with_named_donor_does_not_credit_named_object():
+    from types import SimpleNamespace
+    world_memory.POSES['rosmaster'].fix(0., 0., 0.)
+    world_memory.record('rosmaster', 'виден кубик', 'cube', .7, 0.)
+    arms = []
+    team, ros, tank = make(arms)
+    item = knowledge.add('cube', 'so101_station', {'width_m': .029, 'height_m': .029}, object_instance='cube-A')
+    team.station_factory = lambda log: SimpleNamespace(practice=lambda prompt: {'ok': True, 'knowledge': item})
+    team.command('принеси кубик', executor='geometric_baseline')
+    wait(team)
+    assert team.state['stage'] == 'done'
+    assert ros.started and arms[0].calls[0] == ('pick', 'cube')
+    assert knowledge.best('cube', object_instance='cube-A')['uses'] == []
+
+
 def test_stop_cancels_everybody():
     s, ros, tank = make([])
     s.explore_factory = lambda robot, **kw: Goal(robot, 'explored', 10 ** 9)

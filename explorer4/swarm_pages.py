@@ -188,6 +188,16 @@ def readiness(control):
     return out
 
 
+def instance_context(target, instance):
+    if not instance:
+        return {}
+    from .so101_geometry import configuration
+    entry = configuration()
+    if not entry.get('enabled') or entry.get('instance_id') != instance or entry.get('object_class') != target:
+        raise ValueError('Выбранная метка не зарегистрирована для предмета в команде')
+    return {'object_instance': instance}
+
+
 def install(app, ui, control, notify_error, css=''):
     from fastapi.responses import Response
 
@@ -210,18 +220,18 @@ def install(app, ui, control, notify_error, css=''):
         return request.client is not None and request.client.host in ('127.0.0.1', '::1')
 
     @app.post('/api/swarm/command')
-    def swarm_command(request: Request, text: str, robots: str = '', executor: str = '', destination: str = ''):
+    def swarm_command(request: Request, text: str, robots: str = '', executor: str = '', destination: str = '', object_instance: str = ''):
         from . import swarm
         if not _local(request):
             return Response(status_code=403)
         try:
-            context = {}
+            _, target = swarm.parse(text)
+            context = instance_context(target, object_instance)
             if destination:
                 if destination != 'floor_zone':
                     raise ValueError('Неизвестная конечная зона')
                 from . import swarm_sim
                 from .mission_goal import first_floor_goal
-                _, target = swarm.parse(text)
                 context['terminal_goal'] = swarm_sim.WORLD.floor_goal(target) if swarm_sim.WORLD is not None else first_floor_goal('real')
             kind, prompt = swarm.SWARM.command(text, [r for r in robots.split(',') if r] or None,
                                                executor=executor or None, task_context=context)
@@ -305,6 +315,16 @@ def install(app, ui, control, notify_error, css=''):
                 text = ui.input(placeholder='принеси печеньку · найдите носок · осмотрите комнату · подъедь к кубику').props('dense outlined dark').style('flex:1;min-width:320px')
                 who = ui.select(['Оба робота', 'Только ROSMASTER', 'Только Tank'], value='Оба робота').props('dense outlined dark').style('min-width:170px')
 
+                from .so101_geometry import configuration
+                registered = configuration()
+                instance_choice = None
+                if registered.get('enabled') and registered.get('instance_id'):
+                    instance_id = registered['instance_id']
+                    instance_choice = ui.select(
+                        {'': 'Любой предмет указанного типа', instance_id: f'По метке · {instance_id}'},
+                        value='', label='Какой предмет',
+                    ).props('dense outlined dark')
+
                 executor_choice = ui.select({'skill': 'Проверенный захват или запрос навыка', 'geometric_baseline': 'Геометрический эксперимент'},
                                             value='skill', label='Способ захвата').props('dense outlined dark')
 
@@ -317,8 +337,8 @@ def install(app, ui, control, notify_error, css=''):
                         v = (value or text.value or '').strip()
                         if not v:
                             raise ValueError('Напишите команду')
-                        context = {}
                         kind, target = _swarm.parse(v)
+                        context = instance_context(target, instance_choice.value if instance_choice else None)
                         if kind == 'fetch' and destination_choice.value == 'floor_zone':
                             from .mission_goal import first_floor_goal
                             context['terminal_goal'] = swarm_sim.WORLD.floor_goal(target) if swarm_sim.WORLD is not None else first_floor_goal('real')

@@ -8,7 +8,7 @@ import pytest
 from explorer4 import so101_geometry as geometry
 
 
-def test_known_marker_geometry_and_missing_detection_are_distinct():
+def test_known_marker_geometry_and_missing_detection_are_distinct(tmp_path, monkeypatch):
     calibration = json.loads(geometry.CALIBRATION.read_text())
     marker_from_object = np.eye(4)
     marker_from_object[2, 3] = -.016
@@ -27,6 +27,28 @@ def test_known_marker_geometry_and_missing_detection_are_distinct():
     np.testing.assert_allclose(np.asarray(result['world_object_pose'])[:3, 3], [.22, .02, .016], atol=.015)
     missing = geometry.marker_object_pose(np.full((720, 1280, 3), 255, np.uint8), calibration, settings)
     assert missing == {'valid': False, 'reason': 'object_marker_missing_or_duplicated'}
+
+    from explorer4 import knowledge, so101_station, station_check
+    from explorer4.so101_vendor import measure
+    frame = tmp_path / 'camera.png'
+    assert cv2.imwrite(str(frame), grey)
+    control = {'ok': True, 'image': str(frame), 'image_sha256': hashlib.sha256(frame.read_bytes()).hexdigest(),
+               'calibration_sha256': hashlib.sha256(geometry.CALIBRATION.read_bytes()).hexdigest()}
+    settings.update(instance_id='block-1', object_class='cube', size_m=[.032]*3)
+    monkeypatch.setattr(geometry, 'configuration', lambda: settings)
+    monkeypatch.setattr(station_check, 'capture', lambda: control)
+    monkeypatch.setattr(knowledge, 'STORE', tmp_path / 'knowledge.json')
+    monkeypatch.setattr(measure, 'measure', lambda *a, **kw: pytest.fail("No new segmentation is needed for a registered size"))
+    station = so101_station.SO101Station()
+    monkeypatch.setattr(station, 'available', lambda: True)
+    measured = station.practice('cube', object_instance='block-1')
+    assert measured['ok'] and measured['knowledge']['object_instance'] == 'block-1'
+    assert measured['knowledge']['evidence']['dimension_source'] == 'operator_entered_on_registration'
+    assert knowledge.best('cube', object_instance='block-1')['params']['width_m'] == .032
+    assert not station.practice('cube', object_instance='unseen-block')['ok']
+    assert knowledge.best('cube', object_instance='unseen-block') is None
+    control['image_sha256'] = '0'*64
+    assert not station.practice('cube', object_instance='block-1')['ok']
 
 
 def test_fixed_tip_uses_measured_angles_offsets_and_distinct_jaw_frame():
@@ -132,3 +154,79 @@ def test_stale_optional_geometry_stops_existing_session_before_finalize(tmp_path
     session._run('so101_pick_place', 'fixture', 'fixture')
     assert events == ['source_start', 'geometry_start', 'begin', 'sample', 'source_closed', 'geometry_closed', 'aborted']
     assert control.stop_event.is_set() and 'stale geometry' in session.error
+
+
+def test_station_mask_selection_distinguishes_separate_objects_and_same_object_proposals():
+    from explorer4.so101_vendor.instances import select_silhouette
+    a = np.zeros((40, 60), bool)
+    a[5:24, 4:22] = True
+    b = np.zeros_like(a)
+    b[10:32, 38:54] = True
+    nested = b.copy()
+    nested[:12] = False
+    masks = [a, b, nested]
+    scores = [.98, .77, .70]
+    corners = [[40, 14], [50, 14], [50, 26], [40, 26]]
+    with pytest.raises(ValueError, match='несколько'):
+        select_silhouette(masks, scores)
+    assert select_silhouette(masks, scores, corners) == 1
+    with pytest.raises(ValueError, match='Нет силуэта'):
+        select_silhouette([a], [.98], corners)
+
+
+def test_station_cannot_bind_the_tag_on_one_component_to_the_largest_cube():
+    from explorer4.so101_vendor.instances import metric_component, select_silhouette
+    a = np.zeros((60, 80), bool)
+    a[10:40, 5:32] = True
+    b = np.zeros_like(a)
+    b[17:32, 50:65] = True
+    union = a | b
+    corners = [[51, 18], [62, 18], [62, 30], [51, 30]]
+    with pytest.raises(ValueError, match='несколько'):
+        select_silhouette([union], [.99], corners)
+    # A narrow bridge makes the combined proposal connected, but the other
+    # two proposals independently support separate objects.
+    union[25, 32:50] = True
+    with pytest.raises(ValueError, match='несколько'):
+        select_silhouette([union, a, b], [.99, .91, .87])
+    assert select_silhouette([union, a, b], [.99, .91, .87], corners) == 2
+    with pytest.raises(ValueError, match='Нет силуэта'):
+        select_silhouette([union, a], [.99, .91], corners)
+    speck = a.copy()
+    speck[18:21, 51:54] = True
+    edges = [[51, 18], [53, 18], [53, 20], [51, 20]]
+    assert np.array_equal(metric_component(speck), a)
+    with pytest.raises(ValueError, match='Нет силуэта'):
+        select_silhouette([speck], [.99], edges)
+
+
+def test_registered_dimensions_require_the_observed_instance(monkeypatch):
+    settings = {'instance_id': 'tagged-block', 'object_class': 'cube', 'marker_id': 1, 'size_m': [.029]*3}
+    monkeypatch.setattr(geometry, 'marker_object_pose',
+                        lambda rgb, calibration, binding: {'valid': False, 'reason': 'object_marker_missing_or_duplicated'})
+    assert not geometry.registered_dimensions(None, {}, settings, 'cube', 'tagged-block')['ok']
+    assert not geometry.registered_dimensions(None, {}, settings, 'cube', 'other-block')['ok']
+    monkeypatch.setattr(geometry, 'marker_object_pose',
+                        lambda *args: {'valid': True, 'marker_corners_px': [[0,0],[1,0],[1,1],[0,1]], 'reprojection_rmse_px': .3})
+    result = geometry.registered_dimensions(None, {}, settings, 'cube', 'tagged-block')
+    assert result['model'] == 'registered_dimensions' and result['height_m'] == .029
+    assert result['dimension_source'] == 'operator_entered_on_registration'
+
+
+def test_cube_hypothesis_keeps_unobserved_height_explicit(tmp_path, monkeypatch):
+    from explorer4 import perception
+    from explorer4.so101_vendor import cuboid_vision, measure
+    masks = np.zeros((1, 40, 40), np.uint8)
+    masks[:, 6:28, 8:30] = 1
+    capture = tmp_path / 'masks.npz'
+    np.savez(capture, masks=masks)
+    monkeypatch.setattr(perception, 'analyze', lambda *a, **kw: {
+        'scores': [.9], 'masks': str(capture), 'input_sha256': 'fixture', 'overlay': 'fixture'})
+    monkeypatch.setattr(cuboid_vision, 'fit_upright_cuboid', lambda *a, **kw: {
+        'width_m': .03, 'length_m': .03, 'height_m': .03, 'height_sigma_m': .02,
+        'center_m': [0, 0], 'yaw_rad': 0., 'silhouette_rmse_px': .1})
+    monkeypatch.setattr(cuboid_vision, 'fit_upright_cube', lambda *a: (None, {
+        'size_m': .03, 'silhouette_rmse_px': .12}))
+    result = measure.measure('cube', image='fixture.jpg', settings={}, output_root=tmp_path)
+    assert result['ok'] and result['width_m'] == .03
+    assert not result['height_measured'] and result['model'] == 'cube, height assumed'

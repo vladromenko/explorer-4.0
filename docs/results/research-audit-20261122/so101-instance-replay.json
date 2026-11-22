@@ -1,0 +1,688 @@
+{
+  "scope": "Retrospective, passive observation of one existing physical demonstration and four earlier bench scans. No new recorded performance, robot action, fitting, or claim about current camera calibration.",
+  "episode": "d891e94d13014e3abcda7f1a3dce517e",
+  "frame_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+  "calibration_sha256": "43d5e38d93624f952a940c3e96afa9a5ed746ce978b3ec655c0a365cd83c92ea",
+  "first_frame": "000000.jpg",
+  "marker_dictionary": "DICT_APRILTAG_36h11",
+  "marker_id": 1,
+  "archived_object_dimensions_mm": [
+    29.0,
+    29.0,
+    29.0
+  ],
+  "archived_rows": 871,
+  "archived_camera_sequences": 801,
+  "archived_marker_positive_rows": 679,
+  "archived_marker_positive_sequences": 619,
+  "first_marker": {
+    "valid": true,
+    "world_object_pose": [
+      [
+        0.6555562297891249,
+        0.740479343546844,
+        -0.1481093223436778,
+        0.2664646660583154
+      ],
+      [
+        -0.7460524195800109,
+        0.6654292139520896,
+        0.024693085224727997,
+        0.016481172268032716
+      ],
+      [
+        0.11684098948348304,
+        0.0943096124450724,
+        0.9886626725921137,
+        0.0063898136929447895
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "marker_corners_px": [
+      [
+        751.0,
+        473.0
+      ],
+      [
+        727.0,
+        492.0
+      ],
+      [
+        708.0,
+        467.0
+      ],
+      [
+        732.0,
+        449.0
+      ]
+    ],
+    "reprojection_rmse_px": 0.13741609453791054,
+    "alternative_error_gap_px": 0.05005983396011571,
+    "orientation_ambiguous": true,
+    "uncertainty_calibrated": false
+  },
+  "wrong_id_same_pixels": {
+    "valid": false,
+    "reason": "object_marker_missing_or_duplicated"
+  },
+  "archived_bench_scans": [
+    {
+      "file": "measured-cube-scan.json",
+      "sha256": "c1897b5c4c1398436c1effa27fae37c72fdddf58e7caa55202667e37120473f8",
+      "frame": 727,
+      "proposals": 5,
+      "scores": [
+        0.9805,
+        0.9766,
+        0.9766,
+        0.9727,
+        0.9609
+      ],
+      "old_index": 0,
+      "new_measurement": {
+        "chosen_index": null,
+        "reason": "Камера видит несколько подходящих контуров. Уточните предмет для измерения."
+      }
+    },
+    {
+      "file": "exact-silhouette-scan.json",
+      "sha256": "57c4d6610aff06d3333ec5785cf469a5227a2ef98fb97433570041e82b8d326a",
+      "frame": 192,
+      "proposals": 4,
+      "scores": [
+        0.9805,
+        0.9766,
+        0.9766,
+        0.9648
+      ],
+      "old_index": 0,
+      "new_measurement": {
+        "chosen_index": null,
+        "reason": "Камера видит несколько подходящих контуров. Уточните предмет для измерения."
+      }
+    },
+    {
+      "file": "final-blocked-scan.json",
+      "sha256": "cafa2620123e0e76a699d19ab1904475f2ade4390014fb3d9ca98ba0b28ee0bd",
+      "frame": 769,
+      "proposals": 4,
+      "scores": [
+        0.9805,
+        0.9766,
+        0.9766,
+        0.9727
+      ],
+      "old_index": 0,
+      "new_measurement": {
+        "chosen_index": null,
+        "reason": "Камера видит несколько подходящих контуров. Уточните предмет для измерения."
+      }
+    },
+    {
+      "file": "after-observation-scan.json",
+      "sha256": "3a1290c99813931af3e05a6420ac5e31b73a0e4037ce3d0ceb331037b516fa92",
+      "frame": 5542,
+      "proposals": 4,
+      "scores": [
+        0.9805,
+        0.9766,
+        0.9766,
+        0.9766
+      ],
+      "old_index": 0,
+      "new_measurement": {
+        "chosen_index": null,
+        "reason": "Камера видит несколько подходящих контуров. Уточните предмет для измерения."
+      }
+    }
+  ],
+  "first_frame_measurement": {
+    "ok": false,
+    "reason": "Нет силуэта, соответствующего выбранному предмету"
+  },
+  "segmentation": {
+    "input_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+    "prompt": "cube",
+    "scores": [
+      0.69921875
+    ],
+    "boxes_xyxy": [
+      [
+        365.75537109375,
+        293.0474548339844,
+        438.6241149902344,
+        358.9088134765625
+      ]
+    ],
+    "assets": {
+      "manifest_sha256": "0a21f6cf3cdb1fe291b480d28ce0dc047a19190b6656bd0aa3cd30ec21fc88ba",
+      "files": [
+        {
+          "file": "LICENSE",
+          "sha256": "bec48f70bd37bf8280a9d1ebf01642d26086f6122ba735baa08fe03c5a6e7448",
+          "bytes": 7352
+        },
+        {
+          "file": "README.md",
+          "sha256": "1ac8a322aa4a797db79cbc334acee7c0cae8635032b71c7d5b23ae63a05f4bd5",
+          "bytes": 26038
+        },
+        {
+          "file": "config.json",
+          "sha256": "4616385e4b21f2e5e22c875b65679185cbccfa95de42542b9166f7dc3d57160f",
+          "bytes": 25843
+        },
+        {
+          "file": "merges.txt",
+          "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a",
+          "bytes": 524619
+        },
+        {
+          "file": "model.safetensors",
+          "sha256": "6d06f0a5f84e435071fe6603e61d0b4cc7b40e0d39d487cfd4d67d8cc11cc14a",
+          "bytes": 3439938512
+        },
+        {
+          "file": "processor_config.json",
+          "sha256": "6420cf2671fa9309ea95bc0144a8b9861666d1c5f43c8db09e410dacda974fce",
+          "bytes": 1712
+        },
+        {
+          "file": "special_tokens_map.json",
+          "sha256": "2cdb3b8331a60c92fc1e55a13e9fd61fd2293c5a51275fdcccd62b780052530e",
+          "bytes": 588
+        },
+        {
+          "file": "tokenizer.json",
+          "sha256": "6d9109cc838977f3ca94a379eec36aecc7c807e1785cd729660ca2fc0171fb35",
+          "bytes": 3642073
+        },
+        {
+          "file": "tokenizer_config.json",
+          "sha256": "39670ad98457fe8f14ca59f6bb74591e9fc850974380a63993e5b8ffc865baa2",
+          "bytes": 799
+        },
+        {
+          "file": "vocab.json",
+          "sha256": "5047b556ce86ccaf6aa22b3ffccfc52d391ea4accdab9c2f2407da5b742d4363",
+          "bytes": 862328
+        }
+      ]
+    }
+  },
+  "sam_revision": "3c879f39826c281e95690f02c7821c4de09afae7",
+  "positive_marker_box_control": {
+    "geometry_from": "Axis-aligned enclosing rectangle of the detected tag corners only.",
+    "box_xyxy": [
+      708.0,
+      449.0,
+      751.0,
+      492.0
+    ],
+    "scores": [
+      0.94921875,
+      0.84375
+    ],
+    "proposals_xyxy": [
+      [
+        707.7581787109375,
+        448.5521545410156,
+        750.3546142578125,
+        492.416015625
+      ],
+      [
+        366.180908203125,
+        292.8892517089844,
+        438.82220458984375,
+        359.32269287109375
+      ]
+    ],
+    "mask_containing_all_corners": null,
+    "mask_corner_coverage": [
+      {
+        "mask_sha256_uint8": "1abbe9cd7ba5d0eeff7bf28cbdab51d1848dca1088cba4ce8efc6a2a14dd8853",
+        "shape_hw": [
+          720,
+          1280
+        ],
+        "marker_corners_inside": 2
+      },
+      {
+        "mask_sha256_uint8": "490a005c704bb2793591eddc63326e01adc80c33b68ac607604741a515a3b1b0",
+        "shape_hw": [
+          720,
+          1280
+        ],
+        "marker_corners_inside": 0
+      }
+    ]
+  },
+  "registered_dimension_retrieval": [
+    {
+      "camera_sequence": 2,
+      "image": "000000.jpg",
+      "sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              751.0,
+              473.0
+            ],
+            [
+              727.0,
+              492.0
+            ],
+            [
+              708.0,
+              467.0
+            ],
+            [
+              732.0,
+              449.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.13741609453791054
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 82,
+      "image": "000080.jpg",
+      "sha256": "29a4b2f8f3231c20fccddc0e81d06b2962528d1e7f0dac076af424302c8f7e4c",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              751.0,
+              473.0
+            ],
+            [
+              726.0,
+              491.0
+            ],
+            [
+              708.0,
+              467.0
+            ],
+            [
+              732.0,
+              449.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.14601443436263767
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 165,
+      "image": "000164.jpg",
+      "sha256": "77aec8f094f9d96e3bb543d8ae8ee8c8c51d64326b2d23e2142f482e38ec6999",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              751.0,
+              473.0
+            ],
+            [
+              727.0,
+              492.0
+            ],
+            [
+              708.0,
+              467.0
+            ],
+            [
+              732.0,
+              449.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.13741609453791054
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 240,
+      "image": "000241.jpg",
+      "sha256": "f4bd3984b236d5bdecf1023e8c445c60272ed749663cb6a603e9d8a9672b2d55",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              751.0,
+              473.0
+            ],
+            [
+              727.0,
+              492.0
+            ],
+            [
+              708.0,
+              467.0
+            ],
+            [
+              732.0,
+              449.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.13741609453791054
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 314,
+      "image": "000317.jpg",
+      "sha256": "29cd8e75418a66a79ea3fb45eeea2b0f66898957a6464ad71cbee55856a75b14",
+      "archived_detection": false,
+      "registered": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 389,
+      "image": "000393.jpg",
+      "sha256": "751e7b9d33c2215b952ed9481a39a95cd73bb43c7a529561590776fdaeb263ec",
+      "archived_detection": false,
+      "registered": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 466,
+      "image": "000472.jpg",
+      "sha256": "bf7a759a1d2763df83b290150caf0c0c2e1011019d5f5ee3f4079d28e0e40107",
+      "archived_detection": true,
+      "registered": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 541,
+      "image": "000549.jpg",
+      "sha256": "f41dd4904f9ed23ce57c29215237584674164640d2fbfe7ca7f2f54dc9d5a67a",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              742.0,
+              376.0
+            ],
+            [
+              710.0,
+              383.0
+            ],
+            [
+              693.0,
+              359.0
+            ],
+            [
+              724.0,
+              353.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.11424407341588286
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 616,
+      "image": "000626.jpg",
+      "sha256": "32970c0b902fc5d06bfa34e25556c871487372fec66ca84e576428a3135088c6",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              741.0,
+              376.0
+            ],
+            [
+              710.0,
+              383.0
+            ],
+            [
+              693.0,
+              359.0
+            ],
+            [
+              725.0,
+              353.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.2881000177308758
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 693,
+      "image": "000705.jpg",
+      "sha256": "6b86b7bcb76e44c199ef784992b2e39ea6c84c8407fbf3b66f0c6f6ef3404e02",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              742.0,
+              406.0
+            ],
+            [
+              713.0,
+              418.0
+            ],
+            [
+              698.0,
+              390.0
+            ],
+            [
+              725.0,
+              377.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.3407025202318457
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 772,
+      "image": "000785.jpg",
+      "sha256": "382f63a56a52dc43f46b05b1fc56dec8a30b8da3922ae442ecbab535f1cf7010",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              750.0,
+              458.0
+            ],
+            [
+              725.0,
+              475.0
+            ],
+            [
+              708.0,
+              449.0
+            ],
+            [
+              732.0,
+              432.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.11910109970674687
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    },
+    {
+      "camera_sequence": 855,
+      "image": "000870.jpg",
+      "sha256": "420c36b249f3f3835f51c1ba36544296553a8831e7710897082c9d1b8e0531e3",
+      "archived_detection": true,
+      "registered": {
+        "ok": true,
+        "object_instance": "cube-29mm-tag1",
+        "model": "registered_dimensions",
+        "dimension_source": "operator_entered_on_registration",
+        "width_m": 0.029,
+        "length_m": 0.029,
+        "height_m": 0.029,
+        "marker": {
+          "dictionary": "DICT_APRILTAG_36h11",
+          "id": 1,
+          "corners_px": [
+            [
+              750.0,
+              458.0
+            ],
+            [
+              725.0,
+              475.0
+            ],
+            [
+              708.0,
+              449.0
+            ],
+            [
+              733.0,
+              433.0
+            ]
+          ],
+          "reprojection_rmse_px": 0.14195718615744543
+        }
+      },
+      "wrong_id": {
+        "ok": false,
+        "reason": "Метка экземпляра не подтверждена: object_marker_missing_or_duplicated"
+      }
+    }
+  ],
+  "interpretation": "Registered dimensions were supplied by the operator. Successful retrieval verifies recognition from a newly decoded archive image. It does not independently estimate object size or verify a physical grasp. The marker-box control supplies a localized visual prompt to upstream SAM 3. The four multi-cube scans are archived views of one laboratory setup and their proposals are model outputs."
+}

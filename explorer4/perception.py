@@ -13,11 +13,18 @@ from .paths import DATA
 SAM_REV='3c879f39826c281e95690f02c7821c4de09afae7'
 
 
-def analyze(image,output,method,prompt,device='cpu'):
+def analyze(image,output,method,prompt,device='cpu', *, positive_box=None):
     image=Path(image).resolve();output=Path(output).resolve();output.mkdir(parents=True,exist_ok=True)
     rgb=Image.open(image).convert('RGB');width,height=rgb.size
     if width*height>4096*4096:raise ValueError('Image too large')
     if not 1<=len(prompt)<=200:raise ValueError('Нужно короткое название объекта')
+    geometry_prompt = {}
+    if positive_box is not None:
+        bounds = np.asarray(positive_box, dtype=float)
+        if (method != 'sam3' or bounds.shape != (4,) or not np.isfinite(bounds).all()
+                or not (0 <= bounds[0] < bounds[2] <= width and 0 <= bounds[1] < bounds[3] <= height)):
+            raise ValueError('Некорректная область подсказки SAM 3')
+        geometry_prompt = {'input_boxes': [[bounds.tolist()]], 'input_boxes_labels': [[1]]}
     import torch
     torch.set_num_threads(2)
     started=time.monotonic();root=DATA/'cache/vision';masks=[];boxes=[];scores=[]
@@ -48,7 +55,7 @@ def analyze(image,output,method,prompt,device='cpu'):
         model=Sam3Model.from_pretrained(str(checkpoint),local_files_only=True,dtype=dtype).to(device).eval()
         processor=Sam3Processor.from_pretrained(str(checkpoint),local_files_only=True)
         loaded=time.monotonic()
-        inputs=processor(images=rgb,text=prompt,return_tensors='pt').to(device)
+        inputs=processor(images=rgb,text=prompt,return_tensors='pt',**geometry_prompt).to(device)
         with torch.inference_mode(),torch.autocast(device_type='cuda',dtype=torch.bfloat16,enabled=device.startswith('cuda')):
             result=model(**inputs)
         result=processor.post_process_instance_segmentation(result,threshold=.5,mask_threshold=.5,target_sizes=inputs['original_sizes'].tolist())[0]
@@ -73,6 +80,8 @@ def analyze(image,output,method,prompt,device='cpu'):
         'training_started':False,'motor_commands':False,'ground_truth':False,'skill_verified':False,
         'limitation':'Model proposals require review; absent detections are retained, not task failures',
         'overlay':str(output/'overlay.png'),'masks':str(output/'masks.npz')}
+    if geometry_prompt:
+        report['positive_box_xyxy'] = bounds.tolist()
     (output/'result.json').write_text(json.dumps(report,indent=2));return report
 
 

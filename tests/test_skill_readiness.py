@@ -166,3 +166,15 @@ def test_transfer_draft_uses_existing_queue_and_cancel_blocks_late_start(isolate
     with pytest.raises(ValueError, match='Запрос отменён'):
         jobs.start_prepared_training(second_draft)
     assert len(catalog.rows('jobs')) == 1
+
+
+def test_rank_only_measurements_for_the_requested_instance(isolated):
+    target = knowledge.add('cube', 'station', {'width_m': .025, 'height_m': .025}, object_instance='small')
+    knowledge.add('cube', 'station', {'width_m': .045, 'height_m': .045}, success=True, object_instance='large')
+    knowledge.add('cube', 'station', {'width_m': .025}, success=True, object_instance='small')
+    gaps = knowledge.assess('rosmaster', 'cube', context={'object_instance': 'small'}, executor='geometric_baseline')
+    assert gaps['how']['id'] == target['id']
+    assert 'how' not in gaps['gaps']
+    knowledge.record_use(target['id'], 'rosmaster', False)
+    gaps = knowledge.assess('rosmaster', 'cube', context={'object_instance': 'small'}, executor='geometric_baseline')
+    assert 'how' in gaps['gaps'] and gaps['how'] is None
