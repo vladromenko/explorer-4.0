@@ -1,0 +1,1678 @@
+{
+  "scope": "Paired MuJoCo interventions on 16 distinct starts; human and robot travel costs are zero by design. Harm compares actual paired local-only endpoints. An unsuccessful assisted attempt alone is uninformative about negative transfer. The material contains no physical outcomes. Sensitivity revalues the same realized policies without refitting.",
+  "protocol_sha256": "ae3e78bd659c46bd9e20d6b8406daafd02dca63bb0623041f3abcb66684eae11",
+  "result_sha256": "4de820cb1bfad68e8637b443ba25f36f793f004319a80b2fc1d8c6a1e2ffc22d",
+  "model_card_sha256": "bef74fac609b0bce4b0352d87818e657858fb4f2e1e6baaff104893d4de8d913",
+  "fit_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+  "n_unique_scenes": 16,
+  "method_summary": {
+    "local_3.0": {
+      "n": 16,
+      "win": 13,
+      "calls": 6,
+      "help_units": 9.0,
+      "wait_s": 4.0,
+      "service_s": 18.0,
+      "travel_m": 0.0,
+      "human_s": 0.0,
+      "expired_or_refused": 0,
+      "negative_help": 1,
+      "deadline_miss": 1,
+      "mean_sensing_s": 2.8124999999997837,
+      "mean_elapsed_s": 9.7,
+      "mean_utility": 0.70775,
+      "mean_process_cpu_s": 5.521477831999996,
+      "fallbacks": 0
+    },
+    "adaptive": {
+      "n": 16,
+      "win": 13,
+      "calls": 6,
+      "help_units": 9.0,
+      "wait_s": 4.0,
+      "service_s": 18.0,
+      "travel_m": 0.0,
+      "human_s": 0.0,
+      "expired_or_refused": 0,
+      "negative_help": 1,
+      "deadline_miss": 1,
+      "mean_sensing_s": 2.524999999999932,
+      "mean_elapsed_s": 9.525,
+      "mean_utility": 0.708625,
+      "mean_process_cpu_s": 5.3415221699999975,
+      "fallbacks": 0
+    },
+    "local_only": {
+      "n": 16,
+      "win": 8,
+      "calls": 0,
+      "help_units": 0.0,
+      "wait_s": 0.0,
+      "service_s": 0.0,
+      "travel_m": 0.0,
+      "human_s": 0.0,
+      "expired_or_refused": 0,
+      "negative_help": 0,
+      "deadline_miss": 0,
+      "mean_sensing_s": 1.6875000000000744,
+      "mean_elapsed_s": 5.353125,
+      "mean_utility": 0.473234375,
+      "mean_process_cpu_s": 3.103679356,
+      "fallbacks": 0
+    },
+    "immediate_peer": {
+      "n": 16,
+      "win": 12,
+      "calls": 12,
+      "help_units": 18.0,
+      "wait_s": 8.0,
+      "service_s": 36.0,
+      "travel_m": 0.0,
+      "human_s": 0.0,
+      "expired_or_refused": 0,
+      "negative_help": 2,
+      "deadline_miss": 2,
+      "mean_sensing_s": 3.162500000000181,
+      "mean_elapsed_s": 11.0375,
+      "mean_utility": 0.5823125,
+      "mean_process_cpu_s": 6.0866630180000065,
+      "fallbacks": 0
+    }
+  },
+  "primary_adaptive_minus_fixed": {
+    "gains": 0,
+    "losses": 0,
+    "paired_exact_p": 1.0,
+    "mean_utility_difference": 0.0008749999999999938,
+    "median_utility_difference": 0.0
+  },
+  "strongest_local_first": "local_3.0",
+  "all_actions_were_calibrated": true,
+  "conditional_decisions": [
+    {
+      "seed": 894200,
+      "action": "local_observe",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.6924583333333333,
+        "ask:rosmaster": 0.6800416666666667
+      }
+    },
+    {
+      "seed": 894201,
+      "action": "local_observe",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.675625,
+        "ask:rosmaster": 0.6614583333333333
+      }
+    },
+    {
+      "seed": 894202,
+      "action": "local_observe",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.675625,
+        "ask:rosmaster": 0.6614583333333333
+      }
+    },
+    {
+      "seed": 894203,
+      "action": "local_observe",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.675625,
+        "ask:rosmaster": 0.6614583333333333
+      }
+    },
+    {
+      "seed": 894204,
+      "action": "ask:rosmaster",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.4215416666666667,
+        "ask:rosmaster": 0.42833333333333334
+      }
+    },
+    {
+      "seed": 894208,
+      "action": "ask:rosmaster",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.4215416666666667,
+        "ask:rosmaster": 0.42833333333333334
+      }
+    },
+    {
+      "seed": 894210,
+      "action": "ask:rosmaster",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.3879583333333333,
+        "ask:rosmaster": 0.3923333333333333
+      }
+    },
+    {
+      "seed": 894212,
+      "action": "local_observe",
+      "source": "forecast",
+      "scores": {
+        "local_observe": 0.675625,
+        "ask:rosmaster": 0.6614583333333333
+      }
+    }
+  ],
+  "conditional_vs_local": {
+    "local_3.0": {
+      "rescued_vs_local_when_requested": 5,
+      "harmed_vs_local_when_requested": 0,
+      "accepted_calls_ending_in_failure": 1,
+      "refusals_before_service": 0,
+      "calls": 6,
+      "successes": 13,
+      "sum_service_s": 18.0,
+      "sum_wait_s": 4.0
+    },
+    "adaptive": {
+      "rescued_vs_local_when_requested": 5,
+      "harmed_vs_local_when_requested": 0,
+      "accepted_calls_ending_in_failure": 1,
+      "refusals_before_service": 0,
+      "calls": 6,
+      "successes": 13,
+      "sum_service_s": 18.0,
+      "sum_wait_s": 4.0
+    },
+    "local_only": {
+      "rescued_vs_local_when_requested": 0,
+      "harmed_vs_local_when_requested": 0,
+      "accepted_calls_ending_in_failure": 0,
+      "refusals_before_service": 0,
+      "calls": 0,
+      "successes": 8,
+      "sum_service_s": 0.0,
+      "sum_wait_s": 0.0
+    },
+    "immediate_peer": {
+      "rescued_vs_local_when_requested": 5,
+      "harmed_vs_local_when_requested": 1,
+      "accepted_calls_ending_in_failure": 2,
+      "refusals_before_service": 0,
+      "calls": 12,
+      "successes": 12,
+      "sum_service_s": 36.0,
+      "sum_wait_s": 8.0
+    }
+  },
+  "pareto_nondominated": {
+    "local_3.0": false,
+    "adaptive": true,
+    "local_only": true,
+    "immediate_peer": false
+  },
+  "utility_sensitivity": [
+    {
+      "time_price": 0,
+      "help_price": 0,
+      "mean_utility": {
+        "local_3.0": 0.8125,
+        "adaptive": 0.8125,
+        "local_only": 0.5,
+        "immediate_peer": 0.75
+      }
+    },
+    {
+      "time_price": 0,
+      "help_price": 0.1,
+      "mean_utility": {
+        "local_3.0": 0.75625,
+        "adaptive": 0.75625,
+        "local_only": 0.5,
+        "immediate_peer": 0.6375
+      }
+    },
+    {
+      "time_price": 0,
+      "help_price": 0.25,
+      "mean_utility": {
+        "local_3.0": 0.671875,
+        "adaptive": 0.671875,
+        "local_only": 0.5,
+        "immediate_peer": 0.46875
+      }
+    },
+    {
+      "time_price": 0.005,
+      "help_price": 0,
+      "mean_utility": {
+        "local_3.0": 0.764,
+        "adaptive": 0.764875,
+        "local_only": 0.473234375,
+        "immediate_peer": 0.6948124999999999
+      }
+    },
+    {
+      "time_price": 0.005,
+      "help_price": 0.1,
+      "mean_utility": {
+        "local_3.0": 0.70775,
+        "adaptive": 0.708625,
+        "local_only": 0.473234375,
+        "immediate_peer": 0.5823125
+      }
+    },
+    {
+      "time_price": 0.005,
+      "help_price": 0.25,
+      "mean_utility": {
+        "local_3.0": 0.623375,
+        "adaptive": 0.62425,
+        "local_only": 0.473234375,
+        "immediate_peer": 0.4135625
+      }
+    },
+    {
+      "time_price": 0.02,
+      "help_price": 0,
+      "mean_utility": {
+        "local_3.0": 0.6184999999999999,
+        "adaptive": 0.622,
+        "local_only": 0.3929375,
+        "immediate_peer": 0.52925
+      }
+    },
+    {
+      "time_price": 0.02,
+      "help_price": 0.1,
+      "mean_utility": {
+        "local_3.0": 0.56225,
+        "adaptive": 0.56575,
+        "local_only": 0.3929375,
+        "immediate_peer": 0.41675
+      }
+    },
+    {
+      "time_price": 0.02,
+      "help_price": 0.25,
+      "mean_utility": {
+        "local_3.0": 0.477875,
+        "adaptive": 0.481375,
+        "local_only": 0.3929375,
+        "immediate_peer": 0.248
+      }
+    }
+  ],
+  "by_offer": {
+    "clean": {
+      "local_3.0": {
+        "n": 4,
+        "docks": 4,
+        "calls": 2,
+        "mean_utility": 0.895625
+      },
+      "adaptive": {
+        "n": 4,
+        "docks": 4,
+        "calls": 2,
+        "mean_utility": 0.898375
+      },
+      "local_only": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.47187500000000004
+      },
+      "immediate_peer": {
+        "n": 4,
+        "docks": 4,
+        "calls": 4,
+        "mean_utility": 0.845375
+      }
+    },
+    "queued": {
+      "local_3.0": {
+        "n": 4,
+        "docks": 4,
+        "calls": 2,
+        "mean_utility": 0.8455625
+      },
+      "adaptive": {
+        "n": 4,
+        "docks": 4,
+        "calls": 2,
+        "mean_utility": 0.8463125
+      },
+      "local_only": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.47275
+      },
+      "immediate_peer": {
+        "n": 4,
+        "docks": 4,
+        "calls": 4,
+        "mean_utility": 0.7375624999999999
+      }
+    },
+    "uncertain_transform": {
+      "local_3.0": {
+        "n": 4,
+        "docks": 3,
+        "calls": 2,
+        "mean_utility": 0.6158125
+      },
+      "adaptive": {
+        "n": 4,
+        "docks": 3,
+        "calls": 2,
+        "mean_utility": 0.6158125
+      },
+      "local_only": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.4743125
+      },
+      "immediate_peer": {
+        "n": 4,
+        "docks": 2,
+        "calls": 4,
+        "mean_utility": 0.27231249999999996
+      }
+    },
+    "unavailable": {
+      "local_3.0": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.474
+      },
+      "adaptive": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.474
+      },
+      "local_only": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.474
+      },
+      "immediate_peer": {
+        "n": 4,
+        "docks": 2,
+        "calls": 0,
+        "mean_utility": 0.474
+      }
+    }
+  },
+  "materials": {
+    "scripts/peer_action_value_pilot.py": "7e9abcc1234b66df1032d0c0b6f3b14303ce701a8acdd6816e639d38961e294e",
+    "explorer4/sim/peer_dock.py": "6279225421ebacc75cd8ce0695951bc7e4eaf96171670409ad64c3f2d5dc84d0",
+    "explorer4/sim/peer_screens.py": "85d436519b99f4878a76e5ad7241badd7ff4e7b617a3945aa8f68cd879899e7f",
+    "explorer4/sim/cooperation.py": "287b9c1e1744cfb5451a754dfeff1837f8b5c3ec812e7e99cac87e9230936506",
+    "explorer4/sim/fleet.py": "1884e6480f07cf7110f15a80e9706b1d4dfcd529128137fb2cd5659b24823b74",
+    "explorer4/sim/state_codec.py": "c2029c5380266fb4391d6f590b2219ae2a27523453569fbc30aab7d06913d7c3",
+    "explorer4/peer_dock_config.py": "afaf0fd2870b32e632e8fecb678dd56d5871817b5a08ac2d10e407ce838d50c2"
+  },
+  "scenes": [
+    {
+      "seed": 894200,
+      "profile": "clean",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 13.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "6fec1c0d533ea7852af44e7b89bab17033d90d68502d96944a0b0c7ca89dad0c",
+          "reset_sha256": "fe9660dbebcf6a419129a00a6f3076b785f012205da29e94ed931bad9669b242",
+          "first_rgb_sha256": "4310a8d44c387cc21770980ee4fcbca97ecd0b724f9b6b864846cc43d588995c"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 13.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "local_observe",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.6924583333333333,
+              "ask:rosmaster": 0.6800416666666667
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "a9cf0caccd8a1a9138ae3b5ce4a70a4fa3ba52e3ea5ee4b2f8547bc7bc40a1c3",
+          "reset_sha256": "fe9660dbebcf6a419129a00a6f3076b785f012205da29e94ed931bad9669b242",
+          "first_rgb_sha256": "4310a8d44c387cc21770980ee4fcbca97ecd0b724f9b6b864846cc43d588995c"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "b31545c11076855fd63a3d30888cc0519dccb3ba6b19428666ae29afc6a2a879",
+          "reset_sha256": "fe9660dbebcf6a419129a00a6f3076b785f012205da29e94ed931bad9669b242",
+          "first_rgb_sha256": "4310a8d44c387cc21770980ee4fcbca97ecd0b724f9b6b864846cc43d588995c"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 10.7,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "7e08eafc2d1587c98bedcbb23af065135e19d41e65bb18c8437f31673447c8fb",
+          "reset_sha256": "fe9660dbebcf6a419129a00a6f3076b785f012205da29e94ed931bad9669b242",
+          "first_rgb_sha256": "4310a8d44c387cc21770980ee4fcbca97ecd0b724f9b6b864846cc43d588995c"
+        }
+      }
+    },
+    {
+      "seed": 894201,
+      "profile": "clean",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 9.15,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "625150d545436872c68cae7b33c58d9dad9bef026b153bcbde7375c4f83fd94f",
+          "reset_sha256": "6b31912143573c2a63eb5425ca1785641045e2136f8779b503c6b15a903c27dc",
+          "first_rgb_sha256": "ffe965ba0554ab37175c45465d90c1d792cd3e0e2d0c5e40fc43c5934eda895b"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 9.15,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "local_observe",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.675625,
+              "ask:rosmaster": 0.6614583333333333
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "7a434a64e17ef0fedd2b73a55bbe04bd95d2927f5d1b02bf29c56081e163f1f2",
+          "reset_sha256": "6b31912143573c2a63eb5425ca1785641045e2136f8779b503c6b15a903c27dc",
+          "first_rgb_sha256": "ffe965ba0554ab37175c45465d90c1d792cd3e0e2d0c5e40fc43c5934eda895b"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 9.15,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "199b7d7ee209a081fda2bbd6ce9c1821628853627dff1f53fb177feef3854f67",
+          "reset_sha256": "6b31912143573c2a63eb5425ca1785641045e2136f8779b503c6b15a903c27dc",
+          "first_rgb_sha256": "ffe965ba0554ab37175c45465d90c1d792cd3e0e2d0c5e40fc43c5934eda895b"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 12.05,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "7f47ef2fb97dc09e7d25cf1a6ab73fb9d527de4d0267f24f14fb0e9971dd2ea5",
+          "reset_sha256": "6b31912143573c2a63eb5425ca1785641045e2136f8779b503c6b15a903c27dc",
+          "first_rgb_sha256": "ffe965ba0554ab37175c45465d90c1d792cd3e0e2d0c5e40fc43c5934eda895b"
+        }
+      }
+    },
+    {
+      "seed": 894202,
+      "profile": "queued",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 14.3,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "ef5d974abb2a5e167cab4e15af70e5ec828e420a777473dde94b7f36cb3edfcb",
+          "reset_sha256": "a258e15cabe8a8e6046a44121bdd4ee7fdb1a04f0761858b0ad12da96b170e0f",
+          "first_rgb_sha256": "7ccc8b974896f3c42263f547b401acb8c4772f005fa454082aae03e6ea83e10d"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 14.3,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "local_observe",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.675625,
+              "ask:rosmaster": 0.6614583333333333
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "cd944f52d55f2e1e489ed375a39305b43012a565656eea334f735b809f11d72f",
+          "reset_sha256": "a258e15cabe8a8e6046a44121bdd4ee7fdb1a04f0761858b0ad12da96b170e0f",
+          "first_rgb_sha256": "7ccc8b974896f3c42263f547b401acb8c4772f005fa454082aae03e6ea83e10d"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "5a0a4ec375190e737a57368afbb1f616f14711c4b84900fab37fd647210c8670",
+          "reset_sha256": "a258e15cabe8a8e6046a44121bdd4ee7fdb1a04f0761858b0ad12da96b170e0f",
+          "first_rgb_sha256": "7ccc8b974896f3c42263f547b401acb8c4772f005fa454082aae03e6ea83e10d"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 2.9999999999999996,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 12.8,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "4ffde6194f013a6658d80d7cff80189ff69a205634fd0409ee41bbb7767d6da7",
+          "reset_sha256": "a258e15cabe8a8e6046a44121bdd4ee7fdb1a04f0761858b0ad12da96b170e0f",
+          "first_rgb_sha256": "7ccc8b974896f3c42263f547b401acb8c4772f005fa454082aae03e6ea83e10d"
+        }
+      }
+    },
+    {
+      "seed": 894203,
+      "profile": "queued",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 8.5,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "e4eb79d9b9efcaec21ae28878e9b360dc1c035820c6aa6b3b7fabea7be3cfbac",
+          "reset_sha256": "8c16c40a9afa6b16dfd70de9587c978ff057fd52be5d968ba1d5b2059e35ec97",
+          "first_rgb_sha256": "fb6e2bfc3641ebe6a857700b841c0459114bc82899e6015fc8a841ea6c33d274"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 8.5,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "local_observe",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.675625,
+              "ask:rosmaster": 0.6614583333333333
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "e8711ac18200080d865c8c9c98425f9ae7cde10c85310d2b445f5332b3bafd11",
+          "reset_sha256": "8c16c40a9afa6b16dfd70de9587c978ff057fd52be5d968ba1d5b2059e35ec97",
+          "first_rgb_sha256": "fb6e2bfc3641ebe6a857700b841c0459114bc82899e6015fc8a841ea6c33d274"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 8.5,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "f83fb8f61f0752f30c2fe25cb56b4f5d3c0a4e50e81c97a2a1366dff8ba7a194",
+          "reset_sha256": "8c16c40a9afa6b16dfd70de9587c978ff057fd52be5d968ba1d5b2059e35ec97",
+          "first_rgb_sha256": "fb6e2bfc3641ebe6a857700b841c0459114bc82899e6015fc8a841ea6c33d274"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 2.9999999999999996,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 13.25,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "e6184e19e687c2cfa20893c0304acade0a9f184baa12f277de845d47c4e30d51",
+          "reset_sha256": "8c16c40a9afa6b16dfd70de9587c978ff057fd52be5d968ba1d5b2059e35ec97",
+          "first_rgb_sha256": "fb6e2bfc3641ebe6a857700b841c0459114bc82899e6015fc8a841ea6c33d274"
+        }
+      }
+    },
+    {
+      "seed": 894204,
+      "profile": "uncertain_transform",
+      "methods": {
+        "local_3.0": {
+          "win": 0,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.3999999999999999,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 20.0,
+          "expired_or_refused": 0,
+          "negative_help": true,
+          "deadline_miss": true,
+          "decided": null,
+          "trace_sha256": "04c736773a63488cee6dce330651d685440585fd91d3f789b4aacfbabf62e0ef",
+          "reset_sha256": "3d1e2a0b4e74d8d4e15f12528f6abfb983300c2a45e9e465828bd4ddbd521e12",
+          "first_rgb_sha256": "7985c30544c8944310986217fc2d6c6b33afde375d90be52e3363b3ae4f0824d"
+        },
+        "adaptive": {
+          "win": 0,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.3999999999999999,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 20.0,
+          "expired_or_refused": 0,
+          "negative_help": true,
+          "deadline_miss": true,
+          "decided": {
+            "action": "ask:rosmaster",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.4215416666666667,
+              "ask:rosmaster": 0.42833333333333334
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "2478b9fc7c78b1ae92890e21a7a31d087f732ee2eaa714f11123109becfd63b0",
+          "reset_sha256": "3d1e2a0b4e74d8d4e15f12528f6abfb983300c2a45e9e465828bd4ddbd521e12",
+          "first_rgb_sha256": "7985c30544c8944310986217fc2d6c6b33afde375d90be52e3363b3ae4f0824d"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "98f48850ae5062d8198a2b115145563953a16bd2bdcf1b1654c4a4c9f9f2d7a5",
+          "reset_sha256": "3d1e2a0b4e74d8d4e15f12528f6abfb983300c2a45e9e465828bd4ddbd521e12",
+          "first_rgb_sha256": "7985c30544c8944310986217fc2d6c6b33afde375d90be52e3363b3ae4f0824d"
+        },
+        "immediate_peer": {
+          "win": 0,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.4,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 20.0,
+          "expired_or_refused": 0,
+          "negative_help": true,
+          "deadline_miss": true,
+          "decided": null,
+          "trace_sha256": "cde2edc81d8cc07873081609c8603527174204a5394d75966585ff8af2684d8b",
+          "reset_sha256": "3d1e2a0b4e74d8d4e15f12528f6abfb983300c2a45e9e465828bd4ddbd521e12",
+          "first_rgb_sha256": "7985c30544c8944310986217fc2d6c6b33afde375d90be52e3363b3ae4f0824d"
+        }
+      }
+    },
+    {
+      "seed": 894205,
+      "profile": "uncertain_transform",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.2,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "d6ad0e5dd3aa938da1d7da260733e750564bd2d6327ddf8b94a48acfcf905537",
+          "reset_sha256": "d04e12d9539b5b142eb77fec970fa9b7fbe56c6fef48d9afbdfd1b9fdfa3f12e",
+          "first_rgb_sha256": "1614aff0132cd988b9c2421a29c72dddd54248183b33cec01c1c610157079725"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.2,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "235e32d043deaab956f32cf75db2ef61201298df9ecd533c2ce8c20db4b12c32",
+          "reset_sha256": "d04e12d9539b5b142eb77fec970fa9b7fbe56c6fef48d9afbdfd1b9fdfa3f12e",
+          "first_rgb_sha256": "1614aff0132cd988b9c2421a29c72dddd54248183b33cec01c1c610157079725"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.2,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "eca550fc6136a58dea07790780e8fd8ef0a9dca4d1dcd2f8a3874ce56bedeca9",
+          "reset_sha256": "d04e12d9539b5b142eb77fec970fa9b7fbe56c6fef48d9afbdfd1b9fdfa3f12e",
+          "first_rgb_sha256": "1614aff0132cd988b9c2421a29c72dddd54248183b33cec01c1c610157079725"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.4,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 10.55,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "9d05c710d9624c4cee667453f71d047433693b2306206aa170f06b75300372c6",
+          "reset_sha256": "d04e12d9539b5b142eb77fec970fa9b7fbe56c6fef48d9afbdfd1b9fdfa3f12e",
+          "first_rgb_sha256": "1614aff0132cd988b9c2421a29c72dddd54248183b33cec01c1c610157079725"
+        }
+      }
+    },
+    {
+      "seed": 894206,
+      "profile": "unavailable",
+      "methods": {
+        "local_3.0": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "4687aaa73ce2961922d3941706be9339c1b6c7d7f4235f2baeccf7f6c324b66c",
+          "reset_sha256": "f4093b1ab4b4331598e4d647d4a6aea9e290adbe9e79c47043a25e957810c433",
+          "first_rgb_sha256": "66df739ded9b58f480fca255eb986ce94cef3e05d1dd9c47d666f044e6e2fb77"
+        },
+        "adaptive": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "3c6e209fd132677980806855c25d686381a47c30263cc20f0239107209e2677d",
+          "reset_sha256": "f4093b1ab4b4331598e4d647d4a6aea9e290adbe9e79c47043a25e957810c433",
+          "first_rgb_sha256": "66df739ded9b58f480fca255eb986ce94cef3e05d1dd9c47d666f044e6e2fb77"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "4e68c93b0b34c8ad73c7bff2a6153362a4fd2d4a9e6dbf43978dd61962461abc",
+          "reset_sha256": "f4093b1ab4b4331598e4d647d4a6aea9e290adbe9e79c47043a25e957810c433",
+          "first_rgb_sha256": "66df739ded9b58f480fca255eb986ce94cef3e05d1dd9c47d666f044e6e2fb77"
+        },
+        "immediate_peer": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "f07f61fdc7d953d03103fa3d00ee6a521d3cf5637b6d9c83c6607d546c89a885",
+          "reset_sha256": "f4093b1ab4b4331598e4d647d4a6aea9e290adbe9e79c47043a25e957810c433",
+          "first_rgb_sha256": "66df739ded9b58f480fca255eb986ce94cef3e05d1dd9c47d666f044e6e2fb77"
+        }
+      }
+    },
+    {
+      "seed": 894207,
+      "profile": "unavailable",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 6.95,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "1f5396b4d30577db9129c535a7b0a5ae7934dea809dfe4f93e6b550d5a20a16a",
+          "reset_sha256": "f1d08f7da934f2669a1c96028df9042e24bac929300f1a47f6d17e02ebbcaf0e",
+          "first_rgb_sha256": "0f08741fb72920dc8f3585e0f0fc60c2b4846a74e7f01bccf1173c0bdd244b62"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 6.95,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "17309c1a98bf8ec62ab0e0452119ddce583b86914bb2c8546419d23a560bccfe",
+          "reset_sha256": "f1d08f7da934f2669a1c96028df9042e24bac929300f1a47f6d17e02ebbcaf0e",
+          "first_rgb_sha256": "0f08741fb72920dc8f3585e0f0fc60c2b4846a74e7f01bccf1173c0bdd244b62"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 6.95,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "0f8978407ca9a082a5884bf89e6f640e118acd90fc135ad62cec4509afc04fdf",
+          "reset_sha256": "f1d08f7da934f2669a1c96028df9042e24bac929300f1a47f6d17e02ebbcaf0e",
+          "first_rgb_sha256": "0f08741fb72920dc8f3585e0f0fc60c2b4846a74e7f01bccf1173c0bdd244b62"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 6.95,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "723dcde3a338187f06dcaccc78134a17915e3c61912406a21d8489a0ca0c6abb",
+          "reset_sha256": "f1d08f7da934f2669a1c96028df9042e24bac929300f1a47f6d17e02ebbcaf0e",
+          "first_rgb_sha256": "0f08741fb72920dc8f3585e0f0fc60c2b4846a74e7f01bccf1173c0bdd244b62"
+        }
+      }
+    },
+    {
+      "seed": 894208,
+      "profile": "clean",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 13.65,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "07c1b090dec7533390cc67bfc211d718315922ecbf2a69a3b1b4d27bc4342beb",
+          "reset_sha256": "e6bf6a28c9d4b17f1f2bf5bcb13039da5495a1dbb6d2b808a8979bdc823ceb90",
+          "first_rgb_sha256": "c01f293e93c3b50351d0392db897183fd00c2a7404219a3fec012825aeaeb844"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 11.45,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "ask:rosmaster",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.4215416666666667,
+              "ask:rosmaster": 0.42833333333333334
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "eb531b75c5577cdd0d9025053a67257a28717d9ddf40f8b535e4144da78d4617",
+          "reset_sha256": "e6bf6a28c9d4b17f1f2bf5bcb13039da5495a1dbb6d2b808a8979bdc823ceb90",
+          "first_rgb_sha256": "c01f293e93c3b50351d0392db897183fd00c2a7404219a3fec012825aeaeb844"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "587893eedf2faaa68783af975b14951c6915ad8fbf35105864fd9852596c49c4",
+          "reset_sha256": "e6bf6a28c9d4b17f1f2bf5bcb13039da5495a1dbb6d2b808a8979bdc823ceb90",
+          "first_rgb_sha256": "c01f293e93c3b50351d0392db897183fd00c2a7404219a3fec012825aeaeb844"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 10.65,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "e233fd94035de6b658fbe4dbc10c0dd3d7283c76c89c44a61ebf007c06373cc3",
+          "reset_sha256": "e6bf6a28c9d4b17f1f2bf5bcb13039da5495a1dbb6d2b808a8979bdc823ceb90",
+          "first_rgb_sha256": "c01f293e93c3b50351d0392db897183fd00c2a7404219a3fec012825aeaeb844"
+        }
+      }
+    },
+    {
+      "seed": 894209,
+      "profile": "clean",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "1e6178d1fcc29da73d298d647cc8dd7bf7b6da99685cd1a4a1f2a852169a6bbd",
+          "reset_sha256": "256894c21f40f2c7e6ac8f5c5f1f4ae19538a047cf27d73ac549ff5fd2968b3c",
+          "first_rgb_sha256": "2dbfea6c18dff493bcaeb6b85794bb717daca6522ed8e3b5a42baaaa438ef176"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "d040d9752e99295ec27b1fdc5d7376967518ef76c28cfcb273838c495b5ffc86",
+          "reset_sha256": "256894c21f40f2c7e6ac8f5c5f1f4ae19538a047cf27d73ac549ff5fd2968b3c",
+          "first_rgb_sha256": "2dbfea6c18dff493bcaeb6b85794bb717daca6522ed8e3b5a42baaaa438ef176"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "2e057a2d3587b2afe1eefed12cdaeff7726dfa028d2943b7008d50703e1288b7",
+          "reset_sha256": "256894c21f40f2c7e6ac8f5c5f1f4ae19538a047cf27d73ac549ff5fd2968b3c",
+          "first_rgb_sha256": "2dbfea6c18dff493bcaeb6b85794bb717daca6522ed8e3b5a42baaaa438ef176"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.0,
+          "wait_s": 0.0,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 10.3,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "be2c0be85672498e8760688a1878d17e12074943fa66b2749833ed05ace48a90",
+          "reset_sha256": "256894c21f40f2c7e6ac8f5c5f1f4ae19538a047cf27d73ac549ff5fd2968b3c",
+          "first_rgb_sha256": "2dbfea6c18dff493bcaeb6b85794bb717daca6522ed8e3b5a42baaaa438ef176"
+        }
+      }
+    },
+    {
+      "seed": 894210,
+      "profile": "queued",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 13.45,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "951212fdd036195237f3cb978ad189798f557bd6fb4ee18ba94611ed7cbca21e",
+          "reset_sha256": "b57d283006281dcb4a6ea9f648d8a49018f5723fe94d21d47f3fd517d961e93f",
+          "first_rgb_sha256": "79c2acc09b40ac7574755977d42f2d2977c629cf1bfc4761d309e1e58ca10d2d"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.5999999999999999,
+          "service_s": 3.0000000000000004,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 12.85,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "ask:rosmaster",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.3879583333333333,
+              "ask:rosmaster": 0.3923333333333333
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "2668e0042a8ec4fd8054f5ed5a8ca1fa3af024afaa5629d5f108b9b13467ab80",
+          "reset_sha256": "b57d283006281dcb4a6ea9f648d8a49018f5723fe94d21d47f3fd517d961e93f",
+          "first_rgb_sha256": "79c2acc09b40ac7574755977d42f2d2977c629cf1bfc4761d309e1e58ca10d2d"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "6509f161206697f9d1286c9f219543ccfc206f4c32d8ae2effbee924b1831616",
+          "reset_sha256": "b57d283006281dcb4a6ea9f648d8a49018f5723fe94d21d47f3fd517d961e93f",
+          "first_rgb_sha256": "79c2acc09b40ac7574755977d42f2d2977c629cf1bfc4761d309e1e58ca10d2d"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 2.9999999999999996,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 12.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "c7a620145d8be81724fed33587e400f4a69c8cc3fefc09f0b6142ce6d68d414e",
+          "reset_sha256": "b57d283006281dcb4a6ea9f648d8a49018f5723fe94d21d47f3fd517d961e93f",
+          "first_rgb_sha256": "79c2acc09b40ac7574755977d42f2d2977c629cf1bfc4761d309e1e58ca10d2d"
+        }
+      }
+    },
+    {
+      "seed": 894211,
+      "profile": "queued",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.3,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "0163b3bb2284afc65da4126e1a56681cb0606ad14b22e7338a9ac93a4f199c05",
+          "reset_sha256": "76f8efa7200f32a8e637338e22db4941f3c4e05efa38b6d3839904cba13cf973",
+          "first_rgb_sha256": "561b0f1d8d4adfb9c2f78c9820326b6a6cfbf6897fc88632571f021fccabe2b7"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.3,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "abf61c384f5966879c9efbedb55c305628d91a60e2826fa3ef0badadd4a4dc1d",
+          "reset_sha256": "76f8efa7200f32a8e637338e22db4941f3c4e05efa38b6d3839904cba13cf973",
+          "first_rgb_sha256": "561b0f1d8d4adfb9c2f78c9820326b6a6cfbf6897fc88632571f021fccabe2b7"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.3,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "ce7ee878c091c582a4e2265e7e0829b6a4b7bf0910eda6ba570f2c8e5cae507f",
+          "reset_sha256": "76f8efa7200f32a8e637338e22db4941f3c4e05efa38b6d3839904cba13cf973",
+          "first_rgb_sha256": "561b0f1d8d4adfb9c2f78c9820326b6a6cfbf6897fc88632571f021fccabe2b7"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 2.0,
+          "wait_s": 1.6,
+          "service_s": 2.9999999999999996,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 11.9,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "ea07625b552adbb22bfd9b6f1c253f5b540bc9cb6fc9b8c43cd4e7eecc220449",
+          "reset_sha256": "76f8efa7200f32a8e637338e22db4941f3c4e05efa38b6d3839904cba13cf973",
+          "first_rgb_sha256": "561b0f1d8d4adfb9c2f78c9820326b6a6cfbf6897fc88632571f021fccabe2b7"
+        }
+      }
+    },
+    {
+      "seed": 894212,
+      "profile": "uncertain_transform",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.3999999999999999,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 12.8,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "70206c1b6f14f58056a4e579411f4da00bc558d26980e05b890d4a649f719450",
+          "reset_sha256": "1fe2e8cf48719344f229b75e83f13ce87a4158dfc9924a98e52b5238d03c6485",
+          "first_rgb_sha256": "1b61b05f91e8562bd8e3650572c0abd4503f13685f46af5993cf4f6bc7d918de"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.3999999999999999,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 12.8,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": {
+            "action": "local_observe",
+            "source": "forecast",
+            "scores": {
+              "local_observe": 0.675625,
+              "ask:rosmaster": 0.6614583333333333
+            },
+            "model_sha256": "2ddf31a106ef7caca8d86735aa9a50f074fb6639ea056e472551d15f5196f20d",
+            "reason": "highest expected terminal utility"
+          },
+          "trace_sha256": "ddd9e63a5b9b58a22e89fb80c33823967c9a6fc26cbcff49fab16f3646796fb3",
+          "reset_sha256": "1fe2e8cf48719344f229b75e83f13ce87a4158dfc9924a98e52b5238d03c6485",
+          "first_rgb_sha256": "1b61b05f91e8562bd8e3650572c0abd4503f13685f46af5993cf4f6bc7d918de"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "96ed8864fcf54fd83d1f843e9b37a6b1189485e3ef7bf8b66b1132096cf6821d",
+          "reset_sha256": "1fe2e8cf48719344f229b75e83f13ce87a4158dfc9924a98e52b5238d03c6485",
+          "first_rgb_sha256": "1b61b05f91e8562bd8e3650572c0abd4503f13685f46af5993cf4f6bc7d918de"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.4,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 11.6,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "9512e22863cc4bf6fe7ed07de76edc96cad05970c11f2b60763248722694f4f2",
+          "reset_sha256": "1fe2e8cf48719344f229b75e83f13ce87a4158dfc9924a98e52b5238d03c6485",
+          "first_rgb_sha256": "1b61b05f91e8562bd8e3650572c0abd4503f13685f46af5993cf4f6bc7d918de"
+        }
+      }
+    },
+    {
+      "seed": 894213,
+      "profile": "uncertain_transform",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "e427c9b1aacfe326e40af3810dada96d990b01ae20e71f09b2c74737e13550fa",
+          "reset_sha256": "115ab021c29b6387915c171a2556a330abd81187c38c42b3b69209a3db2f8e8e",
+          "first_rgb_sha256": "e81f42b26a030dbf7f19e66d060afa3db2e23cb37074cf6b29a2f59bc031e9cb"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "40e0cd51341eff0ac92ffec504e026748700cf6193efe8a71028dd01471317da",
+          "reset_sha256": "115ab021c29b6387915c171a2556a330abd81187c38c42b3b69209a3db2f8e8e",
+          "first_rgb_sha256": "e81f42b26a030dbf7f19e66d060afa3db2e23cb37074cf6b29a2f59bc031e9cb"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.35,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "5464e883d62cd1af6b0578f578ba434ed748f356642e0b23441575d29de42b8c",
+          "reset_sha256": "115ab021c29b6387915c171a2556a330abd81187c38c42b3b69209a3db2f8e8e",
+          "first_rgb_sha256": "e81f42b26a030dbf7f19e66d060afa3db2e23cb37074cf6b29a2f59bc031e9cb"
+        },
+        "immediate_peer": {
+          "win": 0,
+          "calls": 1,
+          "help_units": 1.5,
+          "wait_s": 0.4,
+          "service_s": 3.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 20.0,
+          "expired_or_refused": 0,
+          "negative_help": true,
+          "deadline_miss": true,
+          "decided": null,
+          "trace_sha256": "680e3e24754ee3245e8ae70e527dbe008fba66961eccfc63f05b48e2549afba2",
+          "reset_sha256": "115ab021c29b6387915c171a2556a330abd81187c38c42b3b69209a3db2f8e8e",
+          "first_rgb_sha256": "e81f42b26a030dbf7f19e66d060afa3db2e23cb37074cf6b29a2f59bc031e9cb"
+        }
+      }
+    },
+    {
+      "seed": 894214,
+      "profile": "unavailable",
+      "methods": {
+        "local_3.0": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "d9ac38efdd179e41d19edc0650425f520efb60b87fb68c1605c40883074cdcb6",
+          "reset_sha256": "cda104a916b5e473bf11f1b9fb431e9736fbb6e229aa3bed7685b3979102db5f",
+          "first_rgb_sha256": "e3509f567a52980225ce2d69b9a06cb9d124f332f56f854787f00a58a826cffa"
+        },
+        "adaptive": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "ed880625cb899c2622965e8a5827efdf4033c4163e75133347a0671ff0c7e347",
+          "reset_sha256": "cda104a916b5e473bf11f1b9fb431e9736fbb6e229aa3bed7685b3979102db5f",
+          "first_rgb_sha256": "e3509f567a52980225ce2d69b9a06cb9d124f332f56f854787f00a58a826cffa"
+        },
+        "local_only": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "ce84e7bb4f484c482ba71d200cddae08a7d54347d071c389ffa4818cdaf5630a",
+          "reset_sha256": "cda104a916b5e473bf11f1b9fb431e9736fbb6e229aa3bed7685b3979102db5f",
+          "first_rgb_sha256": "e3509f567a52980225ce2d69b9a06cb9d124f332f56f854787f00a58a826cffa"
+        },
+        "immediate_peer": {
+          "win": 0,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 3.0,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "dd9e63d25b5b8aa363e5b36c0cf4ec2e454f623e6ec094249c093dfe9b887c27",
+          "reset_sha256": "cda104a916b5e473bf11f1b9fb431e9736fbb6e229aa3bed7685b3979102db5f",
+          "first_rgb_sha256": "e3509f567a52980225ce2d69b9a06cb9d124f332f56f854787f00a58a826cffa"
+        }
+      }
+    },
+    {
+      "seed": 894215,
+      "profile": "unavailable",
+      "methods": {
+        "local_3.0": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.85,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "e961afefa23fc7467ba629de91a628734081ada47bdf70bcdcd8c8e3c45a8eee",
+          "reset_sha256": "e8625ae0480f6055bad7f9aa535886a9c2e63e3002bd7105db82dbef0ef17e64",
+          "first_rgb_sha256": "5a9086862dac4e7dad1e60b0c437b28f2e063c0c33dd15b8d195fceffb351b03"
+        },
+        "adaptive": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.85,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "121f1f0913929d6d2c67cf4796db23a9bfd7ff72a7e78a57d712e74c7395f536",
+          "reset_sha256": "e8625ae0480f6055bad7f9aa535886a9c2e63e3002bd7105db82dbef0ef17e64",
+          "first_rgb_sha256": "5a9086862dac4e7dad1e60b0c437b28f2e063c0c33dd15b8d195fceffb351b03"
+        },
+        "local_only": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.85,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "34ac1627396a53565a8de83954a32bd1423b9f10a2babc4dedadd9909b5d738e",
+          "reset_sha256": "e8625ae0480f6055bad7f9aa535886a9c2e63e3002bd7105db82dbef0ef17e64",
+          "first_rgb_sha256": "5a9086862dac4e7dad1e60b0c437b28f2e063c0c33dd15b8d195fceffb351b03"
+        },
+        "immediate_peer": {
+          "win": 1,
+          "calls": 0,
+          "help_units": 0.0,
+          "wait_s": 0.0,
+          "service_s": 0.0,
+          "travel_m": 0.0,
+          "human_s": 0.0,
+          "seconds": 7.85,
+          "expired_or_refused": 0,
+          "negative_help": false,
+          "deadline_miss": false,
+          "decided": null,
+          "trace_sha256": "c0faa5646c147af9ef4f95acb4244e1b255f83e715c03b90481c149df3dc6063",
+          "reset_sha256": "e8625ae0480f6055bad7f9aa535886a9c2e63e3002bd7105db82dbef0ef17e64",
+          "first_rgb_sha256": "5a9086862dac4e7dad1e60b0c437b28f2e063c0c33dd15b8d195fceffb351b03"
+        }
+      }
+    }
+  ]
+}

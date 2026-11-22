@@ -1,0 +1,142 @@
+{
+  "status": "completed",
+  "domain": "MuJoCo; full-box confirmation is a simulated proxy",
+  "protocol_sha256": "8ffd25a0c1629c08d2329bbbc76e438dea87b87df94eaa68323a3465de3b27ae",
+  "physical_trials": 0,
+  "selection": {
+    "selected": "upper",
+    "gains_over_initial": {
+      "left": 6,
+      "right": 5,
+      "upper": 8,
+      "wrist": 0
+    },
+    "initial_full": 16,
+    "n": 32
+  },
+  "calibration": {
+    "homography": [
+      [
+        4.5459801896293054e-05,
+        -0.0004971324247774622,
+        0.27352435586636287
+      ],
+      [
+        -0.00014233564435899078,
+        -6.307994227636683e-05,
+        0.07342663582919738
+      ],
+      [
+        0.00019668187152466638,
+        -0.0016691763869602825,
+        1.0
+      ]
+    ],
+    "n_train_full": 22,
+    "n_train_assigned": 64,
+    "n_validation_assigned": 32,
+    "errors": {
+      "n": 12,
+      "median_mm": 15.369818842294844,
+      "p95_mm": 36.43056723431859,
+      "max_mm": 39.8399631537328
+    },
+    "accepted": false
+  },
+  "results": {
+    "fresh": {
+      "n_all": 32,
+      "initial_full": 11,
+      "retakes": 21,
+      "active_full": 17,
+      "active_full_and_safe_return": 17,
+      "paired_view_gains": 6,
+      "paired_view_losses": 0,
+      "paired_exact_p": 0.03125,
+      "returned": 21,
+      "inspection_move_failures": {},
+      "mean_inspection_s": 1.6515625,
+      "initial_look_s": 1.0,
+      "original_grasp_attempts": 6,
+      "active_grasp_attempts": 6,
+      "original_terminal_holds": 4,
+      "active_terminal_holds": 4,
+      "alternate_xy_error_mm": null,
+      "seeds": [
+        986800,
+        986801,
+        986802,
+        986803,
+        986804,
+        986805,
+        986806,
+        986807,
+        986808,
+        986809,
+        986810,
+        986811,
+        986812,
+        986813,
+        986814,
+        986815,
+        986816,
+        986817,
+        986818,
+        986819,
+        986820,
+        986821,
+        986822,
+        986823,
+        986824,
+        986825,
+        986826,
+        986827,
+        986828,
+        986829,
+        986830,
+        986831
+      ]
+    },
+    "historical": {
+      "n_all": 20,
+      "initial_full": 7,
+      "retakes": 13,
+      "active_full": 11,
+      "active_full_and_safe_return": 11,
+      "paired_view_gains": 4,
+      "paired_view_losses": 0,
+      "paired_exact_p": 0.125,
+      "returned": 13,
+      "inspection_move_failures": {},
+      "mean_inspection_s": 1.6350000000000002,
+      "initial_look_s": 1.0,
+      "original_grasp_attempts": 3,
+      "active_grasp_attempts": 3,
+      "original_terminal_holds": 3,
+      "active_terminal_holds": 3,
+      "alternate_xy_error_mm": null,
+      "seeds": [
+        88300,
+        88301,
+        88302,
+        88303,
+        88304,
+        88305,
+        88306,
+        88307,
+        88308,
+        88309,
+        88310,
+        88311,
+        88312,
+        88313,
+        88314,
+        88315,
+        88316,
+        88317,
+        88318,
+        88319
+      ]
+    }
+  }
+}

@@ -6,6 +6,21 @@ Explorer already has six software roles, a common MuJoCo world, a mechanism to r
 
 The completed shared-world camera intervention now meets the donor-to-recipient requirement. It also changes the strongest baseline. A recipient with three seconds to turn its own camera completed all 24 open-room scenes. The follow-up separates active local sensing and a useful peer viewpoint with an opaque screen. [Camera intervention](results/peer-camera-docking/v1-results.json) · [Screen development](results/peer-camera-docking/screen-development.json) · [Learned selector](../scripts/peer_dock_policy.py)
 
+### Does predicting each action’s outcome improve on searching first?
+
+Tank and ROSMASTER repeated four policies from each of 16 previously unopened MuJoCo starts. Each branch began with the same full physics state and camera image. A three-second donor observation, advertised waits and the recipient’s local search all counted toward the same six-second sensing budget. The independent dock verifier had twenty seconds from reset. Four balanced sets of four starts offered a clean donor, a queued donor, a potentially misregistered waypoint, or an unavailable donor. The actual transform error stayed hidden. The study adapts cost-sensitive information requests and calibrated action selection to this single docking task. [Value of communication in multi-agent POMDPs](https://cse-robotics.engr.tamu.edu/dshell/papers/ral2026comms.pdf) · [Uncertainty-aware policy steering](https://arxiv.org/abs/2602.22474) · [Registered experiment](../scripts/peer_action_value_pilot.py)
+
+| Recipient policy | Stable docks | Requests | Help units | Mean elapsed, s | Mean utility |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Predict the value of another local look or an early request | 13/16 | 6 | 9 | 9.525 | 0.7086 |
+| Search locally for up to 3 s, then request if needed | 13/16 | 6 | 9 | 9.700 | 0.7078 |
+| Search locally | 8/16 | 0 | 0 | 5.353 | 0.4732 |
+| Immediately request when the donor is available | 12/16 | 12 | 18 | 11.038 | 0.5823 |
+
+Twenty-four workshop starts supplied ten eligible short histories after 0.8 s of unsuccessful local inspection. Six-neighbour estimates predicted terminal success, elapsed time and help charges from observed camera misses, turn odometry and service offers. Sixteen separate storage starts selected the three-second comparator among 0.8, 1.6 and 3.0 s, and supplied ten eligible histories for calibration. Local and request success predictions had Brier scores of 0.103 and 0.178. On the held-out starts, eight decisions used the fitted forecasts. Five chose further local sensing and three chose the early request. Initial or early detections and donor unavailability followed the same predefined rules throughout. [Fitted model and validation](http://192.168.0.168:8030/simlab-media/reports/peer-action-value-v1/model-card.json) · [Shared action selection](../explorer4/cognitive/action_value.py)
+
+Both selective policies docked on the same 13 starts. Each rescued five local-only failures and spoiled zero local-only successes. The immediate policy also rescued five and spoiled one. The adaptive rule saved 0.175 simulated seconds per start on average. Its median paired utility improvement was zero. Across the nine registered prices its mean advantage ranged from zero to 0.0035. At the sampled costs, adaptive and local-only were Pareto-efficient on successes, help units and elapsed time. Outcomes give little practical reason to replace the fixed sequence in this setting. The donor base remained stationary. Human time and physical trials were zero. The audit reconstructs all 64 branches and eight choices, including donor wait, service and the exact consumed packet. [Paired outcomes, prices and offer strata](results/peer-camera-docking/action-value-pilot.json) · [All 184 trajectories, starting images and source hashes](http://192.168.0.168:8030/simlab-media/reports/peer-action-value-v1/reproduction.zip) · [Receipt verification and recovery](../scripts/peer_action_value_archive.py)
+
 ### What a request buys at the same communication budget
 
 | Published method | Explorer implementation and discrepancy | Change and quantitative result | Interpretation |
