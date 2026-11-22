@@ -9,7 +9,7 @@ import uuid
 
 import numpy as np
 
-from . import fleet_config, peer_field_outcomes
+from . import fleet_config, peer_field_outcomes, peer_field_trace
 from .paths import DATA,ROOT
 from . import peer_dock_real as field
 from .peer_dock_config import MAX_AGE_S
@@ -171,6 +171,7 @@ def terminal(run_id,evidence):
 
 
 def observe_one(robot,run_dir,iteration,fleet):
+    read_start=time.monotonic()
     ident=f'{iteration:03d}-{robot}'
     folder=run_dir/ident
     folder.mkdir(parents=True)
@@ -188,6 +189,10 @@ def observe_one(robot,run_dir,iteration,fleet):
     for key,name in (('packet',robot+'.npz'),('preview',robot+'.jpg')):
         if (folder/name).is_file():
             info[key]=base+name
+    if robot == 'rosmaster' and obs.get('camera') and obs.get('payload_sha256'):
+        info['rgb_receipt'] = {key: obs.get(key) for key in
+            ('payload_sha256', 'source_rgb_stamp_ns', 'received_monotonic_ns', 'rgb_age_s', 'board_valid', 'reason')}
+        info['rgb_receipt']['homebrain_read_s'] = time.monotonic() - read_start
     if not obs['board_valid']:
         return None,{**info,'reason':obs['reason']}
     try:
@@ -225,6 +230,7 @@ class PairedAttempt:
         self.attempts = 0
         self.pending_capture = None
         self.peer_requests = 0
+        self.communication_events = []
         self.lock = threading.RLock()
         self.done = False
         self.active = True
@@ -246,13 +252,26 @@ class PairedAttempt:
         self.phase = phase
         self.phase_events.append({"phase": phase, "at_s": age, **evidence})
 
+    def communication(self, stage, capture, **details):
+        self.communication_events.append({"stage": stage, "t": time.monotonic() - self.start,
+                                          "capture": capture, **details})
+
     def submit(self, robot):
         sequence = self.attempts + 1
         capture = f"{sequence:03d}-{robot}"
-        future = self.pool.submit(observe_one, robot, self.run_dir, sequence, self.fleet)
-        self.attempts, self.pending_capture, self.future = sequence, capture, future
-        if robot == "rosmaster" and not self.peer_requests:
+        first_request = robot == "rosmaster" and not self.peer_requests
+        if first_request:
             self.peer_requests = 1
+            self.communication("requested", capture, donor=robot)
+        try:
+            future = self.pool.submit(observe_one, robot, self.run_dir, sequence, self.fleet)
+        except Exception as error:
+            if first_request:
+                self.communication("refused", capture, source="local_capture_executor", reason=str(error))
+            raise
+        self.attempts, self.pending_capture, self.future = sequence, capture, future
+        if first_request:
+            self.communication("accepted", capture, source="local_capture_executor")
             self.set_phase("peer", time.monotonic() - self.start, capture=capture)
 
     def finish(self, reason, **evidence):
@@ -278,6 +297,7 @@ class PairedAttempt:
                 "observations": self.events, "command_requests": self.samples,
                 "consumed_goal": self.measured_goal, "unconsumed_capture": self.pending_capture,
                 "peer_requests": self.peer_requests, "phase_events": self.phase_events,
+                "communication_events": self.communication_events,
                 "controller_endpoint": controller_endpoint,
                 "drive_episode_id": self.driver.episode.id if self.driver and self.driver.episode else None,
                 "scope": "Controller requests only. Physical endpoint requires an independent manual measurement.",
@@ -313,13 +333,24 @@ class PairedAttempt:
             goal, info = self.future.result()
         except Exception as exc:
             goal, info = None, {"reason": str(exc)}
+        donor_read = info.get("source_robot") == "rosmaster"
+        if donor_read and info.get("rgb_receipt"):
+            self.communication("observed", capture, source_robot="rosmaster", reader="homebrain", evidence=info.get("evidence"),
+                               **info["rgb_receipt"])
+        peer_packet = peer_field_trace.goal_receipt(goal) if goal and donor_read else None
+        if peer_packet:
+            self.communication("delivered", capture, **peer_packet)
         if goal and (time.monotonic() > info["expires_monotonic_s"] or goal["map_frame_id"] != frame):
             goal = None
-            info.update(valid=False, reason="pose expired before operator controller consumed it")
+            info.update(valid=False, reason="pose expired or localization frame changed before controller consumption")
+            if peer_packet:
+                self.communication("rejected_by_recipient", capture, reason=info["reason"], **peer_packet)
         self.events.append({"at_s": age, "phase": self.phase, "capture": capture, **info})
         if goal:
-            self.measured_goal = goal
             self.driver = field.operator_drive(goal, self.fleet)
+            self.measured_goal = goal
+            if peer_packet:
+                self.communication("consumed", capture, consumer="tank_leased_drive_goal", **peer_packet)
             self.set_phase("docking", age, capture=capture)
         elif self.phase == "peer" or self.condition == "selective":
             self.submit("rosmaster")
@@ -450,4 +481,5 @@ def report():
     prerequisites={r:{'verified_current':bool(calibration.get(r,{}).get('verified') and
                     calibration[r].get('valid_until',0)>time.time())} for r in field.ROBOTS}
     return {**s,'outcomes':outcomes,'calibration':prerequisites,
-            'effective_order':checked_order(s),'paired':peer_field_outcomes.paired_outcomes(s)}
+            'effective_order':checked_order(s),'paired':peer_field_outcomes.paired_outcomes(s),
+            'communication_traces':peer_field_trace.report(s['attempts'])}

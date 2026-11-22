@@ -210,3 +210,109 @@ def test_stop_persists_request_even_if_drive_trace_fails_to_close(tmp_path, monk
     assert row["reason"] == "operator_stop" and row["peer_requests"] == 1
     assert row["controller_endpoint"]["error"] == "drive trace storage failed"
     assert row["consumed_goal"]["source_robot"] == "rosmaster"
+
+
+def donor_frame(clock, expired=False):
+    future = concurrent.futures.Future()
+    goal = {"source_robot": "rosmaster", "evidence": "trial/002-rosmaster",
+            "map_frame_id": "map", "pose": [0.3, 0.1, 0.0]}
+    info = {"source_robot": "rosmaster", "evidence": "/test/observation.json",
+            "expires_monotonic_s": clock[0] + (-.1 if expired else .5), "valid": True,
+            "rgb_receipt": {"payload_sha256": "a" * 64, "source_rgb_stamp_ns": 12345,
+                            "received_monotonic_ns": int(clock[0] * 1e9),
+                            "board_valid": True}}
+    future.set_result((goal, info))
+    return future
+
+
+def test_field_trace_seals_the_goal_and_appends_only_an_independent_outcome(tmp_path, monkeypatch):
+    from contextlib import nullcontext
+
+    task, clock, _, finished = make_attempt(tmp_path, monkeypatch, "selective")
+    monkeypatch.setattr(series.field, "operator_drive", fake_driver)
+    monkeypatch.setattr(series.fleet_config, "locked", nullcontext)
+    task.command(None)
+    task.future = donor_frame(clock)
+    clock[0] += .1
+    task.command(None)
+    task.finish("blocked")
+    row = {"id": task.id, "slot": 0, "layout": "A", "condition": "selective", "runtime": finished[0]}
+    state = series.prepare()
+    state["attempts"].append(row)
+    series.field.write_json(series.SERIES, state)
+    assert "recipient_outcome" in series.report()["communication_traces"]["traces"][0]["unobserved_stages"]
+    series.score(fake_control(), task.id, .01, .01, 2.0, True, False, "independent floor measurements")
+    trace, = series.report()["communication_traces"]["traces"]
+    assert [e["stage"] for e in trace["events"]] == [
+        "requested", "accepted", "observed", "delivered", "consumed", "recipient_outcome"]
+    _, accepted, observed, delivered, consumed, outcome = trace["events"]
+    assert accepted["source"] == "local_capture_executor"
+    assert observed["payload_sha256"] == "a" * 64
+    assert delivered["packet_sha256"] == consumed["packet_sha256"]
+    assert outcome["success"] and outcome["t"] is None and outcome["recorded_unix_s"] > 0
+    assert trace["costs"]["calls"] == 1
+    assert all(trace["costs"][k] is None for k in ("wait_s", "service_s", "travel_m", "human_s"))
+
+
+@pytest.mark.parametrize("stale", [True, False])
+def test_delivered_goal_is_unconsumed_if_stale_or_controller_cannot_accept(tmp_path, monkeypatch, stale):
+    task, clock, _, finished = make_attempt(tmp_path, monkeypatch, "selective")
+
+    def could_not_attach(goal, fleet):
+        raise ValueError("controller rejected goal")
+
+    monkeypatch.setattr(series.field, "operator_drive", could_not_attach)
+    task.command(None)
+    task.future = donor_frame(clock, expired=stale)
+    task.command(None)
+    task.cancel()
+    row = {"id": task.id, "condition": task.condition, "runtime": finished[0]}
+    trace = series.peer_field_trace.consultation(row)
+    stages = [e["stage"] for e in trace["events"]]
+    assert stages.count("requested") == 1 and "delivered" in stages
+    assert ("rejected_by_recipient" in stages) == stale
+    assert "consumed" not in stages and "recipient_outcome" not in stages
+    assert finished[0]["consumed_goal"] is None
+
+
+def test_capture_refusal_and_legacy_exposure_do_not_fabricate_service_or_success(tmp_path, monkeypatch):
+    task, clock, _, finished = make_attempt(tmp_path, monkeypatch, "selective")
+
+    def refused(*args):
+        raise RuntimeError("capture worker unavailable")
+
+    task.pool.submit = refused
+    task.command(None)
+    active = series.peer_field_trace.consultation({"id": "trial", "condition": "selective",
+                                                  "runtime": finished[0]})
+    assert [e["stage"] for e in active["events"]] == ["requested", "refused"]
+    assert active["costs"]["calls"] == 1 and active["costs"]["service_s"] is None
+    legacy = series.peer_field_trace.consultation(
+        {"id": "archived", "condition": "selective", "runtime": {
+            "observations": [{"source_robot": "rosmaster"}], "controller_endpoint": {"state": "arrived"}}})
+    assert legacy["events"] == [] and legacy["costs"]["calls"] is None
+    assert legacy["costs"]["observed_calls_lower_bound"] == 1
+    assert series.peer_field_trace.report([])["traces"] == []
+
+
+def test_read_only_capture_exposes_its_actual_hashed_rgb_receipt(tmp_path, monkeypatch):
+    import hashlib
+
+    payload = b"synthetic RGB packet"
+    source_sha = hashlib.sha256(payload).hexdigest()
+
+    def recorded_camera(robot, folder, fleet):
+        (folder / (robot + ".npz")).write_bytes(payload)
+        return {"source_robot": robot, "board_valid": False, "reason": "two IDs absent",
+                "camera": {"frame_id": "wrist_optical"}, "payload_sha256": source_sha,
+                "source_rgb_stamp_ns": 123, "received_monotonic_ns": 456, "rgb_age_s": .02}
+
+    monkeypatch.setattr(series.field, "observe", recorded_camera)
+    goal, info = series.observe_one("rosmaster", tmp_path, 2, None)
+    assert goal is None
+    stored = tmp_path / "002-rosmaster"
+    event = json.loads((stored / "observation.json").read_bytes())["observations"]["rosmaster"]
+    assert info["rgb_receipt"]["payload_sha256"] == event["payload_sha256"]
+    assert hashlib.sha256((stored / "rosmaster.npz").read_bytes()).hexdigest() == source_sha
+    assert info["rgb_receipt"]["source_rgb_stamp_ns"] == 123
+    assert info["rgb_receipt"]["board_valid"] is False
