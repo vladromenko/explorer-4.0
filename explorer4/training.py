@@ -69,9 +69,28 @@ def train_command(dataset: Path, output: Path, policy='act',steps=50,batch=8,see
     return args
 
 
-def evaluation_command(checkpoint, roots, destination, role):
+def evaluation_command(checkpoint, roots, destination, role, device='cuda'):
     return [sys.executable, '-m', 'explorer4.evaluation', '--checkpoint', str(checkpoint),
-            '--output', str(destination), '--role', role] + [v for root in roots for v in ('--dataset', str(root))]
+            '--output', str(destination), '--role', role, '--device', device] + [v for root in roots for v in ('--dataset', str(root))]
+
+
+def bind_test_checkpoint(source_dir, checkpoint):
+    from . import fleet_config
+    from .sim_protocol import bundle_identity
+    identity = bundle_identity(checkpoint)
+    path = source_dir/'frozen-test-checkpoint.json'
+    binding = {'checkpoint':str(Path(checkpoint).resolve()), 'sha256':identity['checkpoint_sha256'],
+               'checkpoint_bundle_sha256':identity['checkpoint_bundle_sha256']}
+    with fleet_config.locked():
+        if path.exists():
+            old = json.loads(path.read_text())
+            if (old['sha256'] != binding['sha256'] or
+                    (old.get('checkpoint_bundle_sha256') and old['checkpoint_bundle_sha256'] != binding['checkpoint_bundle_sha256']) or
+                    (not old.get('checkpoint_bundle_sha256') and Path(old['checkpoint']).resolve() != Path(checkpoint).resolve())):
+                raise ValueError('Test already bound to a different checkpoint or its processors')
+            return 'bundle' if old.get('checkpoint_bundle_sha256') else 'legacy_weights_only'
+        fleet_config.atomic_write(path,binding)
+    return 'bundle'
 
 
 def run_job(path: Path):
@@ -165,7 +184,9 @@ def run_job(path: Path):
         prepare(cfg['source_job'],work)
         return
     if cfg.get('kind') == 'sim_align':
-        result = subprocess.run([str(ROOT/'.venv-sim/bin/python'), str(ROOT/'scripts/sim_align.py'), '--apply'],
+        if not cfg.get('plan_id'):
+            raise ValueError('Для подстройки нужен замороженный план реальных показов. Выберите его в панели.')
+        result = subprocess.run([str(ROOT/'.venv-sim/bin/python'), str(ROOT/'scripts/sim_align.py'), '--plan-id', cfg['plan_id'], '--apply'],
                                 cwd=ROOT, env={**offline_environment(), 'MUJOCO_GL': 'egl'}, capture_output=True, text=True, timeout=600)
         (work/'alignment.json').write_text(result.stdout or json.dumps({'error': result.stderr[-2000:]}))
         if result.returncode:
@@ -177,7 +198,8 @@ def run_job(path: Path):
         def successes(name):
             return sum(1 for e in _catalog.rows('episodes') if e['profile'] == name and e['outcome'] == 'success')
         demos = {}
-        for name, block in (('so101_handover_sim', 'so101_handover'), ('rosmaster_floor_pick_sim', 'rosmaster_floor_pick')):
+        for block in (b for b in ('so101_handover','rosmaster_floor_pick') if report.get(b,{}).get('measured')):
+            name = block+'_sim'
             before = successes(name)
             start = random.randint(20000, 900000)
             proc = subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer4.sim.collect', '--start', str(start),
@@ -211,7 +233,7 @@ def run_job(path: Path):
         record_floor = improvement or cfg.get('diagnostic') in {
             'recorded_start_adaptation', 'recorded_start_control', 'recorded_start_transfer'}
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.sim.evaluate',cfg['checkpoint'],
-            str(work/'result.json'),'--profile',cfg['profile'],'--count',str(cfg['episodes'])]+seed_args+
+            str(work/'result.json'),'--profile',cfg['profile'],'--count',str(cfg['episodes']),'--device',cfg.get('device','cuda')]+seed_args+
             (['--expected-model-sha256',cfg['expected_model_hash']] if cfg.get('expected_model_hash') else [])+
             (['--queue-config',str(path)] if cfg.get('protocol') else [])+
             (['--record-floor'] if record_floor else [])+
@@ -236,24 +258,19 @@ def run_job(path: Path):
         partition=cfg.get('partition','validation')
         if partition=='test':
             if not split['test']:raise ValueError('Smoke не содержит независимого test')
-            import hashlib
-            checksum=hashlib.sha256((Path(cfg['checkpoint'])/'model.safetensors').read_bytes()).hexdigest()
-            choice=source/'frozen-test-checkpoint.json'
-            if choice.exists() and json.loads(choice.read_text())['sha256']!=checksum:
-                raise ValueError('Test уже открыт для другого checkpoint; нельзя подбирать по test')
-            choice.write_text(json.dumps({'checkpoint':cfg['checkpoint'],'sha256':checksum}))
+            test_binding=bind_test_checkpoint(source,cfg['checkpoint'])
         selected = split[partition] or split['train']
         role = 'held_out_'+partition if split[partition] else 'training_data_diagnostic_not_generalization'
-        subprocess.run(evaluation_command(cfg['checkpoint'], [e['dataset'] for e in selected], work/'evaluation.json', role),
+        subprocess.run(evaluation_command(cfg['checkpoint'], [e['dataset'] for e in selected], work/'evaluation.json', role, cfg.get('device','cuda')),
                        env=offline_environment(), check=True)
         (work/'result.json').write_text(json.dumps({'checkpoint': cfg['checkpoint'], 'evaluation': str(work/'evaluation.json'),
-                                                   'physical_skill_verified': False}))
+                      'test_binding':test_binding if partition=='test' else None,'physical_skill_verified':False}))
         return
     profile(cfg['profile'])
     if cfg.get('draft_id'):
         from .training_drafts import load
         reviewed=load(cfg['draft_id'])
-        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer','floor_development_gate','smolvla_development'):
+        for key in ('profile','policy','plan_id','steps','batch_size','seed','train_seed','split_seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer','floor_development_gate','smolvla_development'):
             if cfg.get(key)!=reviewed.get(key):raise ValueError('Job differs from the reviewed training draft: '+key)
     if cfg.get('smolvla_development'):
         from .smolvla_development import verify_before_train
@@ -263,6 +280,7 @@ def run_job(path: Path):
     if cfg.get('floor_development_gate') and (not cfg.get('draft_id') or
             cfg.get('checkpoint_interval') != reviewed.get('checkpoint_interval') or cfg.get('checkpoint_interval') != 1000):
         raise ValueError('A checkpoint gate requires a reviewed simulation draft with 1000-step saves')
+    plan = {}
     if cfg.get('plan_id'):
         plan = load_plan(cfg['plan_id'])
         splits = plan['splits']
@@ -337,12 +355,14 @@ def run_job(path: Path):
                                    env=offline_environment(), check=True)
                     if splits['validation']:
                         subprocess.run(evaluation_command(checkpoint, [e['dataset'] for e in splits['validation']],
-                                       work/'evaluation.json', 'held_out_validation'), env=offline_environment(), check=True)
+                                       work/'evaluation.json', 'held_out_validation', cfg.get('device','cuda')), env=offline_environment(), check=True)
                 result = {'checkpoint':checkpoint, 'effective_batch':batch, 'seed': cfg['seed'], 'smoke': cfg['smoke'],
-                    'steps':steps, 'plan_id':cfg.get('plan_id'), 'physical_skill_verified':False,'test_used':False,
+                    'steps':steps, 'train_seed':cfg['seed'], 'split_seed':plan.get('split_seed',plan.get('seed')), 'plan_id':cfg.get('plan_id'), 'physical_skill_verified':False,'test_used':False,
                     'domain':profile(cfg['profile']).get('domain','real'),'initial_checkpoint':cfg.get('initial_checkpoint'),
                     'resume_checkpoint':resume,'draft_id':cfg.get('draft_id'),'mixture':cfg.get('mixture'),
-                    'normalization':cfg.get('normalization','train_only'),'training_started':True}
+                    'normalization':cfg.get('normalization','train_only'),'training_started':True,
+                    'checkpoint_selection':'development_task_endpoint' if development else 'last_checkpoint',
+                    'last_checkpoint':development['last_checkpoint'] if development else checkpoint}
                 if development:
                     result.update(steps=development['last_step'],requested_steps=steps,training_result=development['status'],
                                   selected_step=development['selected_step'],last_checkpoint=development['last_checkpoint'],

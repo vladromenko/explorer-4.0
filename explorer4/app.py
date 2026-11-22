@@ -717,9 +717,10 @@ def index(request:Request):
                 with ui.row().style('align-items:center'):
                     cotrain_box=ui.checkbox('Добавить показы MuJoCo (совместное обучение: только в обучающую часть, не больше настоящих)',value=False)
                     from_sim_box=ui.checkbox('Начать с весов MuJoCo (дообучение на ваших показах)',value=True)
+                    alignment_plan=ui.input('ID замороженного плана реальных показов').props('dense')
                     async def align_sim():
                         try:
-                            ident=await asyncio.to_thread(jobs.sim_align)
+                            ident=await asyncio.to_thread(jobs.sim_align,(alignment_plan.value or '').strip())
                             ui.notify('Подстройка сцены MuJoCo под ваши показы: задание '+ident[:8])
                         except Exception as exc:notify_error(exc)
                     ui.button('Подстроить MuJoCo под мои показы',icon='tune',on_click=align_sim).props('flat')

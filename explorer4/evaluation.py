@@ -12,14 +12,16 @@ from lerobot.datasets.factory import resolve_delta_timestamps
 from lerobot.policies.factory import get_policy_class, make_pre_post_processors
 
 
-def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic'):
+def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic', device='cuda'):
     checkpoint = Path(checkpoint)
     cfg = PreTrainedConfig.from_pretrained(checkpoint)
-    cfg.device = 'cuda'
+    if device not in ('cpu','cuda'):
+        raise ValueError('Use the reviewed CPU or CUDA device')
+    cfg.device = device
     policy = get_policy_class(cfg.type).from_pretrained(checkpoint, config=cfg)
     policy.eval()
     pre, post = make_pre_post_processors(cfg, pretrained_path=str(checkpoint),
-        preprocessor_overrides={'device_processor': {'device': 'cuda'}},
+        preprocessor_overrides={'device_processor': {'device': device}},
         postprocessor_overrides={'device_processor': {'device': 'cpu'}})
     reports = []
     for root in datasets:
@@ -34,7 +36,8 @@ def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic
             batch = default_collate([frame])
             prepared = pre(batch)
             policy.reset()  # Each sampled observation is an independent replan, no stale chunk.
-            torch.cuda.synchronize()
+            if device == 'cuda':
+                torch.cuda.synchronize()
             start = time.perf_counter()
             with torch.inference_mode():
                 # Diffusion's dataset already contains an observation history. The online
@@ -44,7 +47,8 @@ def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic
                 else:
                     prediction = policy.select_action(prepared)
                 action = post(prediction).cpu().numpy()[0]
-            torch.cuda.synchronize()
+            if device == 'cuda':
+                torch.cuda.synchronize()
             durations.append(time.perf_counter() - start)
             with torch.inference_mode():
                 loss, _ = policy.forward(pre(default_collate([frame])))
@@ -65,7 +69,7 @@ def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic
             'official_forward_loss_mean': float(np.mean(losses)),
             'replan_latency_seconds_p50_p95_max': np.percentile(durations, [50,95,100]).tolist()})
     from .training_drafts import checkpoint_hash
-    result = {'checkpoint': str(checkpoint), 'checkpoint_bundle_sha256':checkpoint_hash(checkpoint), 'policy': cfg.type, 'role': role, 'datasets': reports,
+    result = {'device':device,'checkpoint': str(checkpoint), 'checkpoint_bundle_sha256':checkpoint_hash(checkpoint), 'policy': cfg.type, 'role': role, 'datasets': reports,
         'normalization': 'checkpoint_train_processors_only', 'motor_commands_sent': False,
         'physical_skill_verified': False, 'limitation': 'Offline ошибки относительно показов не измеряют успешность задачи; sampled replan latency includes postprocessing, excludes sensors/network.'}
     Path(destination).write_text(json.dumps(result, indent=2, ensure_ascii=False))
@@ -77,7 +81,8 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint', type=Path, required=True)
     parser.add_argument('--dataset', type=Path, action='append', required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--device', choices=('cpu','cuda'), default='cuda')
     parser.add_argument('--role', default='diagnostic')
     parser.add_argument('--max-samples', type=int, default=32, choices=range(1,257))
     args = parser.parse_args()
-    evaluate(args.checkpoint, args.dataset, args.output, args.max_samples, args.role)
+    evaluate(args.checkpoint, args.dataset, args.output, args.max_samples, args.role, args.device)

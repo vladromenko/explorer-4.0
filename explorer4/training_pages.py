@@ -59,10 +59,12 @@ def install(css,jobs):
             preparing=True;prepare_button.disable();status.set_text('Проверка данных и сохранение плана · обучение не запущено')
             try:
                 parent=None if source.value=='new' else jobs.get(source.value)
-                draft_id,draft=await asyncio.to_thread(training_drafts.prepare,profile.value,policy.value,episodes.value,
-                    steps=int(steps.value),batch=int(batch.value),seed=int(seed.value),device=device.value,source=parent,acquisition_request=acquisition_id,
+                draft_id,draft=await asyncio.to_thread(training_drafts.prepare,profile.value,policy.value,episodes.value or (None if (fixed_plan.value or '').strip() else []),
+                    steps=int(steps.value),batch=int(batch.value),train_seed=int(seed.value),device=device.value,
+                    plan_id=(fixed_plan.value or '').strip() or None,
+                    split_seed=None if (fixed_plan.value or '').strip() else int(split_seed.value),source=parent,acquisition_request=acquisition_id,
                     floor_development=(profile.value=='rosmaster_floor_pick_recorded_start_sim' and parent is None
-                        and policy.value in ('act','diffusion') and int(steps.value)>3000 and not acquisition_id))
+                        and policy.value in ('act','diffusion') and int(steps.value)>=1000 and not acquisition_id))
                 show(draft);history.set_options(saved(),value=draft_id);status.set_text('План сохранён · обучение не запущено')
             except Exception as exc:
                 draft_id=None;start_button.disable();status.set_text(str(exc))
@@ -115,9 +117,11 @@ def install(css,jobs):
                 ui.label('Конечный бюджет').classes('sim-title')
                 steps=ui.number('Обновлений весов',value=2000,min=50,max=1000000,step=50,precision=0).classes('w-full')
                 batch=ui.number('Примеров за одно обновление',value=1,min=1,max=32,precision=0).classes('w-full')
+                fixed_plan=ui.input('ID сохранённого разбиения для повторного сравнения').classes('w-full')
+                split_seed=ui.number('Seed нового разбиения',value=1000,min=0,precision=0).classes('w-full')
                 seed=ui.number('Seed запуска',value=1000,min=0,precision=0).classes('w-full')
                 device=ui.select({'cuda':'GPU Homebrain','cpu':'CPU Homebrain'},value='cuda',label='Вычисления').classes('w-full')
-                ui.label('Для нового ACT или Diffusion по кубику из записанной позы при бюджете свыше 3 000 обновлений симулятор проверяет захват после 1 000 и 3 000. Если в обеих сериях нет ни удержаний, ни подъёма хотя бы на 1 см, обучение остановится с сохранением весов.').bind_visibility_from(profile,'value',backward=lambda v:v=='rosmaster_floor_pick_recorded_start_sim').classes('muted')
+                ui.label('Для нового ACT или Diffusion по кубику из записанной позы при бюджете от 1 000 симулятор сравнивает захват на тех же восьми сценах после 1 000, после 3 000 и в конце, когда эти точки входят в бюджет. После двух пустых ранних проверок длинное обучение завершается. Без признаков захвата веса остаются в архиве.').bind_visibility_from(profile,'value',backward=lambda v:v=='rosmaster_floor_pick_recorded_start_sim').classes('muted')
                 ui.label('Бюджет задаёте вы. Размер пакета не уменьшается незаметно при нехватке памяти. Длительность заранее не обещается: она зависит от модели и данных.').classes('muted')
                 prepare_button=ui.button('Подготовить план · не запускать',icon='description',on_click=prepare)
         def saved():
@@ -180,15 +184,15 @@ def install(css,jobs):
                     rows=[{'part':{'train':'Обучение','validation':'Проверка при обучении','test':'Итоговая проверка'}[role],
                         'episodes':draft['split_counts'][role],'frames':draft['frames'][role]}
                         for role in ('train','validation','test')],row_key='part').classes('w-full')
+                ui.label('Разбиение '+draft['plan_id']+' · seed разбиения '+str(draft.get('split_seed',draft['seed']))).classes('muted').style('overflow-wrap:anywhere')
                 gate=draft.get('floor_development_gate')
                 if gate:
                     def spaced(number):
                         return f'{number:,}'.replace(',',' ')
-                    milestones=' и '.join(spaced(step) for step in gate['checkpoints'])
-                    ui.label(f"Сохранение каждые {spaced(draft['checkpoint_interval'])} обновлений. "
-                             f"После {milestones} обновлений — проверка на одних и тех же {len(gate['ordered_seeds'])} сценах MuJoCo. "
-                             f"Если в обеих сериях нет удержаний и ни одного подъёма хотя бы на {gate['lift_cm']:g} см, обучение остановится. "
-                             "Последние веса сохранятся.").classes('sim-status')
+                    milestones=', '.join(spaced(n) for n in [*gate['checkpoints'],draft['steps']])
+                    ui.label(f"Проверки на одинаковых {len(gate['ordered_seeds'])} сценах MuJoCo: {milestones} обновлений. "
+                             f"Для выбора учитываются завершение задачи, удержание и подъём на {gate['lift_cm']:g} см. "
+                             "После двух пустых ранних проверок длинное обучение останавливается. Последние веса сохраняются отдельно.").classes('sim-status')
                 mix=draft['mixture'];ui.label(f"Обучающие кадры: {mix['old_train_frames']} прежних + {mix['new_train_frames']} новых. Нормировка только по обучающей части.")
                 ui.button('Скачать план',icon='download',on_click=lambda:ui.download.file(DATA/'training-drafts'/(draft_id+'.json'))).props('outline')
             start_button.enable()

@@ -31,6 +31,9 @@ class SimCapture:
                    'scene':f"{env.profile}-seed-{seed}-{env.manifest['xml_sha256']}",
                    'calibration':'uncalibrated','privileged_state_in_policy_observation':False,
                    'loaded_controller_sha256':hashlib.sha256(b''.join(marshal.dumps(getattr(env,name).__func__.__code__) for name in ('step','reset','observation','render'))).hexdigest()}
+        if env.profile in {'so101_handover_sim','rosmaster_floor_pick_sim'}:
+            from explorer4.alignment_lineage import configuration_record
+            self.meta['model'] = {**env.manifest, 'alignment':configuration_record(env.cfg)}
 
     def add(self,env,action,*,annotations=None):
         if self.finished:raise RuntimeError('Capture already finished')

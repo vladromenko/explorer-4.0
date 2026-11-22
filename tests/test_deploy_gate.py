@@ -92,20 +92,37 @@ def test_semantics_of_native_velocity_and_gripper(monkeypatch):
 
 def test_cotraining_adds_sim_only_to_train_and_caps_frames(monkeypatch, tmp_path):
     from explorer4 import datasets
-    sims = []
-    for i in range(5):
-        d = tmp_path / f's{i}'
+    from explorer4.alignment_lineage import configuration_record
+    def episode(ident, real=False, parent=None, alignment=None):
+        d=tmp_path/ident
         d.mkdir()
-        (d / 'research.jsonl').write_text(json.dumps({'command_source': 'scripted_expert'}) + '\n')
-        sims.append({'id': f's{i}', 'dataset': str(d), 'frames': 100, 'created': i, 'profile': 'so101_handover_sim'})
-    monkeypatch.setattr(datasets, 'eligible', lambda name: sims if name == 'so101_handover_sim' else [])
-    monkeypatch.setattr(datasets, 'simulation_model_hash', lambda e: 'm')
-    monkeypatch.setattr(datasets, 'fingerprint', lambda p: 'sha')
-    chosen, info = datasets.cotraining_episodes('so101_pick_place', 250, 1.0)
-    assert len(chosen) == 2 and info['sim_frames'] == 200 and all(e['domain'] == 'sim' for e in chosen)
-    assert info['splits_with_sim'] == ['train']
+        model={'alignment':alignment or configuration_record({'source':'instructions'})}
+        raw={'domain':'real' if real else 'sim','synthetic':not real,'hardware':{'model':model},'source_episode':parent}
+        (d/'provenance.json').write_text(json.dumps(raw))
+        (d/'research.jsonl').write_text(json.dumps({'command_source':'scripted_expert'})+'\n')
+        return {'id':ident,'dataset':str(d),'frames':100,'created':int(ident[-1]),'session':ident+'-s','scene':ident+'-p',
+                'profile':'so101_pick_place' if real else 'so101_handover_sim'}
+    train = episode('d0',True)
+    held = episode('held1',True)
+    other = episode('other2', True)
+    middle = episode('derived3',True,parent=held['id'])
+    alignment=configuration_record({'source':'measured','object_x_m':[.17,.25],'alignment_provenance':{
+        'mode':'frozen_train','plan_id':'other-plan','source_episodes':[{'id':middle['id'],'sha256':'m'}]}})
+    plan={'domain':'real','profile':'so101_pick_place','splits':{'train':[{'id':middle['id'],'sha256':'m'}]}}
+    monkeypatch.setattr(datasets,'load_plan',lambda *a,**kw:plan)
+    sims=[episode('good1'),episode('also2'),episode('limit0'),episode('sim4',parent=middle['id']),
+          episode('sim5',alignment=alignment),episode('old6',alignment={'mode':'unknown'})]
+    monkeypatch.setattr(datasets,'eligible',lambda name:sims)
+    monkeypatch.setattr(datasets.catalog,'rows',lambda _:[train,held,other,middle,*sims])
+    monkeypatch.setattr(datasets,'simulation_model_hash',lambda e:'m')
+    monkeypatch.setattr(datasets,'fingerprint',lambda p:'sha')
+    chosen,info=datasets.cotraining_episodes('so101_pick_place',250,1.,holdouts=[held,other])
+    assert [e['id'] for e in chosen]==['also2','good1'] and info['sim_frames']==200
+    assert info['splits_with_sim']==['train'] and set(info['refused'])=={'sim4','sim5','old6'}
+    for ident in ('sim4','sim5'):
+        assert 'held-out' in info['refused'][ident]
     with pytest.raises(ValueError):
-        datasets.cotraining_episodes('tank_dock', 100, 1.0)
+        datasets.cotraining_episodes('tank_dock',100,1.,holdouts=[held,other])
 
 
 def test_only_predeclared_standard_simulation_with_matching_bundle_and_scenes_is_eligible(tmp_path,monkeypatch):

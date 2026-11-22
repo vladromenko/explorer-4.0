@@ -66,16 +66,21 @@ def validate_budget(steps,batch,seed,device):
     if device not in {'cpu','cuda'}:raise ValueError('Выберите CPU или GPU')
 
 
-def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquisition_request=None,wrist_encoder=False,task_instruction=None,real_pilot=False,floor_development=False):
-    validate_budget(steps,batch,seed,device)
+def prepare(name,policy,episode_ids=None,*,steps,batch,device,seed=None,split_seed=None,train_seed=None,plan_id=None,source=None,acquisition_request=None,wrist_encoder=False,task_instruction=None,real_pilot=False,floor_development=False):
+    if seed is not None and train_seed is not None and seed != train_seed:
+        raise ValueError('Conflicting optimizer seeds')
+    train_seed = train_seed if train_seed is not None else seed if seed is not None else 1000
+    validate_budget(steps,batch,train_seed,device)
+    if split_seed is not None and (type(split_seed) is not int or not 0 <= split_seed < 2**31):
+        raise ValueError('Invalid dataset split seed')
     domain=profile(name).get('domain','real')
     if domain not in ('real','sim'):raise ValueError('Unknown recording domain')
     validate_recipe(policy,name)
     if floor_development:
         from .floor_development_gate import PROFILE, BOUNDARIES
-        if (name != PROFILE or domain != 'sim' or policy not in ('act','diffusion') or steps <= BOUNDARIES[-1]
+        if (name != PROFILE or domain != 'sim' or policy not in ('act','diffusion') or steps < BOUNDARIES[0]
                 or source or acquisition_request or wrist_encoder or real_pilot):
-            raise ValueError('Checkpoint gates require a fresh long recorded-start simulation ACT or Diffusion draft')
+            raise ValueError('Checkpoint gates require a fresh long or bounded (at least 1000 updates) recorded-start simulation ACT or Diffusion draft')
     encoder = None
     if wrist_encoder:
         if source or policy != 'act' or name not in {'so101_pick_place','so101_pick_place_sim'}:
@@ -90,8 +95,30 @@ def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquis
             raise ValueError('Real pilot requires a physical recording profile')
         options['min_real_episodes'] = 3
         options['floor_cube_pilot'] = name == 'rosmaster_pick_place' and task_instruction == datasets.FLOOR_CUBE_TASK
-    plan_id,plan=datasets.freeze(name,False,seed=seed,selected_ids=episode_ids,
-        min_sim_episodes=3 if domain=='sim' else None, **options)
+    reused_plan = plan_id is not None
+    if reused_plan:
+        plan = datasets.load_plan(plan_id)
+        saved_seed = plan.get('split_seed', plan.get('seed'))
+        recorded_task = plan.get('recorded_instruction')
+        current_contract = profile(name)
+        if recorded_task:
+            current_contract = {**current_contract, 'task':recorded_task}
+        if plan.get('profile_contract') and semantic_contract(plan['profile_contract']) != semantic_contract(current_contract):
+            raise ValueError('Frozen recording and current observation/action contracts differ')
+        members = {entry['id'] for entries in plan['splits'].values() for entry in entries}
+        if (plan['profile'] != name or plan['domain'] != domain or plan.get('smoke') or
+                not all(plan['splits'].get(role) for role in ('train','validation','test')) or
+                (episode_ids is not None and set(episode_ids) != members) or
+                (split_seed is not None and split_seed != saved_seed) or
+                (task_instruction is not None and task_instruction != plan.get('recorded_instruction'))):
+            raise ValueError('Frozen plan does not match requested profile, recordings, split seed or task')
+        split_seed = saved_seed
+        task_instruction = recorded_task
+        real_pilot = bool(plan.get('pilot')) and domain == 'real'
+    else:
+        split_seed = 1000 if split_seed is None else split_seed
+        plan_id,plan=datasets.freeze(name,False,seed=split_seed,selected_ids=episode_ids,
+            min_sim_episodes=3 if domain=='sim' else None, **options)
     # A draft is a new run; resume is a separate existing job action.
     initial=None;prior=None;source_plan_id=None;fingerprint=None
     if source:
@@ -105,14 +132,21 @@ def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquis
         initial=source['checkpoint'];fingerprint=checkpoint_hash(initial)
         if json.loads((Path(initial)/'config.json').read_text()).get('type')!=policy:
             raise ValueError('Тип checkpoint не совпадает с выбранной моделью')
-        plan=merge_plans(prior,plan)
-        plan['parent_plan_id']=source_plan_id
-        plan_id=save_content(DATA/'plans',plan)
+        merged=merge_plans(prior,plan)
+        if reused_plan:
+            def membership(p):
+                return {role:{(e['id'],e['sha256']) for e in entries} for role,entries in p['splits'].items()}
+            if membership(merged)!=membership(plan):
+                raise ValueError('Frozen comparison plan does not preserve source train and held-out roles')
+        else:
+            plan=merged
+            plan['parent_plan_id']=source_plan_id
+            plan_id=save_content(DATA/'plans',plan)
     old_ids={e['id'] for e in prior['splits']['train']} if prior else set()
     frames={role:sum(e['frames'] for e in entries) for role,entries in plan['splits'].items()}
     old_frames=sum(e['frames'] for e in plan['splits']['train'] if e['id'] in old_ids)
-    draft={'version':1,'kind':'train','domain':domain,'profile':name,'policy':policy,'smoke':False,'plan_id':plan_id,
-        'steps':steps,'batch_size':batch,'seed':seed,'device':device,
+    draft={'version':2,'kind':'train','domain':domain,'profile':name,'policy':policy,'smoke':False,'plan_id':plan_id,
+        'steps':steps,'batch_size':batch,'seed':train_seed,'train_seed':train_seed,'split_seed':split_seed,'device':device,
         'initial_checkpoint':initial,'initial_checkpoint_sha256':fingerprint,'source_job':source['id'] if source else None,
         'source_plan_id':source_plan_id,'mode':'fine_tune_new_optimizer' if source else 'new_training',
         'normalization':'new train partition only; official LeRobot non-resume statistics override',
@@ -145,7 +179,10 @@ def load(ident):
     raw=(DATA/'training-drafts'/(ident+'.json')).read_text()
     if hashlib.sha256(raw.encode()).hexdigest()!=ident:raise ValueError('План запуска изменился')
     draft=json.loads(raw);validate_budget(draft['steps'],draft['batch_size'],draft['seed'],draft['device'])
-    datasets.load_plan(draft['plan_id'])
+    plan=datasets.load_plan(draft['plan_id'])
+    if draft.get('version') == 2 and (draft['train_seed'] != draft['seed'] or
+            draft['split_seed'] != plan.get('split_seed',plan.get('seed',draft['split_seed']))):
+        raise ValueError('Draft optimizer or split seed differs from its immutable inputs')
     if draft.get('source_plan_id'):datasets.load_plan(draft['source_plan_id'])
     if draft['initial_checkpoint'] and checkpoint_hash(draft['initial_checkpoint'])!=draft['initial_checkpoint_sha256']:
         raise ValueError('Исходные веса изменились после подготовки')

@@ -77,7 +77,7 @@ def make_run(tmp_path, monkeypatch, policy, signals):
     def trainer(command, stop, log):
         assert command[:3] == [sys.executable, "-m", "lerobot.scripts.lerobot_train"]
         if not stages:
-            assert "--steps=10000" in command
+            assert f"--steps={STEPS}" in command
         else:
             previous = stages[-1]
             assert command[3:] == [
@@ -156,7 +156,7 @@ def make_run(tmp_path, monkeypatch, policy, signals):
     monkeypatch.setattr(gate, "run_evaluator", evaluator)
 
     def run(resume=None):
-        command = [sys.executable, "-m", "lerobot.scripts.lerobot_train", "--steps=10000"]
+        command = [sys.executable, "-m", "lerobot.scripts.lerobot_train", f"--steps={STEPS}"]
         return gate.run(work, output, config, 8, command, resume, io.StringIO())
 
     return run, stages, attempts, work, output
@@ -346,3 +346,11 @@ def test_rejects_scene_changes_even_when_the_initial_pose_matches():
     image.flat[:10] = 1
     with pytest.raises(ValueError, match="Development RGB changed"):
         compare_rgb(image, reference)
+
+
+def test_bounded_comparison_selects_development_winner_before_final_checkpoint(tmp_path,monkeypatch):
+    monkeypatch.setitem(globals(),"STEPS",2000)
+    run,stages,attempts,_,_=make_run(tmp_path,monkeypatch,"act",{1000:1,2000:0})
+    result=run()
+    assert stages == attempts == [1000,2000]
+    assert result["selected_step"] == 1000 and result["last_step"] == 2000 and not result["test_used"]

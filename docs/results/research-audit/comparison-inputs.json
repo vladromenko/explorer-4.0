@@ -1,0 +1,126 @@
+{
+  "date_homebrain": "2026-11-23",
+  "weights_updated": false,
+  "physical_commands": 0,
+  "archived_catalog": {
+    "plans_reviewed": 26,
+    "plans_with_cotraining": 0,
+    "completed_training_jobs_using_those_cotraining_plans": 0,
+    "eligible_successful_sim_recordings": {
+      "so101_handover_sim": 58,
+      "rosmaster_floor_pick_sim": 68
+    },
+    "with_alignment_ancestry": {
+      "so101_handover_sim": 0,
+      "rosmaster_floor_pick_sim": 0
+    }
+  },
+  "isolated_drafts_reusing_legacy_plan": [
+    {
+      "policy": "act",
+      "draft_id": "89938d266ff294ed63c082f2e7f068e6ac4a911cefffa44cfe3656d4475d7eef",
+      "train_seed": 1000,
+      "split_seed": 1000,
+      "plan_id": "a0d158614edbc51c066fd6c7ce66c326f78e8fd5aa01e97b51f5ce4ab6589999",
+      "counts": {
+        "test": 4,
+        "train": 32,
+        "validation": 4
+      }
+    },
+    {
+      "policy": "diffusion",
+      "draft_id": "49188321c6763bf877991abc8a54c375143dc90844d22f39fb2a8ef59f7f3686",
+      "train_seed": 1001,
+      "split_seed": 1000,
+      "plan_id": "a0d158614edbc51c066fd6c7ce66c326f78e8fd5aa01e97b51f5ce4ab6589999",
+      "counts": {
+        "test": 4,
+        "train": 32,
+        "validation": 4
+      }
+    }
+  ],
+  "physical_alignment_report_only": {
+    "plan_id": "64c019b2f8841db8e082e92f7e21e0eadc76bb72f9734808927c4f7278f4b284",
+    "applied": false,
+    "result": {
+      "inspected": 5,
+      "with_grasp": 5,
+      "source_episodes": [
+        {
+          "id": "5f7b11c3f7024539942456435c9617af",
+          "sha256": "50c55ad7c6ae4b3bd6b847a2ab3124de3a96f8feab72f52d7399999d121e7bd9"
+        },
+        {
+          "id": "f83324dba752428a897a2e9350361258",
+          "sha256": "f9825742a94b02f7661605ef9009bbc43721d067b2e7ed4b5355d79636f8ba14"
+        },
+        {
+          "id": "ab54d8081544414e9efc9c9c841a5b51",
+          "sha256": "dd494e5e7b6f98ce73995bf84cd346841cc9c08e820b1b2a899553d8afc06498"
+        },
+        {
+          "id": "8916e6e31f1b48d8b83723fc45e3e188",
+          "sha256": "fcbee3378d85a36163c5633ee8a37bb457259e65df3a2ce52e08535fae1fb5b2"
+        },
+        {
+          "id": "1368258df03840edb97865f060e48369",
+          "sha256": "676a98cdaf754785088a85952e5bcaf1582e91df127239754535371b5b5884ac"
+        }
+      ],
+      "measured": {
+        "start_pose": [
+          84.8,
+          56.9,
+          24.4,
+          13.7,
+          76.9,
+          104.7
+        ],
+        "object_x_m": [
+          0.213,
+          0.261
+        ],
+        "object_y_m": [
+          -0.07,
+          0.059
+        ]
+      }
+    },
+    "unchanged_configuration_sha256": "1a9b964268cb469ae52b0ddac1489d26c334bbf36e8cef6d28403fd5b49154fa",
+    "purpose": "FK measurements from the existing five real task-training recordings; the other two development and three test recordings were never read by this alignment pass. This is not a physical task evaluation."
+  },
+  "read_only_cpu_validation": {
+    "job": "a3487bcecce548a3869bde3bb16e2a1d",
+    "checkpoint_bundle_sha256": "b1ae5802134c9774ab3954d551715f61065009f5e261b92e5254602d955ac03b",
+    "CUDA_VISIBLE_DEVICES": "",
+    "device": "cpu",
+    "partition": "held_out_validation",
+    "recording_id": "d0c52fe2fe3c41ff821852d60613a956",
+    "samples": 1,
+    "channels": [
+      "base_rotation",
+      "shoulder",
+      "elbow",
+      "wrist_pitch",
+      "wrist_roll",
+      "gripper"
+    ],
+    "mae_by_channel": [
+      3.6569442749023438,
+      10.537113189697266,
+      3.0760574340820312,
+      4.897512435913086,
+      11.11932373046875,
+      0.23012542724609375
+    ],
+    "official_forward_loss_mean": 0.3381190598011017,
+    "purpose": "CPU execution contract on one validation frame; no accuracy or latency comparison."
+  },
+  "reproduce_homebrain": {
+    "alignment": ".venv-sim/bin/python -m scripts.sim_align --plan-id 64c019b2f8841db8e082e92f7e21e0eadc76bb72f9734808927c4f7278f4b284",
+    "evaluation": "CUDA_VISIBLE_DEVICES= .venv/bin/python -m explorer4.evaluation --device cpu --checkpoint $HOME/.local/share/explorer3/checkpoints/a3487bcecce548a3869bde3bb16e2a1d-b8/checkpoints/last/pretrained_model --dataset $HOME/.local/share/explorer3/datasets/sim/rosmaster_floor_pick_recorded_start_sim/d0c52fe2fe3c41ff821852d60613a956 --role held_out_validation --max-samples 1 --output /tmp/explorer-cpu-check.json",
+    "regressions": ".venv/bin/python -m pytest -q tests/test_training_drafts.py tests/test_floor_development_gate.py tests/test_deploy_gate.py tests/test_sim_alignment_plan.py tests/test_skill_readiness.py tests/test_transfer_preparation.py"
+  }
+}

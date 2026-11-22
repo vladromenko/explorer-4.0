@@ -37,18 +37,21 @@ def recipe(profile, policy, steps, model_sha):
         profile != PROFILE
         or policy not in ("act", "diffusion")
         or type(steps) is not int
-        or steps <= BOUNDARIES[-1]
+        or steps < BOUNDARIES[0]
         or not isinstance(model_sha, str)
         or not re.fullmatch(r"[0-9a-f]{64}", model_sha)
     ):
-        raise ValueError("Проверка захвата требует нового длинного ACT или Diffusion в сцене записанной позы")
+        raise ValueError("Проверка захвата требует минимум 1000 обновлений ACT или Diffusion в сцене записанной позы")
+    # Existing long recipes remain byte-for-byte compatible. A shorter run measures
+    # its last checkpoint once and uses only earlier, attainable published boundaries.
+    boundaries = [step for step in BOUNDARIES if step < steps]
     return {
-        "version": 1,
+        "version": 1 if steps > BOUNDARIES[-1] else 2,
         "profile": PROFILE,
         "policy": policy,
         "ordered_seeds": list(SEEDS),
         "partition": "development",
-        "checkpoints": list(BOUNDARIES),
+        "checkpoints": boundaries,
         "expected_geometry_sha256": model_sha,
         "scene_revision": scene_revision(PROFILE),
         "native_trainer_sha256": TRAINER_SHA256,
@@ -56,7 +59,8 @@ def recipe(profile, policy, steps, model_sha):
         "seed_probe_sha256": sha256_file(ROOT / "explorer4/sim/seeded_start.py"),
         "inference_worker_sha256": sha256_file(ROOT / "explorer4/sim/policy_worker.py"),
         "lift_cm": 1.0,
-        "early_stop": "No held object or 1 cm lift in both completed 1000 and 3000 evaluations.",
+        "early_stop": ("No held object or 1 cm lift in both completed 1000 and 3000 evaluations."
+                       if steps > BOUNDARIES[-1] else "Complete the bounded budget; select only a checkpoint with a development signal."),
         "selection": "Most task completions, then holds, then 1 cm lifts; earliest step on a tie.",
     }
 
@@ -442,7 +446,8 @@ def run(work, output, cfg, batch, command, resume, log):
                 file=log,
                 flush=True,
             )
-            if step == gate["checkpoints"][-1] and all(c["holds"] == c["lifts"] == 0 for c in state["checks"]):
+            screen_end = BOUNDARIES[-1] if gate['version'] == 1 else steps
+            if step == screen_end and all(c["holds"] == c["lifts"] == c["task_successes"] == 0 for c in state["checks"]):
                 state.update(status="stopped_no_grasp_signal", reason=gate["early_stop"])
                 break
         else:

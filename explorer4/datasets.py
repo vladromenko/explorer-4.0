@@ -138,7 +138,7 @@ def select_simulation_revision(episodes, expected=None):
 SIM_FOR_REAL = {'so101_pick_place': 'so101_handover_sim', 'rosmaster_pick_place': 'rosmaster_floor_pick_sim'}
 
 
-def cotraining_episodes(name, real_train_frames, ratio):
+def cotraining_episodes(name, real_train_frames, ratio, *, holdouts):
     """Sim-and-real co-training (Maddukuri et al., 2025, arXiv:2503.24361): demonstrations of the
     MuJoCo task that mirrors the recording block join the TRAIN split only, at most ratio x the real
     training frames, newest physics version only. Validation and test stay real."""
@@ -146,7 +146,7 @@ def cotraining_episodes(name, real_train_frames, ratio):
     sim_name = SIM_FOR_REAL.get(name)
     if sim_name is None:
         raise ValueError('Для этой задачи нет выровненной сцены MuJoCo')
-    sims = sorted(eligible(sim_name), key=lambda e: -e['created'])
+    sims = sorted(eligible(sim_name), key=lambda e: (-e['created'],e['id']))
     if not sims:
         raise ValueError('Нет показов MuJoCo для совместного обучения: сначала соберите их')
     newest = simulation_model_hash(sims[0])
@@ -157,18 +157,45 @@ def cotraining_episodes(name, real_train_frames, ratio):
         return c
     if contract(profile(sim_name)) != contract(profile(name)):
         raise ValueError('Каналы, камера или частота MuJoCo-задачи отличаются от реальной')
-    chosen, frames = [], 0
+    from math import isfinite
+    from .alignment_lineage import relatives
+    if not holdouts or not isfinite(ratio) or ratio <= 0:
+        raise ValueError('Co-training requires frozen real validation/test and a finite positive budget')
+    pool = {e['id']:e for e in catalog.rows('episodes')}
+    pool.update({e['id']:e for e in [*holdouts,*sims]})
+    forbidden = set().union(*(relatives(e,pool) for e in holdouts))
+    chosen, frames, rejected = [], 0, {}
+    scene_revision = None
     for e in sims:
-        if frames + e['frames'] > ratio * real_train_frames:
-            break
-        sources = {json.loads(line)['command_source'] for line in (Path(e['dataset']) / 'research.jsonl').read_text().splitlines()}
-        if not sources.issubset({'scripted_expert', 'human', 'ppo_expert'}):
-            raise ValueError('Недопустимый источник команд в показе MuJoCo')
-        chosen.append({**e, 'sha256': fingerprint(e['dataset']), 'domain': 'sim'})
-        frames += e['frames']
-    return chosen, {'sim_profile': sim_name, 'sim_model_hash': newest, 'sim_episodes': len(chosen), 'sim_frames': frames,
-                    'real_train_frames': real_train_frames, 'ratio_limit': ratio, 'splits_with_sim': ['train'],
-                    'reference': 'Sim-and-Real Co-Training, arXiv:2503.24361'}
+        try:
+            tokens = relatives(e,pool,confirm_alignment=True)
+            if forbidden & tokens:
+                raise ValueError('shared held-out recording, session, scene or ancestor')
+            root = Path(e['dataset'])
+            raw = json.loads((root/'provenance.json').read_text())
+            model = raw['hardware']['model']
+            revision = model['alignment']['configuration_sha256']
+            if scene_revision is not None and scene_revision != revision:
+                raise ValueError('different aligned scene configuration')
+            if raw.get('domain') != 'sim' or raw.get('synthetic') is not True:
+                raise ValueError('simulated provenance required')
+            sources = {json.loads(line)['command_source'] for line in (root/'research.jsonl').read_text().splitlines()}
+            if not sources or not sources.issubset({'scripted_expert','human','ppo_expert'}):
+                raise ValueError('unverified sim command source')
+            if frames + e['frames'] <= ratio * real_train_frames:
+                chosen.append({**e, 'sha256':fingerprint(root), 'domain':'sim',
+                               'lineage_sources':sorted(v for k,v in tokens if k=='episode' and v!=e['id'])})
+                frames += e['frames']
+                scene_revision = revision
+        except (OSError, ValueError, KeyError) as exc:
+            rejected[e['id']] = str(exc)
+    if not chosen:
+        reasons = sorted(set(rejected.values()))
+        raise ValueError('No eligible co-training data in budget: '+(', '.join(reasons[:3]) or 'frame limit'))
+    return chosen, {'sim_profile':sim_name, 'sim_model_hash':newest, 'alignment_configuration_sha256':scene_revision,
+                    'sim_episodes':len(chosen), 'sim_frames':frames, 'refused':rejected,
+                    'real_train_frames':real_train_frames, 'ratio_limit':ratio, 'splits_with_sim':['train'],
+                    'reference':'Sim-and-Real Co-Training, arXiv:2503.24361'}
 
 
 FLOOR_CUBE_TASK = 'pick up the cube'
@@ -250,7 +277,7 @@ def freeze(name, smoke, seed=1000, sim_model_hash=None, *, selected_ids=None, mi
         splits = floor_cube_split(episodes, roles)
     else:
         splits = {'train': episodes, 'validation': [], 'test': []} if smoke else grouped_split(episodes, seed)
-    plan = {'version': 1, 'domain':domain, 'profile': name, 'profile_contract': target_profile, 'smoke': bool(smoke),
+    plan = {'version': 2, 'split_seed': seed, 'domain':domain, 'profile': name, 'profile_contract': target_profile, 'smoke': bool(smoke),
             'seed': seed, 'statistics': 'train_only', 'splits': splits,'sim_model_hash':sim_model_hash,
             'limitation': 'Smoke использует все показы; это не независимая оценка качества' if smoke else
                           'Split заморожен; test не используется для выбора модели'}
@@ -260,7 +287,7 @@ def freeze(name, smoke, seed=1000, sim_model_hash=None, *, selected_ids=None, mi
         plan.update(task_variant='rosmaster_floor_cube_pilot', split_rule='series purpose, grouped by lineage; diagnostics for development only')
     if cotrain_sim:
         if domain!='real' or smoke:raise ValueError('Совместное обучение — для основного обучения на настоящих показах')
-        extra,info=cotraining_episodes(name,sum(e['frames'] for e in splits['train']),float(cotrain_sim))
+        extra,info=cotraining_episodes(name,sum(e['frames'] for e in splits['train']),float(cotrain_sim), holdouts=splits['validation']+splits['test'])
         splits['train']=splits['train']+extra
         plan['cotraining']=info
     blob = json.dumps(plan, sort_keys=True, ensure_ascii=False, indent=2)

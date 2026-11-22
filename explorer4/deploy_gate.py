@@ -294,8 +294,8 @@ def run(job_id,out_dir=None,*,development_plan_id=None):
     try:
         identity = bundle_identity(job['checkpoint'])
         checks['bundle'] = {'status':'pass','message':'Weights, configuration and both processor pipelines hashed'}
-        core = PolicyCore(job['checkpoint'],'cuda')
         cfg = json.loads(job['config'])
+        core = PolicyCore(job['checkpoint'],cfg.get('device','cuda'))
         frozen = datasets.load_plan(cfg['plan_id'],verify=False)['profile_contract'] if cfg.get('plan_id') else None
         checks['contract'] = check_contract(core,real,job_id,frozen)
         if not frozen or not scope['scene'] or frozen['task']!=scope['instruction'] or profile(scope['scene']).get('task_template'):

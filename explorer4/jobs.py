@@ -69,6 +69,12 @@ class Jobs:
             if source is None:raise ValueError('Нет завершённого обучения MuJoCo для этой задачи и модели')
             cfg.update(initial_checkpoint=source['checkpoint'],initial_from_job=source['id'],
                        steps=int(TRAINING[policy].get('finetune_steps',TRAINING[policy].get('steps',20000)//2)))
+        from .floor_development_gate import PROFILE as floor_profile, BOUNDARIES
+        if name == floor_profile and not smoke and not from_sim and policy in ('act','diffusion') and cfg['steps']>=BOUNDARIES[0]:
+            from .training_drafts import prepare
+            draft,_=prepare(name,policy,plan_id=plan_id,steps=cfg['steps'],batch=cfg['batch_size'],
+                            train_seed=cfg['seed'],device=cfg['device'],floor_development=True)
+            return self.start_prepared_training(draft)
         return self._insert(name,policy,cfg)
 
     def enqueue_simlab_pipeline(self, robot, action, policy=None):
@@ -241,7 +247,7 @@ class Jobs:
         count = 3 if config.get('smoke') else 20
         seeds = list(range(10000, 10000 + count))
         return self._insert(source['profile'],source['policy'],{'kind':'sim_evaluate','profile':target,
-            'source_job':job_id,'checkpoint':source['checkpoint'],'device':'cuda',
+            'source_job':job_id,'checkpoint':source['checkpoint'],'device':config.get('device','cuda'),
             'expected_model_hash':model,'episodes':count,'scene_seeds':seeds,
             'protocol':protocol(target,seeds,geometry,source['checkpoint'])})
 
@@ -322,9 +328,12 @@ class Jobs:
         return self._insert(source['profile'],'act',{'kind':'support_calibration','source_job':job_id,
             'profile':source['profile'],'device':'cpu'})
 
-    def sim_align(self):
-        """Fit the MuJoCo scenes of blocks 3/4 to the recorded real demonstrations (scripts/sim_align.py)."""
-        return self._insert('sim_alignment','sim_align',{'kind':'sim_align','device':'cpu'})
+    def sim_align(self, plan_id):
+        from .datasets import load_plan, SIM_FOR_REAL
+        plan = load_plan(plan_id, verify=False)
+        if plan['domain'] != 'real' or plan['profile'] not in SIM_FOR_REAL or plan.get('smoke') or not all(plan['splits'].values()):
+            raise ValueError('Нужен физический план захвата или передачи с независимыми частями')
+        return self._insert('sim_alignment','sim_align',{'kind':'sim_align','device':'cpu','plan_id':plan_id})
 
     def help_experiment(self, rooms=30):
         """M0/M2/M3 help comparison in the virtual room (scripts/swarm_help_experiment.py)."""
@@ -341,7 +350,7 @@ class Jobs:
                                                      for j in catalog.rows('jobs')):
             try:self.sim_evaluate(job_id)
             except ValueError:pass
-        return self._insert(source['profile'],source['policy'],{'kind':'deploy_gate','source_job':job_id,'device':'cuda','development_plan_id':development_plan_id})
+        return self._insert(source['profile'],source['policy'],{'kind':'deploy_gate','source_job':job_id,'device':json.loads(source['config']).get('device','cuda'),'development_plan_id':development_plan_id})
 
     def evaluate(self, job_id, partition="validation"):
         if partition not in {"validation","test"}:raise ValueError("Unknown evaluation split")
@@ -352,7 +361,7 @@ class Jobs:
         if cfg.get('kind', 'train') != 'train':
             raise ValueError('Выберите задание обучения')
         return self._insert(source['profile'], source['policy'],
-            {'kind': 'evaluate', 'source_job': job_id, 'checkpoint': source['checkpoint'], 'partition':partition})
+            {'kind': 'evaluate', 'source_job': job_id, 'checkpoint': source['checkpoint'], 'partition':partition,'device':cfg.get('device','cuda')})
 
     def benchmark(self, job_id):
         source=self.get(job_id)

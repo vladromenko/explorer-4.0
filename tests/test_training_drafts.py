@@ -131,3 +131,46 @@ def test_double_submission_of_prepared_plan_queues_one_job(tmp_path,monkeypatch)
     assert jobs.process is None and jobs.thread is None
     with catalog.connect() as db:db.execute("UPDATE jobs SET status='completed' WHERE id=?",(ids[0],))
     assert jobs.start_prepared_training('d'*64)!=ids[0]
+
+
+def test_comparison_reuses_one_partition_for_two_optimizer_seeds_and_legacy_drafts(tmp_path, monkeypatch):
+    monkeypatch.setattr(drafts,'DATA',tmp_path)
+    fixture=plan([episode('a')],[episode('b')],[episode('c')])
+    fixture.update(domain='real',profile='so101_pick_place',sim_model_hash=None,seed=17)
+    plan_id=drafts.save_content(tmp_path/'plans',fixture)
+    original=(tmp_path/'plans'/(plan_id+'.json')).read_bytes()
+    monkeypatch.setattr(drafts.datasets,'load_plan',lambda ident:fixture if ident==plan_id else None)
+    frozen=[]
+    def freeze(*args,**kwargs):
+        frozen.append(kwargs['seed'])
+        return plan_id,fixture
+    monkeypatch.setattr(drafts.datasets,'freeze',freeze)
+    params={'steps':100,'batch':1,'device':'cpu'}
+    first_id,first=drafts.prepare('so101_pick_place','act',['a','b','c'],**params,split_seed=17,train_seed=818)
+    second_id,second=drafts.prepare('so101_pick_place','diffusion',None,**params,train_seed=819,plan_id=plan_id)
+    assert first_id!=second_id and frozen==[17]
+    assert first['plan_id']==second['plan_id']==plan_id and first['split_seed']==second['split_seed']==17
+    assert second['train_seed']==second['seed']==819
+    with pytest.raises(ValueError,match='Frozen plan'):
+        drafts.prepare('so101_pick_place','act',None,**params,plan_id=plan_id,split_seed=818)
+    legacy={k:v for k,v in first.items() if k not in ('split_seed','train_seed')}
+    legacy['version']=1
+    old_id=drafts.save_content(tmp_path/'training-drafts',legacy)
+    assert drafts.load(old_id)==legacy and (tmp_path/'plans'/(plan_id+'.json')).read_bytes()==original
+
+
+def test_confirmation_seals_processor_identity_and_reads_old_seal_without_rewriting(tmp_path,monkeypatch):
+    from contextlib import nullcontext
+    from explorer4 import fleet_config,sim_protocol,training
+    monkeypatch.setattr(fleet_config,'locked',nullcontext)
+    identity={'checkpoint_sha256':'a'*64,'checkpoint_bundle_sha256':'b'*64}
+    monkeypatch.setattr(sim_protocol,'bundle_identity',lambda _:identity.copy())
+    cp=tmp_path/'weights'; cp.mkdir()
+    assert training.bind_test_checkpoint(tmp_path,cp)=='bundle'
+    identity['checkpoint_bundle_sha256']='c'*64
+    with pytest.raises(ValueError,match='processors'):
+        training.bind_test_checkpoint(tmp_path,cp)
+    legacy=json.dumps({'checkpoint':str(cp),'sha256':identity['checkpoint_sha256']})
+    seal=tmp_path/'frozen-test-checkpoint.json'
+    seal.write_text(legacy)
+    assert training.bind_test_checkpoint(tmp_path,cp)=='legacy_weights_only' and seal.read_text()==legacy
