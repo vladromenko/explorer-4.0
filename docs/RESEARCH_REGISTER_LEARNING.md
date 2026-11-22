@@ -1,5 +1,7 @@
 # Learning from demonstrations and public model weights
 
+The strongest clue about the remaining simulated grasp failures is the initial cube position. All 11 fresh starts within the convex hull of the 32 training positions produced terminal holds with each of four controllers. Of nine outside starts, the action-chunking transformer held four, diffusion held seven, radial basis interpolation held nine and inverse kinematics held seven. At seed 940218 the camera differed from the reset centre by only 1.41 mm, but the nearest movement demonstration started 18.65 mm away. Both learned policies failed there while both geometric methods held the cube. On the native command path in simulation the interpolator lost terminal hold in three of 20 scenes, including two which rose above 50 mm. Coverage motivates a separate controlled comparison of broadened simulated starts at a fixed demonstration budget. The existing deployment protocol uses measured physical points and independently verified end-of-trial retention. [Initial-distribution experiments in MimicGen](https://proceedings.mlr.press/v229/mandlekar23a.html) · [Map of the 20 starts and outcomes](results/conditioned_grasp_v1/fresh-coverage.png) · [Joined trial data](results/conditioned_grasp_v1/fresh-coverage.json) · [Code](../scripts/grasp_study/fresh_coverage.py)
+
 ## What the two arms actually inherited
 
 | Source and original action representation | Explorer implementation and evidence |

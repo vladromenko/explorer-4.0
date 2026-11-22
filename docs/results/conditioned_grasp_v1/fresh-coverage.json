@@ -1,0 +1,1847 @@
+{
+  "scope": "Retrospective description of all 20 already published seeded scenes. Seven executor/method combinations share those 20 inputs. No inferential tests, fitted thresholds, scene exclusions or new rollouts.",
+  "reference": "https://proceedings.mlr.press/v229/mandlekar23a.html",
+  "reference_connection": "MimicGen evaluates changes to the initial object-pose distribution. Explorer describes geometric support of its own 32 motor demonstrations without running MimicGen or generating additional demonstrations.",
+  "definitions": "Euclidean distances in base-frame XY. Reset truth is the archived cube centre immediately before the fixed camera-look motion. Input is the single wrist-localizer prediction used by every planner. Cartesian discrepancy is relative to the archived reset, not independent calibrated camera truth or measured TCP-at-contact error. Terminal hold is the published one-second success.",
+  "source_sha256": {
+    "fresh.json": "5014cb5236318350bd52688756db8f5c3ffb8e4a9db7cba347b2df1481e46f64",
+    "native-execution.json": "f84e03b40c47ec250247bc013973527b0ce6aa64422dc268162b0a16580c66cf",
+    "motor.npz": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c"
+  },
+  "motor_data": "data/motor.npz in the published simulation-grasp-bundle.zip",
+  "training_xy_m": [
+    [
+      0.17949435802517963,
+      -0.014512112442276237
+    ],
+    [
+      0.1752034520326518,
+      0.00030022587413913726
+    ],
+    [
+      0.1867512016294332,
+      0.0461514024976548
+    ],
+    [
+      0.20834085932414403,
+      -0.013394947558914294
+    ],
+    [
+      0.2360972006780564,
+      -0.030659539517231583
+    ],
+    [
+      0.1875340245515311,
+      0.017889956635776597
+    ],
+    [
+      0.1769089291932372,
+      0.01446074814857945
+    ],
+    [
+      0.1960006695981603,
+      -0.01906751558057003
+    ],
+    [
+      0.23585142026440603,
+      -0.024138522883616675
+    ],
+    [
+      0.22802449861365778,
+      0.014251421468774964
+    ],
+    [
+      0.20974464198372364,
+      0.0045157519424746315
+    ],
+    [
+      0.24474530610219447,
+      -0.024534018053230466
+    ],
+    [
+      0.17832616511113789,
+      0.037337827988602273
+    ],
+    [
+      0.20602718546243848,
+      0.04428247787555849
+    ],
+    [
+      0.17728667228078915,
+      0.04043283539939245
+    ],
+    [
+      0.19838602524037846,
+      -0.010756409476422313
+    ],
+    [
+      0.24278764681312331,
+      0.04298580470755679
+    ],
+    [
+      0.18706222397791092,
+      0.018548742844869043
+    ],
+    [
+      0.18124843782808384,
+      0.0293849623876965
+    ],
+    [
+      0.17718786899742447,
+      0.03151825919767896
+    ],
+    [
+      0.23690729279864364,
+      0.021058944230815155
+    ],
+    [
+      0.24953067458130881,
+      0.026586995433144814
+    ],
+    [
+      0.23483475121885394,
+      -0.0028386174535487627
+    ],
+    [
+      0.23642301726345782,
+      0.032155049499930546
+    ],
+    [
+      0.1995980727141794,
+      0.020152635471098593
+    ],
+    [
+      0.17268615222882308,
+      0.019054290714708627
+    ],
+    [
+      0.22296015846265077,
+      -0.008325639714451473
+    ],
+    [
+      0.21255974968439253,
+      -0.027994791232719075
+    ],
+    [
+      0.17640453649329926,
+      -0.020055076077057355
+    ],
+    [
+      0.18838665631822427,
+      0.01287685747830912
+    ],
+    [
+      0.22488778031428217,
+      -0.014589982132320024
+    ],
+    [
+      0.22607327146913153,
+      -0.04504001105277873
+    ]
+  ],
+  "physical_trials": 0,
+  "new_rollouts": 0,
+  "optimizer_updates": 0,
+  "support_matrix": {
+    "reset_True_input_True": 11,
+    "reset_True_input_False": 0,
+    "reset_False_input_True": 4,
+    "reset_False_input_False": 5
+  },
+  "by_executor": {
+    "mujoco": {
+      "act": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 11
+          },
+          "outside": {
+            "n": 9,
+            "holds": 4
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 14
+          },
+          "outside": {
+            "n": 5,
+            "holds": 1
+          }
+        },
+        "success": {
+          "n": 15,
+          "median": {
+            "reset_to_nearest_train_mm": 7.557614076278566,
+            "input_to_nearest_train_mm": 5.422593995808178,
+            "input_to_reset_xy_error_mm": 3.8183732760942166
+          },
+          "bilateral_contact": 15,
+          "ever_held": 15,
+          "peak_lift_over_50mm": 15
+        },
+        "failure": {
+          "n": 5,
+          "median": {
+            "reset_to_nearest_train_mm": 13.558693205864454,
+            "input_to_nearest_train_mm": 10.838398391885148,
+            "input_to_reset_xy_error_mm": 6.599460988402994
+          },
+          "bilateral_contact": 4,
+          "ever_held": 0,
+          "peak_lift_over_50mm": 0
+        }
+      },
+      "diffusion": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 11
+          },
+          "outside": {
+            "n": 9,
+            "holds": 7
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 15
+          },
+          "outside": {
+            "n": 5,
+            "holds": 3
+          }
+        },
+        "success": {
+          "n": 18,
+          "median": {
+            "reset_to_nearest_train_mm": 7.671783721789308,
+            "input_to_nearest_train_mm": 6.959481323819608,
+            "input_to_reset_xy_error_mm": 4.2407606877960315
+          },
+          "bilateral_contact": 18,
+          "ever_held": 18,
+          "peak_lift_over_50mm": 18
+        },
+        "failure": {
+          "n": 2,
+          "median": {
+            "reset_to_nearest_train_mm": 19.508794086194033,
+            "input_to_nearest_train_mm": 16.896296100516174,
+            "input_to_reset_xy_error_mm": 4.005704143501662
+          },
+          "bilateral_contact": 2,
+          "ever_held": 0,
+          "peak_lift_over_50mm": 0
+        }
+      },
+      "rbf": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 11
+          },
+          "outside": {
+            "n": 9,
+            "holds": 9
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 15
+          },
+          "outside": {
+            "n": 5,
+            "holds": 5
+          }
+        },
+        "success": {
+          "n": 20,
+          "median": {
+            "reset_to_nearest_train_mm": 7.791475639934491,
+            "input_to_nearest_train_mm": 7.790915471401404,
+            "input_to_reset_xy_error_mm": 4.2407606877960315
+          },
+          "bilateral_contact": 20,
+          "ever_held": 20,
+          "peak_lift_over_50mm": 20
+        },
+        "failure": {
+          "n": 0,
+          "median": {
+            "reset_to_nearest_train_mm": null,
+            "input_to_nearest_train_mm": null,
+            "input_to_reset_xy_error_mm": null
+          },
+          "bilateral_contact": 0,
+          "ever_held": 0,
+          "peak_lift_over_50mm": 0
+        }
+      },
+      "ik": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 11
+          },
+          "outside": {
+            "n": 9,
+            "holds": 7
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 13
+          },
+          "outside": {
+            "n": 5,
+            "holds": 5
+          }
+        },
+        "success": {
+          "n": 18,
+          "median": {
+            "reset_to_nearest_train_mm": 7.9302885246298285,
+            "input_to_nearest_train_mm": 6.959481323819608,
+            "input_to_reset_xy_error_mm": 3.9451651422557816
+          },
+          "bilateral_contact": 18,
+          "ever_held": 18,
+          "peak_lift_over_50mm": 18
+        },
+        "failure": {
+          "n": 2,
+          "median": {
+            "reset_to_nearest_train_mm": 5.472587133645629,
+            "input_to_nearest_train_mm": 8.110231830564851,
+            "input_to_reset_xy_error_mm": 13.422219180886849
+          },
+          "bilateral_contact": 2,
+          "ever_held": 1,
+          "peak_lift_over_50mm": 1
+        }
+      }
+    },
+    "native_in_mujoco": {
+      "rbf": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 10
+          },
+          "outside": {
+            "n": 9,
+            "holds": 7
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 12
+          },
+          "outside": {
+            "n": 5,
+            "holds": 5
+          }
+        },
+        "success": {
+          "n": 17,
+          "median": {
+            "reset_to_nearest_train_mm": 8.063579136690725,
+            "input_to_nearest_train_mm": 8.22986715279044,
+            "input_to_reset_xy_error_mm": 3.8183732760942166
+          },
+          "bilateral_contact": 17,
+          "ever_held": 17,
+          "peak_lift_over_50mm": 17
+        },
+        "failure": {
+          "n": 3,
+          "median": {
+            "reset_to_nearest_train_mm": 6.509037547405644,
+            "input_to_nearest_train_mm": 4.072280114499826,
+            "input_to_reset_xy_error_mm": 5.260893000751756
+          },
+          "bilateral_contact": 3,
+          "ever_held": 2,
+          "peak_lift_over_50mm": 2
+        }
+      },
+      "act": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 10
+          },
+          "outside": {
+            "n": 9,
+            "holds": 4
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 13
+          },
+          "outside": {
+            "n": 5,
+            "holds": 1
+          }
+        },
+        "success": {
+          "n": 14,
+          "median": {
+            "reset_to_nearest_train_mm": 7.465496709817096,
+            "input_to_nearest_train_mm": 5.032005947057012,
+            "input_to_reset_xy_error_mm": 3.750851249368379
+          },
+          "bilateral_contact": 14,
+          "ever_held": 14,
+          "peak_lift_over_50mm": 14
+        },
+        "failure": {
+          "n": 6,
+          "median": {
+            "reset_to_nearest_train_mm": 13.209397245891292,
+            "input_to_nearest_train_mm": 10.96946977915126,
+            "input_to_reset_xy_error_mm": 5.785402568507573
+          },
+          "bilateral_contact": 6,
+          "ever_held": 0,
+          "peak_lift_over_50mm": 0
+        }
+      },
+      "diffusion": {
+        "reset_in_train_hull": {
+          "inside": {
+            "n": 11,
+            "holds": 11
+          },
+          "outside": {
+            "n": 9,
+            "holds": 6
+          }
+        },
+        "input_in_train_hull": {
+          "inside": {
+            "n": 15,
+            "holds": 14
+          },
+          "outside": {
+            "n": 5,
+            "holds": 3
+          }
+        },
+        "success": {
+          "n": 17,
+          "median": {
+            "reset_to_nearest_train_mm": 7.78595336730005,
+            "input_to_nearest_train_mm": 6.327728213175669,
+            "input_to_reset_xy_error_mm": 4.071957008417346
+          },
+          "bilateral_contact": 17,
+          "ever_held": 17,
+          "peak_lift_over_50mm": 17
+        },
+        "failure": {
+          "n": 3,
+          "median": {
+            "reset_to_nearest_train_mm": 18.647056002710872,
+            "input_to_nearest_train_mm": 13.79015685891728,
+            "input_to_reset_xy_error_mm": 6.599460988402994
+          },
+          "bilateral_contact": 3,
+          "ever_held": 0,
+          "peak_lift_over_50mm": 0
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "seed": 940200,
+      "reset_xy_m": [
+        0.23264233427488162,
+        -0.01389143885526252
+      ],
+      "input_xy_m": [
+        0.22810548543930054,
+        -0.016315637156367302
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 7.78595336730005,
+      "input_to_nearest_train_mm": 3.651234247975485,
+      "input_to_reset_xy_error_mm": 5.143902677927798,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23898147627736394,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23904255941040548,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23933922378042422,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23942224209879703,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24200608511937166,
+          "max_stable_carry_s": 0.05
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24200964103385214,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2420927405570839,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940201,
+      "reset_xy_m": [
+        0.17418870379583856,
+        0.02627668281132349
+      ],
+      "input_xy_m": [
+        0.1786920428276062,
+        0.027907496318221092
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 6.038966378479282,
+      "input_to_nearest_train_mm": 2.9526363448481354,
+      "input_to_reset_xy_error_mm": 4.78953182778041,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23481833110183348,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23309917328535495,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23268003441003687,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23128831802027106,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2312410610674675,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23529921809350168,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23576343691891838,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940202,
+      "reset_xy_m": [
+        0.22265369187812686,
+        0.007035557450311633
+      ],
+      "input_xy_m": [
+        0.22187840938568115,
+        0.005383078474551439
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 8.995235323401943,
+      "input_to_nearest_train_mm": 10.789898992179856,
+      "input_to_reset_xy_error_mm": 1.82530811328452,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2413413345541654,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2385873487555164,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23940438823555932,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23846601906328968,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2415078940156999,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24581963052138428,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24161600857029714,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940203,
+      "reset_xy_m": [
+        0.2404653849397756,
+        -0.04275504162916319
+      ],
+      "input_xy_m": [
+        0.23424631357192993,
+        -0.03802167624235153
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": false,
+      "reset_to_nearest_train_mm": 12.860101285918132,
+      "input_to_nearest_train_mm": 7.591234434463546,
+      "input_to_reset_xy_error_mm": 7.815471614907471,
+      "mujoco": {
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0009538413676999924,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.22942097890442847,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23482223702431726,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2326825711046916,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2516346717831269,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00023748712193332605,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23519317170153659,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940204,
+      "reset_xy_m": [
+        0.2049677817006446,
+        -0.00944078169012641
+      ],
+      "input_xy_m": [
+        0.20548966526985168,
+        -0.013223322108387947
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 5.19741092968793,
+      "input_to_nearest_train_mm": 2.8563548152322427,
+      "input_to_reset_xy_error_mm": 3.8183732760942166,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23956271730406398,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2384822782514448,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23872246837974448,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2380890789771083,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.240997402943808,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24302560436845566,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24055154206299767,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940205,
+      "reset_xy_m": [
+        0.1822543085791014,
+        -0.030724450474617727
+      ],
+      "input_xy_m": [
+        0.17930206656455994,
+        -0.0318429134786129
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": false,
+      "reset_to_nearest_train_mm": 12.167801095150542,
+      "input_to_nearest_train_mm": 12.138731034147337,
+      "input_to_reset_xy_error_mm": 3.157006874197426,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.240990989908215,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2404313275690696,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23865744902038333,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2370870457361393,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24059372815415603,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24367572701624185,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2437388719249155,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940206,
+      "reset_xy_m": [
+        0.23136245632453956,
+        -0.03655018688681706
+      ],
+      "input_xy_m": [
+        0.2341618686914444,
+        -0.03572501242160797
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 7.557614076278566,
+      "input_to_nearest_train_mm": 5.422593995808178,
+      "input_to_reset_xy_error_mm": 2.9184966160701427,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23714908688862157,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23730466013751872,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23717922423141286,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23727570976336104,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2380050072527818,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24039699317287677,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24001286168544733,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940207,
+      "reset_xy_m": [
+        0.23288927969904044,
+        -0.02892339297832912
+      ],
+      "input_xy_m": [
+        0.23147642612457275,
+        -0.0310968067497015
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 3.6475967173131516,
+      "input_to_nearest_train_mm": 4.641417898305845,
+      "input_to_reset_xy_error_mm": 2.592273643826443,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2374352166592611,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2375128990112081,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2382057416995068,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2383162358709744,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24098336728225112,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23899241352837197,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24131171932255574,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940208,
+      "reset_xy_m": [
+        0.21387687610589684,
+        0.010622417489282554
+      ],
+      "input_xy_m": [
+        0.21360868215560913,
+        0.012982584536075592
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 7.373379343355625,
+      "input_to_nearest_train_mm": 9.306882432802533,
+      "input_to_reset_xy_error_mm": 2.375356075147197,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24118471229887195,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23832558482321098,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24070980299065098,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23847310855233655,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24379542009977817,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2441805258246082,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24122792902034357,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940209,
+      "reset_xy_m": [
+        0.18494825013057173,
+        -0.008940017921241439
+      ],
+      "input_xy_m": [
+        0.18120568990707397,
+        -0.010544410906732082
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 7.796997912568933,
+      "input_to_nearest_train_mm": 4.32103139136335,
+      "input_to_reset_xy_error_mm": 4.071957008417346,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23496018311558925,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24215766771140051,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23556717718039039,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23816228346564272,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23463479436454804,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23486792997021516,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.243823574478164,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940210,
+      "reset_xy_m": [
+        0.18422103889469665,
+        -0.00797913483237922
+      ],
+      "input_xy_m": [
+        0.18825969099998474,
+        -0.00620895205065608
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 8.063579136690725,
+      "input_to_nearest_train_mm": 11.10054116641737,
+      "input_to_reset_xy_error_mm": 4.409564367174718,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2305096398400167,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23024396192588298,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2295031733355093,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23483883360953584,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23114024450514625,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23070439152060485,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940211,
+      "reset_xy_m": [
+        0.17157096622204807,
+        0.0028466657091401476
+      ],
+      "input_xy_m": [
+        0.18161484599113464,
+        0.005460142623633146
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 4.436136719885614,
+      "input_to_nearest_train_mm": 8.22986715279044,
+      "input_to_reset_xy_error_mm": 10.378332351512668,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.22984463331678784,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23685360061816996,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23218571530477056,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.22963899102503593,
+          "max_stable_carry_s": 0.05
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23257081879820152,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23410739615839676,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23934433022841756,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940212,
+      "reset_xy_m": [
+        0.17701926952762348,
+        0.046936377938742516
+      ],
+      "input_xy_m": [
+        0.187559574842453,
+        0.03428589925169945
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 6.509037547405644,
+      "input_to_nearest_train_mm": 7.990596508339262,
+      "input_to_reset_xy_error_mm": 16.46610601026103,
+      "mujoco": {
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23530970364283016,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2287238674494927,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0053544540913695905,
+          "max_stable_carry_s": 0.0
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.006431418176122576,
+          "max_stable_carry_s": 0.0
+        },
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940213,
+      "reset_xy_m": [
+        0.24253882882199518,
+        -0.027954232412551107
+      ],
+      "input_xy_m": [
+        0.2410058230161667,
+        -0.022921649739146233
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 4.070185284693901,
+      "input_to_nearest_train_mm": 4.072280114499826,
+      "input_to_reset_xy_error_mm": 5.260893000751756,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23772961046103164,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23705757428710234,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23876968334521115,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23871626336270246,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2417198827274346,
+          "max_stable_carry_s": 0.05
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23932517946423776,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23346982601978483,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940214,
+      "reset_xy_m": [
+        0.1889681363068221,
+        -0.03818562365595431
+      ],
+      "input_xy_m": [
+        0.19162926077842712,
+        -0.032146476209163666
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": false,
+      "reset_to_nearest_train_mm": 20.370532169677194,
+      "input_to_nearest_train_mm": 13.79015685891728,
+      "input_to_reset_xy_error_mm": 6.599460988402994,
+      "mujoco": {
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004762054837209616,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004956147469555944,
+          "max_stable_carry_s": 0.0
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24066339228885186,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2372749476701408,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24452718753090474,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004754748642647848,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.005774192859897696,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940215,
+      "reset_xy_m": [
+        0.21130610559363355,
+        -0.04149540373528576
+      ],
+      "input_xy_m": [
+        0.20796728134155273,
+        -0.03781212866306305
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": false,
+      "reset_to_nearest_train_mm": 13.558693205864454,
+      "input_to_nearest_train_mm": 10.838398391885148,
+      "input_to_reset_xy_error_mm": 4.971344148612151,
+      "mujoco": {
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0025147418524196635,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24752629805491672,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2427596469151434,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2400132764921275,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24213157195896456,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.005391901334784861,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2520571264700576,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940216,
+      "reset_xy_m": [
+        0.20460450349096587,
+        -0.0227354031428768
+      ],
+      "input_xy_m": [
+        0.20410765707492828,
+        -0.018098153173923492
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 9.35303997771392,
+      "input_to_nearest_train_mm": 6.327728213175669,
+      "input_to_reset_xy_error_mm": 4.663790693811937,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24101536336456358,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2379294721902946,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24023915628099335,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23891331038748342,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24567583411011024,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24696675258091505,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24114970584674567,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940217,
+      "reset_xy_m": [
+        0.1915491293565838,
+        -0.005862961448807415
+      ],
+      "input_xy_m": [
+        0.1936221867799759,
+        -0.0028184012044221163
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 8.407673811751765,
+      "input_to_nearest_train_mm": 9.257760647324723,
+      "input_to_reset_xy_error_mm": 3.683329222642542,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23354109122040695,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23207726348102137,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23513703279633397,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2370244393782136,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23741675912821364,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23066442035974238,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23246394060499714,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "seed": 940218,
+      "reset_xy_m": [
+        0.19521074603227842,
+        -0.0376978327632779
+      ],
+      "input_xy_m": [
+        0.19556289911270142,
+        -0.0390651598572731
+      ],
+      "reset_in_train_hull": false,
+      "input_in_train_hull": false,
+      "reset_to_nearest_train_mm": 18.647056002710872,
+      "input_to_nearest_train_mm": 20.00243534211507,
+      "input_to_reset_xy_error_mm": 1.4119472986003299,
+      "mujoco": {
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004617250819777572,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004672696849621981,
+          "max_stable_carry_s": 0.0
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24268274232835413,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2382025701821901,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24570850913044712,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00491525739712511,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00968030630568377,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940219,
+      "reset_xy_m": [
+        0.1766125685964202,
+        -0.017668453664068287
+      ],
+      "input_xy_m": [
+        0.1777935028076172,
+        -0.01999611407518387
+      ],
+      "reset_in_train_hull": true,
+      "input_in_train_hull": true,
+      "reset_to_nearest_train_mm": 2.3956719095299084,
+      "input_to_nearest_train_mm": 1.3902172276212261,
+      "input_to_reset_xy_error_mm": 2.6100974312562037,
+      "mujoco": {
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2392600572248813,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23850004722273643,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2367417917558824,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23780942421173246,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      },
+      "native_in_mujoco": {
+        "rbf": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2391207014374866,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24177732414067976,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23969578957193993,
+          "max_stable_carry_s": 1.0000000000000002
+        }
+      }
+    }
+  ]
+}
