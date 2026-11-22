@@ -1,0 +1,1084 @@
+{
+  "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+  "status": "completed",
+  "replay_scenes": 20,
+  "terminal_hold": {
+    "positives": 10,
+    "negatives": 10,
+    "auc": 0.55,
+    "sensitivity": 1.0,
+    "specificity": 0.0,
+    "positive_median_residual_deg": 71.0,
+    "negative_median_residual_deg": 71.0,
+    "true_positive": 10,
+    "false_positive": 10
+  },
+  "bilateral_pre_lift_label": {
+    "positives": 20,
+    "negatives": 0,
+    "auc": null
+  },
+  "eligible_for_heldout_intervention": false,
+  "physical_observability": {
+    "role": "original human training only",
+    "episodes": [
+      {
+        "episode": "5f7b11c3f7024539942456435c9617af",
+        "frames": 736,
+        "valid_jaw_pairs": 736,
+        "median_age_s": 0.012780541999973138
+      },
+      {
+        "episode": "f83324dba752428a897a2e9350361258",
+        "frames": 475,
+        "valid_jaw_pairs": 475,
+        "median_age_s": 0.011255090999839013
+      },
+      {
+        "episode": "ab54d8081544414e9efc9c9c841a5b51",
+        "frames": 485,
+        "valid_jaw_pairs": 485,
+        "median_age_s": 0.012447730000076263
+      },
+      {
+        "episode": "8916e6e31f1b48d8b83723fc45e3e188",
+        "frames": 287,
+        "valid_jaw_pairs": 287,
+        "median_age_s": 0.011620603000210394
+      },
+      {
+        "episode": "1368258df03840edb97865f060e48369",
+        "frames": 626,
+        "valid_jaw_pairs": 626,
+        "median_age_s": 0.012164430999973774
+      }
+    ],
+    "unique_jaw_degrees": 267,
+    "smallest_observed_positive_increment_deg": 0.08181799999999839,
+    "validated_contact_or_force_labels": 0
+  },
+  "rows": [
+    {
+      "seed": 975000,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "8dc2f915ad737e350b49095ad65cd05687540a4b9743dda3f7bd521bbb3a0141",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75625610351562,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75635528564453,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75643157958984,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75648498535156,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75652313232422,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24356842041016,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975001,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "2184a919ade23700ac1b3cc05e19f2df701ae11dce135900ab5b39c745d4c70d",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75617980957031,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75626373291016,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75634002685547,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75641632080078,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75648498535156,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24365997314453,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975002,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "0f1d7663db65a2fb77550de529576e0f08407b497be184601ef7ba394a3e7493",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75585174560547,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.755859375,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75586700439453,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75587463378906,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75587463378906,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24413299560547,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975003,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "e1808b6bf4029cea2444478599d65fde13a12aba89f27a8350416e0b9cdbeeae",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75607299804688,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7562255859375,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75635528564453,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75646209716797,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75654602050781,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24364471435547,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975004,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "16d6c876e3251146312550442ff6b0c639839e7e3c759508b2d9e8ad7d95888d",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75585174560547,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75582122802734,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75579833984375,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75577545166016,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75575256347656,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24420166015625,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975005,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "de90753c32a07e74bb95094ee4b6e3fab61030ff025f7f9255f9af34c8743c71",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75484466552734,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75508117675781,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75529479980469,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75550079345703,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75568389892578,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24470520019531,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975006,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "fca7807a05da1f2c12b27fa62cabd5b331fab5cd5a9c0acbee090b23040902fd",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75599670410156,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75598907470703,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75597381591797,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75596618652344,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7559585571289,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24402618408203,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975007,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "bdc35140322034e5df44c9c3b7defc4bc417d3ecac8702831eaa844e682055c7",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7818832397461,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.78284454345703,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.78372955322266,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.78455352783203,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.78522491455078,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.21627044677734,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975008,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "2e9024c22d0752c4750724e302316af68516eed566572e497a7ba85d2f0c2235",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75582122802734,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75598907470703,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75613403320312,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75626373291016,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75636291503906,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24386596679688,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975009,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "13a1730db052486c66773d439395beaed41752961e8de9d6bffc9663278ba98b",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75678253173828,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75676727294922,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75675201416016,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75672149658203,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75668334960938,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24324798583984,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975010,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "1c268242d804b46056e4171c704f3d5895c4e4f9f99e8c9e85fc5c4c4f3b0586",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75653076171875,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7565689086914,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75659942626953,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75660705566406,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75659942626953,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24340057373047,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975011,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "fda9e5c5a2c8538afdb3810428ace539def08ff9c4804f2cc90b88fea27276db",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75603485107422,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75597381591797,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75592041015625,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75587463378906,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7558364868164,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24407958984375,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975012,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "8addb2b476c9845d11a7459b30dc7859f21890dc26aeeeff5d1d4364b531612a",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7559585571289,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75590515136719,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.755859375,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75581359863281,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75578308105469,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.244140625,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975013,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "3bbb318513b923b293815a710aefe4d5a740855341bedd63ef4d71dd28ab62b8",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75643920898438,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75650024414062,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75653839111328,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75656127929688,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75656127929688,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24346160888672,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975014,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "26f1894679c2e32a1fdb14475b5b3baaf7256b4b2c287b307e33c8bb2ad76396",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 134.0,
+          "sim_measured_deg": 134.4944610595703,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 137.0,
+          "sim_measured_deg": 137.40269470214844,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 140.0,
+          "sim_measured_deg": 140.34739685058594,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 143.0,
+          "sim_measured_deg": 143.47531127929688,
+          "bilateral_contact_label": false,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 146.0,
+          "sim_measured_deg": 146.30941772460938,
+          "bilateral_contact_label": false,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 8.0,
+      "sim_unrounded_score_deg": 7.5055389404296875,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975015,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "343c6c419c4bed8d18220e356b0df93d0a6e110fdffae5e7fae0697a7dc97fdb",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75691223144531,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75691223144531,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75690460205078,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75688171386719,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75685119628906,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24309539794922,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975016,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "be52c06fddd6d12cec919b83cacdf4d8d425d2c3e1a9afaa491c9f7cc9f2b591",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75650024414062,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75640869140625,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7563705444336,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75633239746094,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75630187988281,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.2436294555664,
+      "native_hold": false,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975017,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "5d21e6d0a5d7469829c29ee64bb213bffcc8dda768204db8940d960db17c7bc3",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75596618652344,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75595092773438,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75594329833984,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75593566894531,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75592803955078,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24405670166016,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975018,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "a10d3b440beea7eb05752e723aea32fcecead1dea9c7c807af42e068cdcab305",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75638580322266,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75627136230469,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75623321533203,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.7562026977539,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75617980957031,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24376678466797,
+      "native_hold": true,
+      "bilateral_contact": true
+    },
+    {
+      "seed": 975019,
+      "protocol_sha256": "195d605e9a9f2ca31032da7501168e8d8c3c0c7ceeaa9f9b76a452e356e36122",
+      "original_plan_sha256": "8fb1be9122a25f034aedd2a61ae1d891814ed7e30e19a2bde716b014e512a66e",
+      "trace": [
+        {
+          "tick": 126,
+          "sent_deg": 142.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75684356689453,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 127,
+          "sent_deg": 145.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75682067871094,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 128,
+          "sent_deg": 148.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75679016113281,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 129,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75674438476562,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        },
+        {
+          "tick": 130,
+          "sent_deg": 150.0,
+          "native_measured_deg": 77.0,
+          "sim_measured_deg": 76.75668334960938,
+          "bilateral_contact_label": true,
+          "either_contact_label": true
+        }
+      ],
+      "score_deg": 71.0,
+      "sim_unrounded_score_deg": 71.24320983886719,
+      "native_hold": true,
+      "bilateral_contact": true
+    }
+  ],
+  "physical_trials": 0,
+  "new_weights": 0
+}

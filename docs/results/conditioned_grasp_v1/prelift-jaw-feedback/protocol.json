@@ -1,0 +1,48 @@
+{
+  "method": "farthest_first",
+  "version": 1,
+  "archive_sha256": "74ba35588231a5e55934e283c847bd19b4ef7e19e5b940d8d88cf381eff5cccd",
+  "motor_bank_sha256": "360177826f744cc54938ac62fe0d6b22d3fea6ad216df4242fef31f269025a2b",
+  "source_sha256": {
+    "scripts/grasp_study/jaw_feedback.py": "418e0b7504a2930962e87144c9c35a3808b1ac7c48dc92d1227d08a47c07c857",
+    "scripts/grasp_study/coverage_design.py": "36835c1d4d22f88de7434ce1ad5180b16f905ab8eda22a22055f9fbd1c209e63",
+    "scripts/grasp_study/native_execution.py": "e2da69b8481420a3b480cf2bef23adf1cfcc22d776b2607f285a69ccbab78282",
+    "scripts/grasp_study/evaluate.py": "31469393b999c7ffdc3a88f15077a85b365d3776b84c6391963731a023c16935",
+    "agents/rosmaster/runtime.py": "51057bfbb8ad7b7cfcb98988bbb4c7e64f9d90204be62e1824ff516cb5fd8ce7"
+  },
+  "seeds": [
+    975000,
+    975001,
+    975002,
+    975003,
+    975004,
+    975005,
+    975006,
+    975007,
+    975008,
+    975009,
+    975010,
+    975011,
+    975012,
+    975013,
+    975014,
+    975015,
+    975016,
+    975017,
+    975018,
+    975019
+  ],
+  "first_lift_tick": 131,
+  "observe_after_motor_ticks": [
+    126,
+    127,
+    128,
+    129,
+    130
+  ],
+  "primary": "Median of the last five signed sent-minus-measured gripper angles in native whole degrees, immediately before the first planned lift command. Larger positive residual predicts an obstructed closure and eventual terminal hold. Compare ten successes with ten failures on the previously opened coverage scenes. One observation per scene; no threshold or window search.",
+  "technical_gate": "Proceed to an intervention only if the prespecified score has AUC >=0.75 and a fixed >=1 degree obstruction test reaches sensitivity and specificity >=0.70 for eventual native hold. Both label classes required. Do not change scoring direction if the result is weak or reversed.",
+  "diagnostics": "Report native jaw residual against any simultaneous bilateral cube contact in the last five ticks. MuJoCo contacts are labels only. Unrounded simulated angles are descriptive. Verify every original terminal and native-guard metric. Count timestamped sent commands and measured readbacks in the five original real training takes only; human recordings supply no matched force or miss labels.",
+  "source": "https://people.csail.mit.edu/kjhsiao/webpagefiles/papers/contactreactive.pdf",
+  "scope": "Post-hoc question prompted by the published 20 outcomes. Signal and gate fixed before replay of the missing jaw traces. No policy change or new holdout at the diagnostic stage."
+}
