@@ -1,0 +1,30 @@
+{
+  "selection": "Lowest original test seed rescued by the unconditional return.",
+  "seed": 985303,
+  "source_sha256": "7ab49a2bee5d062bf998ecd4e74c502be8c97014497982c3762df0558b370921",
+  "original_record_sha256": "2d2811199a055fd4ab39adddef5eeca3627631e0947ca31163276e336dd8fa1c",
+  "decision_sha256": "00a9fe1f1652470a4a88da44b7fd82f10794e28fcd50cc77771163ec6f57fbd0",
+  "result_sha256": "9b9fe07743c051a11cf72605b66781b64a8ef3ae78ec1f4dbcde0d02348e0c2f",
+  "branches": {
+    "stale": {
+      "frames": 121,
+      "outcome": "failure",
+      "steps": 500,
+      "elapsed_sim_s": 24.999999999987086,
+      "reason": "task_deadline"
+    },
+    "return_to_look": {
+      "frames": 99,
+      "outcome": "success",
+      "steps": 412,
+      "elapsed_sim_s": 20.59999999999734,
+      "reason": "held_in_carry_pose"
+    }
+  },
+  "rgb_and_physics_at_both_monitor_times_verified": true,
+  "score_and_all_terminal_fields_match": true,
+  "fps": 5,
+  "video_frames": 121,
+  "video_sha256": "969e22735cd530248d6d63a54f725c1f7189c4f7767792b6cb554eb8767df4b6",
+  "camera": "Independent operator overview; each policy input came from the lossless recorded wrist exposures."
+}
