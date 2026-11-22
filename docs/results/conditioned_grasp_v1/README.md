@@ -20,7 +20,7 @@ On the fresh block, the Diffusion planner made bilateral finger contact in all 2
 
 ## Reproduction on Homebrain
 
-Use the project learning and MuJoCo environments. The [protocol](../../../scripts/grasp_study/protocol.json) declares scene order, observations, controls and fixed training budgets. The [job entry point](../../../scripts/grasp_study/run.py) resolves each stage's interpreter and writes optimizer, decoder, environment, model-byte and RGB hashes. The operator can start the independently identified seed-1001 job from the workspace when ready. The command below targets its own result directories. An interrupted run resumes verified checkpoints and completed trials. A negative development screen completes the job before either confirmation block opens.
+Use the project learning and MuJoCo environments. The [protocol](../../../scripts/grasp_study/protocol.json) declares scene order, observations, controls and fixed training budgets. The [job entry point](../../../scripts/grasp_study/run.py) resolves each stage's interpreter and writes optimizer, decoder, environment, model-byte and RGB hashes. The independently identified seed-1001 job completed on 23 November. On the same 20 fresh scenes ACT held 19 cubes and Diffusion held 16. [Paired outcomes for both optimizer seeds](optimizer-seed-1001.json). The command below targets its own result directories. An interrupted run resumes verified checkpoints and completed trials. A negative development screen completes the job before either confirmation block opens.
 
 ```sh
 study_data="${EXPLORER4_DATA:-$HOME/.local/share/explorer3}"

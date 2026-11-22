@@ -1,4 +1,4 @@
-"""Render the first prespecified fresh scene and verify the saved terminal outcome."""
+"""Render the first prespecified scene in a scored block and verify its terminal outcome."""
 
 import argparse
 import json
@@ -20,9 +20,9 @@ from scripts.grasp_study.evaluate import (
 )
 
 
-def render(report, architecture):
-    seed = seed_range("fresh")[0]
-    row = json.loads((report / "fresh" / f"{seed}.json").read_text())
+def render(report, architecture, block="fresh"):
+    seed = seed_range(block)[0]
+    row = json.loads((report / block / f"{seed}.json").read_text())
     expected = row["arms"][architecture]
     destination = report / f"{architecture}-{seed}.mp4"
     temporary = destination.with_suffix(".tmp.mp4")
@@ -37,7 +37,7 @@ def render(report, architecture):
         camera.lookat[:] = [0.05, 0, 0.13]
         camera.distance = 0.7
         camera.azimuth, camera.elevation = 135, -25
-        with np.load(report / "fresh/plans.npz", allow_pickle=False) as plans:
+        with np.load(report / block / "plans.npz", allow_pickle=False) as plans:
             trajectory = plans[f"{seed}_{architecture}"]
         with av.open(str(temporary), "w", options={"movflags": "+faststart"}) as movie:
             stream = movie.add_stream("libx264", rate=10)
@@ -93,5 +93,6 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--report-dir", type=Path, default=OUTPUT)
     p.add_argument("--architecture", choices=("act", "diffusion"), default="diffusion")
+    p.add_argument("--block", choices=("development", "fresh", "historical_confirmation"), default="fresh")
     args = p.parse_args()
-    render(args.report_dir, args.architecture)
+    render(args.report_dir, args.architecture, args.block)
