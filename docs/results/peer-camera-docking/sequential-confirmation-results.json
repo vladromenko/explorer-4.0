@@ -1,0 +1,209 @@
+{
+  "status": "completed",
+  "scope": "Post hoc shared-first-image technical recovery in held-out MuJoCo; original preregistered strict image pairing completed for 15/16.",
+  "protocol_sha256": "0924e1390458cd0b639d827b108cb38ffef494964fd01d2747c37e1257d58a46",
+  "original_protocol_sha256": "7c2228938b4ec9d86a161e3f316340a1048ba2d48d5ad6f923562cb691ec714f",
+  "original_strict_scenes": 15,
+  "shared_first_image_seeds": [
+    863015
+  ],
+  "model_sha256": "c596f9f844a6c11916a3f04f318fede7c1283fb0d1966cec68c4c47ecef69f24",
+  "primary_evidence_sha256": "dde1c37eafbfa3c02c7e602de60a097f5cbf68594d3ae073ce2d3d59bbd05ff6",
+  "original_registration_sha256": "a7ea000c9f5ef883e751fc465dd6acd480df951d206ab5f26c16a07a49914497",
+  "original_strict_report": "shared-initial-v1/original-strict.json",
+  "methods": {
+    "learned": {
+      "scenes": 16,
+      "successes": 16,
+      "calls": 14,
+      "mean_seconds": 10.581250000001473,
+      "mean_sensing_s": 2.625000000001635,
+      "mean_decision_frames": 1.875,
+      "mean_utility": 0.8595937499999926
+    },
+    "local_scan": {
+      "scenes": 16,
+      "successes": 8,
+      "calls": 0,
+      "mean_seconds": 5.659374999999667,
+      "mean_sensing_s": 1.8499999999999768,
+      "mean_decision_frames": 10.25,
+      "mean_utility": 0.47170312500000167
+    },
+    "immediate_peer": {
+      "scenes": 16,
+      "successes": 16,
+      "calls": 16,
+      "mean_seconds": 10.953125000001895,
+      "mean_sensing_s": 3.0000000000018945,
+      "mean_decision_frames": 2,
+      "mean_utility": 0.8452343749999904
+    },
+    "sequential": {
+      "scenes": 16,
+      "successes": 16,
+      "calls": 8,
+      "mean_seconds": 10.909375000002086,
+      "mean_sensing_s": 3.350000000002396,
+      "mean_decision_frames": 10.75,
+      "mean_utility": 0.8954531249999895
+    }
+  },
+  "paired": {
+    "learned_minus_local_scan": {
+      "discordant_wins": 8,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 0.0078125,
+      "mean_delta_success": 0.5,
+      "mean_delta_calls": 0.875,
+      "mean_delta_seconds": 4.921875000001807,
+      "mean_delta_sensing_s": 0.7750000000016585,
+      "mean_delta_decision_frames": -8.375,
+      "mean_delta_utility": 0.3878906249999909
+    },
+    "learned_minus_immediate_peer": {
+      "discordant_wins": 0,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 1.0,
+      "mean_delta_success": 0,
+      "mean_delta_calls": -0.125,
+      "mean_delta_seconds": -0.3718750000004212,
+      "mean_delta_sensing_s": -0.3750000000002593,
+      "mean_delta_decision_frames": -0.125,
+      "mean_delta_utility": 0.014359375000002117
+    },
+    "learned_minus_sequential": {
+      "discordant_wins": 0,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 1.0,
+      "mean_delta_success": 0,
+      "mean_delta_calls": 0.375,
+      "mean_delta_seconds": -0.32812500000061195,
+      "mean_delta_sensing_s": -0.7250000000007606,
+      "mean_delta_decision_frames": -8.875,
+      "mean_delta_utility": -0.035859374999996974
+    },
+    "local_scan_minus_immediate_peer": {
+      "discordant_wins": 0,
+      "discordant_losses": 8,
+      "exact_two_sided_p": 0.0078125,
+      "mean_delta_success": -0.5,
+      "mean_delta_calls": -1,
+      "mean_delta_seconds": -5.293750000002229,
+      "mean_delta_sensing_s": -1.1500000000019177,
+      "mean_delta_decision_frames": 8.25,
+      "mean_delta_utility": -0.37353124999998877
+    },
+    "local_scan_minus_sequential": {
+      "discordant_wins": 0,
+      "discordant_losses": 8,
+      "exact_two_sided_p": 0.0078125,
+      "mean_delta_success": -0.5,
+      "mean_delta_calls": -0.5,
+      "mean_delta_seconds": -5.250000000002419,
+      "mean_delta_sensing_s": -1.500000000002419,
+      "mean_delta_decision_frames": -0.5,
+      "mean_delta_utility": -0.42374999999998786
+    },
+    "immediate_peer_minus_sequential": {
+      "discordant_wins": 0,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 1.0,
+      "mean_delta_success": 0,
+      "mean_delta_calls": 0.5,
+      "mean_delta_seconds": 0.04374999999980922,
+      "mean_delta_sensing_s": -0.3500000000005013,
+      "mean_delta_decision_frames": -8.75,
+      "mean_delta_utility": -0.05021874999999909
+    }
+  },
+  "training_updates_in_confirmation": 0,
+  "physical_robot_commands": 0,
+  "original_strict": {
+    "matched_seeds": 15,
+    "counts": {
+      "learned": {
+        "scenes": 15,
+        "successes": 15,
+        "calls": 13,
+        "mean_seconds": 10.40666666666793,
+        "mean_sensing_s": 2.600000000001435,
+        "mean_decision_frames": 1.8666666666666667,
+        "mean_utility": 0.8612999999999936
+      },
+      "local_scan": {
+        "scenes": 15,
+        "successes": 7,
+        "calls": 0,
+        "mean_seconds": 5.359999999999584,
+        "mean_sensing_s": 1.8399999999999144,
+        "mean_decision_frames": 10.2,
+        "mean_utility": 0.4398666666666688
+      },
+      "immediate_peer": {
+        "scenes": 15,
+        "successes": 15,
+        "calls": 15,
+        "mean_seconds": 10.803333333335045,
+        "mean_sensing_s": 3.0000000000017115,
+        "mean_decision_frames": 2,
+        "mean_utility": 0.8459833333333248
+      },
+      "sequential": {
+        "scenes": 15,
+        "successes": 15,
+        "calls": 8,
+        "mean_seconds": 10.960000000002164,
+        "mean_sensing_s": 3.440000000002495,
+        "mean_decision_frames": 10.733333333333333,
+        "mean_utility": 0.8918666666666558
+      }
+    },
+    "pixel_mismatch": [
+      {
+        "seed": 863015,
+        "primary_png_sha256": "cb9cedc0b76502d3eeb84e61b3ad1a3465192d9e7be60aa7d7287fb2c4cc3e09",
+        "original_sequential_png_sha256": "4052d470ca20eb7c7f057cc4fa4e322ae2a4bd3f142700d3ca5196e4b9201c3f",
+        "original_sequential_result_sha256": "579a86a402be53b2d07c27a98a49d7c90eded909fc4b3ca4f5b7f72c35d1237c",
+        "initial_state_sha256": "2c151115df9f78698d1a57d45ceae7ac513f3efe221cc479b09c5772568e00fb",
+        "image_shape": [
+          400,
+          640,
+          3
+        ],
+        "pixels_different": 5,
+        "channels_different": 5,
+        "maximum_channel_difference": 1,
+        "absolute_difference_sum": 5
+      }
+    ]
+  },
+  "full_result": "http://192.168.0.168:8030/simlab-media/reports/peer-sequential-confirmation/7c2228938b4ec9d86a161e3f316340a1048ba2d48d5ad6f923562cb691ec714f/summary.json",
+  "full_result_sha256": "a0052c27684a007bb53d024fd666881eb44e7ec56f83df7c9f8d8eff7310df7e",
+  "shared_input_proof": {
+    "seed": 863015,
+    "initial_state_sha256": "2c151115df9f78698d1a57d45ceae7ac513f3efe221cc479b09c5772568e00fb",
+    "png_sha256": "cb9cedc0b76502d3eeb84e61b3ad1a3465192d9e7be60aa7d7287fb2c4cc3e09",
+    "delivery_time_s": 0.0,
+    "substitution_count": 1,
+    "detector_matches_original": true
+  },
+  "seeds": [
+    863000,
+    863001,
+    863002,
+    863003,
+    863004,
+    863005,
+    863006,
+    863007,
+    863008,
+    863009,
+    863010,
+    863011,
+    863012,
+    863013,
+    863014,
+    863015
+  ]
+}

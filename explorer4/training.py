@@ -103,6 +103,8 @@ def run_job(path: Path):
         if attached:
             command = (['explorer4.peer_primary_recovery', work.name, '--confirmation'] if partial_confirmation(cfg)
                        else ['explorer4.peer_confirmation', 'resume', work.name])
+            if cfg.get('peer_frame_repair'):
+                command = ['explorer4.peer_camera_recovery', 'run', work.name]
             subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', *command], cwd=ROOT,
                            env={**offline_environment(), 'MUJOCO_GL':'egl', 'OMP_NUM_THREADS':'1'}, check=True)
         return
