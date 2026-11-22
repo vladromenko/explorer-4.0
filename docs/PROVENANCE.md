@@ -2,7 +2,7 @@
 
 Only the low-level SO-101 I /O of `/home/jetsonnx/Projects/so101_ai_learning/src/so101_lab/hardware.py` is copied.
 SHA256 Source: `c1bb47ffe68f994717a28d25a8bde2670dbc999c20429311d31ad7f630486075`.
-Copy: explorer3 /hardware.py. The source is stored locally outside Git.
+Explorer’s hardware adapter is in [hardware.py](../explorer4/hardware.py). The source is stored locally outside Git.
 Authorship: existing user project so101_ai_learning; no separate licence detected; public distribution is not permitted by this document.
 Changes: own data catalogue/calibration, wrist-only, own resource release./UI/trainer/No data were copied.
 Original unchanged. This is a copy of the I /O service used; the physical functionality of the copy has been checked at stage B (three present displays; previous controls have been restored).
@@ -10,7 +10,7 @@ LeRobot is installed from PyPI as a topstream dependency, Apache 2.0; not copied
 Calibration: own files outside Git, robot ID and motors retained, hashs and sources in local calibration /manifest.json.
 PyTorch /torchvision: New installations of the same versions 2.11.0+cu130 /0.26.0 +cu130, without modification of the system CUDA.
 
-Public SmolVLA base: revision 5e8d12a6e2975b0e5e5e5fc7c8caf47c371d257b6.
+Public SmolVLA base: revision 5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6.
 SmolVLM2-500M-Video-Instruct: revision 7b375e1b73b11138ff12fe22c8f2822d8fe03467.
 The ones taken from the standard local Hub Cash (not from old projects) are developed by the regular files in their own cache.
 Heshes of all snapshot files and ResNet18 are stored in local cache /manifest.json.

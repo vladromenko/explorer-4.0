@@ -2,6 +2,8 @@
 
 Explorer runs on Homebrain, a Jetson Orin NX workstation. An operator can record a demonstration, turn it into a LeRobot dataset, train a policy and replay it on controlled MuJoCo scenes. The research question is practical: **when a robot struggles to pick up an object, does it need a better estimate of the object's position, information about its shape, or more examples of the movement?**
 
+The research register traces the fleet’s controllers, pretrained policies and assistance mechanisms to their primary sources. It includes the measured results, known gaps, and the acceptance test for each proposed change. [Research register](docs/RESEARCH_REGISTER.md) · [Read on Homebrain](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/index.html)
+
 ## How the fleet works
 
 | Component | Role in a pick-and-carry task |
@@ -34,7 +36,7 @@ The first two experiments link to evidence in Git. The November 22 trajectory, a
 
 | Path | Contents |
 | --- | --- |
-| [`explorer3/`](explorer3/) | Main Python application. `app.py` serves the NiceGUI/FastAPI interface. `recording.py`, `datasets.py`, `training.py` and `evaluation.py` implement the recording-to-evaluation workflow. |
+| [`explorer4/`](explorer4/) | Main Python application. `app.py` serves the NiceGUI/FastAPI interface. `recording.py`, `datasets.py`, `training.py` and `evaluation.py` implement the recording-to-evaluation workflow. |
 | [`explorer4/sim/`](explorer4/sim/) · [`explorer4/simlab/`](explorer4/simlab/) | MuJoCo environments, robot models, scripted teachers and policy replay. SimLab also contains docking scenarios, system identification and PPO experiments. |
 | [`explorer4/cognitive/`](explorer4/cognitive/) | Records observations, decisions and requests for assistance so that an intervention can be traced to a task outcome. |
 | [`agents/`](agents/) | Robot-side adapters for ROSMASTER and Tank, Homebrain service definitions and the ROS 2 observation bridge. |

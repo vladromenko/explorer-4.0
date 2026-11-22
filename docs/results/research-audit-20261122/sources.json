@@ -1,0 +1,43 @@
+{
+  "recorded-start": {
+    "source": "http://192.168.0.168:8030/simlab-media/reports/recorded-start-night/control-comparison.json",
+    "sha256": "4a24a8abeae91406e067dde1629f8998059db45a492dd053aea7e20cf3280b2a",
+    "protocol_sha256": "3f10eec098dac5902646bcaa545a5dc00f3fbfc6c3894276cbe6806a69ba4ec9",
+    "expected_scenes_sha256": "ae57c934a577cb0185c2d7f933668a1613e7b5aa12c9676afd209536e7d5f5ed",
+    "model_hash": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "weights": {
+      "before": "64d381fc43cbafd044d8966ff27bdbb27d908df399ada47d2fa1901027e48ff7",
+      "after": "cc1ba441676c76c8728e234695c6403fc0e6ffe79eb664a3c98361991dc5de79",
+      "control": "4beac0dccf9fe091cd093e42226f9d5dea4e2b80e51c88539e3e9185baa74593"
+    },
+    "baseline_reset_vectors_recorded": false
+  },
+  "motor-library": {
+    "source": "http://192.168.0.168:8030/simlab-media/reports/article-20261122/learned-motor-results.json",
+    "sha256": "16ec62c55919d76ebe32e3515dfede131f9e4e59963f33307af9012f1604f82a",
+    "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+    "vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+    "model_hash": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc"
+  },
+  "before-grasp-help": {
+    "source": "http://192.168.0.168:8030/simlab-media/reports/article-20261122/before-grasp-help.json",
+    "sha256": "7914764d67571bf9187a4ca5e00bdde9335ddda2ec9aed70a3e70adb933a9e5a",
+    "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+    "visual_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+    "physics": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc"
+  },
+  "human-prefix": {
+    "source": "http://192.168.0.168:8030/simlab-media/reports/article-20261122/human11-results.json",
+    "sha256": "a2a3c2555449d8909f730ed25c3f039eb02e1acf157329f83478526d23b45914",
+    "weights": {
+      "T0": "259d22d84ba8d81ec569359b62ed43e130f7d20eb8e73311dd974a51bcfe54d3",
+      "T1": "8edc3cf98e217b304ad682ba39329d6cb7f8c801da7f0f55adfbb8ab7a3de23f",
+      "visual": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8"
+    },
+    "model_hash": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc"
+  },
+  "field-missions": {
+    "source_pattern": "$EXPLORER4_DATA/episodes/*-fleet-*/episode.json",
+    "summary": "One row per historical fleet log. The final column hashes the original JSON bytes. These are operator or controller outcomes in unmatched field sessions."
+  }
+}

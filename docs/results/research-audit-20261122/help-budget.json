@@ -1,0 +1,20 @@
+{
+  "scenes": 40,
+  "budget": 26,
+  "local_holds": 36,
+  "selected_holds": 38,
+  "improved": 3,
+  "harmed": 2,
+  "tied": 35,
+  "assignments": 23206929840,
+  "assignments_by_holds": {
+    "34": 417225900,
+    "35": 2870514192,
+    "36": 7002976260,
+    "37": 7877408388,
+    "38": 4204353300,
+    "39": 834451800
+  },
+  "uniform_expected_holds": 36.65,
+  "uniform_fraction_at_least_selected": 0.2171250197565987
+}

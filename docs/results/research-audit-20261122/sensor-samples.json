@@ -1,0 +1,194 @@
+[
+  {
+    "time": "2026-11-22T21:10:12.005+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": 207.235,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.614,
+        "rgb": 0.617,
+        "imu": 0.606,
+        "scan": 0.626
+      },
+      "rosmaster": {
+        "scan": 0.47,
+        "scan_rear": 0.53,
+        "imu": 0.41,
+        "depth": 0.482,
+        "rgb": 0.454
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:13.025+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": 153.202,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.208,
+        "rgb": 0.215,
+        "imu": 0.117,
+        "scan": 0.148
+      },
+      "rosmaster": {
+        "scan": 0.511,
+        "scan_rear": 0.569,
+        "imu": 0.432,
+        "depth": 0.438,
+        "rgb": 0.466
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:13.839+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": 308.237,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.532,
+        "rgb": 0.535,
+        "imu": 0.434,
+        "scan": 0.468
+      },
+      "rosmaster": {
+        "scan": 0.344,
+        "scan_rear": 0.244,
+        "imu": 0.244,
+        "depth": 0.251,
+        "rgb": 0.265
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:14.886+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": 194.089,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.492,
+        "rgb": 0.585,
+        "imu": 0.471,
+        "scan": 0.519
+      },
+      "rosmaster": {
+        "scan": 0.405,
+        "scan_rear": 0.29,
+        "imu": 0.286,
+        "depth": 0.298,
+        "rgb": 0.305
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:15.904+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": 254.544,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.597,
+        "rgb": 0.52,
+        "imu": 0.496,
+        "scan": 0.543
+      },
+      "rosmaster": {
+        "scan": 0.447,
+        "scan_rear": 0.33,
+        "imu": 0.308,
+        "depth": 0.381,
+        "rgb": 0.314
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:16.925+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": null,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.702,
+        "rgb": 0.952,
+        "imu": 0.513,
+        "scan": 0.566
+      },
+      "rosmaster": {
+        "scan": 0.49,
+        "scan_rear": 0.369,
+        "imu": 0.33,
+        "depth": 0.337,
+        "rgb": 0.394
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:17.944+03:00",
+    "map": false,
+    "paired": true,
+    "skew_ms": 81.704,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.549,
+        "rgb": 0.552,
+        "imu": 0.527,
+        "scan": 0.59
+      },
+      "rosmaster": {
+        "scan": 0.351,
+        "scan_rear": 0.407,
+        "imu": 0.348,
+        "depth": 0.421,
+        "rgb": 0.671
+      }
+    }
+  },
+  {
+    "time": "2026-11-22T21:10:18.962+03:00",
+    "map": false,
+    "paired": false,
+    "skew_ms": 110.964,
+    "read_only": true,
+    "domains": 73,
+    "commands": 0,
+    "ages": {
+      "tank": {
+        "depth": 0.823,
+        "rgb": 0.566,
+        "imu": 0.559,
+        "scan": 0.611
+      },
+      "rosmaster": {
+        "scan": 0.405,
+        "scan_rear": 0.426,
+        "imu": 0.366,
+        "depth": 0.441,
+        "rgb": 0.544
+      }
+    }
+  }
+]

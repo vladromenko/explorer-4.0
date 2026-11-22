@@ -1,0 +1,11 @@
+{
+  "checkpoint": "Piersondong/act_so101_wrist_v1",
+  "weights_sha256": "0ef9bd3e05ed7c3ec5d13b5177e48241b38415387fddbcfdedefbde0b16441f7",
+  "lerobot": "0.6.1",
+  "device": "cpu",
+  "scope": "Synthetic 640 x 480 RGB frame and six zero state values. No hardware or training.",
+  "loaded": true,
+  "output_channels": 6,
+  "all_finite": true,
+  "wall_time_s": 13.83
+}
