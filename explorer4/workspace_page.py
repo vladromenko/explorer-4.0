@@ -143,7 +143,14 @@ def methods():
                           "failed": "сбой", "interrupted": "прервано", "cancelled": "отменено"}
                 state = states.get(current["status"], current["status"])
                 ui.link(f"SmolVLA на 32 показах · {current['steps']} шагов · {state}", "/jobs/" + current["id"])
-                evidence_link("Исходы на восьми стартовых сценах", REPORT + f"smolvla-recorded-start/{current['id']}/result.json")
+                path = REPORT + f"smolvla-recorded-start/{current['id']}/result.json"
+                scores = read(MEDIA / path).get("results", {})
+                if scores:
+                    initial = scores["smolvla_0_updates"]
+                    trained = scores["smolvla_finetuned"]
+                    ui.label(f"Удержания на восьми сценах · исходные веса {initial['task_successes']}/{initial['scenes']}, "
+                             f"после обучения {trained['task_successes']}/{trained['scenes']}.")
+                evidence_link("Исходы на восьми стартовых сценах", path)
         with ui.element("section").classes("work-box"):
             ui.label("SAM 3 · зрение по готовым весам").classes("work-name")
             report = read(MEDIA / (sam_path + "result.json"))
@@ -188,6 +195,14 @@ def methods():
                 ui.label("В архивной серии положение цели поступало от имитированного датчика с шумом.").classes("work-muted")
                 evidence_link("PPO · исходы и ошибки положения", archived_ppo)
                 evidence_link("PPO и геометрическое управление по одной камере", REPORT + "tank-ppo-camera-v1/result.json")
+                nav = REPORT + "tank-nav2-camera-v1/"
+                controllers = read(MEDIA / (nav + "result.json")).get("methods", {})
+                if controllers:
+                    classic, learned = controllers["nav2_memory"], controllers["ppo_memory"]
+                    ui.label(f"На новых стартах с сохранением положения цели · "
+                             f"Nav2 {classic['success']}/{classic['scenes']}, PPO {learned['success']}/{learned['scenes']}.")
+                    evidence_link("Сравнение штатного регулятора Nav2 и PPO", nav + "result.json")
+                    evidence_link("Видео подъезда на первой общей сцене", nav + "comparison.mp4")
             ui.label("Управление по показам и обратной связи").classes("work-name")
             ui.label("LeRobot ACT и Diffusion обучены на показах ROSMASTER. Внешнюю ACT для SO-101 проверяли по ранее записанным действиям оператора.")
             with ui.row().classes("work-links"):
@@ -351,6 +366,15 @@ def results():
             ui.link("Общая сцена MuJoCo", "/sim/fleet")
             ui.link("Запуск агента помощи", "/team")
             ui.link("Заказ для трёх роботов", "/team/three")
+            confirmation = REPORT + "research-register-20261122/evidence/peer-camera-docking/sequential-confirmation-results.json"
+            confirmed = read(MEDIA / confirmation).get("methods", {})
+            if confirmed:
+                ui.label("Ширма · проверка на 16 общих сценах").classes("work-name")
+                for key, label in (("local_scan", "Только локальный поиск"), ("immediate_peer", "Сразу звать напарника"),
+                                   ("learned", "Обученный выбор"), ("sequential", "Осмотр, затем запрос")):
+                    row = confirmed[key]
+                    ui.label(f"{label} · {row['successes']}/{row['scenes']} стыковок, запросов {row['calls']}")
+                evidence_link("Методы, исходные сцены и восстановление кадра", confirmation)
             ui.link(
                 "Доставка в 96 комнатах · журнал и парные исходы",
                 "/simlab-media/reports/room-study-e1/index.html",
