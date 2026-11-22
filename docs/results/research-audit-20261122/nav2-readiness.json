@@ -21,6 +21,22 @@
       "explorer-map-20261030.yaml": "bab2052f08c2244f12763eca3c26ef31ecfc4b6af6d22bcc1ddc4a42b0fa97ef",
       "explorer-map-20261030.pgm": "afde1bffc610fa3304319f32bee1ed93eb856bd9c9e007aeef14e0d256a93b87"
     },
+    "terminal_controller_regression": {
+      "kind": "Offline final-approach fixture at the returned route endpoint with imposed obstruction for over three seconds and zero yaw error.",
+      "new_source_sha256": "e54b0b5a71a3b93a1daf645f706a64efab241cc839e08bde6c37ac519c1d1230",
+      "updated": {
+        "controller_state": "blocked",
+        "final_tolerance_m": 0.06,
+        "motor_commands_sent": 0
+      },
+      "previous_commit": "2bcfc2b50f34f6b5177b1aa5dd3eb6a2b1cd8f07",
+      "previous_source_sha256": "84208da6a6d94c5ff0a0438668acb9692b03b46992c736b8aa7a0a1cd48dd48f",
+      "previous": {
+        "controller_state": "arrived",
+        "final_tolerance_m": 0.17811388300841893,
+        "motor_commands_sent": 0
+      }
+    },
     "start_m": [
       0.0,
       0.0
@@ -73,22 +89,7 @@
       "terminal_waypoint_error_m": 0.15811388300841894,
       "terminal_within_8cm_dock_tolerance": false
     },
-    "scope": "Planner-only historical NavFn and current Explorer A* on the same provisional map and requested pose. Cell-centre sampling and planner tolerances differ. No drive, localization or route-time comparison.",
-    "terminal_controller_regression": {
-      "kind": "offline state-machine fixture, measured archive-map endpoint, imposed obstacle for over three seconds, zero yaw error; no robot motion or physical endpoint",
-      "previous_source_sha256": "84208da6a6d94c5ff0a0438668acb9692b03b46992c736b8aa7a0a1cd48dd48f",
-      "new_source_sha256": "cd0fafa36f4c9e65094453114495c8268aa007c97187a20bbd87f80061f62ad8",
-      "previous": {
-        "controller_state": "arrived",
-        "final_tolerance_m": 0.17811388300841893,
-        "motor_commands_sent": 0
-      },
-      "updated": {
-        "controller_state": "blocked",
-        "final_tolerance_m": 0.06,
-        "motor_commands_sent": 0
-      }
-    }
+    "scope": "Planner-only historical NavFn and current Explorer A* on the same provisional map and requested pose. Cell-centre sampling and planner tolerances differ. No drive, localization or route-time comparison."
   },
   "mode": "Ephemeral ROS graph discovery, five seconds per view; only scan, odometry and TF subscriptions.",
   "motion_commands_sent": 0,

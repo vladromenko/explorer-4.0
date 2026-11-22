@@ -11,8 +11,8 @@ from .sim_pages import STYLE
 
 def install(css,jobs):
     @ui.page('/sim/training')
-    async def page(acquisition: str = '', profile: str = ''):
-        await builder_page('sim', acquisition, profile)
+    async def page(acquisition: str = '', profile: str = '', draft: str = ''):
+        await builder_page('sim', acquisition, profile, draft)
 
     @ui.page('/training/prepare')
     async def real_page():
@@ -34,7 +34,7 @@ def install(css,jobs):
         text=(ROOT/'docs'/filename).read_text().replace('(PHYSICAL_ACCEPTANCE.md)','(/datasets/acceptance)').replace('(DATASET_GUIDE.md)','(/datasets/guide)')
         ui.markdown(text).classes('w-full dataset-guide')
 
-    async def builder_page(domain, acquisition_id=None, preferred_profile=''):
+    async def builder_page(domain, acquisition_id=None, preferred_profile='', requested_draft=''):
         ui.add_css(css+STYLE);ui.dark_mode().enable();ui.colors(primary='#2b9c8f',secondary='#748aa4',negative='#d45050')
         draft_id=None;preparing=False;loading=False;starting=False;selection_generation=0
         def refresh():
@@ -145,7 +145,9 @@ def install(css,jobs):
                 finally:
                     if generation==selection_generation:
                         loading=False;start_button.set_enabled(draft_id is not None)
-        history=ui.select(saved(),label='Открыть подготовленный план',on_change=open_saved).classes('w-full')
+        saved_drafts=saved()
+        history=ui.select(saved_drafts,value=requested_draft if requested_draft in saved_drafts else None,
+                          label='Открыть подготовленный план',on_change=open_saved).classes('w-full')
         def another():
             nonlocal draft_id,loading,selection_generation
             if preparing or starting:return
@@ -168,12 +170,30 @@ def install(css,jobs):
                 for task in catalog.rows('jobs'):
                     if json.loads(task['config']).get('draft_id')==draft_id:ui.link(task['status']+' · '+task['id'][:8],'/jobs/'+task['id'])
             with summary:
-                ui.label('Готовый план · '+draft_id[:8]).classes('sim-title')
-                ui.label(draft['policy'].upper()+' · '+names.get(draft['profile'],draft['profile'])+' · '+str(draft['steps'])+' обновлений · пакет '+str(draft['batch_size'])+' · '+draft['device'])
+                if domain=='sim':
+                    ui.link('Готовый план · '+draft_id[:8],'/sim/training?draft='+draft_id).classes('sim-title')
+                else:
+                    ui.label('Готовый план · '+draft_id[:8]).classes('sim-title')
+                ui.label(draft['policy'].upper()+' · '+names.get(draft['profile'],draft['profile'])+' · '+str(draft['steps'])+' обновлений · пакет '+str(draft['batch_size'])+' · seed '+str(draft['seed'])+' · '+draft['device'])
                 ui.table(columns=[{'name':'part','label':'Часть данных','field':'part'},
                     {'name':'episodes','label':'Записей','field':'episodes'},{'name':'frames','label':'Кадров','field':'frames'}],
                     rows=[{'part':{'train':'Обучение','validation':'Проверка при обучении','test':'Итоговая проверка'}[role],
-                        'episodes':count,'frames':draft['frames'][role]} for role,count in draft['split_counts'].items()],row_key='part').classes('w-full')
+                        'episodes':draft['split_counts'][role],'frames':draft['frames'][role]}
+                        for role in ('train','validation','test')],row_key='part').classes('w-full')
+                gate=draft.get('floor_development_gate')
+                if gate:
+                    def spaced(number):
+                        return f'{number:,}'.replace(',',' ')
+                    milestones=' и '.join(spaced(step) for step in gate['checkpoints'])
+                    ui.label(f"Сохранение каждые {spaced(draft['checkpoint_interval'])} обновлений. "
+                             f"После {milestones} обновлений — проверка на одних и тех же {len(gate['ordered_seeds'])} сценах MuJoCo. "
+                             f"Если в обеих сериях нет удержаний и ни одного подъёма хотя бы на {gate['lift_cm']:g} см, обучение остановится. "
+                             "Последние веса сохранятся.").classes('sim-status')
                 mix=draft['mixture'];ui.label(f"Обучающие кадры: {mix['old_train_frames']} прежних + {mix['new_train_frames']} новых. Нормировка только по обучающей части.")
                 ui.button('Скачать план',icon='download',on_click=lambda:ui.download.file(DATA/'training-drafts'/(draft_id+'.json'))).props('outline')
             start_button.enable()
+        if requested_draft:
+            if history.value:
+                ui.timer(0.01,open_saved,once=True)
+            else:
+                status.set_text('Сохранённый симуляционный план по этой ссылке не найден.')

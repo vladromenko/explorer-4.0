@@ -132,6 +132,42 @@ def probe():
         rclpy.shutdown()
 
 
+def compare_final_approach(route, goal_xy):
+    """Exercise the previous and current position-verdict logic, with no device transport."""
+    import types
+    from unittest.mock import patch
+    from explorer4 import drive, navigation
+    from explorer4.paths import ROOT
+
+    def run(module):
+        current = [(0.,0.,0.)]
+        fleet = types.SimpleNamespace(grid=None,track={},scan=lambda _:[])
+        with (patch.object(module,"FLEET",fleet), patch.object(module,"pose_now",side_effect=lambda *args:current[0]),
+              patch.object(navigation,"plan",side_effect=lambda *a,**kw:list(route)),
+              patch.object(navigation,"guard",return_value=(0.,0.,"synthetic fixed obstacle"))):
+            trial = module.DriveTo("tank",(*goal_xy,0.),tol=.06,heading_tol=.15)
+            trial.command(None)
+            current[0] = (*route[-1],0.)
+            trial.blocked_since = time.monotonic()-4
+            trial.command(None)
+            trial.command(None)
+            return {"controller_state":trial.state,"final_tolerance_m":trial.tol,"motor_commands_sent":0}
+
+    result={"kind":"Offline final-approach fixture at the returned route endpoint with imposed obstruction for over three seconds and zero yaw error.",
+            "new_source_sha256":hashlib.sha256((ROOT/"explorer4/drive.py").read_bytes()).hexdigest(),"updated":run(drive)}
+    commit="2bcfc2b50f34f6b5177b1aa5dd3eb6a2b1cd8f07"
+    source=subprocess.run(["git","show",commit+":explorer4/drive.py"],cwd=ROOT,capture_output=True)
+    if source.returncode==0:
+        known="84208da6a6d94c5ff0a0438668acb9692b03b46992c736b8aa7a0a1cd48dd48f"
+        if hashlib.sha256(source.stdout).hexdigest()!=known:
+            raise ValueError("Archived controller differs from the tested revision")
+        old=types.ModuleType("explorer4.archived_pose_controller")
+        old.__package__="explorer4"
+        exec(compile(source.stdout,"archived/drive.py","exec"),old.__dict__)
+        result.update(previous_commit=commit,previous_source_sha256=known,previous=run(old))
+    return result
+
+
 def compare_saved_map(yaml_path, view):
     """Replay Explorer planning on the exact map used by the existing isolated Nav2 planner trial."""
     import cv2
@@ -168,7 +204,8 @@ def compare_saved_map(yaml_path, view):
     gx,gy=navigation._cell(goal)
     endpoint=navigation.path_endpoint(goal,route)
     endpoint_error=endpoint["endpoint_offset_m"]
-    return {"map_sha256":hashes,"start_m":start,"goal_m":goal,"original_nav2":prior,"original_nav2_endpoint_coordinates_saved":False,
+    regression=compare_final_approach(route,goal) if route and endpoint["goal_cell_relocated"] else None
+    return {"map_sha256":hashes,"terminal_controller_regression":regression,"start_m":start,"goal_m":goal,"original_nav2":prior,"original_nav2_endpoint_coordinates_saved":False,
             "explorer":{"grid_resolution_m":navigation.PRES,"unknown_traversal":False,
                 "inflation_radius_m":navigation.RADIUS["rosmaster"],"waypoints_m":route,
                 "path_length_between_returned_waypoints_m":None if route is None else sum(math.dist(a,b) for a,b in zip(route,route[1:])),
