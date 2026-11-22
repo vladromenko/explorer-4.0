@@ -1,0 +1,2363 @@
+{
+  "domain": "archived physical human training recordings; retrospective perception only",
+  "script_sha256": "1fdbe38f7489de18fcbf895c2c4316920216d3029aff54f736cff4a689e579e2",
+  "training_plan_sha256": "22a6506624dc67b0ff460e0e9d4a45b078fb0ad91a6a764c766026606e7f5978",
+  "donor_registration": "so101-instance-replay.json",
+  "donor_registration_sha256": "2750c7813a6b08eb9ba1bd47ecb7c76d85abe53c271b7b8e9b75c75778ad546e",
+  "donor_encoded_jpeg_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+  "positive_control": {
+    "markers": [
+      {
+        "id": 1,
+        "corners_px": [
+          [
+            751.0,
+            473.0
+          ],
+          [
+            727.0,
+            492.0
+          ],
+          [
+            708.0,
+            467.0
+          ],
+          [
+            732.0,
+            449.0
+          ]
+        ]
+      }
+    ],
+    "target": true,
+    "wrong_id": false,
+    "shape_hwc": [
+      720,
+      1280,
+      3
+    ],
+    "rgb_sha256": "380a50499144265d48222ed19bf88a580bce372cf1d9c74764a71bb3d4387150",
+    "png_sha256": "bec729f755eefb73064e0c82b441dafea11ddf2cfadd443408c2cc3f0dc8b57f",
+    "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/registered-so101.png"
+  },
+  "dictionary": "DICT_APRILTAG_36h11",
+  "target_id": 1,
+  "negative_id": 2,
+  "opencv": "4.13.0",
+  "pyav": "15.1.0",
+  "detector_parameters": {
+    "adaptiveThreshConstant": 7.0,
+    "adaptiveThreshWinSizeMax": 23,
+    "adaptiveThreshWinSizeMin": 3,
+    "adaptiveThreshWinSizeStep": 10,
+    "aprilTagCriticalRad": 0.1745329201221466,
+    "aprilTagDeglitch": 0,
+    "aprilTagMaxLineFitMse": 10.0,
+    "aprilTagMaxNmaxima": 10,
+    "aprilTagMinClusterPixels": 5,
+    "aprilTagMinWhiteBlackDiff": 5,
+    "aprilTagQuadDecimate": 0.0,
+    "aprilTagQuadSigma": 0.0,
+    "cornerRefinementMaxIterations": 30,
+    "cornerRefinementMethod": 0,
+    "cornerRefinementMinAccuracy": 0.1,
+    "cornerRefinementWinSize": 5,
+    "detectInvertedMarker": false,
+    "errorCorrectionRate": 0.6,
+    "markerBorderBits": 1,
+    "maxErroneousBitsInBorderRate": 0.35,
+    "maxMarkerPerimeterRate": 4.0,
+    "minCornerDistanceRate": 0.05,
+    "minDistanceToBorder": 3,
+    "minGroupDistance": 0.20999999344348907,
+    "minMarkerDistanceRate": 0.125,
+    "minMarkerLengthRatioOriginalImg": 0.0,
+    "minMarkerPerimeterRate": 0.03,
+    "minOtsuStdDev": 5.0,
+    "minSideLengthCanonicalImg": 0,
+    "perspectiveRemoveIgnoredMarginPerCell": 0.13,
+    "perspectiveRemovePixelPerCell": 4,
+    "polygonalApproxAccuracyRate": 0.03,
+    "relativeCornerRefinmentWinSize": 0.30000001192092896,
+    "useAruco3Detection": false
+  },
+  "sampling": "Decode approved training video only. Before detection fix index floor(j*(N-1)/11), j=0..11. Require distinct raw RGB hashes per episode. Native 640x480 to grayscale, original dictionary defaults, no crops, rescaling, tuning or pose estimates.",
+  "camera": "ROSMASTER arm-mounted RGB stored as observation.images.front. Source cube/marker identity across sessions is unverified.",
+  "counts": {
+    "full_takes": 5,
+    "approved_prefixes": 6,
+    "sampled_frames": 132,
+    "target_frames": 0,
+    "wrong_id_frames": 0,
+    "episodes_with_target": 0
+  },
+  "limitations": "Visibility and identity apply only to the sampled pixels; frame-level detections are correlated. The checked donor image is a positive control from a different camera. No new robot trial or training.",
+  "episodes": [
+    {
+      "id": "5f7b11c3f7024539942456435c9617af",
+      "source_episode": "5f7b11c3f7024539942456435c9617af",
+      "role": "included_full_training_take",
+      "series": "rosmaster_pick_place-s07",
+      "source_range_half_open": [
+        0,
+        736
+      ],
+      "training_dataset_sha256": "50c55ad7c6ae4b3bd6b847a2ab3124de3a96f8feab72f52d7399999d121e7bd9",
+      "video_sha256": "44bda9f3d624216b8a815e48b47bf162407f0146a21c495130312ea8bce1e231",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "98a55dad535ed39b772e95c2ac7b4dd421b4afe4811796b7fba0b185c1a1d8da",
+          "png_sha256": "4abea3f8d9aceac2d5197168077a6f468c86fc0730787fdf88086ef41b34d366",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000000.png"
+        },
+        {
+          "frame_index": 66,
+          "video_pts": 33792,
+          "time_s": 3.3,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "9e9f647808f23ea91dbb3de98a940ba0727503457f73a9ffbcd26dffe5a0bc7d",
+          "png_sha256": "999d440285340733df0baee89dfec6e2e0a49dcf77e16bcd30514013f52c99cb",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000066.png"
+        },
+        {
+          "frame_index": 133,
+          "video_pts": 68096,
+          "time_s": 6.65,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "4ae2ef6c82e7fe5bb3c508bf043b2a938ad19a4fcdf5d4df7a508d28324bfa5b",
+          "png_sha256": "299eae6048d5f99a7fde142319724e3b75463bc0c2389a45bcfe693ea31552a1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000133.png"
+        },
+        {
+          "frame_index": 200,
+          "video_pts": 102400,
+          "time_s": 10.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e01c5bdb42940e906ac8f194c25ba987e3d074170aa256427fcfe3985fd253c0",
+          "png_sha256": "ef5c4ceb14d624fb953bd09cacf2532234ebe22124d82717de21207191e59435",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000200.png"
+        },
+        {
+          "frame_index": 267,
+          "video_pts": 136704,
+          "time_s": 13.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "6432172f3b088a6f1887c46a1f86576d6419b0ef483f9eb8422bd7544b1c1495",
+          "png_sha256": "fdd6ffe932cdd66f047379741ca23e8248c2afc7747c8cfc2b814aaa2f0caf49",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000267.png"
+        },
+        {
+          "frame_index": 334,
+          "video_pts": 171008,
+          "time_s": 16.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "6d066ec536adba9646ee9f231d9409009ca873917847fd3684d6973eb7237a80",
+          "png_sha256": "0ebde5662fca9707f9dda393db3101b0b1c66854c873f5e8ac1c36ec241b1aec",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000334.png"
+        },
+        {
+          "frame_index": 400,
+          "video_pts": 204800,
+          "time_s": 20.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "20e5169fd75dbb7bf565478db9a9cbba0cef7c7eea4f5e1cf12975d94dba72d2",
+          "png_sha256": "b6c8394171bc2b7aea05aa9fbbfd43689f8804ad6a341d89b454eafa7ece46de",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000400.png"
+        },
+        {
+          "frame_index": 467,
+          "video_pts": 239104,
+          "time_s": 23.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "5cfc78071cdc36f01390a42f91c5a9fb8ba90eb1c8343d03d750448e0d5f5805",
+          "png_sha256": "5b3990869aabead7bb7e04b7266cb2ec79fa19abcf244b8331259f3bc441a0dc",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000467.png"
+        },
+        {
+          "frame_index": 534,
+          "video_pts": 273408,
+          "time_s": 26.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1164d7f4e3243195ef263977ba2e85b0f2d87d039e0e4df3fa083a78e33ff301",
+          "png_sha256": "4f3b127d7e439f8f26ee10a0bbef5cf16a2d1902c501564209271de50227b963",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000534.png"
+        },
+        {
+          "frame_index": 601,
+          "video_pts": 307712,
+          "time_s": 30.05,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "4e2336fba2163bab799e3deb4272b182605b083782ad88309d1f3c2cb88931df",
+          "png_sha256": "e2226a4f75285272a1b2655f613459b3ccea8a6d89053c719cf664f80518f1bc",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000601.png"
+        },
+        {
+          "frame_index": 668,
+          "video_pts": 342016,
+          "time_s": 33.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "dc47f69090a848f732ef8bef9968647e352f1a781ee3dbe51e618704e6e068ec",
+          "png_sha256": "a00e881721eabd670b8fb68eb6c2b2e287363966f5af4f45b7ad970d8b6a957d",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000668.png"
+        },
+        {
+          "frame_index": 735,
+          "video_pts": 376320,
+          "time_s": 36.75,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "97165b3c3dd528f0d3d73f14682eb664d4520231b5806b8aedd02376cf9c6549",
+          "png_sha256": "7e32cf53a9d9e19e7f19d301b0f5774d255e590b45918c5717a4823ce4433319",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/5f7b11c3f7024539942456435c9617af/000735.png"
+        }
+      ]
+    },
+    {
+      "id": "f83324dba752428a897a2e9350361258",
+      "source_episode": "f83324dba752428a897a2e9350361258",
+      "role": "included_full_training_take",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        475
+      ],
+      "training_dataset_sha256": "f9825742a94b02f7661605ef9009bbc43721d067b2e7ed4b5355d79636f8ba14",
+      "video_sha256": "e01d9a9bc06468d71a42fa161b9c3d7523b4525566539dc2245a48a179bc89c6",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e1bd3af4dd28641018ba85a4ac464476b1df942fbb52cc269650ae3d60edbd85",
+          "png_sha256": "fe820a28a471a2559df5048492ef8986b954b056b6749ca78969ec341cc67a9c",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000000.png"
+        },
+        {
+          "frame_index": 43,
+          "video_pts": 22016,
+          "time_s": 2.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e4c0a1af49533f4815d8e9edc40651990c4076517d622c5d6fc5fbd63a97fce5",
+          "png_sha256": "41f6af7408853620f41e2a0967721cfbd565e942f8d281f1900ff64684d2cfb7",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000043.png"
+        },
+        {
+          "frame_index": 86,
+          "video_pts": 44032,
+          "time_s": 4.3,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "6d480191412efc8c6e21e025bf9180520acc4d7ad6a7b6f954aecddc63f69812",
+          "png_sha256": "059131d7ae7759453b064e452fbe71fce0b415995fecea941a261e3b07e959d1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000086.png"
+        },
+        {
+          "frame_index": 129,
+          "video_pts": 66048,
+          "time_s": 6.45,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "f4bfea2cbf7e219693ace07fb6a090298defd5a54098ae496ef691b5eb0c7a14",
+          "png_sha256": "2fe8769522d6e8d2f096bcf26de90d0a0e61617c713eabba0ff685c8be753e46",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000129.png"
+        },
+        {
+          "frame_index": 172,
+          "video_pts": 88064,
+          "time_s": 8.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "6814a4758fa39130e588d71dc28a21f514d1a6961867dcac0cebe7ba54cdafe0",
+          "png_sha256": "06557fc6ebffe96aaa47f5cf2d985a26be4536c15e09b78279b85db3d6a6010c",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000172.png"
+        },
+        {
+          "frame_index": 215,
+          "video_pts": 110080,
+          "time_s": 10.75,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "dabc55eda98132a74daadc3729c2fce0b6aea2582924c2f65ff65b70d8375a3b",
+          "png_sha256": "0e9d0848cc69a3ec42a55e2b65617d82269466c02e0b42f7a49c72e12916d876",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000215.png"
+        },
+        {
+          "frame_index": 258,
+          "video_pts": 132096,
+          "time_s": 12.9,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1f22b3bbea46a41c9cd8d3884341a1d2d4a1c61bd7c31762c15970ffd1a3bf03",
+          "png_sha256": "15de03f699c50387a0c84071ee8534a5e846c33e486eb0567385b881b229de92",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000258.png"
+        },
+        {
+          "frame_index": 301,
+          "video_pts": 154112,
+          "time_s": 15.05,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b811dbfae51a269d57c19d07ff660863bcc8c8ee85ebfff4be3a5d39a5d8d5b4",
+          "png_sha256": "bf337707e55e9f6d676df43c9655a66ba03cf6fa6ff5bcd4c8c9eb79ee1a1e3e",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000301.png"
+        },
+        {
+          "frame_index": 344,
+          "video_pts": 176128,
+          "time_s": 17.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "8e473ad9e06a1c81abdd073e934694d11e283cc7f976ba502197dae16002ec5d",
+          "png_sha256": "cf02c8f870a210dd9d896b151d57e0158f78a159148b1b389fd1f88a6bdaf93d",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000344.png"
+        },
+        {
+          "frame_index": 387,
+          "video_pts": 198144,
+          "time_s": 19.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "7ca932fc29e1ddcbf1da2d8910504aa340204be9368a30a520eb635264755017",
+          "png_sha256": "40ef2b91e7dfe5ca274f1882ca4e90fbd8f4a5a5686956e7ce5015677d639d05",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000387.png"
+        },
+        {
+          "frame_index": 430,
+          "video_pts": 220160,
+          "time_s": 21.5,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "edcfa9d7d82e7a6327f3c3bc11deea544c9fa9eedd31b38dc1a8eb4d1c05ae76",
+          "png_sha256": "25096e388af650427fd2b962f076b0a2d409c8c68f37612ad9b48535d9133cef",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000430.png"
+        },
+        {
+          "frame_index": 474,
+          "video_pts": 242688,
+          "time_s": 23.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "05555eac8f0153ed528b374734e0f3d60779e208d8a5da44573016ef92171658",
+          "png_sha256": "69b5fac9adba610f39573ae3c2e585ca9f73eb7b0cff08611ba2af18ae5ee77a",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/f83324dba752428a897a2e9350361258/000474.png"
+        }
+      ]
+    },
+    {
+      "id": "ab54d8081544414e9efc9c9c841a5b51",
+      "source_episode": "ab54d8081544414e9efc9c9c841a5b51",
+      "role": "included_full_training_take",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        485
+      ],
+      "training_dataset_sha256": "dd494e5e7b6f98ce73995bf84cd346841cc9c08e820b1b2a899553d8afc06498",
+      "video_sha256": "f5c0498ebba2ee8e53fe7ae9c1e20eb8b080790c016d720befae8f721bc60235",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "8a34afde2c77a35a1e18414d49ef47faea4b289dabbf17cd6bbeb26a536642b0",
+          "png_sha256": "152952a4a12cd65cc2e955694aa316c41fbbfbca82ab49ba43f95b254a1dc1cd",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000000.png"
+        },
+        {
+          "frame_index": 44,
+          "video_pts": 22528,
+          "time_s": 2.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "9c4eb6ab71029925629f8e7cc03d08fd241550b683a7914e0e99efc1d496e06b",
+          "png_sha256": "c94157c5073054230732d44a91e3dc9edf604c149f1b629383251f87e9a64fc1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000044.png"
+        },
+        {
+          "frame_index": 88,
+          "video_pts": 45056,
+          "time_s": 4.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e9e77a84acd3ab18543b271d26feba90bd4e5fac693a6fd0b5e0f510ef95361c",
+          "png_sha256": "82ff50351cd20c2fdf4c4abddeb5c0118d81e69c64d4b3df33b0ac2fca30f803",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000088.png"
+        },
+        {
+          "frame_index": 132,
+          "video_pts": 67584,
+          "time_s": 6.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "21cb0fea061b8b33319929fa08c88a89d34e01cfc0dc1f53ed789d7e2c37e9e0",
+          "png_sha256": "40af2b2df1babf5ac49f1d133cc8c3e29b18d73010290ce6193799ac79d257ea",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000132.png"
+        },
+        {
+          "frame_index": 176,
+          "video_pts": 90112,
+          "time_s": 8.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "f70622fc4cb83188de66cae961b0eb498a2f7f87f585f47e13a8484dd7a3d1c1",
+          "png_sha256": "b261b9c886aa58e9de361242c8e7b957b18f46eced97788cd0018e35a6470df9",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000176.png"
+        },
+        {
+          "frame_index": 220,
+          "video_pts": 112640,
+          "time_s": 11.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "dcacfdd3eadda990fff61ccf6c1e6cc1794ce57274a79bc3f0217c493dfc5112",
+          "png_sha256": "48ccba0c399b1aabb09d94d27b6fda7cee9039e727948224f6f91aaa1e940b66",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000220.png"
+        },
+        {
+          "frame_index": 264,
+          "video_pts": 135168,
+          "time_s": 13.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1f875fe909de48f9bb966d9caaed30d4a5649300ffbe772779d22d46372748bd",
+          "png_sha256": "3f845f7cbf6f0feaf8292ec9424900f3b5c9d345fff46f3e17bfb9bc287f0ed4",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000264.png"
+        },
+        {
+          "frame_index": 308,
+          "video_pts": 157696,
+          "time_s": 15.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "926842d67c86a1847b7e667a9d2e862e9ffeb91bfae02606c675d56d309ab195",
+          "png_sha256": "726bef02a20b545d80d053900b7ff6c1a21d6488b7e73620c14d19bf6b8e2ea8",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000308.png"
+        },
+        {
+          "frame_index": 352,
+          "video_pts": 180224,
+          "time_s": 17.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "c1484ccdb24a4f55adc4e2dcb6a8c888de811ed553d2c7fc11e7b1197ba6b0d6",
+          "png_sha256": "5917ee85f18edb8487d603d362e932931a0b3afb4df61b629c099cd81e17341e",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000352.png"
+        },
+        {
+          "frame_index": 396,
+          "video_pts": 202752,
+          "time_s": 19.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "f8946c76a091c88cf08f9e8939b1557230bc299f1d2182afc6969b65b6381af2",
+          "png_sha256": "a953aaee713a829aaf1fba9979c59d92565cd1bc2862236ba021149e79e3317a",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000396.png"
+        },
+        {
+          "frame_index": 440,
+          "video_pts": 225280,
+          "time_s": 22.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "ecfc2eca98b880832e75d3e31f5e0c5932327c6161d9f294278f907c7a29af11",
+          "png_sha256": "7d4374eed09e9341afb0d3df5a8ba7cc29bf8433420e8b8388d20e5b8c701c71",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000440.png"
+        },
+        {
+          "frame_index": 484,
+          "video_pts": 247808,
+          "time_s": 24.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "79f8f3e4b4c7f24d81608941de336c350eee161eb0cd4e7de8a06eafbdcbcbb2",
+          "png_sha256": "c6330b9238d282e550534a4aa9e223574d821b041ca3ca61a2b7ef0ae0cc0eba",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/ab54d8081544414e9efc9c9c841a5b51/000484.png"
+        }
+      ]
+    },
+    {
+      "id": "8916e6e31f1b48d8b83723fc45e3e188",
+      "source_episode": "8916e6e31f1b48d8b83723fc45e3e188",
+      "role": "included_full_training_take",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        287
+      ],
+      "training_dataset_sha256": "fcbee3378d85a36163c5633ee8a37bb457259e65df3a2ce52e08535fae1fb5b2",
+      "video_sha256": "9900ffeb901af1f06f14c0f7077840e57261f6b249a2bae56d5cad71f89e294e",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "d98dc8ad67764a85d347bd63e24f28329f31c15b777f0388567e9ebd58c378c1",
+          "png_sha256": "22b3a061a2441cfa8b22c36f7803f7734f885fb8a4739684692ec52483133e98",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000000.png"
+        },
+        {
+          "frame_index": 26,
+          "video_pts": 13312,
+          "time_s": 1.3,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "4b80d7224fae76677780ac182503f5f07420c6db34fc3780accd2670165c5911",
+          "png_sha256": "619a778694abde133887c0daef906f47fae93f9a21e6042290e4a5fd6da9cc0b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000026.png"
+        },
+        {
+          "frame_index": 52,
+          "video_pts": 26624,
+          "time_s": 2.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "197df2634b8497c5ed782357e03cd40cdb1b5a549a2de9b30db6df49d3951750",
+          "png_sha256": "afb488e4131c7a9e2fc57abc05113f51c929b8f3e4493fcd9cc211eadf2d876b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000052.png"
+        },
+        {
+          "frame_index": 78,
+          "video_pts": 39936,
+          "time_s": 3.9,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "181c0f3ed4cd2b8eee551822f313bed8068de8958ca6a238ba5c341630b65958",
+          "png_sha256": "f061bff4854a0cbea5989baee83346fee1615fe5a1ebc650e355779e120f0a67",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000078.png"
+        },
+        {
+          "frame_index": 104,
+          "video_pts": 53248,
+          "time_s": 5.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "af6a44c3a925b08a4c6a71034f81849450b361d1ba6b374069e9b574785d6f8d",
+          "png_sha256": "5714addc36c5c7a3eff4c4b8359062ed08096d03f092af5f4199c21307dc1685",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000104.png"
+        },
+        {
+          "frame_index": 130,
+          "video_pts": 66560,
+          "time_s": 6.5,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "161a8755e8f109eb30419f716205c120252163679a733b16aaa7d89657e013db",
+          "png_sha256": "7b0cd7442a85c02ccba0616cbd79557ee84f60fee226c2d6c4a3f6e3e1136cda",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000130.png"
+        },
+        {
+          "frame_index": 156,
+          "video_pts": 79872,
+          "time_s": 7.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "db39e72b00885616074b1571e31c339f6d29c6e7fd425cbbf8c5323a457b3411",
+          "png_sha256": "e0ea7abc20afe8885db59c4e3099b5a78f8d385e2ff003cd892d9ddecbdc176e",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000156.png"
+        },
+        {
+          "frame_index": 182,
+          "video_pts": 93184,
+          "time_s": 9.1,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "0c3e96e2cefa6270a5a0f1a59637b2c6ee3a23592e875cd0fc065e713fc393f0",
+          "png_sha256": "e52a8d9970873bdea7e53cafb91c2c6fe58939292d6a313ac6604a233d4712bc",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000182.png"
+        },
+        {
+          "frame_index": 208,
+          "video_pts": 106496,
+          "time_s": 10.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "a0a9e7fffa1c28b558e5d2199a279c4bdb58feed62cc604d6d3eda60fa4b5c6d",
+          "png_sha256": "e3911238c1e5c4b0825fdde28b99b57aac2491567d8bc0192fb75808d1149b9b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000208.png"
+        },
+        {
+          "frame_index": 234,
+          "video_pts": 119808,
+          "time_s": 11.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "4cd8f280915617a6569664d0387e7a41bbcafe97fc1d0a914c3c5dc49ccd0b2a",
+          "png_sha256": "ced748e1014a62d11f1ad13c93f68406c75ebe9092f12561703bf35ece7e9d69",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000234.png"
+        },
+        {
+          "frame_index": 260,
+          "video_pts": 133120,
+          "time_s": 13.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e00e225636996229da9bebab9cf5130bf7f2b6e01802b45d1a47863729772385",
+          "png_sha256": "9458b93d01b2697735167104a8c30b777ef5aa34939a999cc125d63fbd168e59",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000260.png"
+        },
+        {
+          "frame_index": 286,
+          "video_pts": 146432,
+          "time_s": 14.3,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "87a13319a54806fb238cb9c9ecc550c3f5ac01908ec0454d0760091a5d551322",
+          "png_sha256": "f63363d7586283433e542a93cd15ea80d4971d81c65eca8d93c1e46bd1465575",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/8916e6e31f1b48d8b83723fc45e3e188/000286.png"
+        }
+      ]
+    },
+    {
+      "id": "1368258df03840edb97865f060e48369",
+      "source_episode": "1368258df03840edb97865f060e48369",
+      "role": "included_full_training_take",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        626
+      ],
+      "training_dataset_sha256": "676a98cdaf754785088a85952e5bcaf1582e91df127239754535371b5b5884ac",
+      "video_sha256": "18018f261f95914aa6803eed1d20e377ab639f199e2d6c6428c7707f52fae772",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1af330b0d0789a5b1864dc45fe362660b90bebbc24e9253cc94ff7f50f48744c",
+          "png_sha256": "c5f40ea6c5dc817791fd2ba075dd1ddd6adfca22849acc5c7c0ccfa528d655a3",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000000.png"
+        },
+        {
+          "frame_index": 56,
+          "video_pts": 28672,
+          "time_s": 2.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b2d92503ec2e105de70eee14b3dc472ee23017478869c6e9935bc9ff31d77f5a",
+          "png_sha256": "4732df31527e363fe4f2047f11c003acf25385df9a7264cc617baff4b43cae03",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000056.png"
+        },
+        {
+          "frame_index": 113,
+          "video_pts": 57856,
+          "time_s": 5.65,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "575c83198819bb33b51706d4d728128c0e3623d910ae78e0c9f6f2c5e830a51c",
+          "png_sha256": "895d8b1b3fe7a6e73312727cacb198b1cbef77ee9c6081c16bfab34f4929e565",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000113.png"
+        },
+        {
+          "frame_index": 170,
+          "video_pts": 87040,
+          "time_s": 8.5,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "0e94abba86d6e7c373ec862828573eb01914ab5c5e7dd982eb9a5e3260de37b3",
+          "png_sha256": "ed6ea3b6339251f0598621a22da73ca13550b3e97e1b40ff5e1e670c6c74c271",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000170.png"
+        },
+        {
+          "frame_index": 227,
+          "video_pts": 116224,
+          "time_s": 11.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "942680a7a6cf2bb71a77a003ec648ca09ac6044596bc2b69932bd5b3dbc85d2b",
+          "png_sha256": "c9192576d6fbdafb49878a4916f85e064bac12098717618a0fb77b89e5021669",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000227.png"
+        },
+        {
+          "frame_index": 284,
+          "video_pts": 145408,
+          "time_s": 14.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "8721211de0e70fcc213d557df415556bb38cd6c25b25a35708e92eed41a7ca02",
+          "png_sha256": "f1cf1f626a5294d219a41390f9d067bd8c6f9f6ab62c56f0a7ffe89313de9d02",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000284.png"
+        },
+        {
+          "frame_index": 340,
+          "video_pts": 174080,
+          "time_s": 17.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "50c66808aab8ff5bdb9139d61ac2370dda9b4f3e693efa8627d05ec8a3326e48",
+          "png_sha256": "7ec290b2dabb1a001739d24c08f276d22e53218f344e3d83ff07b75ba7423c74",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000340.png"
+        },
+        {
+          "frame_index": 397,
+          "video_pts": 203264,
+          "time_s": 19.85,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e4c3a83b76495d11bf3be30082d38d04b19c5abb71d0bfecc0051c2deac45a49",
+          "png_sha256": "ffef2774449af78ed2760cf25546680dbed1d0b55044ef69b0f84cd9bab6ca04",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000397.png"
+        },
+        {
+          "frame_index": 454,
+          "video_pts": 232448,
+          "time_s": 22.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "dd9a755f652ce0f8df59af9bfad146c4f309a4d90df7a190978973fae3cc599c",
+          "png_sha256": "ab0a541ab81e912e08732e78721d58e3e626a103f84211da578a4a9f6e6e2a0c",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000454.png"
+        },
+        {
+          "frame_index": 511,
+          "video_pts": 261632,
+          "time_s": 25.55,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "53dcebbc9a25a474a946eae9eaf98191d4855f0d1b53a0d4a7eddd9a51e882b0",
+          "png_sha256": "fea51986f61178b91acf6410a354842f43df1dbdd5d8d88f5545d4e5f2977ac9",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000511.png"
+        },
+        {
+          "frame_index": 568,
+          "video_pts": 290816,
+          "time_s": 28.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2ace879b7752e9ae52b6b52e7eeb5d8ecf57a707442afb3049bcc02ae88fb8bb",
+          "png_sha256": "1803f127d87733856cb900d1241b2fa415472cdb6e0ebd0478d48986b5585a71",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000568.png"
+        },
+        {
+          "frame_index": 625,
+          "video_pts": 320000,
+          "time_s": 31.25,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "4ac7eb772dfdc1c977e066da59d6f4d8a45515469eeda5c4307ac751310d2d66",
+          "png_sha256": "5af8730e032d3768e847e5be6f150ca6c9c968e72a38c87c2be2979e51dcc1a5",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/1368258df03840edb97865f060e48369/000625.png"
+        }
+      ]
+    },
+    {
+      "id": "2a77e734ba2e453aa2492493b1dac6c5-523",
+      "source_episode": "2a77e734ba2e453aa2492493b1dac6c5",
+      "role": "approved_training_prefix",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        523
+      ],
+      "training_dataset_sha256": "ed485dfbacc6cfd3004ca2e87f0d70e4c7a52365674428da2b6a460a88d6c32e",
+      "video_sha256": "87d8aa3d646c2acb80dc0098766d772543dad555de50b58796b1a7a4828348c7",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b796b9be799b1c665e5e631b92245e8eed60e353967940eb5c7988b3e18fba01",
+          "png_sha256": "d0e03b886ef5b5fc06a284b2bf8626836eb6843a7a4a07c20cae5f2e7d40859c",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000000.png"
+        },
+        {
+          "frame_index": 47,
+          "video_pts": 24064,
+          "time_s": 2.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b7c634f0ff7bbcb95125e8e1746f53d4598b6701377316bc349c29cce8070553",
+          "png_sha256": "75e8c1548ac1f8ea780628c0562e56cb3719c2731ac6a682ccecb9fc347d04a5",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000047.png"
+        },
+        {
+          "frame_index": 94,
+          "video_pts": 48128,
+          "time_s": 4.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "5b061186f47d059e3b046d559fa4d113ff4b5137b5b7d2614ee089fed5ce2cc4",
+          "png_sha256": "571351ba3562a45285532e827ac24a4931212221e132c8771a574ef0864a50b7",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000094.png"
+        },
+        {
+          "frame_index": 142,
+          "video_pts": 72704,
+          "time_s": 7.1,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "3123ec6f0b2e1faa2a0658bfd6f653dbd78fa8e91120294d9ef24fd37b8e4b67",
+          "png_sha256": "74ea5771f837b77d555b0146b21d50b8a5492856cdbab8750f6ed7f43d4abbd3",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000142.png"
+        },
+        {
+          "frame_index": 189,
+          "video_pts": 96768,
+          "time_s": 9.45,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1f00d9b4117b01d63c4dac9e9f71b52a81405705d7b970d0c3acbbc503df7fd3",
+          "png_sha256": "c4bb905788be59160da446f258dc8f860c8da71957a4884957c05df07ca4f298",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000189.png"
+        },
+        {
+          "frame_index": 237,
+          "video_pts": 121344,
+          "time_s": 11.85,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2f15f4cba1e090bbdda494add7b4b30ed0d0898f46bc72cb04f4523f8cdf41dc",
+          "png_sha256": "36ce76675bf5d589ecf6a8cef6ad2db5732b8e049d2a9aa12233c9390decef8a",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000237.png"
+        },
+        {
+          "frame_index": 284,
+          "video_pts": 145408,
+          "time_s": 14.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "d8776d06728ea172627ff36318f6fbbdf8fa0078f580c11ae205a8a1c83b9e8e",
+          "png_sha256": "bcd5e67ca2236f49f72e76ed24c99b71341d959c04d0a63ad56053fa13afd73f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000284.png"
+        },
+        {
+          "frame_index": 332,
+          "video_pts": 169984,
+          "time_s": 16.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "02ea227ea0caf9ff7c382b821c7eba8de9f7a639188c956de731a80de987c84e",
+          "png_sha256": "4f17d250bfabf37d81894c1fe7d52102772f03ae05585e21520401ebfa0503b1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000332.png"
+        },
+        {
+          "frame_index": 379,
+          "video_pts": 194048,
+          "time_s": 18.95,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2ceb9f2c7a7415623a5deb090c34ac13171bf5dcd4879d0c64ed95d5a0c55ff9",
+          "png_sha256": "cb20c699bcccabeb9ee1d487f08e9c2b0604dfed9a7c4387af9a8dc54f6fdd7d",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000379.png"
+        },
+        {
+          "frame_index": 427,
+          "video_pts": 218624,
+          "time_s": 21.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b2d5e9a020c91caa22507d1045d474163a903e17b2d2e6ff406e6bf7fdaadef0",
+          "png_sha256": "c83d606d04d72c3ccda77887513646cc5d89f22ae75b796123c33b0fb0753d5b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000427.png"
+        },
+        {
+          "frame_index": 474,
+          "video_pts": 242688,
+          "time_s": 23.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "383bc081716c8169244f3afc6b1a3f25367edbf18d632020e9a976b2bc585bd9",
+          "png_sha256": "cd55b90c84f57f9a24b9b4f592d07b05afaaab384392f4036af1c54109c825ef",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000474.png"
+        },
+        {
+          "frame_index": 522,
+          "video_pts": 267264,
+          "time_s": 26.1,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "0da86535ba33f6835db1cc91baa2a6a0ba03d87e9ebd7fd0aa9233e10ea90b4a",
+          "png_sha256": "88d63d5fbe02d88d8c69201cec71c9bc2725da874cd88de7f814f7c8901da49f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/2a77e734ba2e453aa2492493b1dac6c5-523/000522.png"
+        }
+      ]
+    },
+    {
+      "id": "e7c4671d48564963a2632f240abe0c8a-410",
+      "source_episode": "e7c4671d48564963a2632f240abe0c8a",
+      "role": "approved_training_prefix",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        410
+      ],
+      "training_dataset_sha256": "66d0e08f3f7ad6a7c884b2b6fcfc6e4bf3b8cb64267de166a14c9fe5841b697b",
+      "video_sha256": "1fcd1559492fda215cb0c31d7edae2a67716311970549697a6884b039cf2a077",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b4990f3ad16490c0ddb01693f68d8004bcab81b46f391c27b4b864cee5df8e34",
+          "png_sha256": "364670065ec56752937d0eff671a1c9e8f7de177f0b65f8240e702f8801231ed",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000000.png"
+        },
+        {
+          "frame_index": 37,
+          "video_pts": 18944,
+          "time_s": 1.85,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e55bba186c9577b6ad891545722298cf9f3710ecfb7e5de0a0713ae5f367b479",
+          "png_sha256": "28dced1f27f29a30ca94bb76dee51a0d8ab3c2dafe7e91d4b8bb873f96842021",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000037.png"
+        },
+        {
+          "frame_index": 74,
+          "video_pts": 37888,
+          "time_s": 3.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "ca7b18229ead537cffe3b480eb006cbd3aa36459730fa62ff3d2f46aa1c44c1f",
+          "png_sha256": "de09f185daaf30c20db04ba24f19d3d41eaee448a7668b71e63516275fb8427d",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000074.png"
+        },
+        {
+          "frame_index": 111,
+          "video_pts": 56832,
+          "time_s": 5.55,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "147e1b1c86c37342a4fa111a8259c06eceb38857a97f7ca5460265aea07966e1",
+          "png_sha256": "f62b5b900ca122bca11c61247e6ff1db9727b15a4d75986db9d811e5ab9e6a40",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000111.png"
+        },
+        {
+          "frame_index": 148,
+          "video_pts": 75776,
+          "time_s": 7.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "a94542d8d57e528b7b688a2b0d319978ddd3714fd57db89d76331b8d70f37bea",
+          "png_sha256": "a6ab11716c74d5d64eea7090c9410cc0bcd2f16fe774aa83c099466c7f5b99ab",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000148.png"
+        },
+        {
+          "frame_index": 185,
+          "video_pts": 94720,
+          "time_s": 9.25,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "189ae7d8e151ce7e9c8c009503a9b6e7b94374b3ed59ce30266fcd4ebb8934ee",
+          "png_sha256": "7e0cb98ac08691cd9a459c15bcdc5489eea3edfbd7605523e8da8d7e6079193f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000185.png"
+        },
+        {
+          "frame_index": 223,
+          "video_pts": 114176,
+          "time_s": 11.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "a4d8354ee3a36c28379395cae33112d24207131927ab12f01b0e8360133952ff",
+          "png_sha256": "d0af00da61673e84cbfc4f4f9bc9459b24d710d948c297d0472ce4160262fe87",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000223.png"
+        },
+        {
+          "frame_index": 260,
+          "video_pts": 133120,
+          "time_s": 13.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e419f6b84fa105d60ed7960905a1046574e688410fa76809649a8bc3370e8de9",
+          "png_sha256": "046dfeec693db4f711679ae070f1b3bcf6a30e3096ba502d4230d39c9fb9edbe",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000260.png"
+        },
+        {
+          "frame_index": 297,
+          "video_pts": 152064,
+          "time_s": 14.85,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "c38051db09d736467a87bf9e2e678a9aaf2e8da1ffa066585b215c4229187d49",
+          "png_sha256": "44f5459b9696bedec09cbd9f6d684023620111e2b6160e7783789f60df238638",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000297.png"
+        },
+        {
+          "frame_index": 334,
+          "video_pts": 171008,
+          "time_s": 16.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1c24dc5c6e5369a5943de9b7e141d9583677180784a52de90fa626d269e37e80",
+          "png_sha256": "52ccbfb39574114893821ef58b05e74b51d9774d1666785cca0d9b8367a300f3",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000334.png"
+        },
+        {
+          "frame_index": 371,
+          "video_pts": 189952,
+          "time_s": 18.55,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "49ea339048c2b09ac3d4a70979ea2624e25a7d4377594c031f3cfb05237c9297",
+          "png_sha256": "dfcdb1a811dfa21f90a4e1fceb7b9196a3aa732c2afad634c868c47bf6fdfcb1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000371.png"
+        },
+        {
+          "frame_index": 409,
+          "video_pts": 209408,
+          "time_s": 20.45,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e5585b55128535336f25ac52c53c5d991114b658ba6906f698d9d72d8f54cb7f",
+          "png_sha256": "a39e1053145994ffe353fc189a2b81e8dd188337dcef11bb7b23652d84154b4e",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/e7c4671d48564963a2632f240abe0c8a-410/000409.png"
+        }
+      ]
+    },
+    {
+      "id": "aec27983a63941daa20f1291ad3cf5d6-361",
+      "source_episode": "aec27983a63941daa20f1291ad3cf5d6",
+      "role": "approved_training_prefix",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        361
+      ],
+      "training_dataset_sha256": "d8a8d16b4b075cb768b6d49eafe77eb45b42aaf27214c535dd396b5b4d2d101f",
+      "video_sha256": "47cb6087a130ddeadd93c4ab978cd661c8e9325b3ad97254b93ca9c90d338240",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "43902f06d63d6c0bb0536d08d091cc05157680959c6f5c62bdc0ae360a16a204",
+          "png_sha256": "fdd3a94309c78f8d1d9baedd8fe4a2f014006f5d6eddbaf789b5a15238fcbfb1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000000.png"
+        },
+        {
+          "frame_index": 32,
+          "video_pts": 16384,
+          "time_s": 1.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "0c9f73d16c983636555b55632a977ac2dd36f661d1ac30d62b95dd3ca6510099",
+          "png_sha256": "dd0bea1dd7e93aedabb02265d3a6ad6c1ad1d3e1d18fc9646f10d277e5fc17ae",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000032.png"
+        },
+        {
+          "frame_index": 65,
+          "video_pts": 33280,
+          "time_s": 3.25,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "ec8e705f3c01ebd958ad8bcfc5ffca1c72315bc5cdaffb5ded03c1b14e42a095",
+          "png_sha256": "ab74717c7d279df40f9894a692f966975bfb74d502c04a4cce4b0e1732406ef1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000065.png"
+        },
+        {
+          "frame_index": 98,
+          "video_pts": 50176,
+          "time_s": 4.9,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "66e7b5239daa3b0c8864c0316a785de3fd098db55f75d1ac6c4e5748f0b32b1c",
+          "png_sha256": "b8a2ad8a02f5b492822a06a53fd22290964b75029b401d78a0a930e4b9bfaf28",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000098.png"
+        },
+        {
+          "frame_index": 130,
+          "video_pts": 66560,
+          "time_s": 6.5,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "9d93c08bf310613be5d0c2f6200adb4fd5c4a526f99ebdcec38f0dd57ea0ca31",
+          "png_sha256": "d3dab0c77cacf9a1a4620c238b9402dbeebe97683dfa9a718c68d7a146dfbf4b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000130.png"
+        },
+        {
+          "frame_index": 163,
+          "video_pts": 83456,
+          "time_s": 8.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "bb1795c849527ee11f95929f957327d8084457c5e8ed03b798afd0b6c2895990",
+          "png_sha256": "bb7d703dbbb0d142e37e8425ce6b4044800a91c9f7acd2afe298f8379e504e97",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000163.png"
+        },
+        {
+          "frame_index": 196,
+          "video_pts": 100352,
+          "time_s": 9.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "a2834a8eba949176998d210689bacc8ac249d269c5e90b76caf33bc4a70a1e44",
+          "png_sha256": "18a7f4fdd1a30e6672efd23e70ebf98db82f860dfa8b858e746109b1e984c5ae",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000196.png"
+        },
+        {
+          "frame_index": 229,
+          "video_pts": 117248,
+          "time_s": 11.45,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "5809940c603f1bed96c0cdfd5e346914f9f6a16270a90d0799e572ae23857310",
+          "png_sha256": "df7988ffe607d7b5078283792a96a9db229f8f6c743848163938ed5941d5bd5f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000229.png"
+        },
+        {
+          "frame_index": 261,
+          "video_pts": 133632,
+          "time_s": 13.05,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "97b74b61648c69bc9f2d41f3bd71cfc764bb4a31fc1cb777df0c132bd94421e5",
+          "png_sha256": "e0595319bbd00f509a101fed7f65d26373c1fec79a87196f6afd905207ef7710",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000261.png"
+        },
+        {
+          "frame_index": 294,
+          "video_pts": 150528,
+          "time_s": 14.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "bae25e4f8ed91ac16839105567abf1df5a045ebb6c015bafbd96894f28d3ea27",
+          "png_sha256": "66895224821fdbe9056e608f3274c88f8f3eec1ba226de1dbb3db3d3578c1ae9",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000294.png"
+        },
+        {
+          "frame_index": 327,
+          "video_pts": 167424,
+          "time_s": 16.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2d826983a475bbf25798a497cdbed7a0ab730bbf154ad4e7f561d586fad908ee",
+          "png_sha256": "a22a0cd01ea3164a4326e371d80aa899f6b955db68313b55ba7826a3642174ad",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000327.png"
+        },
+        {
+          "frame_index": 360,
+          "video_pts": 184320,
+          "time_s": 18.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "37e90fa3453fcd8838bd0a1d252fee30ea57838ba7fea8ec55f1225b897b4824",
+          "png_sha256": "86b033add9f358a7e194fcb12e0b794c4ce7f17dd82f1f97b7df6c32041d2bb2",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/aec27983a63941daa20f1291ad3cf5d6-361/000360.png"
+        }
+      ]
+    },
+    {
+      "id": "536fd4a1f4f64db8a97298613efeeb20-244",
+      "source_episode": "536fd4a1f4f64db8a97298613efeeb20",
+      "role": "approved_training_prefix",
+      "series": "rosmaster_pick_place-s06",
+      "source_range_half_open": [
+        0,
+        244
+      ],
+      "training_dataset_sha256": "5629f010b225379530bae9dd9449855610c49a90871db8ccfdfcfa83b4c35e58",
+      "video_sha256": "f8c73831c2157304b5861e496ce65af4fd70ba40e15db46e8c2c7fbded744521",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "4ec95da503e007294049b2fbb72e87fd4e780eae56d85a51868a970c59597b1d",
+          "png_sha256": "e33260637d745f9e5767e7ba0e8c1f01b899d073482430b022b8cbaf4f09015b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000000.png"
+        },
+        {
+          "frame_index": 22,
+          "video_pts": 11264,
+          "time_s": 1.1,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "69c42c26ba72cf50e58877431852bc47994a26dfa06b5a68239c2ee14ca0378d",
+          "png_sha256": "31f547f35550f8e9ad0316d67f6472eef7bdd8c9d86ce5b008a9fadf4b64ca4f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000022.png"
+        },
+        {
+          "frame_index": 44,
+          "video_pts": 22528,
+          "time_s": 2.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "87aba99ed00c7f227fe76aad94890636fac08d1b5f2db7ce053514fdb6330190",
+          "png_sha256": "04453e6a1d4825222e71b0f92b72023905637daae93d0e1ba186b7803f9823fc",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000044.png"
+        },
+        {
+          "frame_index": 66,
+          "video_pts": 33792,
+          "time_s": 3.3,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "955f052a6f21e643fcae608002d2bda2bef718426235535ec6b1022d2d1153a6",
+          "png_sha256": "a965162cb12ace215378b6ebc843cae88fabbdb412601f8e0a2be3a84c961723",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000066.png"
+        },
+        {
+          "frame_index": 88,
+          "video_pts": 45056,
+          "time_s": 4.4,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b48489f2df70818da5b617d5ad74cf7317eb7a65783ca75fb223153e3459e4fe",
+          "png_sha256": "310ef132f511fd6ac8a660cec7702fd0ab3927b9bf8011027ff261e79c47f6da",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000088.png"
+        },
+        {
+          "frame_index": 110,
+          "video_pts": 56320,
+          "time_s": 5.5,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "5c01ec6fac8e5e58be6ab7c6030f43b5d7599240baf259dffbe3abb69cd66be7",
+          "png_sha256": "c667df9d934dfec63c0c29650e109fbab06c00ab49b3e7ece4001cad0337c9f3",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000110.png"
+        },
+        {
+          "frame_index": 132,
+          "video_pts": 67584,
+          "time_s": 6.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "918802b5fde31a624fde6031c097d67524023ed0ddd3fcdfcea12fffba6aa417",
+          "png_sha256": "eb5c273054c3a49f630df92c704290258f2b05dd6bc04366e300f23b14507a7b",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000132.png"
+        },
+        {
+          "frame_index": 154,
+          "video_pts": 78848,
+          "time_s": 7.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "436e8683ec1c3f583e8f79b30e6dcb43570ae74f525cffc04cc581790c4ab48f",
+          "png_sha256": "e19150354966f01fa42d231abc56592e4556c0dcb4d15ed45e021f496915936f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000154.png"
+        },
+        {
+          "frame_index": 176,
+          "video_pts": 90112,
+          "time_s": 8.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "067be46ba20bd57996555c2ced959ca2bfe363788894068eadc3e4b3401d9eef",
+          "png_sha256": "cad5268c709968a329ddfa19e4cfff9efdfccbc98b9f913af5cac2bbf794af01",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000176.png"
+        },
+        {
+          "frame_index": 198,
+          "video_pts": 101376,
+          "time_s": 9.9,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "8d084b2db142622f406d61b221950c9677ab4c7ffd9f580e481c75b3eb435fe9",
+          "png_sha256": "147e13cd8754fc5170574e9e3861347410fb783912ca6c73e5d8ed42255d9e87",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000198.png"
+        },
+        {
+          "frame_index": 220,
+          "video_pts": 112640,
+          "time_s": 11.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "668328032d637ce684127f1021f15e4f6b018019a742e7641ec54d46fe03f6d9",
+          "png_sha256": "e148b8eaed883f70fec0e15ac8db00d603009435ba07ea6ba6a29b8ca6f372be",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000220.png"
+        },
+        {
+          "frame_index": 243,
+          "video_pts": 124416,
+          "time_s": 12.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "d20c56612a74daac1e6dc196c5f43fcc68612accaa24e5035ee5a1878306cb47",
+          "png_sha256": "74cbb034565af40b100b2ef2e02a7414f4b1a838589cd9e19de032718bb05422",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/536fd4a1f4f64db8a97298613efeeb20-244/000243.png"
+        }
+      ]
+    },
+    {
+      "id": "d955c937edde44ff972d13e777e94126-448",
+      "source_episode": "d955c937edde44ff972d13e777e94126",
+      "role": "approved_training_prefix",
+      "series": "rosmaster_pick_place-s07",
+      "source_range_half_open": [
+        0,
+        448
+      ],
+      "training_dataset_sha256": "361d85b2dee1e0da2e602e68ed70ef2eb297f5956d1cd9d1587107a4273332cc",
+      "video_sha256": "3965b3737bf604bf6534d3b8ac7e794186bcc6bcd10a6c35d274b360a4cd1ac3",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1c69b64e581e8f810d69983e9ddef3db2b3645714794cb19d443dc7d3e51e1ad",
+          "png_sha256": "51fc6b5704f49ab0ffb5e85d3092b1f7f332df6ca2469583e6d09e03475e9af1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000000.png"
+        },
+        {
+          "frame_index": 40,
+          "video_pts": 20480,
+          "time_s": 2.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "a92750f358297a7e329ee0dc2de8804af795602815cbfcec3b2c2c7d8e0316d0",
+          "png_sha256": "04c3880e2df2d0d38420c36f5b753837ea151a8ade02399a95b1a73e642619bc",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000040.png"
+        },
+        {
+          "frame_index": 81,
+          "video_pts": 41472,
+          "time_s": 4.05,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "55c0965d02ed80e2e782b21b03459269726a2633603cea657df5b13e10a5ad32",
+          "png_sha256": "6cf8dfb85c4d3ff0d57920fe4d0c89a88e81b801bc29b4b82ffe42334b9323b7",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000081.png"
+        },
+        {
+          "frame_index": 121,
+          "video_pts": 61952,
+          "time_s": 6.05,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e6411ad27ec558bd3c49bf99570025e91047125b43dca65b2f5f68da18493a31",
+          "png_sha256": "0e0e75df617ab22b1959f98c6d02c5ca75cc02ece42270c1cb7c939c0d150208",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000121.png"
+        },
+        {
+          "frame_index": 162,
+          "video_pts": 82944,
+          "time_s": 8.1,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "dc3a329a2e0123a8309ad8f665cba10f4f5bfbf45a6917dacc62435bd44dde0a",
+          "png_sha256": "ddeb2c36843560f970f546b6fdaa929ac4ccaf7dcaedcf1fabc1c571f938b04d",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000162.png"
+        },
+        {
+          "frame_index": 203,
+          "video_pts": 103936,
+          "time_s": 10.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "eb06fc00d3316d8c7093b548a0fbf56902772daae294ef0a5e07dfec128b2808",
+          "png_sha256": "6c7dab439f24933ce979cfd27dec893460c5449aae36dd912b63b7a685c4d9dd",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000203.png"
+        },
+        {
+          "frame_index": 243,
+          "video_pts": 124416,
+          "time_s": 12.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "c8dcc80e5627afebd4fee0038ec321fb3d954f9646b093dfc4767d5881f15225",
+          "png_sha256": "6270f30cc8481c809c8c25536ab72456d00bbcd12412138e2f87a454366becf1",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000243.png"
+        },
+        {
+          "frame_index": 284,
+          "video_pts": 145408,
+          "time_s": 14.2,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "81d507364b3cdce05ff7d45e0a44e5387319c6a023f3b977972b405dbfd4aaa7",
+          "png_sha256": "d3cf5ab7d58c210e15fcfe68a403b69812481325a366baa77cbf132a07f32b8f",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000284.png"
+        },
+        {
+          "frame_index": 325,
+          "video_pts": 166400,
+          "time_s": 16.25,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "c63e92df67f403ef5fc7afac2d055bf1a4e7ed37052b929b87c38d1d7b47b3ff",
+          "png_sha256": "4fad9fb34e79fda654b23df43286d14e90dd2a203eadf20eb768e612f5f4a233",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000325.png"
+        },
+        {
+          "frame_index": 365,
+          "video_pts": 186880,
+          "time_s": 18.25,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "024c79806a223c8bb88281bafda81381b88d67fb2bd19d7c69729221e863e16f",
+          "png_sha256": "8b64957a7f6ceb61bbee2c9d87c49025778536464d184a76091c04a4e124aa1e",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000365.png"
+        },
+        {
+          "frame_index": 406,
+          "video_pts": 207872,
+          "time_s": 20.3,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "ca6271bd112c196c35b67de0f8a1c08e9b8391b858bed313a60d5fb5c3e15df5",
+          "png_sha256": "c7fc11015ab192d58b0a22fbf751463fd5158edd2299e65379544b9cb1a8facd",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000406.png"
+        },
+        {
+          "frame_index": 447,
+          "video_pts": 228864,
+          "time_s": 22.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "f7f7e292f27750e2a4272a42d05adac4b379669109693c5d74a86dc7277bfc99",
+          "png_sha256": "3455f3274cc7bd049800d8a804ea42e3dcff4c2b3158e7568facf053bc87794a",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/d955c937edde44ff972d13e777e94126-448/000447.png"
+        }
+      ]
+    },
+    {
+      "id": "7a29900f982a4cffbf8d1b4130da75ef-601",
+      "source_episode": "7a29900f982a4cffbf8d1b4130da75ef",
+      "role": "approved_training_prefix",
+      "series": "rosmaster_pick_place-s07",
+      "source_range_half_open": [
+        0,
+        601
+      ],
+      "training_dataset_sha256": "b3c18f8f1169b15eea1757baa1e96344b81f307c9aa9b702e8f7453a5f3f35ee",
+      "video_sha256": "b315f0f206f27d6bed96251deabcb33e3e0ea1190e6982b6d5e79ce633468c37",
+      "frames": [
+        {
+          "frame_index": 0,
+          "video_pts": 0,
+          "time_s": 0.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2f65aadcc990b05cd0ee883b777590e0febde78963360270dac63ea4a24f602e",
+          "png_sha256": "b1b1bd37a6e7f1b14fe8ce01cbc85de1cc04e5fac8732c664f547efd1e5e3627",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000000.png"
+        },
+        {
+          "frame_index": 54,
+          "video_pts": 27648,
+          "time_s": 2.7,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "c856644a305d0f658350e164f13bb8273e735d28a41cfe6335029190245b1bbe",
+          "png_sha256": "cb8d02bd57022ee6376cdec65080fd9b3b290bb02a49c2a253a04e462208db17",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000054.png"
+        },
+        {
+          "frame_index": 109,
+          "video_pts": 55808,
+          "time_s": 5.45,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "1b7a2657ed70d8351b15f4707a0b472ed3321a79e1eff4a630452f05235a9c08",
+          "png_sha256": "ef21e27bd15196fb7d69b0fe39803dcb1dafec1aa4f955a766dd19a31af2add3",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000109.png"
+        },
+        {
+          "frame_index": 163,
+          "video_pts": 83456,
+          "time_s": 8.15,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "b7295731de69ca63612b01c0d2c04abbe82f547a64ae12bd5c18c7535f9e6d25",
+          "png_sha256": "f0fd00704e7ec203dbe550ea636d3d0c21c87c13c182140967e96018a92c80ad",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000163.png"
+        },
+        {
+          "frame_index": 218,
+          "video_pts": 111616,
+          "time_s": 10.9,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "594b05f4c243f5dd28f3acd2a576c6d8715cd1af1a70d2640fb30723933135c3",
+          "png_sha256": "bc3dbdb2f8a054e3e020b83d35c39d0d1d4dfbe7e6b45a0b8e989c74d8a20439",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000218.png"
+        },
+        {
+          "frame_index": 272,
+          "video_pts": 139264,
+          "time_s": 13.6,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "eb39c1f145b646f4626679370a46405401e3c9eca9b591833d445537755cf458",
+          "png_sha256": "96a7498649bb57091c70c7073b4324554984cd33b2eade1e6089af5e9000dd24",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000272.png"
+        },
+        {
+          "frame_index": 327,
+          "video_pts": 167424,
+          "time_s": 16.35,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "9668e26fbd61a29f6a90cf7c8810b3b7965085aba1ecf0626f8f24bca9b312bc",
+          "png_sha256": "b7cfcfb29cc1b25475cf26aa8c86384278eccc225fea0d1523b953db44026736",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000327.png"
+        },
+        {
+          "frame_index": 381,
+          "video_pts": 195072,
+          "time_s": 19.05,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "f1ef9e465339bc4d49a454708e87f2b103c50926d03fd663e95ed62f89dbe8fa",
+          "png_sha256": "ee5a1c1ad88057d15015e62a710f71d8050dd3d82353451e0b381c7d19341d3e",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000381.png"
+        },
+        {
+          "frame_index": 436,
+          "video_pts": 223232,
+          "time_s": 21.8,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2bf457623494b2996640ef373259409dab4733977b38d16b045aa1113ab16548",
+          "png_sha256": "6c1d6146703ed32ee737b1233cf5c864550d434a6a362900b2b668b2da8b7547",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000436.png"
+        },
+        {
+          "frame_index": 490,
+          "video_pts": 250880,
+          "time_s": 24.5,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "2f544aa3cfe81659c77e73cff52aeda069167e4d2c44d29ae7aeac5bcc3935d6",
+          "png_sha256": "bf265ec2120a08b8a4e11248d3a34ba3a22e732bcdefcb7737f98c4ca0aa3313",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000490.png"
+        },
+        {
+          "frame_index": 545,
+          "video_pts": 279040,
+          "time_s": 27.25,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "e5a851d5cbceae953651706d18d6116c312d9a82d99d064eb7498b69a1575f05",
+          "png_sha256": "5cde1e40ef1297182bf544da0df0b3fd36cf7c38b51df5ca137547e1a3d2c232",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000545.png"
+        },
+        {
+          "frame_index": 600,
+          "video_pts": 307200,
+          "time_s": 30.0,
+          "markers": [],
+          "target": false,
+          "wrong_id": false,
+          "shape_hwc": [
+            480,
+            640,
+            3
+          ],
+          "rgb_sha256": "fd8ac5312b188f753b7dbd385463176c0f48c8f1c56489ac0402016e5138cc41",
+          "png_sha256": "264f0ec0013f00e2beba6952e9fa49a42d93ef91f252506ac6b2c7aae46d39f8",
+          "frame_url": "/simlab-media/reports/rosmaster-marker-replay-v1/frames/7a29900f982a4cffbf8d1b4130da75ef-601/000600.png"
+        }
+      ]
+    }
+  ]
+}
