@@ -1,0 +1,22 @@
+# Does a human donor reduce the recipient's work?
+
+The primary contrast is the trained ROSMASTER alone after relevant SO-101 transfer (T2) versus matched generic simulation (T1), with the same three receiver takes. The curves also use the first one and five distinct physical training takes. One nested set of takes and one optimizer seed support an engineering pilot. The existing physical 5/2/3 data plan keeps validation and test independent. All twelve new evaluation scenes are simulation development scenes.
+
+The five conditions are target only (T0), target plus the recipient's geometric teacher (T1), target plus measured object-relative human donor motion retargeted with ROSMASTER IK (T2), the same donor motion with its receiving training placement cyclically permuted (T3), and donor dimensions and closing direction with the recipient's own teacher (G). The four augmented arms screen the same eight seeds, keep the first two jointly successful seeds, and receive 720 frames each. With fewer than two they stop and retain every failure. T0 has zero synthetic frames. At each k, the upstream statistics from exactly those k physical training takes normalize every arm. Every arm uses ACT, the same cached ImageNet ResNet-18, seed, target takes, six native controls, wrist camera, batch of eight, and 1,000 optimizer updates. The donor and the geometry teacher are disconnected from the fitted receiver during evaluation. The archived pose trajectory gives an independent final one-second lift score.
+
+Run the preflight on Homebrain today. A physical transfer result requires an admitted human donor packet. The archive already includes a tagged donor overview. Its copied calibration needs three independent pose controls and three jaw-width controls (5 mm pose and 3 mm jaw tolerances); the four phase intervals must pass [the existing packet builder](../../explorer4/so101_packet_builder.py). Complete the missing review or capture only what the verified overview lacks. The existing RBF grasp admission does not authorize a newly trained ACT checkpoint.
+
+```sh
+.venv/bin/python -m scripts.demo_efficiency preflight
+.venv/bin/python -m scripts.demo_efficiency freeze --packet "$PACKET_SHA"
+.venv-sim/bin/python -m scripts.demo_efficiency collect "$PROTOCOL"
+.venv/bin/python -m scripts.demo_efficiency prepare "$PROTOCOL" --day "$TRAINING_DATE"
+.venv/bin/python -m explorer4.study_day "$STUDY_ID"
+.venv-sim/bin/python -m scripts.demo_efficiency report "$PROTOCOL" --study "$STUDY_ID" --ledger "$LEDGER" --figure efficiency.png
+```
+
+Only the Study Day command admits training jobs to the existing queue. Generation starts with the explicit `collect` command. The final report provides per-scene outcomes, native and independent scores, the first and last retained frames and person-minute totals when known. Omitting the ledger leaves the person-time axis unmeasured.
+
+The optional ledger has `intervals` and `coverage` arrays. Each interval supplies a unique `id`, `person_id`, UTC seconds `start_utc_s` and `end_utc_s`, one `category`, and the `resources` it served. Resources include `common`, individual original take IDs, the SkillPacket digest, or an arm and dose such as `T2-k3`. Categories are `donor_demo`, `target_demo`, `calibration`, `annotation`, `reset`, and `correction`. Each row needs an evidence file with `path` and `sha256`. Overlapping intervals for one person are rejected. Shared intervals count once within each counterfactual arm. A coverage row contains `resource`, `category`, `observer`, `complete` and evidence. A measured zero requires coverage; a missing category leaves the total unknown. Individual video durations exclude preparation and review.
+
+The primary report estimates the required number of **new paired simulation scenes** from the independent development pilot, a prespecified 20 percentage-point gain, two-sided exact McNemar testing and 80% power. Physical planning needs its own measured paired pilot. The optional `size --pilot FILE` command accepts an explicit `domain`, `contrast` of `T2-T1 at k=3`, `reserved_scene_ids`, and `pairs` with unique `scene`, `domain`, `partition=pilot`, binary `T1` and `T2`, and a hash-bound independently reviewed evidence file. Those scenes cannot enter the later confirmation.

@@ -231,13 +231,13 @@ def run_job(path: Path):
         action_steps = ['--act-action-steps',str(cfg['act_action_steps'])] if 'act_action_steps' in cfg else []
         improvement = cfg.get('diagnostic') == 'recorded_start_improvement_20261122'
         record_floor = improvement or cfg.get('diagnostic') in {
-            'recorded_start_adaptation', 'recorded_start_control', 'recorded_start_transfer'}
+            'recorded_start_adaptation', 'recorded_start_control', 'recorded_start_transfer', 'demo_efficiency_receiver'}
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.sim.evaluate',cfg['checkpoint'],
             str(work/'result.json'),'--profile',cfg['profile'],'--count',str(cfg['episodes']),'--device',cfg.get('device','cuda')]+seed_args+
             (['--expected-model-sha256',cfg['expected_model_hash']] if cfg.get('expected_model_hash') else [])+
             (['--queue-config',str(path)] if cfg.get('protocol') else [])+
             (['--record-floor'] if record_floor else [])+
-            action_steps+(['--seed-policy-per-scene'] if improvement else []),
+            action_steps+(['--seed-policy-per-scene'] if improvement or cfg.get('diagnostic')=='demo_efficiency_receiver' else []),
             check=True,env={**offline_environment(),'MUJOCO_GL':'egl'})
         return
     if cfg.get('kind') == 'sim_ppo':
@@ -295,6 +295,9 @@ def run_job(path: Path):
     split_path.write_text(json.dumps(splits, indent=2))
     if not (work/'train').exists():
         combine(splits['train'], work/'train', cfg['profile'])
+    if plan.get('receiver_normalization'):
+        from scripts.demo_efficiency.prepare import install_target_statistics
+        install_target_statistics(plan,work/'train')
     steps = TRAINING[cfg['policy']].get('smoke_steps', 50) if cfg['smoke'] else TRAINING[cfg['policy']].get('steps', 100000)
     if cfg.get('steps') is not None:
         steps=int(cfg['steps'])

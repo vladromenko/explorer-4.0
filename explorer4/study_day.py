@@ -106,6 +106,14 @@ def enqueue(api, ident, key, task, found):
     if task['kind'] == 'simulation':
         cfg.update(kind='sim_evaluate', profile=task['profile'], expected_model_hash=task['physics'],
                    episodes=len(task['seeds']), scene_seeds=task['seeds'])
+        if task.get('demo_efficiency'):
+            from .sim_protocol import protocol
+            from scripts.demo_efficiency.design import load
+            design,_ = load(task['demo_efficiency'])
+            if task['profile']!=design['simulation'] or task['seeds']!=design['pilot_seeds']:
+                raise ValueError('Receiver-only evaluation differs from the matched comparison')
+            cfg.update(diagnostic='demo_efficiency_receiver', demo_efficiency=task['demo_efficiency'],
+                       protocol=protocol(task['profile'],task['seeds'],task['geometry'],str(bundle)))
     else:
         step = task['step']
         checkpoints = bundle.parent.parent

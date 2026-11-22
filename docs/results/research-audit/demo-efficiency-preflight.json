@@ -1,0 +1,55 @@
+{
+  "physical_target_plan": "64c019b2f8841db8e082e92f7e21e0eadc76bb72f9734808927c4f7278f4b284",
+  "unique_real_train_takes": [
+    "ab54d8081544414e9efc9c9c841a5b51",
+    "f83324dba752428a897a2e9350361258",
+    "1368258df03840edb97865f060e48369",
+    "8916e6e31f1b48d8b83723fc45e3e188",
+    "5f7b11c3f7024539942456435c9617af"
+  ],
+  "target_recording_span_seconds": {
+    "5f7b11c3f7024539942456435c9617af": 39.710361833,
+    "f83324dba752428a897a2e9350361258": 24.730411897,
+    "ab54d8081544414e9efc9c9c841a5b51": 26.722167803,
+    "8916e6e31f1b48d8b83723fc45e3e188": 15.577594077,
+    "1368258df03840edb97865f060e48369": 33.469171104
+  },
+  "recording_span_note": "Time between first and last recorded samples, excluding setup/reset and other labour.",
+  "real_split_counts": {
+    "test": 3,
+    "train": 5,
+    "validation": 2
+  },
+  "successful_real_so101_recordings": 4,
+  "archived_donor_geometry": [
+    {
+      "episode": "d891e94d13014e3abcda7f1a3dce517e",
+      "overview_frames": 871,
+      "pose_admission": "unverified; copied camera calibration requires current independent control",
+      "physical_verified": false
+    }
+  ],
+  "packets": [
+    {
+      "sha256": "32442693c33c0f138e3d8493ffba4a8f570d9aeac3ea10a30b83253ca8d5ac54",
+      "domain": "sim",
+      "source": "geometric",
+      "eligible": false,
+      "reasons": [
+        "donor_domain_mismatch"
+      ]
+    }
+  ],
+  "motor_comparison_ready": false,
+  "human_minutes": null,
+  "unknown_costs": [
+    "donor_demo",
+    "target_demo",
+    "calibration",
+    "annotation",
+    "reset",
+    "correction"
+  ],
+  "physical_success_measured": false,
+  "training_started": false
+}
