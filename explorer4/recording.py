@@ -35,6 +35,61 @@ def source_snapshot():
     return {'files':files,'sha256':hashlib.sha256(json.dumps(files,sort_keys=True).encode()).hexdigest()}
 
 
+def finalized_grasp_frames(root, trial, raw):
+    """Validate a single closed LeRobot rollout before rebuilding its missing catalogue entry."""
+    import av
+    import pyarrow.parquet as pq
+    from .grasp_trial import PENDING_OBSERVATION
+
+    hardware = raw["hardware"]
+    frames = trial["frames"]
+    label = raw["outcome"]
+    measured = trial.get("endpoint")
+    if (trial["episodes"] != [root.name] or type(frames) is not int or frames <= 0 or
+            raw["category"] != "rollout" or raw["synthetic"] is not False or raw["scene_id"] != trial["scene"] or
+            not raw["session_id"] or not np.isfinite(raw["closed_at"]) or not hardware["trial_id"] or
+            hardware["conditioned_grasp_result"] != "/api/rosmaster/grasp-trial/" + trial["plan_id"] or
+            label not in {PENDING_OBSERVATION, "success", "failure", "aborted"} or
+            (label == PENDING_OBSERVATION) != bool(trial.get("pending_at_capture_close")) or
+            (label == "success" and not (measured and trial["success"])) or
+            (measured and trial["success"] and label not in {"success", PENDING_OBSERVATION})):
+        raise ValueError("Не совпадают паспорт записи и итог одиночной пробы")
+    info = json.loads((root / "meta/info.json").read_text())
+    indices = list(range(frames))
+    if info["total_episodes"] != 1 or info["total_frames"] != frames:
+        raise ValueError("Число эпизодов или кадров LeRobot не совпадает с пробой")
+    episode = pq.read_table(sorted((root / "meta/episodes").glob("*/*.parquet")),
+                            columns=["episode_index", "length", "dataset_from_index", "dataset_to_index"]).to_pylist()
+    if episode != [{"episode_index": 0, "length": frames, "dataset_from_index": 0, "dataset_to_index": frames}]:
+        raise ValueError("Неполные метаданные эпизода LeRobot")
+    stats = json.loads((root / "meta/stats.json").read_text())
+    tasks = pq.read_table(root / "meta/tasks.parquet", columns=["task_index"])
+    if not {"observation.state", "action", "observation.images.front"} <= stats.keys() or tasks.num_rows != 1:
+        raise ValueError("Нет статистики или задачи эпизода LeRobot")
+    channels = ("observation.state", "action")
+    data = pq.read_table(sorted((root / "data").glob("*/*.parquet")), columns=["episode_index", "frame_index", *channels])
+    for name in channels:
+        values = np.asarray(data[name].to_pylist(), dtype=float)
+        if values.shape != (frames, 6) or not np.isfinite(values).all():
+            raise ValueError("Состояния и действия руки не покрывают все шесть каналов")
+    if data["frame_index"].to_pylist() != indices or data["episode_index"].to_pylist() != [0] * frames:
+        raise ValueError("Неполная таблица кадров LeRobot")
+    sidecar = [json.loads(line) for line in (root / "research.jsonl").read_text().splitlines()]
+    if ([row["frame_index"] for row in sidecar] != indices or any(
+            row["episode_id"] != root.name or row["trial_id"] != hardware["trial_id"] or
+            row["command_source"] != "policy" for row in sidecar)):
+        raise ValueError("Неполный журнал команд и наблюдений пробы")
+    video_frames = 0
+    for path in sorted((root / "videos/observation.images.front").glob("*/*.mp4")):
+        with av.open(str(path)) as video:
+            if len(video.streams.video) != 1:
+                raise ValueError("Видео пробы не содержит один поток камеры")
+            video_frames += sum(1 for _ in video.decode(video=0))
+    if video_frames != frames:
+        raise ValueError("Видео не содержит все кадры завершённой записи")
+    return frames
+
+
 class EpisodeWriter:
     def __init__(self, name: str, session: str, scene: str, category='demonstration', *, domain='real', training_label=None, task=None):
         if domain=='real':
@@ -183,7 +238,13 @@ class EpisodeWriter:
         if self.domain=='sim' and not all(key in provenance for key in ('model','seed','controller','lineage')):
             raise ValueError('Simulation provenance incomplete')
         if outcome not in {'success','failure','aborted'}:
-            raise ValueError('Unknown outcome')
+            from .grasp_trial import PENDING_OBSERVATION
+            plan = provenance.get('trial_plan') or {}
+            if not (outcome == PENDING_OBSERVATION and self.name == 'rosmaster_pick_place'
+                    and self.domain == 'real' and self.category == 'rollout' and self.command_source == 'policy'
+                    and plan.get('kind') == 'conditioned_grasp' and plan.get('id')
+                    and provenance.get('conditioned_grasp_result') == '/api/rosmaster/grasp-trial/' + plan['id']):
+                raise ValueError('Unknown outcome')
         if self.training_label is not None and (provenance.get('segment_role')!='noise_demonstration' or
                 provenance.get('training_label')!=self.training_label or not provenance.get('review')):
             raise ValueError('Separate expert labels require the reviewed noise-collection provenance')
@@ -205,10 +266,16 @@ class EpisodeWriter:
                 if self.collection_context:
                     collection.completed(self.id,'aborted',self.frames,reason='Ошибка сохранения; исходные файлы оставлены: '+str(exc))
                 raise
-            (self.root/'provenance.json').write_text(json.dumps({'hardware':provenance,'profile':self.cfg,'outcome':outcome,
+            raw = {'hardware':provenance,'profile':self.cfg,'outcome':outcome,
                 'category':self.category,'domain':self.domain,'synthetic':self.domain!='real','closed_at':time.time(),'training_label':self.training_label,
                 'session_id':self.session,'scene_id':self.scene,'initial_state':self.initial_state,
-                'code_version':code_version(),'source_snapshot':source_snapshot(),'command_source':self.command_source},indent=2))
+                'code_version':code_version(),'source_snapshot':source_snapshot(),'command_source':self.command_source}
+            path = self.root/'provenance.json'
+            if self.domain == 'real' and (provenance.get('trial_plan') or {}).get('kind') == 'conditioned_grasp':
+                from .fleet_config import atomic_write
+                atomic_write(path, raw)
+            else:
+                path.write_text(json.dumps(raw,indent=2))
             catalog.add_episode(dict(id=self.id,profile=self.name,dataset=str(self.root),episode_index=0,
                 session=self.session,scene=self.scene,category=self.category,outcome=outcome,frames=self.frames))
         else:

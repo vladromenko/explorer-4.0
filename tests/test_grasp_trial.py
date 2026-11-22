@@ -140,3 +140,145 @@ def test_sequence_and_controller_completion_cannot_self_score(tmp_path,monkeypat
     plan,op,_,_=fixture(tmp_path,monkeypatch)
     grasp_trial.amend(plan["id"],finished_at=time.time(),sequence_completed=True,stop_acknowledged_by_agent=True)
     assert not grasp_trial.observe_outcome(plan["id"],op,visible,lift,hold,"operator")["success"]
+
+
+def test_late_measurement_reconciles_saved_capture_after_restart(tmp_path, monkeypatch):
+    import json
+    from explorer4 import catalog
+
+    plan, op, session, written = fixture(tmp_path, monkeypatch)
+    monkeypatch.setattr(grasp_trial, "VERDICT_WAIT_S", 0)
+    monkeypatch.setattr(grasp_trial, "DATA", tmp_path)
+    monkeypatch.setattr(catalog, "DATA", tmp_path)
+    monkeypatch.setattr(catalog, "prepare", lambda: None)
+    catalog.initialize()
+    grasp_trial.start(plan, "user", 0, session, op, "fixture", True)
+    session.thread.join(8)
+    record = grasp_trial.result(plan["id"])
+    assert record["pending_at_capture_close"] and record["success"] is None
+    assert record["sequence_completed"] and record["stop_acknowledged_by_agent"] and not op.lease
+    label, hardware = written[0]
+    assert label == "awaiting_measurement" and hardware["independent_endpoint"] is None
+
+    # Receive the human measurement before the capture reaches the catalogue.
+    measured = grasp_trial.observe_outcome(plan["id"], op, "held", 61., 1.1, "fixture ruler")
+    assert measured["success"]
+    episode = record["episodes"][0]
+    root = tmp_path / "datasets/rosmaster_pick_place" / episode
+    root.mkdir(parents=True)
+    raw = json.dumps(dict(domain="real", command_source="policy", outcome=label, hardware=hardware))
+    (root / "provenance.json").write_text(raw)
+    catalog.add_episode(dict(id=episode, profile="rosmaster_pick_place", dataset=str(root), episode_index=0,
+                             session="fixture", scene="fixture", category="rollout", outcome=label, frames=3))
+    grasp_trial.recover_observed_outcomes()
+    grasp_trial.recover_observed_outcomes()
+    assert catalog.rows("episodes")[0]["outcome"] == "success"
+    assert (root / "provenance.json").read_text() == raw
+
+
+def test_late_stop_while_saving_preserves_completed_physical_verdict(tmp_path, monkeypatch):
+    plan, op, session, written = fixture(tmp_path, monkeypatch)
+    in_save, resume = threading.Event(), threading.Event()
+    def pause_before_writer():
+        in_save.set()
+        assert resume.wait(4)
+        return {}
+    monkeypatch.setattr(rs, "agent_code_hashes", pause_before_writer)
+    grasp_trial.start(plan, "user", 0, session, op, "fixture", True)
+    until = time.monotonic() + 4
+    while session.status()["phase"] != "awaiting_grasp_verdict" and time.monotonic() < until:
+        time.sleep(.01)
+    scored = grasp_trial.observe_outcome(plan["id"], op, "held", 61., 1.2, "ruler")
+    try:
+        assert scored["success"] and in_save.wait(4)
+        session.mark_emergency()
+        assert not session.finish("aborted", emergency=True)
+    finally:
+        resume.set()
+    session.thread.join(4)
+    audit = grasp_trial.result(plan["id"])
+    assert audit["success"] and audit["rollout_outcome_at_save"] == written[0][0] == "success"
+    assert not written[0][1]["emergency_intervention"] and not audit["emergency"]
+
+
+def test_late_verdict_acquires_operator_before_fleet(tmp_path, monkeypatch):
+    from contextlib import contextmanager
+    plan, op, _, _ = fixture(tmp_path, monkeypatch)
+    grasp_trial.amend(plan["id"], finished_at=time.time(), sequence_completed=True, stop_acknowledged_by_agent=True)
+    held = []
+    @contextmanager
+    def operator_lock():
+        held.append("operator")
+        try:
+            yield
+        finally:
+            held.remove("operator")
+    @contextmanager
+    def fleet_lock():
+        assert held == ["operator"]
+        yield
+    op.lock = operator_lock()
+    monkeypatch.setattr(grasp_trial.fleet_config, "locked", fleet_lock)
+    assert grasp_trial.observe_outcome(plan["id"], op, "held", 61., 1.2, "ruler")["success"]
+
+
+def test_restart_indexes_only_a_complete_bound_orphaned_capture(tmp_path, monkeypatch):
+    import av
+    import json
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from explorer4 import catalog
+
+    monkeypatch.setattr(grasp_trial, "RESULTS", tmp_path / "trials")
+    monkeypatch.setattr(grasp_trial, "DATA", tmp_path)
+    monkeypatch.setattr(grasp_trial.fleet_config, "locked", nullcontext)
+    monkeypatch.setattr(catalog, "DATA", tmp_path)
+    monkeypatch.setattr(catalog, "prepare", lambda: None)
+    catalog.initialize()
+    ident, episode, command = "1"*32, "2"*32, "3"*32
+    plan = {"id": ident, "kind":"conditioned_grasp"}
+    grasp_trial.amend(ident, plan_id=ident, episodes=[episode], scene="pad", frames=3,
+                      finished_at=time.time(), sequence_completed=True, stop_acknowledged_by_agent=True,
+                      pending_at_capture_close=True, success=None)
+    root = tmp_path / "datasets/rosmaster_pick_place" / episode
+    for folder in ("meta/episodes/chunk-000", "data/chunk-000", "videos/observation.images.front/chunk-000"):
+        (root / folder).mkdir(parents=True)
+    raw = {"category":"rollout","synthetic":False,"domain":"real","command_source":"policy",
+           "scene_id":"pad", "session_id":"fixture", "closed_at":time.time(), "outcome":"awaiting_measurement",
+           "hardware":{"trial_plan":plan,"trial_id":command,"conditioned_grasp_result":"/api/rosmaster/grasp-trial/"+ident}}
+    (root / "provenance.json").write_text(json.dumps(raw))
+    (root / "meta/info.json").write_text(json.dumps({"total_frames":3,"total_episodes":1}))
+    pq.write_table(pa.table({"episode_index":[0],"length":[3],"dataset_from_index":[0],"dataset_to_index":[3]}),
+                   root / "meta/episodes/chunk-000/file-000.parquet")
+    (root / "meta/stats.json").write_text(json.dumps({name:{} for name in ("observation.state","action","observation.images.front")}))
+    pq.write_table(pa.table({"task_index":[0]}), root / "meta/tasks.parquet")
+    pq.write_table(pa.table({"episode_index":[0,0,0], "frame_index":[0,1,2],
+                             "observation.state":[[0.] * 6] * 3, "action":[[0.] * 6] * 3}),
+                   root / "data/chunk-000/file-000.parquet")
+    rows = [{"frame_index":i,"episode_id":episode,"trial_id":command,"command_source":"policy"} for i in range(3)]
+    sidecar = root / "research.jsonl"
+    def save(rows):
+        sidecar.write_text("".join(json.dumps(row)+"\n" for row in rows))
+    save(rows)
+    grasp_trial.recover_observed_outcomes()
+    assert catalog.rows("episodes") == []  # No final video.
+    with av.open(str(root / "videos/observation.images.front/chunk-000/file-000.mp4"), "w") as video:
+        stream = video.add_stream("mpeg4", rate=20)
+        stream.width = stream.height = 16
+        stream.pix_fmt = "yuv420p"
+        for index in range(3):
+            frame = av.VideoFrame.from_ndarray(np.full((16,16,3), index, np.uint8), format="rgb24")
+            video.mux(stream.encode(frame))
+        video.mux(stream.encode(None))
+    save([{**r,"trial_id":"wrong"} for r in rows])
+    grasp_trial.recover_observed_outcomes()
+    assert catalog.rows("episodes") == []  # Same video and frame count, different physical command trial.
+    save(rows)
+    grasp_trial.recover_observed_outcomes()
+    [entry] = catalog.rows("episodes")
+    assert (entry["id"],entry["outcome"],entry["frames"]) == (episode,"awaiting_measurement",3)
+    assert grasp_trial.observe_outcome(ident, Operator(), "held", 61., 1.1, "ruler")["success"]
+    grasp_trial.recover_observed_outcomes()
+    [entry] = catalog.rows("episodes")
+    assert entry["outcome"] == "success" and entry["created"] == raw["closed_at"]
+    assert json.loads((root / "provenance.json").read_text()) == raw

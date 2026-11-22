@@ -91,15 +91,20 @@ def run_job(path: Path):
         return
     if cfg.get('kind') == 'workspace_study':
         from .study_queue import execute
-        if 'peer_confirmation' in cfg:
-            from .peer_confirmation import primary_saved
-            if not primary_saved(cfg, work):
+        from .peer_primary_recovery import has_fit, partial_confirmation
+        from .peer_confirmation import primary_saved
+        attached = 'peer_confirmation' in cfg
+        if not (attached and primary_saved(cfg, work)):
+            if has_fit(cfg):
+                subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer4.peer_primary_recovery',
+                                work.name], cwd=ROOT, env={**offline_environment(), 'MUJOCO_GL':'egl'}, check=True)
+            else:
                 execute(cfg, work)
-            subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer4.peer_confirmation',
-                            'resume', work.name], cwd=ROOT,
+        if attached:
+            command = (['explorer4.peer_primary_recovery', work.name, '--confirmation'] if partial_confirmation(cfg)
+                       else ['explorer4.peer_confirmation', 'resume', work.name])
+            subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', *command], cwd=ROOT,
                            env={**offline_environment(), 'MUJOCO_GL':'egl', 'OMP_NUM_THREADS':'1'}, check=True)
-        else:
-            execute(cfg, work)
         return
     if cfg.get('kind')=='noise_demonstrations':
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.noise_demonstrations',str(path),str(work)],

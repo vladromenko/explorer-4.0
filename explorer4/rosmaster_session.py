@@ -144,6 +144,7 @@ class RosmasterSession:
                 raise PermissionError('Одиночная проба требует проверенного разового запуска в консоли')
             grasp_trial.amend(plan['id'],phase='recording')
         self.conditioned_lease=conditioned_lease
+        self.conditioned_motion_closed=False
         if not check:
             if self.operator.owner != owner or not self.operator.lease:
                 raise PermissionError('Сначала «Включить управление» для этой задачи')
@@ -169,6 +170,9 @@ class RosmasterSession:
         with self.lock:
             if getattr(self,'conditioned_lease',None) and outcome!='aborted':
                 raise ValueError('Укажите независимые измерения подъёма и удержания после STOP')
+            if getattr(self, 'conditioned_motion_closed', False):
+                self.stop_event.set()  # Release the verdict wait after motion has already ended.
+                return False
             if not self.active() or self.stop_event.is_set():
                 return False
             if outcome != 'aborted' and (self.state['phase'] != 'recording' or self.state['frames'] < 1):
@@ -181,8 +185,10 @@ class RosmasterSession:
 
     def mark_emergency(self):
         """Called BEFORE the STOP: the loop may end on the lost lease before finish() runs."""
-        self.emergency = True
-        self.termination = 'emergency'
+        with self.lock:
+            if not getattr(self, 'conditioned_motion_closed', False):
+                self.emergency = True
+                self.termination = 'emergency'
 
     def end_correction(self):
         self.correction_done.set()
@@ -323,8 +329,12 @@ class RosmasterSession:
                                 if self.stop_event.is_set() or not grasp_trial.same_lease(self.operator,owner,*self.conditioned_lease):
                                     raise InterruptedError('Оператор остановил одиночную пробу')
                                 grasp_trial.check_heartbeat(self.operator,owner)
-                                completed=True
-                                self.termination='sequence_completed'
+                                with self.lock:
+                                    if self.emergency or self.stop_event.is_set():
+                                        raise InterruptedError('Оператор остановил одиночную пробу')
+                                    self.conditioned_motion_closed=True
+                                    completed=True
+                                    self.termination='sequence_completed'
                                 self.operator.set_direct(None)
                                 self.operator.stop('STOP: одиночная проба руки завершена')
                                 acknowledged=self.operator.error=='STOP: одиночная проба руки завершена'
@@ -414,6 +424,8 @@ class RosmasterSession:
             if sensors:sensors.close()
             provenance['recording_timing'] = timing
             if conditioned:
+                with self.lock:
+                    self.conditioned_motion_closed=True
                 with self.operator.lock:
                     owned=grasp_trial.same_lease(self.operator,owner,*self.conditioned_lease)
                     if owned:
@@ -432,13 +444,15 @@ class RosmasterSession:
                 if completed and segments:
                     with self.lock:
                         self.state.update(phase='awaiting_grasp_verdict',grasp_plan=self.plan['id'])
-                    until=time.monotonic()+120
+                    until=time.monotonic()+grasp_trial.VERDICT_WAIT_S
                     while time.monotonic()<until and not self.stop_event.wait(.2):
                         result=grasp_trial.result(self.plan['id'])
                         if result.get('endpoint'):
                             break
                     # The endpoint remains available after closing or refreshing the console.
-                    self.outcome=('success' if result.get('success') else 'failure') if result.get('endpoint') else 'aborted'
+                    self.outcome=('success' if result.get('success') else 'failure') if result.get('endpoint') else grasp_trial.PENDING_OBSERVATION
+                    if self.outcome == grasp_trial.PENDING_OBSERVATION:
+                        grasp_trial.amend(self.plan['id'], pending_at_capture_close=True)
                     provenance['independent_endpoint']=result.get('endpoint')
             elif provider is not None:
                 self.operator.set_direct(None)
@@ -478,8 +492,9 @@ class RosmasterSession:
                     catalog.event('error', 'ROSMASTER сохранение: '+str(exc))
             lease.__exit__(None, None, None)
             if conditioned:
-                grasp_trial.amend(self.plan['id'],rollout_outcome_at_save=self.outcome,
+                record=grasp_trial.amend(self.plan['id'],rollout_outcome_at_save=self.outcome,
                                   recording_error=self.state.get('error'),recording_saved_at=time.time())
+                grasp_trial.sync_recorded_outcome(record)
             if not check and not self.plan and not base:
                 from .grasp_admission import schedule
                 try:schedule(collection)

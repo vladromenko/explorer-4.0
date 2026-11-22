@@ -5,12 +5,15 @@ import math
 import re
 import threading
 import time
+from pathlib import Path
 
-from . import fleet_config
+from . import catalog, fleet_config
 from .paths import DATA
 
 RESULTS = DATA / "runs/conditioned-grasp-field"
 LAUNCH = threading.Lock()
+VERDICT_WAIT_S = 120
+PENDING_OBSERVATION = "awaiting_measurement"
 
 
 def result_path(plan_id):
@@ -31,6 +34,55 @@ def amend(ident, **fields):
         record.update(fields)
         fleet_config.atomic_write(path, record)
         return record
+
+
+def sync_recorded_outcome(record, *, recover_missing=False):
+    """A capture keeps its original label. The catalogue can receive the later independent verdict."""
+    measured = record.get("pending_at_capture_close") and record.get("endpoint")
+    if not record.get("episodes") or not (measured or recover_missing):
+        return
+    base = (DATA / "datasets/rosmaster_pick_place").resolve()
+    with catalog.connect() as db:
+        for episode in record["episodes"]:
+            root = (base / episode).resolve()
+            if root.parent != base or root.name != episode:
+                raise ValueError("Путь записи не соответствует эпизоду наблюдаемой пробы")
+            row = db.execute("SELECT profile,category,dataset,outcome FROM episodes WHERE id=?", (episode,)).fetchone()
+            if row is None and (not recover_missing or not (root / "provenance.json").is_file()):
+                continue
+            if row is not None:
+                if row["profile"] != "rosmaster_pick_place" or row["category"] != "rollout" or Path(row["dataset"]).resolve() != root:
+                    raise ValueError("Каталог указывает на другую запись пробы")
+                if not measured or row["outcome"] != PENDING_OBSERVATION:
+                    continue
+            raw = json.loads((root / "provenance.json").read_text())
+            plan = raw["hardware"]["trial_plan"]
+            if (raw["domain"] != "real" or raw["command_source"] != "policy" or plan["id"] != record["plan_id"]
+                    or plan["kind"] != "conditioned_grasp"):
+                raise ValueError("Сохранённый эпизод не соответствует наблюдению")
+            if row is None:
+                from .recording import finalized_grasp_frames
+                frames = finalized_grasp_frames(root, record, raw)
+                db.execute("""INSERT INTO episodes
+                    (id,profile,dataset,episode_index,session,scene,category,outcome,frames,created)
+                    VALUES(?,'rosmaster_pick_place',?,0,?,?,'rollout',?,?,?) ON CONFLICT(id) DO NOTHING""",
+                    (episode, str(root), raw["session_id"], raw["scene_id"], raw["outcome"], frames, raw["closed_at"]))
+            if measured:
+                if raw["outcome"] != PENDING_OBSERVATION:
+                    raise ValueError("Оценка не соответствует исходной метке записи")
+                label = "success" if record["success"] else "failure"
+                db.execute("UPDATE episodes SET outcome=? WHERE id=? AND outcome=?", (label, episode, PENDING_OBSERVATION))
+
+
+def recover_observed_outcomes():
+    for path in RESULTS.glob("*.json"):
+        try:
+            record = json.loads(path.read_text())
+            if record.get("episodes") and record.get("plan_id") != path.stem:
+                raise ValueError("Номер пробы не совпадает с именем файла")
+            sync_recorded_outcome(record, recover_missing=True)
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            catalog.event("error", f"Восстановление записи пробы {path.stem}: {exc}")
 
 
 def same_lease(operator, owner, generation, lease):
@@ -104,7 +156,7 @@ def observe_outcome(plan_id, operator, visible, lift_mm, hold_s, note):
     if visible == "held" and any(isinstance(x, bool) or not isinstance(x, (int, float))
                                  or not math.isfinite(x) or x < 0 for x in (lift_mm, hold_s)):
         raise ValueError("Измерьте отрыв от исходной опоры в мм и непрерывное время удержания в секундах")
-    with fleet_config.locked(), operator.lock:
+    with operator.lock, fleet_config.locked():
         record = result(plan_id)
         if not record.get("finished_at") or operator.lease:
             raise ValueError("Сначала нужна завершённая проба и STOP")
@@ -117,4 +169,5 @@ def observe_outcome(plan_id, operator, visible, lift_mm, hold_s, note):
         record.update(phase="measured", endpoint=endpoint,
                       success=bool(record.get("sequence_completed") and record.get("stop_acknowledged_by_agent") and not record.get("emergency") and measured))
         fleet_config.atomic_write(result_path(plan_id), record)
-        return record
+    sync_recorded_outcome(record)
+    return record

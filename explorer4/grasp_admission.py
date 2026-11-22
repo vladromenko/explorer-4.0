@@ -395,6 +395,8 @@ def schedule(series):
 
 
 def resume_pending():
+    from .grasp_trial import recover_observed_outcomes
+    recover_observed_outcomes()
     # A UI restart can interrupt an offline review. This only restarts measured-data
     # processing. No trial is claimed and no robot endpoints are touched here.
     for f in grasp_reference.LINKS.glob("*.json"):
