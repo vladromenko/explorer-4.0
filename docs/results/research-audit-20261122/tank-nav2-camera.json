@@ -1,0 +1,368 @@
+{
+  "status": "completed",
+  "domain": "simulation",
+  "training_updates": 0,
+  "physical_trials": 0,
+  "protocol_sha256": "4faacfe661d705715ef980b2c8b7f57274f19aeff36d8aa84c1ecaa05629e772",
+  "starts_sha256": "0745a02a1e3780d5df3496cb9c320b17eb11a3354afc1c658556d8ce2caa7efc",
+  "nav2_library_sha256": "720ed31cce7233e95244dc62fbf9194fa6e2b4c383e5f124d15411d4063bf426",
+  "ppo_weights_sha256": "be74e76cff0322cea7d2200af6bb5fd22f64a6f8bbf8fa12ddcada095de09a63",
+  "seeds": [
+    104000,
+    104001,
+    104002,
+    104003,
+    104004,
+    104005,
+    104006,
+    104007,
+    104008,
+    104009,
+    104010,
+    104011,
+    104012,
+    104013,
+    104014,
+    104015
+  ],
+  "methods": {
+    "nav2_memory": {
+      "scenes": 16,
+      "success": 16,
+      "collision": 0,
+      "timeout": 0,
+      "mean_time_s": 9.700000000000001,
+      "mean_terminal_distance_m": 0.03353882289957255,
+      "mean_absolute_terminal_yaw_rad": 0.04452984035015106,
+      "detections": 500,
+      "frames": 780,
+      "safety_stop_ticks": 0
+    },
+    "ppo_memory": {
+      "scenes": 16,
+      "success": 12,
+      "collision": 0,
+      "timeout": 4,
+      "mean_time_s": 10.484375,
+      "mean_terminal_distance_m": 0.06701817351859063,
+      "mean_absolute_terminal_yaw_rad": 0.09299881756305695,
+      "detections": 312,
+      "frames": 843,
+      "safety_stop_ticks": 0
+    },
+    "ppo_native": {
+      "scenes": 16,
+      "success": 10,
+      "collision": 0,
+      "timeout": 6,
+      "mean_time_s": 12.815625,
+      "mean_terminal_distance_m": 0.3308746063266881,
+      "mean_absolute_terminal_yaw_rad": 0.46418215334415436,
+      "detections": 264,
+      "frames": 1029,
+      "safety_stop_ticks": 0
+    }
+  },
+  "paired": {
+    "nav2_memory_minus_ppo_memory": {
+      "wins": 4,
+      "losses": 0,
+      "success_rate_difference": 0.25,
+      "paired_exact_p": 0.125
+    },
+    "nav2_memory_minus_ppo_native": {
+      "wins": 6,
+      "losses": 0,
+      "success_rate_difference": 0.375,
+      "paired_exact_p": 0.03125
+    },
+    "ppo_memory_minus_ppo_native": {
+      "wins": 2,
+      "losses": 0,
+      "success_rate_difference": 0.125,
+      "paired_exact_p": 0.5
+    }
+  },
+  "development_old_controller": [
+    {
+      "seed": 100001,
+      "outcome": "timeout",
+      "mode_ticks": {
+        "legacy_servo": 165,
+        "legacy_scan": 235
+      },
+      "terminal_distance_m": 0.06214247643947601,
+      "absolute_terminal_yaw_rad": 2.701951265335083,
+      "frames": 100,
+      "detections": 40,
+      "matched_archived_outcome": true,
+      "matched_archived_observation_action_trace": true
+    },
+    {
+      "seed": 100003,
+      "outcome": "timeout",
+      "mode_ticks": {
+        "legacy_scan": 283,
+        "legacy_servo": 117
+      },
+      "terminal_distance_m": 0.12559838593006134,
+      "absolute_terminal_yaw_rad": 2.019174814224243,
+      "frames": 100,
+      "detections": 28,
+      "matched_archived_outcome": true,
+      "matched_archived_observation_action_trace": true
+    },
+    {
+      "seed": 100006,
+      "outcome": "timeout",
+      "mode_ticks": {
+        "legacy_scan": 255,
+        "legacy_servo": 145
+      },
+      "terminal_distance_m": 0.072331003844738,
+      "absolute_terminal_yaw_rad": 2.691664934158325,
+      "frames": 100,
+      "detections": 35,
+      "matched_archived_outcome": true,
+      "matched_archived_observation_action_trace": true
+    }
+  ],
+  "video_seed": 104000,
+  "video_sha256": "94e9306139c5d2ad526d7fb22d7c48020ec37e0287bbddd2db3438b7be9b99b3",
+  "phase": "14 original strict plus 2 post-hoc identical-first-RGB replays",
+  "shared_initial_recovery": {
+    "registration_sha256": "9c442fa7981e6429d3ab18aca6d2df8bc2015f169ffb9e2557bcebec702be257",
+    "original_strict_sha256": "55b8c790be67937b63876299bb2af98a65edfb3a859355696dbe44ef7136f2ed",
+    "original_strict_matched_scenes": 14,
+    "original_scenes": 16,
+    "corrected_seeds": [
+      104013,
+      104015
+    ],
+    "replays": [
+      {
+        "seed": 104013,
+        "arm": "nav2_memory",
+        "shared_initial_sha256": "83c32c871b42c86606b9d8d6bc49948a3e8204479a8e37653dcc608741e76946",
+        "observation_action_trace_matches_original": true,
+        "endpoint_and_steps_match_original": true,
+        "original_outcome": "success",
+        "replay_outcome": "success"
+      },
+      {
+        "seed": 104013,
+        "arm": "ppo_memory",
+        "shared_initial_sha256": "83c32c871b42c86606b9d8d6bc49948a3e8204479a8e37653dcc608741e76946",
+        "observation_action_trace_matches_original": true,
+        "endpoint_and_steps_match_original": true,
+        "original_outcome": "timeout",
+        "replay_outcome": "timeout"
+      },
+      {
+        "seed": 104013,
+        "arm": "ppo_native",
+        "shared_initial_sha256": "83c32c871b42c86606b9d8d6bc49948a3e8204479a8e37653dcc608741e76946",
+        "observation_action_trace_matches_original": true,
+        "endpoint_and_steps_match_original": true,
+        "original_outcome": "timeout",
+        "replay_outcome": "timeout"
+      },
+      {
+        "seed": 104015,
+        "arm": "nav2_memory",
+        "shared_initial_sha256": "2c1748ed29a54047d0c844dc685dad63f8a936ddc8ef3dc322cf49cd59881bb6",
+        "observation_action_trace_matches_original": true,
+        "endpoint_and_steps_match_original": true,
+        "original_outcome": "success",
+        "replay_outcome": "success"
+      },
+      {
+        "seed": 104015,
+        "arm": "ppo_memory",
+        "shared_initial_sha256": "2c1748ed29a54047d0c844dc685dad63f8a936ddc8ef3dc322cf49cd59881bb6",
+        "observation_action_trace_matches_original": true,
+        "endpoint_and_steps_match_original": true,
+        "original_outcome": "success",
+        "replay_outcome": "success"
+      },
+      {
+        "seed": 104015,
+        "arm": "ppo_native",
+        "shared_initial_sha256": "2c1748ed29a54047d0c844dc685dad63f8a936ddc8ef3dc322cf49cd59881bb6",
+        "observation_action_trace_matches_original": true,
+        "endpoint_and_steps_match_original": true,
+        "original_outcome": "timeout",
+        "replay_outcome": "timeout"
+      }
+    ]
+  },
+  "original_strict_methods": {
+    "nav2_memory": {
+      "success": 14
+    },
+    "ppo_memory": {
+      "success": 11,
+      "timeout": 3
+    },
+    "ppo_native": {
+      "success": 10,
+      "timeout": 4
+    }
+  },
+  "old_controller_last_seen": {
+    "100001": {
+      "last_positive_frame_s": 7.8,
+      "terminal_mode": "legacy_scan"
+    },
+    "100003": {
+      "last_positive_frame_s": 8.0,
+      "terminal_mode": "legacy_scan"
+    },
+    "100006": {
+      "last_positive_frame_s": 7.6,
+      "terminal_mode": "legacy_scan"
+    }
+  },
+  "raw_result_sha256": "94c97f1fe12e6b36863951cad07ea5afc149bdae1607c5e29498e1e23190a72a",
+  "video_url": "http://192.168.0.168:8030/simlab-media/reports/tank-nav2-camera-v1/comparison.mp4",
+  "units": "MuJoCo only. ROS 2 Nav2 docking control law defaults, Explorer search, goal memory and terminal tolerance. No Nav2 server, localization, path planner or physical dock is evaluated.",
+  "by_seed": [
+    {
+      "seed": 104000,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104001,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104002,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "timeout",
+        "ppo_native": "timeout"
+      }
+    },
+    {
+      "seed": 104003,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "timeout",
+        "ppo_native": "timeout"
+      }
+    },
+    {
+      "seed": 104004,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104005,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "timeout",
+        "ppo_native": "timeout"
+      }
+    },
+    {
+      "seed": 104006,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "timeout"
+      }
+    },
+    {
+      "seed": 104007,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104008,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104009,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104010,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104011,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104012,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104013,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "timeout",
+        "ppo_native": "timeout"
+      }
+    },
+    {
+      "seed": 104014,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "success"
+      }
+    },
+    {
+      "seed": 104015,
+      "outcomes": {
+        "nav2_memory": "success",
+        "ppo_memory": "success",
+        "ppo_native": "timeout"
+      }
+    }
+  ],
+  "technical_repeat": {
+    "role": "Same 16 starts, common frozen first RGB and verified OpenCV packet, fresh later frames. No increase in independent sample size.",
+    "compared_trajectories": 48,
+    "identical_observation_action_traces": 48,
+    "identical_endpoints_and_steps": 48,
+    "protocol_sha256": "10d64508b0c5cef6c0d93dfebfe69bd2daf64eafb178630b481dc43102de7edc",
+    "result_sha256": "eb0d7673762d6a6e68a48c1a473433787043fae09568ed80b8b11c2a27e2faf5",
+    "url": "http://192.168.0.168:8030/simlab-media/reports/tank-nav2-camera-paired-replication-v1/result.json"
+  }
+}
