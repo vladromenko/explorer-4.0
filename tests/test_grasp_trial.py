@@ -92,7 +92,9 @@ def fixture(tmp_path,monkeypatch):
     class Writer:
         def __init__(self,name,series,scene,category):
             assert category=="rollout" and name=="rosmaster_pick_place"
-            self.id="fixture"
+            self.id="f"*32
+            self.root=tmp_path/"datasets/rosmaster_pick_place"/self.id
+            self.root.mkdir(parents=True,exist_ok=True)
         def add(self,frame):assert frame["command_source"]=="policy"
         def finish(self,outcome,provenance):written.append((outcome,copy.deepcopy(provenance)))
     monkeypatch.setattr(rs,"EpisodeWriter",Writer)
@@ -105,20 +107,17 @@ def test_operator_click_to_frozen_rollout_with_independent_endpoint(tmp_path,mon
         grasp_trial.start(plan,"user",0,session,op,"fixture",False)
     assert not op.armed
     grasp_trial.start(plan,"user",0,session,op,"fixture",True)
-    end=time.monotonic()+8
-    while time.monotonic()<end and session.status()["phase"]!="awaiting_grasp_verdict":
-        time.sleep(.02)
-    assert session.status()["phase"]=="awaiting_grasp_verdict",session.status()
+    session.thread.join(8)
     assert not op.lease and len(op.commands)==3
     before=grasp_trial.result(plan["id"])
     assert before["success"] is None and before["sequence_completed"] and before["stop_acknowledged_by_agent"]
+    assert before["terminal_review"]["status"]=="unconfirmed"
     with pytest.raises(ValueError):
-        session.finish("success")
-    scored=grasp_trial.observe_outcome(plan["id"],op,"held",62.,1.5,"video frame and ruler")
-    session.thread.join(3)
-    assert scored["success"] and written[0][0]=="success" and written[0][1]["source"]=="policy"
+        grasp_trial.observe_outcome(plan["id"],op,"held",62.,1.5,"ruler")
+    scored=grasp_trial.observe_outcome(plan["id"],op,"unobservable",None,None,"No calibrated view")
+    assert not scored["success"] and written[0][0]=="awaiting_measurement" and written[0][1]["source"]=="policy"
     with pytest.raises(ValueError,match="уже"):
-        grasp_trial.observe_outcome(plan["id"],op,"held",80.,2.,"second report")
+        grasp_trial.observe_outcome(plan["id"],op,"failed",None,None,"second report")
     with pytest.raises(PermissionError):
         grasp_trial.start(plan,"user",op.generation,session,op,"second",True)
 
@@ -139,7 +138,11 @@ def test_stop_during_preflight_and_refusal_never_arm(tmp_path,monkeypatch):
 def test_sequence_and_controller_completion_cannot_self_score(tmp_path,monkeypatch,visible,lift,hold):
     plan,op,_,_=fixture(tmp_path,monkeypatch)
     grasp_trial.amend(plan["id"],finished_at=time.time(),sequence_completed=True,stop_acknowledged_by_agent=True)
-    assert not grasp_trial.observe_outcome(plan["id"],op,visible,lift,hold,"operator")["success"]
+    if visible=="held":
+        with pytest.raises(ValueError):
+            grasp_trial.observe_outcome(plan["id"],op,visible,lift,hold,"operator")
+    else:
+        assert not grasp_trial.observe_outcome(plan["id"],op,visible,lift,hold,"operator")["success"]
 
 
 def test_late_measurement_reconciles_saved_capture_after_restart(tmp_path, monkeypatch):
@@ -147,7 +150,6 @@ def test_late_measurement_reconciles_saved_capture_after_restart(tmp_path, monke
     from explorer4 import catalog
 
     plan, op, session, written = fixture(tmp_path, monkeypatch)
-    monkeypatch.setattr(grasp_trial, "VERDICT_WAIT_S", 0)
     monkeypatch.setattr(grasp_trial, "DATA", tmp_path)
     monkeypatch.setattr(catalog, "DATA", tmp_path)
     monkeypatch.setattr(catalog, "prepare", lambda: None)
@@ -161,18 +163,18 @@ def test_late_measurement_reconciles_saved_capture_after_restart(tmp_path, monke
     assert label == "awaiting_measurement" and hardware["independent_endpoint"] is None
 
     # Receive the human measurement before the capture reaches the catalogue.
-    measured = grasp_trial.observe_outcome(plan["id"], op, "held", 61., 1.1, "fixture ruler")
-    assert measured["success"]
+    measured = grasp_trial.observe_outcome(plan["id"], op, "failed", None, None, "dropped")
+    assert not measured["success"]
     episode = record["episodes"][0]
     root = tmp_path / "datasets/rosmaster_pick_place" / episode
-    root.mkdir(parents=True)
+    root.mkdir(parents=True,exist_ok=True)
     raw = json.dumps(dict(domain="real", command_source="policy", outcome=label, hardware=hardware))
     (root / "provenance.json").write_text(raw)
     catalog.add_episode(dict(id=episode, profile="rosmaster_pick_place", dataset=str(root), episode_index=0,
                              session="fixture", scene="fixture", category="rollout", outcome=label, frames=3))
     grasp_trial.recover_observed_outcomes()
     grasp_trial.recover_observed_outcomes()
-    assert catalog.rows("episodes")[0]["outcome"] == "success"
+    assert catalog.rows("episodes")[0]["outcome"] == "failure"
     assert (root / "provenance.json").read_text() == raw
 
 
@@ -185,20 +187,18 @@ def test_late_stop_while_saving_preserves_completed_physical_verdict(tmp_path, m
         return {}
     monkeypatch.setattr(rs, "agent_code_hashes", pause_before_writer)
     grasp_trial.start(plan, "user", 0, session, op, "fixture", True)
-    until = time.monotonic() + 4
-    while session.status()["phase"] != "awaiting_grasp_verdict" and time.monotonic() < until:
-        time.sleep(.01)
-    scored = grasp_trial.observe_outcome(plan["id"], op, "held", 61., 1.2, "ruler")
     try:
-        assert scored["success"] and in_save.wait(4)
+        assert in_save.wait(4)
+        assert not op.lease
         session.mark_emergency()
         assert not session.finish("aborted", emergency=True)
     finally:
         resume.set()
     session.thread.join(4)
     audit = grasp_trial.result(plan["id"])
-    assert audit["success"] and audit["rollout_outcome_at_save"] == written[0][0] == "success"
+    assert audit["success"] is None and written[0][0] == "awaiting_measurement"
     assert not written[0][1]["emergency_intervention"] and not audit["emergency"]
+
 
 
 def test_late_verdict_acquires_operator_before_fleet(tmp_path, monkeypatch):
@@ -219,7 +219,7 @@ def test_late_verdict_acquires_operator_before_fleet(tmp_path, monkeypatch):
         yield
     op.lock = operator_lock()
     monkeypatch.setattr(grasp_trial.fleet_config, "locked", fleet_lock)
-    assert grasp_trial.observe_outcome(plan["id"], op, "held", 61., 1.2, "ruler")["success"]
+    assert not grasp_trial.observe_outcome(plan["id"], op, "failed", None, None, "dropped")["success"]
 
 
 def test_restart_indexes_only_a_complete_bound_orphaned_capture(tmp_path, monkeypatch):
@@ -277,8 +277,10 @@ def test_restart_indexes_only_a_complete_bound_orphaned_capture(tmp_path, monkey
     grasp_trial.recover_observed_outcomes()
     [entry] = catalog.rows("episodes")
     assert (entry["id"],entry["outcome"],entry["frames"]) == (episode,"awaiting_measurement",3)
-    assert grasp_trial.observe_outcome(ident, Operator(), "held", 61., 1.1, "ruler")["success"]
+    with pytest.raises(ValueError):
+        grasp_trial.observe_outcome(ident, Operator(), "held", 61., 1.1, "ruler")
+    assert not grasp_trial.observe_outcome(ident, Operator(), "failed", None, None, "dropped")["success"]
     grasp_trial.recover_observed_outcomes()
     [entry] = catalog.rows("episodes")
-    assert entry["outcome"] == "success" and entry["created"] == raw["closed_at"]
+    assert entry["outcome"] == "failure" and entry["created"] == raw["closed_at"]
     assert json.loads((root / "provenance.json").read_text()) == raw

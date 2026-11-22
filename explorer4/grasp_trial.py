@@ -1,18 +1,17 @@
 """One leased physical grasp and a separately recorded human observation of the held cube."""
 from contextlib import ExitStack
 import json
-import math
 import re
 import threading
 import time
 from pathlib import Path
 
-from . import catalog, fleet_config
+from . import catalog, fleet_config, grasp_terminal
 from .paths import DATA
 
 RESULTS = DATA / "runs/conditioned-grasp-field"
 LAUNCH = threading.Lock()
-VERDICT_WAIT_S = 120
+ENDPOINT_VERSION = grasp_terminal.VERSION
 PENDING_OBSERVATION = "awaiting_measurement"
 
 
@@ -38,7 +37,9 @@ def amend(ident, **fields):
 
 def sync_recorded_outcome(record, *, recover_missing=False):
     """A capture keeps its original label. The catalogue can receive the later independent verdict."""
-    measured = record.get("pending_at_capture_close") and record.get("endpoint")
+    endpoint = record.get("endpoint") or {}
+    measured = record.get("pending_at_capture_close") and endpoint.get("version") == ENDPOINT_VERSION
+
     if not record.get("episodes") or not (measured or recover_missing):
         return
     base = (DATA / "datasets/rosmaster_pick_place").resolve()
@@ -70,7 +71,7 @@ def sync_recorded_outcome(record, *, recover_missing=False):
             if measured:
                 if raw["outcome"] != PENDING_OBSERVATION:
                     raise ValueError("Оценка не соответствует исходной метке записи")
-                label = "success" if record["success"] else "failure"
+                label = grade_status(record)
                 db.execute("UPDATE episodes SET outcome=? WHERE id=? AND outcome=?", (label, episode, PENDING_OBSERVATION))
 
 
@@ -80,6 +81,15 @@ def recover_observed_outcomes():
             record = json.loads(path.read_text())
             if record.get("episodes") and record.get("plan_id") != path.stem:
                 raise ValueError("Номер пробы не совпадает с именем файла")
+            if (record.get("pending_at_capture_close") and record.get("capture_protocol") == ENDPOINT_VERSION
+                    and not record.get("recording_saved_at")):
+                root = capture_root(record)
+                if (root / "provenance.json").is_file():
+                    from .recording import finalized_grasp_frames
+                    finalized_grasp_frames(root, record, json.loads((root / "provenance.json").read_text()))
+                    record = amend(path.stem, recording_saved_at=time.time(), recovered_finalized_capture=True)
+            if record.get("recording_saved_at"):
+                record = certify(record)
             sync_recorded_outcome(record, recover_missing=True)
         except (OSError, ValueError, TypeError, KeyError) as exc:
             catalog.event("error", f"Восстановление записи пробы {path.stem}: {exc}")
@@ -150,24 +160,71 @@ def start(plan, owner, generation, recorder, operator, scene, confirmed):
             raise
 
 
-def observe_outcome(plan_id, operator, visible, lift_mm, hold_s, note):
+def capture_root(record):
+    episodes = record.get("episodes", [])
+    if len(episodes) != 1 or not re.fullmatch(r"[a-f0-9]{32}", episodes[0]):
+        raise ValueError("Нет связанного эпизода терминальной пробы")
+    return DATA / "datasets/rosmaster_pick_place" / episodes[0]
+
+
+def grade_status(record):
+    endpoint = record.get("endpoint") or {}
+    if not endpoint:
+        return "pending"
+    if endpoint.get("version") != ENDPOINT_VERSION or endpoint.get("visible_outcome") == "unobservable":
+        return "unconfirmed"
+    return "success" if record.get("success") else "failure"
+
+
+def certify(record):
+    # This receipt can be rebuilt after a crash without rewriting an earlier operator verdict.
+    if record.get("capture_protocol") != ENDPOINT_VERSION or record.get("endpoint") or record.get("terminal_review"):
+        return record
+    try:
+        timing = grasp_terminal.window(capture_root(record), record)
+        review = {"status": "available", "window": timing}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        review = {"status": "unconfirmed", "reason": str(exc)}
+    return amend(record["plan_id"], terminal_review=review)
+
+
+def side_video(plan_id):
+    return result_path(plan_id).with_suffix(".mp4")
+
+
+def observe_outcome(plan_id, operator, visible, lift_mm, hold_s, note, *, source=None, stop_s=None, confirmed=False):
     if not isinstance(note, str) or not note.strip() or visible not in ("held", "failed", "unobservable"):
         raise ValueError("Укажите наблюдаемый исход и источник независимого замера или записи")
-    if visible == "held" and any(isinstance(x, bool) or not isinstance(x, (int, float))
-                                 or not math.isfinite(x) or x < 0 for x in (lift_mm, hold_s)):
-        raise ValueError("Измерьте отрыв от исходной опоры в мм и непрерывное время удержания в секундах")
+    record = result(plan_id)
+    if not record.get("finished_at") or operator.lease:
+        raise ValueError("Сначала нужна завершённая проба и STOP")
+    if "endpoint" in record:
+        raise ValueError("Исход уже зафиксирован")
+    measured = False
+    endpoint = {"version": ENDPOINT_VERSION, "visible_outcome": visible, "measurement": note.strip(),
+                "observed_at": time.time(), "geometry_and_hold_pass": False}
+    if visible == "held":
+        if (record.get("terminal_review") or {}).get("status") != "available":
+            raise ValueError("Терминальная поза и доступная запись пока не подтверждены. При отсутствии доказательств выберите «Исход не видно».")
+        # Re-read the original video, timestamps, feedback and final still on the scoring path.
+        window = grasp_terminal.window(capture_root(record), record)
+        if window != record["terminal_review"]["window"]:
+            raise ValueError("Изменились сохранённые измерения или видеозапись")
+        if hold_s is not None:
+            raise ValueError("Длительность подтверждает запись, ввод вручную не используется")
+        clip = side_video(plan_id) if source == "side_video" else None
+        visual = grasp_terminal.bind_height(window, source, stop_s, clip, lift_mm, confirmed)
+        measured = lift_mm > 50
+        endpoint.update(lift_above_support_mm=lift_mm, continuous_hold_s=window["duration_s"],
+                        terminal_window=window, height_evidence=visual, geometry_and_hold_pass=measured)
     with operator.lock, fleet_config.locked():
-        record = result(plan_id)
-        if not record.get("finished_at") or operator.lease:
-            raise ValueError("Сначала нужна завершённая проба и STOP")
-        if "endpoint" in record:
-            raise ValueError("Исход уже зафиксирован")
-        measured = visible == "held" and lift_mm > 50 and hold_s >= 1
-        endpoint = {"visible_outcome": visible, "lift_above_support_mm": lift_mm if visible == "held" else None,
-                    "continuous_hold_s": hold_s if visible == "held" else None, "measurement": note.strip(),
-                    "observed_at": time.time(), "geometry_and_hold_pass": measured}
+        if operator.lease:
+            raise ValueError("Сначала нужен STOP")
+        if result(plan_id) != record:
+            raise ValueError("Запись пробы изменилась во время проверки. Обновите журнал")
         record.update(phase="measured", endpoint=endpoint,
-                      success=bool(record.get("sequence_completed") and record.get("stop_acknowledged_by_agent") and not record.get("emergency") and measured))
+                      success=None if visible == "unobservable" else bool(record.get("sequence_completed") and record.get("stop_acknowledged_by_agent")
+                                   and not record.get("emergency") and measured))
         fleet_config.atomic_write(result_path(plan_id), record)
     sync_recorded_outcome(record)
     return record

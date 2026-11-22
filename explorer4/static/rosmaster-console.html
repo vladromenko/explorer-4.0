@@ -36,16 +36,22 @@ body.simple .adv{display:none!important}#simplebar{display:none;gap:10px;align-i
 <div id="keyboardhint" class="help" style="padding:0 20px 8px;color:var(--warn)" role="status" hidden></div>
 <section id="grasp-pilot" class="card" style="margin:8px 16px" hidden>
  <strong>Одна проверочная попытка подъёма кубика</strong>
- <p>Остановите ROSMASTER. Положите тот же измеренный кубик точно в четвёртую точку из мастера камеры, восстановите проверенную позу руки и приготовьте линейку или видео со шкалой. Режим ограничен шестью суставами и неподвижным шасси.</p>
+ <p>Остановите ROSMASTER. Положите тот же измеренный кубик точно в четвёртую точку из мастера камеры, восстановите проверенную позу руки и поставьте измерительную шкалу в плоскости кубика. Если кистевая камера перестанет видеть кубик и шкалу, заранее включите боковую камеру и обозначьте STOP в кадре или на звуке. Режим ограничен шестью суставами и неподвижным шасси.</p>
  <div class="row"><label>Расстановка <input id="grasp-scene" maxlength="60" placeholder="Отметка на столе или полу"></label>
  <label><input id="grasp-confirm" type="checkbox"> Шасси неподвижно, вижу кубик и нахожусь у STOP</label>
  <button id="grasp-start" disabled>Запустить эту попытку</button></div>
  <p>После STOP отметьте, держался ли кубик непрерывно в конечной позе до остановки. Успех требует отрыва больше 50 мм и удержания не меньше одной секунды.</p>
  <div class="row"><select id="grasp-visible"><option value="">Наблюдаемый исход</option><option value="held">Кубик в захвате</option><option value="failed">Промах или кубик выпал</option><option value="unobservable">Исход не видно</option></select>
- <label>Отрыв, мм <input type="number" min="0" id="grasp-lift"></label><label>Удержание, с <input type="number" min="0" step=".1" id="grasp-hold"></label>
- <label>Замер или видео <input id="grasp-evidence" maxlength="250"></label>
+ <a id="grasp-video" target="_blank" hidden>Кадры пробы</a><a id="grasp-still" target="_blank" hidden>Последний кадр перед STOP</a></div>
+ <p id="grasp-window">Конечный интервал рассчитывается по камере и сервоприводам после сохранения записи.</p>
+ <div class="row"><label>Источник замера <select id="grasp-source"><option value="wrist">Камера руки и последний кадр</option><option value="side_video">Боковая запись со шкалой</option></select></label>
+ <span id="grasp-side" hidden><label>Ролик MP4/MOV <input type="file" accept=".mp4,.mov" id="grasp-upload"></label>
+ <label>Момент STOP в ролике, с <input type="number" min="0" step=".01" id="grasp-side-stop"></label><a id="grasp-side-link" target="_blank" hidden>Открыть боковую запись</a></span>
+ <label>Минимальный отрыв нижней грани за весь интервал, мм <input type="number" min="0" step=".1" id="grasp-lift"></label>
+ <label><input type="checkbox" id="grasp-observed"> Вижу кубик в захвате и шкалу на всём интервале вплоть до STOP</label>
+ <label>Шкала и наблюдение <input id="grasp-evidence" maxlength="250"></label>
  <button id="grasp-score">Сохранить наблюдаемый исход</button><a id="grasp-result" target="_blank">Журнал JSON</a></div>
- <p id="grasp-message" role="status"></p>
+ <p id="grasp-message" role="status"></p><p id="grasp-upload-error" role="alert"></p>
 </section>
 <main>
 <section>
@@ -134,8 +140,17 @@ if (/^[a-f0-9]{32}$/.test(graspPlan||'')){
     if(!scene||!confirmed){$('grasp-message').textContent='Введите расстановку и подтвердите присутствие у STOP.';return;}
     $('grasp-confirm').checked=false;
     send({action:'trial_start',plan:graspPlan,scene,observing:true,confirmed});};
- $('grasp-score').onclick=()=>{const number=id=>$(id).value===''?null:Number($(id).value);
-    send({action:'grasp_outcome',plan:graspPlan,visibility:$('grasp-visible').value,lift_mm:number('grasp-lift'),hold_s:number('grasp-hold'),evidence:$('grasp-evidence').value});};
+ $('grasp-source').onchange=()=>{$('grasp-side').hidden=$('grasp-source').value!=='side_video';};
+ $('grasp-score').onclick=async()=>{const number=id=>$(id).value===''?null:Number($(id).value);
+    $('grasp-upload-error').textContent='';
+    const source=$('grasp-source').value,clip=$('grasp-upload').files[0];
+    if($('grasp-visible').value==='held' && source==='side_video' && clip){
+      try{const response=await fetch('/api/rosmaster/grasp-trial/'+graspPlan+'/side.mp4',{method:'POST',body:clip});
+          if(!response.ok)throw new Error((await response.json()).detail);$('grasp-upload').value='';}
+      catch(err){$('grasp-upload-error').textContent=String(err);return;}
+    }
+    send({action:'grasp_outcome',plan:graspPlan,visibility:$('grasp-visible').value,lift_mm:number('grasp-lift'),
+          source,stop_s:number('grasp-side-stop'),confirmed:$('grasp-observed').checked,evidence:$('grasp-evidence').value});};
 }
 if(recordingQuery.has('series')){
  const p=recordingQuery.get('profile');
@@ -240,8 +255,15 @@ function render(s){
    const match=(s.plans||[]).find(p=>p.id===graspPlan&&p.kind==='conditioned_grasp');
    $('grasp-start').disabled=!match||match.claimed||s.enabled||s.recording?.phase!=='idle';
    $('grasp-score').disabled=!match?.can_score||s.enabled;
-   $('grasp-message').textContent=typeof match?.measured==='boolean' ? (match.measured?'Измерение сохранено: куб удержан.':'Измерение сохранено: критерий не выполнен.') :
-     match?.can_score ? 'Попытка остановлена. Укажите наблюдение и замер.' : match?(s.notice||''):'Ожидание подготовленного плана из мастера камеры.';
+   const win=match?.terminal_review?.window,ep=match?.footage?.[0],endpoint='/api/rosmaster/grasp-trial/'+graspPlan;
+   $('grasp-video').hidden=!win;$('grasp-still').hidden=!win;$('grasp-side-link').hidden=!match?.side_video;
+   if(win){$('grasp-video').href='/api/episodes/'+ep+'/video#t='+(win.first_frame/20);
+     $('grasp-still').href=endpoint+'/terminal.png';
+     $('grasp-window').textContent='Проверьте кадры '+win.first_frame+'–'+win.last_video_frame+' и конечный снимок. Измеренный интервал '+win.duration_s.toFixed(3)+' с.';}
+   else if(match?.terminal_review?.reason){$('grasp-window').textContent=match.terminal_review.reason;}
+   $('grasp-side-link').href=endpoint+'/side.mp4';
+   $('grasp-message').textContent=({success:'Куб удержан: терминальный замер подтверждён.',failure:'Критерий удержания не выполнен.',unconfirmed:'Исход не подтверждён доступной записью.'})[match?.measured]||
+     (match?.can_score ? (s.notice||'Попытка остановлена. Укажите наблюдение и замер.') : match?(s.notice||''):'Ожидание подготовленного плана из мастера камеры.');
  }
  const R=s.recording||{};const P=R.pilot||{};const rec=R.phase&&R.phase!=='idle';
  $('control-profile').disabled=!!rec;$('rprof').disabled=!!rec;$('rscene').disabled=!!rec;$('rcat').disabled=!!rec;$('rcollection').disabled=!!rec;

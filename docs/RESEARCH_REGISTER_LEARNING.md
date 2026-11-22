@@ -35,6 +35,8 @@ Adaptation moved the gripper closer and produced contact. Its highest lift was 5
 
 **Which simulated result supports the first operator-supervised trial?** In the earlier 20 fresh scenes, 13 interpolated trajectories reached a stable carry within the 360-command field budget. Only nine of the 20 also had a camera prediction inside the 32-demonstration training hull; the real action provider rejects interpolation outside it. The revised simulation uses the same bounded 220-step provider, retains its last target through command 360 and verifies a stable final carry more than 50 mm above the support for at least one second. [Shared action window](../explorer4/grasp_measured.py) · [Support check](../explorer4/grasp_shadow.py) · [Original unrestricted outcomes](results/conditioned_grasp_v1/native-execution.json)
 
+The physical console derives the final carry window from native joint and camera timestamps through command 360 and bounds its distance to the STOP request. An operator measures the minimum cube lift against a visible scale in the linked wrist footage and final image or a synchronized side video. Earlier self-reported heights and durations remain unconfirmed. [Physical endpoint](../explorer4/grasp_terminal.py) · [Isolated valid and failed cases](../tests/test_grasp_terminal.py)
+
 | Registered MuJoCo population | Eligibility and denominator | Stable final carries |
 | --- | --- | --- |
 | Original 88300–88319 | 3 eligible; 13 refused for visibility and 4 for prediction outside demonstration support | 3/20 over all starts. Earlier raw ACT before/after and scratch ACT scored 0/20, 3/20 and 1/20. Two wins changed in each direction against after-training ACT. |

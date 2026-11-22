@@ -4,8 +4,8 @@ import json
 import time
 import uuid
 from pathlib import Path
-from fastapi import WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
+from fastapi import HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi.responses import FileResponse, HTMLResponse
 from starlette.websockets import WebSocketDisconnected
 from nicegui import app
 from .rosmaster_control import operator, request, connection, ensure_agent
@@ -30,8 +30,11 @@ def plans():
                 item={'id':plan['id'],'kind':plan['kind'],'label':plan['profile']+' · '+plan['kind']+' · '+plan['id'][:8]}
                 if plan['kind']=='conditioned_grasp':
                     audit=grasp_trial.result(plan['id'])
-                    item.update(claimed=bool(audit),can_score=bool(audit.get('finished_at') and not audit.get('endpoint')),
-                                measured=audit.get('success') if audit.get('endpoint') else None)
+                    item.update(claimed=bool(audit),can_score=bool(audit.get('finished_at') and not audit.get('endpoint')
+                        and (not audit.get('sequence_completed') or audit.get('terminal_review')
+                             or audit.get('capture_protocol')!=grasp_trial.ENDPOINT_VERSION)),
+                                measured=grasp_trial.grade_status(audit),terminal_review=audit.get('terminal_review'),
+                                footage=audit.get('episodes', []), side_video=grasp_trial.side_video(plan['id']).is_file())
                 items.append(item)
         from . import research
         research.initialize()
@@ -66,7 +69,63 @@ def grasp_trial_result(ident:str):
         return {'plan_id':ident,'phase':'claimed_without_record' if claimed else 'prepared','success':None,'episodes':[]}
     if record.get('phase')=='recording' and not recorder.active():
         return {**record,'phase':'interrupted_without_final_record','success':None}
-    return record
+    status=grasp_trial.grade_status(record)
+    if status=='unconfirmed':
+        return {**record, 'recorded_success':record.get('success'), 'success':None, 'evidence_status':status}
+    return {**record, 'evidence_status':status}
+
+
+@app.get('/api/rosmaster/grasp-trial/{ident}/terminal.png')
+def grasp_terminal_image(ident:str):
+    try:
+        record=grasp_trial.result(ident)
+        path=grasp_trial.capture_root(record)/'grasp-terminal.png'
+        if not record.get('finished_at') or not path.is_file():raise ValueError('Нет конечного снимка')
+        return FileResponse(path,media_type='image/png')
+    except (ValueError,OSError) as exc:
+        raise HTTPException(404,str(exc)) from exc
+
+
+@app.get('/api/rosmaster/grasp-trial/{ident}/side.mp4')
+def grasp_side_video(ident:str):
+    try:
+        path=grasp_trial.side_video(ident)
+        if not path.is_file():raise ValueError('Нет боковой записи')
+        return FileResponse(path,media_type='video/mp4')
+    except (ValueError,OSError) as exc:
+        raise HTTPException(404,str(exc)) from exc
+
+
+@app.post('/api/rosmaster/grasp-trial/{ident}/side.mp4')
+async def attach_grasp_video(ident:str,request:Request):
+    import os
+    import tempfile
+    from . import grasp_terminal
+    from .conditioned_grasp import file_hash
+    try:
+        record=grasp_trial.result(ident)
+        if not record.get('recording_saved_at') or record.get('endpoint'):
+            raise ValueError('Сначала завершите запись пробы; оценённая попытка уже закрыта')
+        path=grasp_trial.side_video(ident)
+        # Use a private temporary name; parallel requests cannot replace existing evidence.
+        with tempfile.NamedTemporaryFile(dir=path.parent,suffix='.mp4') as tmp:
+            size=0
+            async for chunk in request.stream():
+                size+=len(chunk)
+                if size>150*1024**2:raise ValueError('Сохраните финальный фрагмент MP4/MOV до 150 МБ')
+                tmp.write(chunk)
+            tmp.flush()
+            times=await asyncio.to_thread(grasp_terminal.footage,tmp.name)
+            content_hash=await asyncio.to_thread(file_hash,tmp.name)
+            with grasp_trial.fleet_config.locked():
+                if grasp_trial.result(ident).get('endpoint'):raise ValueError('Оценка уже сохранена')
+                if path.exists():
+                    if file_hash(path)!=content_hash:raise ValueError('К этой пробе уже привязан другой ролик')
+                else:
+                    os.link(tmp.name,path)
+        return {'frames':len(times),'duration_s':float(times[-1]),'sha256':content_hash}
+    except (ValueError,OSError) as exc:
+        raise HTTPException(400,str(exc)) from exc
 
 
 @app.post('/api/rosmaster/stop')
@@ -240,7 +299,8 @@ async def websocket(socket:WebSocket):
                 state['notice']=('Испытание' if plan else 'Запись')+' идёт: '+name+'. Затем «Успех», «Неуспех» или «Прервать»'
             elif action=='grasp_outcome':
                 record=await asyncio.to_thread(grasp_trial.observe_outcome,str(value.get('plan','')),operator,
-                                               value.get('visibility'),value.get('lift_mm'),value.get('hold_s'),value.get('evidence'))
+                                               value.get('visibility'),value.get('lift_mm'),value.get('hold_s'),value.get('evidence'),
+                                               source=value.get('source'),stop_s=value.get('stop_s'),confirmed=value.get('confirmed') is True)
                 state['notice']='Исход сохранён: '+('куб удержан' if record['success'] else 'критерий не выполнен')
             elif action=='record_finish':
                 recorder.finish(value.get('outcome'));state['notice']='Сохранение эпизода: '+str(value.get('outcome'))

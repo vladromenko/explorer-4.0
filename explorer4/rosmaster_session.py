@@ -336,7 +336,10 @@ class RosmasterSession:
                                     completed=True
                                     self.termination='sequence_completed'
                                 self.operator.set_direct(None)
+                                dispatch_ns=time.monotonic_ns()
                                 self.operator.stop('STOP: одиночная проба руки завершена')
+                                provenance['terminal_stop']={'request_home_ns':dispatch_ns,
+                                    'response_home_ns':time.monotonic_ns()}
                                 acknowledged=self.operator.error=='STOP: одиночная проба руки завершена'
                         if not completed:
                             with self.operator.lock:
@@ -360,6 +363,18 @@ class RosmasterSession:
                         with self.lock:
                             self.state['episode'] = segments[-1]['writer'].id
                     segment = segments[-1]
+                    if conditioned:
+                        cam=sample.get('camera') or {}
+                        frame['grasp_response']={'agent_ns':sample.get('agent_monotonic_ns'),
+                            'valid':sample.get('arm_measured_valid',[]),'camera_ns':cam.get('received_ns'),
+                            'sequence':cam.get('sequence')}
+                        if completed:
+                            # This image follows the last target and immediately precedes acknowledged STOP.
+                            from .conditioned_grasp import file_hash
+                            still=segment['writer'].root/'grasp-terminal.png'
+                            if not cv2.imwrite(str(still),cv2.cvtColor(sample['rgb'],cv2.COLOR_RGB2BGR)):
+                                raise OSError('Не удалось сохранить конечную фотографию захвата')
+                            provenance['terminal_still_sha256']=file_hash(still)
                     frame['frame_id'] = segment['frames']
                     frame['trial_id'] = trial_id
                     frame['segment_index'] = len(segments)-1
@@ -439,21 +454,13 @@ class RosmasterSession:
                     finished_at=time.time(),sequence_completed=completed,emergency=self.emergency,stop_acknowledged_by_agent=acknowledged,
                     executor_reason=reason,stop_status=self.operator.error,
                     episodes=[seg['writer'].id for seg in segments],
-                    frames=self.state['frames'],recording_error=self.state.get('error'))
+                    frames=self.state['frames'],recording_error=self.state.get('error'),capture_protocol=grasp_trial.ENDPOINT_VERSION)
                 provenance['conditioned_grasp_result']=f"/api/rosmaster/grasp-trial/{self.plan['id']}"
                 if completed and segments:
-                    with self.lock:
-                        self.state.update(phase='awaiting_grasp_verdict',grasp_plan=self.plan['id'])
-                    until=time.monotonic()+grasp_trial.VERDICT_WAIT_S
-                    while time.monotonic()<until and not self.stop_event.wait(.2):
-                        result=grasp_trial.result(self.plan['id'])
-                        if result.get('endpoint'):
-                            break
-                    # The endpoint remains available after closing or refreshing the console.
-                    self.outcome=('success' if result.get('success') else 'failure') if result.get('endpoint') else grasp_trial.PENDING_OBSERVATION
-                    if self.outcome == grasp_trial.PENDING_OBSERVATION:
-                        grasp_trial.amend(self.plan['id'], pending_at_capture_close=True)
-                    provenance['independent_endpoint']=result.get('endpoint')
+                    # Close the actual footage before the operator can submit a positive measurement.
+                    self.outcome=grasp_trial.PENDING_OBSERVATION
+                    grasp_trial.amend(self.plan['id'], pending_at_capture_close=True)
+                    provenance['independent_endpoint']=None
             elif provider is not None:
                 self.operator.set_direct(None)
                 self.operator.set_source(None)
@@ -494,7 +501,7 @@ class RosmasterSession:
             if conditioned:
                 record=grasp_trial.amend(self.plan['id'],rollout_outcome_at_save=self.outcome,
                                   recording_error=self.state.get('error'),recording_saved_at=time.time())
-                grasp_trial.sync_recorded_outcome(record)
+                grasp_trial.sync_recorded_outcome(grasp_trial.certify(record))
             if not check and not self.plan and not base:
                 from .grasp_admission import schedule
                 try:schedule(collection)

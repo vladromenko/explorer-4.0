@@ -70,6 +70,8 @@ def identity(path):
         "explorer4/rosmaster_console.py",
         "explorer4/rosmaster_control.py",
         "explorer4/grasp_trial.py",
+        "explorer4/grasp_terminal.py",
+        "configs/sim-alignment.json",
         "agents/rosmaster/leased_core.py",
         "agents/rosmaster/control_adapter.py",
         "explorer4/trials.py",
