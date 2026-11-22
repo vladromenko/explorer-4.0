@@ -1,0 +1,183 @@
+{
+  "protocol_sha256": "ed08b02795e73baa74b030cd2f27dceff6fda8a129217dc7bdbe87ad21d0d8b3",
+  "status": "completed",
+  "domain": "simulator_development",
+  "physical_trials": 0,
+  "calibration": {
+    "oracle": {
+      "n": 8,
+      "baseline_holds": 6,
+      "candidate_holds": 8,
+      "gains": 2,
+      "losses": 0,
+      "exact_p": 0.5
+    },
+    "observable": false,
+    "feasible": true,
+    "expected_queries": 16,
+    "observed_queries": 16,
+    "valid_visible_queries": 9,
+    "median_valid_visible_error_mm": 12.598558183734085
+  },
+  "models": {},
+  "fit_rounds": [],
+  "development": {
+    "static": {
+      "terminal_hold_pairs": {
+        "stale": {
+          "n": 8,
+          "baseline_holds": 7,
+          "candidate_holds": 8,
+          "gains": 1,
+          "losses": 0,
+          "exact_p": 1.0
+        }
+      },
+      "per_arm": {
+        "stale": {
+          "holds": 7,
+          "bilateral_contacts": 8,
+          "native_guards": 0,
+          "reasons": [
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "task_deadline",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose"
+          ],
+          "terminal_hold_by_seed": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "median_sim_s": 16.450000000007012,
+          "return_and_replay_extra_s": []
+        },
+        "return_to_look": {
+          "holds": 8,
+          "bilateral_contacts": 8,
+          "native_guards": 0,
+          "reasons": [
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose"
+          ],
+          "terminal_hold_by_seed": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "median_sim_s": 17.250000000005148,
+          "return_and_replay_extra_s": [
+            0.9500000000000001,
+            0.9500000000000001,
+            0.9500000000000001,
+            1.0,
+            0.9500000000000001,
+            0.9500000000000001,
+            1.0,
+            0.9500000000000001
+          ]
+        }
+      }
+    },
+    "shifted": {
+      "terminal_hold_pairs": {
+        "stale": {
+          "n": 8,
+          "baseline_holds": 4,
+          "candidate_holds": 7,
+          "gains": 3,
+          "losses": 0,
+          "exact_p": 0.25
+        }
+      },
+      "per_arm": {
+        "stale": {
+          "holds": 4,
+          "bilateral_contacts": 7,
+          "native_guards": 0,
+          "reasons": [
+            "task_deadline",
+            "task_deadline",
+            "task_deadline",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "task_deadline"
+          ],
+          "terminal_hold_by_seed": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "median_sim_s": 23.77499999998994,
+          "return_and_replay_extra_s": []
+        },
+        "return_to_look": {
+          "holds": 7,
+          "bilateral_contacts": 8,
+          "native_guards": 0,
+          "reasons": [
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "task_deadline",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose",
+            "held_in_carry_pose"
+          ],
+          "terminal_hold_by_seed": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "median_sim_s": 16.55000000000678,
+          "return_and_replay_extra_s": [
+            0.9500000000000001,
+            0.9500000000000001,
+            0.9500000000000001,
+            1.0,
+            0.9500000000000001,
+            0.9500000000000001,
+            1.0,
+            0.9500000000000001
+          ]
+        }
+      }
+    }
+  },
+  "candidate": "return_to_look",
+  "candidate_reason": "visibility_gate",
+  "decision": "positive_development_screen"
+}
