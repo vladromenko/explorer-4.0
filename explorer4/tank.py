@@ -24,6 +24,27 @@ def require_response(response, operation):
         raise RuntimeError('Tank · '+operation+': '+str(response.json().get('detail','Управление остановлено')))
     response.raise_for_status()
 
+def autonomy_hold(observation, requested, now_ns):
+    """Check the age of both robot observations at dispatch, including transport and inference."""
+    if not observation or observation.get("camera_missing", True):
+        return "Нет изображения камеры Tank"
+    image = observation["images"]["front"]
+    local_age = now_ns - image["homebrain_receive_timestamp_ns"]
+    transport = image.get("request_duration_ns")
+    sensors = observation.get("motion_sensors", {})
+    for name, age in (("камеры", image.get("age_at_agent_response_ns")), ("лидара", sensors.get("scan_age_ns"))):
+        if (type(age) is not int or type(transport) is not int or min(age, local_age, transport) < 0
+                or age + local_age + transport > 500_000_000):
+            return "Нет свежего наблюдения " + name + " Tank"
+    v, w = requested
+    needed = ("front", "rear") if w else (("front",) if v > 0 else ("rear",))
+    for direction in needed:
+        distance = sensors.get(direction)
+        if not isinstance(distance, (int, float)) or not math.isfinite(distance) or distance <= 0:
+            return "Лидар Tank не подтвердил сектор " + direction
+    return None
+
+
 class TankSource:
     def __init__(self,control,mode='manual',environment=False):
         self.control=control
@@ -80,6 +101,7 @@ class TankSource:
         if self.stop_requested():raise InterruptedError('STOP before observation')
         # The camera is needed for recordings, not for driving: a missing frame is reported
         # (camera_missing) and the previous frame is reused instead of stopping the robot.
+        started = time.monotonic_ns()
         rgb=None;info=None;status=None
         try:
             r=self.http.get('/frame.jpg',timeout=.4)
@@ -106,11 +128,14 @@ class TankSource:
         image={'image':rgb,'sequence':info['sequence'],'timestamp_ns':received,'reused':reused,
                'source_timestamp_ns':info['source_timestamp_ns'],'source_clock':info['source_clock'],
                'agent_receive_timestamp_ns':info['received_ns'],'homebrain_receive_timestamp_ns':received,
-               'timestamp_kind':'available_at_homebrain','age_at_agent_response_ns':status['monotonic_ns']-info['received_ns']}
+               'request_duration_ns':received-started,'timestamp_kind':'available_at_homebrain','age_at_agent_response_ns':status['monotonic_ns']-info['received_ns']}
         for key in ('limits','motor_link','initial_battery_voltage','minimum_battery_voltage','minimum_battery_under_load','limit_events'):
             if key in status:self.provenance[key]=status[key]
         result={'observation_timestamp_ns':observation_time,'camera_missing':camera_missing,
                 'observation.state':status['action'],'images':{'front':image},
+                'motion_sensors':{'scan_age_ns':status['monotonic_ns']-status['scan_received_ns']
+                                  if status.get('scan_received_ns') is not None else None,
+                                  'front':status.get('front_distance_m'),'rear':status.get('rear_distance_m')},
                 'state_kind':'previous_transmitted_command_estimate','state_valid':False,
                 'measured_response_kind':'previous_command_estimate_no_wheel_feedback',
                 'battery_voltage':status['battery_voltage'],'battery_source':'RRC packet voltage_mV/1000',
@@ -132,23 +157,36 @@ class TankSource:
         if self.stop_requested():raise InterruptedError('STOP before command')
         if len(requested)!=2 or not all(math.isfinite(v) for v in requested):
             raise ValueError('Tank requires two finite velocity channels')
-        if observation is not None and time.monotonic_ns()-observation['observation_timestamp_ns']>2_000_000_000:
-            requested=[0.,0.]   # stale observation: send zero instead of ending the session
+        intent = list(requested)
+        goal = getattr(self.control, "goal", None)
+        autonomous = self.mode != "manual" or bool(goal and goal.active)
         index=self.sequence;self.sequence+=1
         a=time.monotonic_ns()
-        self.provenance['last_command_attempt']={'sequence':index,'requested':list(requested),'send_start_ns':a,'accepted':'unknown'}
+        self.provenance['last_command_attempt']={'sequence':index,'requested':intent,'send_start_ns':a,'accepted':'unknown'}
         response=None
-        for attempt in range(2):   # one retry on a Wi-Fi hiccup; the robot zeroes itself after 0.5 s anyway
+        hold = None
+        for attempt in range(2):
+            if self.stop_requested():
+                raise InterruptedError("STOP before command")
+            now = time.monotonic_ns()
+            if any(intent) and autonomous:
+                hold = autonomy_hold(observation, intent, now)
+            elif observation is not None and now - observation['observation_timestamp_ns'] > 2_000_000_000:
+                hold = "Наблюдение Tank устарело"
+            command = [0., 0.] if hold else intent
+            if hold and goal and goal.active:
+                goal.cancel(hold)
+            self.provenance['last_command_attempt'].update(sequence=index, dispatched=command, guard_reason=hold)
             try:
-                response=self.http.post('/command',json={'lease':self.lease,'sequence':index,'v':requested[0],'w':requested[1]},timeout=.5)
+                response=self.http.post('/command',json={'lease':self.lease,'sequence':index,'v':command[0],'w':command[1]},timeout=.5)
                 break
             except httpx.TimeoutException as exc:
                 if attempt:raise RuntimeError('Tank: нет ответа по Wi-Fi дважды подряд') from exc
                 index=self.sequence;self.sequence+=1
         b=time.monotonic_ns();require_response(response,'команда');sent=response.json()
         self.provenance['last_command_attempt']['accepted']=True
-        return {'action':sent['action'],'requested_action':list(requested),
-                'motion_paused':sent.get('motion_paused',False),'pause_reason':sent.get('pause_reason'),
+        return {'action':sent['action'],'requested_action':intent,
+                'motion_paused':bool(hold) or sent.get('motion_paused',False),'pause_reason':hold or sent.get('pause_reason'),
                 'action_send_start_ns':a,'action_send_end_ns':b,'action_acknowledged':False,
                 'agent_accepted_command':True,'robot_serial_send_start_ns':sent['send_start_ns'],
                 'robot_serial_send_end_ns':sent['send_end_ns'],'motor_targets_rps':sent['motor_targets_rps']}

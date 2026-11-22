@@ -149,14 +149,20 @@ def follow(pose, path, v_max=.15, w_max=.8, lookahead=.12):
     return v, w, remaining
 
 
+def usable_scan(points):
+    """Finite lidar returns in the robot base frame. FleetMap.scan enforces the receipt deadline."""
+    return (isinstance(points, np.ndarray) and points.ndim == 2 and points.shape[1] == 2
+            and len(points) > 0 and np.isfinite(points).all())
+
+
 def guard(points, robot, v, w, stop_m=.18):
     """Collision guard from the latest scan (robot base frame). Stops forward motion when
     something is in the corridor ahead and turns toward the freer side.
     Also the sides: a wall right beside the body (within 5 cm) forbids turning the body into it and
     slows the robot (front corners sweep sideways when it turns).
     Returns (v, w, blocked_reason or None)."""
-    if points is None:
-        return v, w, None
+    if not usable_scan(points):
+        return 0., 0., "Нет свежего достоверного лидара"
     side_note = None
     front_b, half_b = BODY_FRONT[robot], BODY_HALF_W[robot]
     beside = points[(np.abs(points[:, 0]) < front_b) & (np.abs(points[:, 1]) >= half_b - .02) & (np.abs(points[:, 1]) < half_b + .05)]

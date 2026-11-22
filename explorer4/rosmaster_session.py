@@ -93,6 +93,49 @@ def agent_code_hashes():
             for name in ('agent.py', 'runtime.py', 'leased_core.py', 'control_adapter.py')}
 
 
+def native_sample(http):
+    started = time.monotonic_ns()
+    response = http.get('/sample.jpg')
+    received = time.monotonic_ns()
+    response.raise_for_status()
+    state = json.loads(response.headers['X-Explorer-Sample'])
+    camera = json.loads(response.headers['X-Explorer-Camera'])
+    bgr = cv2.imdecode(np.frombuffer(response.content, np.uint8), cv2.IMREAD_COLOR)
+    if bgr is None:
+        raise RuntimeError('Неверный JPEG камеры')
+    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+    if rgb.shape != (480, 640, 3):
+        raise RuntimeError(f'Неожиданный размер камеры {rgb.shape}')
+    state.update(rgb=rgb, camera=camera, homebrain_received_ns=received, request_duration_ns=received-started)
+    return state
+
+
+def base_hold_reason(sample, scan, *, camera_on_arm=False):
+    from .sensors import stream_age
+    from .navigation import usable_scan
+    from .fleet_map import scan_points
+    now = time.monotonic_ns()
+    delay = (now - sample["homebrain_received_ns"] + sample["request_duration_ns"]) / 1e9
+    camera_age = (sample["agent_monotonic_ns"] - sample["camera"]["received_ns"]) / 1e9
+    ages = [camera_age, sample.get("base_measured_age_s")]
+    if camera_on_arm:
+        arm = sample.get("arm_measured")
+        joint_ages = sample.get("arm_measured_ages_s") or []
+        if np.shape(arm) != (6,) or not np.isfinite(arm).all() or len(joint_ages) != 6:
+            return "Нет измеренной позы камеры на руке"
+        ages.extend(joint_ages)
+    if delay < 0 or any(age is None or not 0 <= age <= .5 - delay for age in ages):
+        return "Устарело изображение или измерение состояния ROSMASTER"
+    for name in ("scan", "scan_rear"):
+        ranges = scan["arrays"].get(name)
+        if (ranges is None or ranges.ndim != 1 or not np.any(np.isfinite(ranges) & (ranges > .05))
+                or not 0 <= stream_age(scan, name, now) <= .5):
+            return "Нет свежего достоверного лидара ROSMASTER: " + name
+    if not usable_scan(scan_points("rosmaster", scan)):
+        return "Нет измерений за габаритами ROSMASTER"
+    return None
+
+
 class RosmasterSession:
     """One recording/trial at a time; the trainer cannot run concurrently (compute lease)."""
 
@@ -349,6 +392,16 @@ class RosmasterSession:
                                 self.operator.set_direct({'arm':action})
                     else:
                         action = provider.next(observation)
+                        if base and any(action):
+                            from .fleet_map import native_scan_packet
+                            reason = base_hold_reason(sample, native_scan_packet(http))
+                            if sensors and any(not 0 <= stream_age(sample['_sensor_packet'], k) <= .5
+                                               for k in ('depth', 'scan', 'scan_rear', 'imu')):
+                                reason = reason or 'Устарели датчики выбранного профиля ROSMASTER'
+                            if reason:
+                                self.operator.set_direct({'base': [0., 0., 0.]})
+                                provenance['termination_reason'] = reason
+                                raise RuntimeError(reason)
                         self.operator.set_direct({'base': action} if base else {'arm': action})
                     if not completed:
                         sample['requested_action'] = list(action)
@@ -512,20 +565,9 @@ class RosmasterSession:
                 self.state['segments'] = [s['writer'].id for s in segments]
 
     def sample(self, http, clock):
-        response = http.get('/sample.jpg')
-        received = time.monotonic_ns()
-        response.raise_for_status()
-        state = json.loads(response.headers['X-Explorer-Sample'])
-        camera = json.loads(response.headers['X-Explorer-Camera'])
-        bgr = cv2.imdecode(np.frombuffer(response.content, np.uint8), cv2.IMREAD_COLOR)
-        if bgr is None:
-            raise RuntimeError('Неверный JPEG камеры')
-        rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-        if rgb.shape != (480, 640, 3):
-            raise RuntimeError(f'Неожиданный размер камеры {rgb.shape}')
-        state.update(rgb=rgb, camera=camera, homebrain_received_ns=received,
-                     observation_ns=clock.to_homebrain(state['agent_monotonic_ns']),
-                     camera_ns=clock.to_homebrain(camera['received_ns']))
+        state = native_sample(http)
+        state.update(observation_ns=clock.to_homebrain(state['agent_monotonic_ns']),
+                     camera_ns=clock.to_homebrain(state['camera']['received_ns']))
         return state
 
     def frame(self, name, cfg, current, following, len_frames):

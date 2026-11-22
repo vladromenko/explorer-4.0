@@ -69,3 +69,47 @@ def test_searches_then_gives_up(monkeypatch):
     g = make(monkeypatch, [])
     g.searched = 2 * np.pi + 1
     assert drive(g, 2) == [0., 0.] and g.state == 'not_found'
+
+
+@pytest.mark.parametrize("failure", ["stale_depth", "missing_scan", "camera", "depth_timeout", "fresh"])
+def test_rosmaster_lease_dispatches_only_after_complete_native_observation(monkeypatch, failure):
+    from types import SimpleNamespace
+    from explorer4 import rosmaster_goto as runner, rosmaster_session, sensors, fleet_map
+    commands = []
+    goal = SimpleNamespace(active=True, message="", status=lambda: {"message": goal.message})
+    def cancel(reason):
+        goal.active, goal.message = False, reason
+    def command(_rgb):
+        goal.active = False
+        return .1, 0.
+    goal.cancel, goal.command = cancel, command
+    now = time.monotonic_ns()
+    sample = {"rgb": np.zeros((480, 640, 3), np.uint8), "camera": {"received_ns": now},
+              "agent_monotonic_ns": now, "homebrain_received_ns": now, "request_duration_ns": 0,
+              "base_measured_age_s": .02}
+    if failure == "camera":
+        sample["camera"]["received_ns"] -= 600_000_000
+    scan_meta = {"age_s": .01, "angle_min": 0., "angle_increment": np.pi / 90, "range_min": .03}
+    scan = {"meta": {"streams": {key: scan_meta for key in ("scan", "scan_rear")}},
+            "arrays": {key: np.ones(180) for key in ("scan", "scan_rear")}, "received_ns": now, "request_elapsed_s": .01}
+    if failure == "missing_scan":
+        del scan["arrays"]["scan"]
+    def snapshot(only):
+        if failure == "depth_timeout":
+            raise TimeoutError("depth unavailable")
+        return {"meta": {"streams": {"depth": {"age_s": .7 if failure == "stale_depth" else 0., "unit": "m"}}},
+                "arrays": {"depth": np.ones((72, 112), np.float32)}, "received_ns": now, "request_elapsed_s": .002}
+    http = SimpleNamespace(get=lambda url: SimpleNamespace(json=lambda: {}), close=lambda: None)
+    operator = SimpleNamespace(owner=runner.OWNER, lease="offline", input=lambda *args: None,
+                               set_direct=lambda direct: commands.append(direct["base"]), stop=lambda message: None)
+    monkeypatch.setattr(runner.rosmaster_control, "operator", operator)
+    monkeypatch.setattr(runner.rosmaster_control, "connection", lambda _: http)
+    monkeypatch.setattr(rosmaster_session, "native_sample", lambda _: sample)
+    monkeypatch.setattr(fleet_map, "native_scan_packet", lambda _: scan)
+    monkeypatch.setattr(sensors, "SensorClient", lambda **kw: SimpleNamespace(snapshot=snapshot, close=lambda: None))
+    instance = runner.RosmasterGoTo()
+    instance.goal = goal
+    instance._run()
+    assert commands[-1] == [0., 0., 0.]
+    assert any(any(row) for row in commands) == (failure == "fresh")
+    assert failure == "fresh" or goal.message

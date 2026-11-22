@@ -4,11 +4,11 @@ apply). The camera is on the arm, so its pose is recomputed from the measured se
 import threading
 import time
 
-import cv2
 import numpy as np
 
 from . import rosmaster_control
 from .goto import GoTo, rosmaster_camera
+from .sensors import stream_age
 
 OWNER = 'goto'
 
@@ -57,13 +57,15 @@ class RosmasterGoTo:
     def _run(self):
         operator, goal = rosmaster_control.operator, self.goal
         client = None
-        last_pose = 0.
+        last_health = 0.
+        slide_end = 0.
+        slide_direction = 0
         blocked_since = None
         last_cmd = (0., 0.)
-        last_depth = 0.
-        camera_block = False
         from .sensors import SensorClient
-        sensors = SensorClient(robot='rosmaster')
+        from .fleet_map import native_scan_packet, scan_points
+        from .rosmaster_session import base_hold_reason, native_sample
+        sensors = None
         alive = threading.Event()
 
         def heartbeat():
@@ -74,6 +76,7 @@ class RosmasterGoTo:
                 operator.input(OWNER, rosmaster_control.ZERO)
         threading.Thread(target=heartbeat, daemon=True, name='rosmaster-goto-heartbeat').start()
         try:
+            sensors = SensorClient(robot="rosmaster")
             client = rosmaster_control.connection(1)
             while goal.active and not self.stop_event.is_set():
                 started = time.monotonic()
@@ -81,48 +84,53 @@ class RosmasterGoTo:
                 if operator.owner != OWNER or not operator.lease:
                     goal.cancel(operator.error or 'Сессия ROSMASTER завершена')
                     break
-                if started - last_pose > 1.:
+                if started - last_health > 1.:
                     health = client.get('/health').json()
-                    servo = (health.get('observation') or {}).get('arm_measured')
-                    if servo and len(servo) == 6 and hasattr(goal, 'set_camera'):
-                        goal.set_camera(rosmaster_camera(servo))
-                    last_pose = started
-                    # The robot's own lidar guard can pin it (a wall along one side blocks both the
-                    # turn and the straight drive). Mecanum wheels can still slide away sideways.
+                    last_health = started
                     st = health.get('status') or {}
                     pinned = bool(st.get('guard')) and not any(abs(v) > 1e-3 for v in (st.get('base_command') or [0.]))
                     blocked_since = (blocked_since or started) if pinned and any(abs(v) > 1e-3 for v in last_cmd) else None
                     if blocked_since is not None and started - blocked_since > 2.:
-                        self._slide_away(operator)
+                        slide_direction = None
+                        slide_end = started + 1.5
                         blocked_since = None
-                frame = client.get('/frame.jpg')
-                if frame.status_code != 200:
-                    operator.set_direct({'base': [0., 0., 0.]})
-                    time.sleep(.1)
-                    continue
-                rgb = cv2.cvtColor(cv2.imdecode(np.frombuffer(frame.content, np.uint8), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
-                if started - last_depth > .4:
-                    last_depth = started
-                    near = None
-                    try:
-                        depth = sensors.snapshot(only=['depth'])['arrays'].get('depth')
-                        if depth is not None:
-                            metres = depth.astype(np.float32) / 1000.
-                            goal.depth = (time.monotonic(), metres)
-                            goal.depth_rgb_size = (rgb.shape[1], rgb.shape[0])
-                            near = front_clearance(metres)
-                    except Exception:
-                        near = None
-                    camera_block = near is not None and near < CAMERA_STOP_M
-                v, w = goal.command(rgb)
-                if camera_block and v > 0:
-                    # the arm and its camera stick out ahead of the base, above the lidar plane
-                    # (cabinet doors, shelves): forward is refused, turning stays allowed
-                    v = 0.
-                    if hasattr(goal, 'message'):
-                        goal.message = f'Перед камерой препятствие в {near:.2f} м: вперёд не еду'
-                last_cmd = (v, w)
-                operator.set_direct({'base': [float(v), 0., float(w)]})
+                sample = native_sample(client)
+                packet = sensors.snapshot(only=["depth"])
+                scan_packet = native_scan_packet(client)
+                camera_on_arm = hasattr(goal, 'set_camera')
+                reason = base_hold_reason(sample, scan_packet, camera_on_arm=camera_on_arm)
+                if reason:
+                    goal.cancel(reason)
+                    break
+                rgb = sample["rgb"]
+                if camera_on_arm:
+                    goal.set_camera(rosmaster_camera(sample["arm_measured"]))
+                depth_m = metric_depth(packet)
+                near = front_clearance(depth_m) if depth_m is not None else None
+                if near is None:
+                    goal.cancel('Нет достоверного расстояния перед камерой')
+                    break
+                goal.depth = (time.monotonic(), depth_m)
+                goal.depth_rgb_size = (rgb.shape[1], rgb.shape[0])
+                scan = scan_points('rosmaster', scan_packet)
+                if slide_direction is None:
+                    slide_direction = slide_side(scan)
+                if started < slide_end and slide_direction:
+                    dx, dy, yaw = 0., .08 * slide_direction, 0.
+                else:
+                    dx, yaw = goal.command(rgb)
+                    dy = 0.
+                reason = base_hold_reason(sample, scan_packet, camera_on_arm=camera_on_arm)
+                if reason or not 0 <= stream_age(packet, "depth") <= .5:
+                    goal.cancel(reason or 'Нет свежей глубины ROSMASTER')
+                    break
+                if dy and slide_side(scan) != slide_direction:
+                    dy, slide_end = 0., 0.
+                if near < CAMERA_STOP_M and dx > 0:
+                    dx = 0.
+                    goal.message = f'Перед камерой препятствие в {near:.2f} м'
+                last_cmd = (dx, yaw)
+                operator.set_direct({'base': [float(dx), float(dy), float(yaw)]})
                 time.sleep(max(0., 1 / 15 - (time.monotonic() - started)))
         except Exception as exc:
             self.error = 'ROSMASTER: ' + str(exc)
@@ -130,6 +138,8 @@ class RosmasterGoTo:
         finally:
             alive.set()
             operator.set_direct({'base': [0., 0., 0.]})
+            if sensors is not None:
+                sensors.close()
             if client is not None:
                 client.close()
             if operator.owner == OWNER:
@@ -137,6 +147,18 @@ class RosmasterGoTo:
 
 
 CAMERA_STOP_M = .30
+
+
+def metric_depth(packet):
+    depth = packet['arrays'].get('depth')
+    if depth is None or depth.ndim != 2:
+        return None
+    unit = packet["meta"]["streams"]["depth"].get("unit")
+    if depth.dtype.kind == "u" and depth.dtype.itemsize == 2 and unit == "mm":
+        return depth.astype(np.float32) / 1000.
+    if depth.dtype.kind == "f" and unit == "m":
+        return depth
+    return None
 
 
 def front_clearance(depth_m):
@@ -162,17 +184,4 @@ def slide_side(points, reach=.35):
     return 1 if dr < dl else -1
 
 
-def _slide(self, operator, seconds=1.5, speed=.08):
-    from .fleet_map import FLEET
-    side = slide_side(FLEET.scan('rosmaster'))
-    if not side:
-        return
-    end = time.monotonic() + seconds
-    while time.monotonic() < end and not self.stop_event.is_set():
-        operator.set_direct({'base': [0., side * speed, 0.]})          # the robot's guard still applies
-        time.sleep(.05)
-    operator.set_direct({'base': [0., 0., 0.]})
-
-
-RosmasterGoTo._slide_away = _slide
 runner = RosmasterGoTo()

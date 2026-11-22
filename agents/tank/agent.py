@@ -1,9 +1,8 @@
 """Tank agent: the factory controller (copied native code) driven from the Explorer panel.
 
 Always active: speed clamps, mild acceleration ramp, command TTL (zero when commands stop),
-STOP, immediate stop when the motor USB disappears. Camera, lidar, IMU and battery are
-reported but never required for driving; a lost link ends the session and the next start
-simply reopens the controller.
+STOP and immediate stop when the motor USB disappears. Autonomous motion requires fresh
+lidar returns in the requested direction. A lost motor link ends the lease.
 """
 import asyncio
 import hmac
@@ -368,9 +367,12 @@ class Hardware:
         # Factory SDK returns acceleration in g and gyro in degrees/s.
         acceleration=[x*9.80665 for x in self.imu[:3]] if self.imu and len(self.imu)>=6 else None
         autonomous=self.mode!='manual'
-        if autonomous and v!=0. and (self.scan_time is None or age(self.scan_time)>.5):
-            # autonomy without a fresh lidar: no translation (turning in place stays allowed)
-            return (0.,w),'Нет свежего лидара: автономная езда вперёд/назад запрещена'
+        if autonomous and (v or w):
+            if self.scan_time is None or not 0 <= now - self.scan_time <= 500_000_000:
+                return (0., 0.), 'Нет свежего лидара Tank'
+            sectors = (self.scan_front, self.scan_rear) if w else (self.scan_front if v > 0 else self.scan_rear,)
+            if any(d is None or not math.isfinite(d) or d <= 0 for d in sectors):
+                return (0., 0.), 'Лидар Tank не подтвердил направление движения'
         front=self.scan_front
         if autonomous and v>0. and self.depth_time is not None and age(self.depth_time)<1.:
             if self.depth_front is not None:

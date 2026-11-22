@@ -619,22 +619,27 @@ def agent_scans(robot):
     """ROSMASTER's lidars from its Explorer agent while the agent owns the serial port; None if not."""
     if robot != 'rosmaster':
         return None
-    import io
-    import json as _json
     try:
         from . import rosmaster_control
         with rosmaster_control._connection(3) as client:
-            r = client.get('/scans.npz')
-            if r.status_code != 200:
-                return None
-            data = np.load(io.BytesIO(r.content))
-            meta = _json.loads(str(data['meta']))
-            arrays = {k: data[k] for k in data.files if k != 'meta'}
-        if not any(k in arrays for k in ('scan', 'scan_rear')):
-            return None
-        return {'arrays': arrays, 'meta': {**meta, 'robot': 'rosmaster', 'source': 'explorer_agent'}}
+            return native_scan_packet(client)
     except Exception:
+        # The fleet reader also runs while the factory controller owns the serial port.
         return None
+
+
+def native_scan_packet(client):
+    import io
+    import json
+    started = time.monotonic_ns()
+    response = client.get("/scans.npz")
+    response.raise_for_status()
+    received = time.monotonic_ns()
+    with np.load(io.BytesIO(response.content), allow_pickle=False) as data:
+        meta = json.loads(str(data["meta"]))
+        arrays = {key: data[key] for key in data.files if key != "meta"}
+    return {"arrays": arrays, "meta": {**meta, "robot": "rosmaster", "source": "explorer_agent"},
+            "received_ns": received, "request_elapsed_s": (received - started) / 1e9}
 
 
 def odom_pose(packet):

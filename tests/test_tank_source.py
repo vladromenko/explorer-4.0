@@ -121,3 +121,42 @@ def test_failed_stop_records_loss_without_permanent_homebrain_block(tmp_path,mon
     assert saved['operator_ack_required'] and saved['physical_stop_confirmed'] is False
     assert not (tmp_path/'validation/tank-motion-incident.json').exists()
     assert src.provenance['termination_reason']=='motor_link_lost'
+
+
+@pytest.mark.parametrize("field", ["camera_missing", "transport", "scan_age", "sector"])
+def test_goal_on_manual_lease_never_dispatches_motion_after_sensor_loss(source, field):
+    src, sent = source
+    goal = SimpleNamespace(active=True)
+    def cancel(reason):
+        goal.active = False
+        goal.reason = reason
+    goal.cancel = cancel
+    src.control.goal = goal
+    obs = src.observe()
+    obs["motion_sensors"] = {"scan_age_ns": 2000, "front": 1., "rear": 1.}
+    assert src.send([.1, .1], obs)["action"] == [.1, .1]
+    if field == "camera_missing":
+        obs["camera_missing"] = True
+    elif field == "transport":
+        obs["images"]["front"]["request_duration_ns"] = 500_000_001
+    elif field == "scan_age":
+        obs["motion_sensors"]["scan_age_ns"] = 600_000_000
+    else:
+        obs["motion_sensors"]["rear"] = None
+    stopped = src.send([.1, .1], obs)
+    assert [sent[-1]["v"], sent[-1]["w"]] == stopped["action"] == [0., 0.]
+    assert stopped["requested_action"] == [.1, .1] and stopped["pause_reason"] == goal.reason
+
+
+def test_onboard_guard_stops_unobserved_rotation_before_ramp():
+    from agents.tank.agent import Hardware
+    from agents.tank.limits import Ramp
+    board = SimpleNamespace(mode="policy", imu=None, scan_time=time.monotonic_ns()-700_000_000,
+                            scan_front=1., scan_rear=1.)
+    command, reason = Hardware.guarded(board, 0., .4)
+    ramp = Ramp({"acceleration": {"v": 1., "w": 1.}})
+    ramp.previous = (.15, .3)
+    assert reason and ramp.apply(*command) == (0., 0.)
+    board.scan_time, board.scan_rear = time.monotonic_ns(), None
+    command, reason = Hardware.guarded(board, .1, .3)
+    assert reason and ramp.apply(*command) == (0., 0.)
