@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 
 from nicegui import app, ui
-from . import study_queue, training_schedule
+from . import catalog, study_queue, training_schedule
 from .training_schedule_page import timing_controls
 from .paths import DATA
 from .policy_catalog import SMOL_REV
@@ -132,6 +132,18 @@ def methods():
                 ui.link("Исходная SmolVLA 450M", "https://huggingface.co/lerobot/smolvla_base/tree/" + SMOL_REV)
                 evidence_link("Реестр обучения", register + "learning.html")
                 ui.link("Задания обучения", "/learn?tab=jobs")
+            with catalog.connect() as db:
+                current = db.execute(
+                    """SELECT id, status, json_extract(config,'$.steps') AS steps FROM jobs
+                       WHERE policy='smolvla' AND json_type(config,'$.smolvla_development')='object'
+                       ORDER BY created DESC LIMIT 1"""
+                ).fetchone()
+            if current:
+                states = {"queued": "в очереди", "running": "идёт", "completed": "завершено",
+                          "failed": "сбой", "interrupted": "прервано", "cancelled": "отменено"}
+                state = states.get(current["status"], current["status"])
+                ui.link(f"SmolVLA на 32 показах · {current['steps']} шагов · {state}", "/jobs/" + current["id"])
+                evidence_link("Исходы на восьми стартовых сценах", REPORT + f"smolvla-recorded-start/{current['id']}/result.json")
         with ui.element("section").classes("work-box"):
             ui.label("SAM 3 · зрение по готовым весам").classes("work-name")
             report = read(MEDIA / (sam_path + "result.json"))

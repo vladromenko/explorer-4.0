@@ -251,8 +251,13 @@ def run_job(path: Path):
     if cfg.get('draft_id'):
         from .training_drafts import load
         reviewed=load(cfg['draft_id'])
-        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer','floor_development_gate'):
+        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer','floor_development_gate','smolvla_development'):
             if cfg.get(key)!=reviewed.get(key):raise ValueError('Job differs from the reviewed training draft: '+key)
+    if cfg.get('smolvla_development'):
+        from .smolvla_development import verify_before_train
+        if not cfg.get('draft_id'):
+            raise ValueError('The SmolVLA pilot requires its reviewed draft')
+        verify_before_train(cfg)
     if cfg.get('floor_development_gate') and (not cfg.get('draft_id') or
             cfg.get('checkpoint_interval') != reviewed.get('checkpoint_interval') or cfg.get('checkpoint_interval') != 1000):
         raise ValueError('A checkpoint gate requires a reviewed simulation draft with 1000-step saves')
@@ -323,6 +328,9 @@ def run_job(path: Path):
                 done = True
                 checkpoint = (development['selected_checkpoint'] if development else str(output/'checkpoints/last/pretrained_model'))
                 if checkpoint:
+                    if cfg.get('smolvla_development'):
+                        from .smolvla_development import verify_processors
+                        verify_processors(Path(checkpoint), work/'train', cfg['smolvla_development'])
                     subprocess.run([sys.executable, '-m', 'explorer4.reload_check', str(checkpoint), str(work/'train'),cfg.get('device','cuda')],
                                    env=offline_environment(), check=True)
                     if splits['validation']:
@@ -337,6 +345,9 @@ def run_job(path: Path):
                     result.update(steps=development['last_step'],requested_steps=steps,training_result=development['status'],
                                   selected_step=development['selected_step'],last_checkpoint=development['last_checkpoint'],
                                   selected_checkpoint=checkpoint,development_gate=str(work/'development-gate/status.json'))
+                if cfg.get('smolvla_development'):
+                    from .smolvla_development import score
+                    result['development_report'] = score(cfg, work, Path(checkpoint))
                 temporary = work/'result.tmp'
                 temporary.write_text(json.dumps(result))
                 temporary.replace(work/'result.json')
