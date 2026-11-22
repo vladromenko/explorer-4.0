@@ -9,6 +9,7 @@ from nicegui import app, ui
 from . import study_queue, training_schedule
 from .training_schedule_page import timing_controls
 from .paths import DATA
+from .policy_catalog import SMOL_REV
 
 MEDIA = DATA / "simlab"
 REPORT = "reports/"
@@ -91,6 +92,85 @@ def simulation_score(title, path, note, video):
         with ui.row().classes("work-links"):
             evidence_link("Исходы по сценам", path)
             evidence_link("Видео", video)
+
+
+def methods():
+    register = REPORT + "research-register-20261122/"
+    smol_path = register + "evidence/e3_diagnostics/smolvla_v4_state.json"
+    sam_path = REPORT + "so101-instance-replay-v3/"
+    with ui.element("div").classes("work-grid"):
+        with ui.element("section").classes("work-box"):
+            ui.label("SmolVLA · обучение управлению").classes("work-name")
+            archived = read(MEDIA / smol_path)
+            if archived.get("stage") == "completed":
+                protocol = archived["protocol"]
+                steps = format(protocol["steps"], ",").replace(",", " ")
+                ui.label("ROSMASTER в MuJoCo · поднять с пола кубик, бутылку, брусок или мяч и удержать в позе переноса")
+                ui.label(
+                    f"{archived['successes']} пар показов симулятора с одинаковыми кадрами и действиями. "
+                    f"Различается текст команды. Каждая версия прошла {steps} обновлений."
+                ).classes("work-muted")
+                for name, title in (("knowledge", "С размером"), ("noknowledge", "Без размера")):
+                    profile = f"rosmaster_floor_pick_{name}_sim"
+                    job = archived["jobs"][profile]
+                    trials = job["result"]["trials"]
+                    held = sum(r["outcome"] == "success" and r["reason"] == "held_in_carry_pose" for r in trials)
+                    ui.link(f"{title} · {held}/{len(trials)} удержаний в позе переноса", "/jobs/" + job["evaluation"])
+                object_audit = register + "evidence/smolvla-v4-objects.json"
+                evidence_link("Что удалось удержать · брусок и кубик", object_audit)
+                split = archived["plans"]["rosmaster_floor_pick_knowledge_sim"]["scenes"]
+                ui.label(
+                    f"В каждой версии {len(split['train'])} учебных, {len(split['validation'])} "
+                    f"валидационных и {len(split['test'])} отложенных. Для оценки обеих моделей взяли "
+                    f"одни и те же новые сцены {protocol['evaluation_seeds'][0]}–{protocol['evaluation_seeds'][1]}. "
+                    "У текущего сравнения ACT и Diffusion другой набор из 32 показов."
+                ).classes("work-muted")
+            else:
+                ui.label("Архив парного опыта с подсказкой о размере недоступен.")
+            with ui.row().classes("work-links"):
+                evidence_link("Показы, веса и все исходы", smol_path)
+                ui.link("Исходная SmolVLA 450M", "https://huggingface.co/lerobot/smolvla_base/tree/" + SMOL_REV)
+                evidence_link("Реестр обучения", register + "learning.html")
+                ui.link("Задания обучения", "/learn?tab=jobs")
+        with ui.element("section").classes("work-box"):
+            ui.label("SAM 3 · зрение по готовым весам").classes("work-name")
+            report = read(MEDIA / (sam_path + "result.json"))
+            if report:
+                control = report["positive_marker_box_control"]
+                ui.label("Реальный кадр SO-101 · две подсказки без дообучения")
+                ui.label(
+                    f"По слову «{report['segmentation']['prompt']}» модель выделила другой участок кадра. "
+                    f"При подсказке рамкой вокруг метки модель выдала {len(control['scores'])} маски. "
+                    f"Все четыре угла метки попали в {sum(row['marker_corners_inside'] == 4 for row in control['mask_corner_coverage'])} из них."
+                ).classes("work-muted")
+                image_path = sam_path + "first-frame.png"
+                if (MEDIA / image_path).is_file():
+                    with ui.link(target="/simlab-media/" + image_path).style("width:100%;max-width:330px"):
+                        ui.image("/simlab-media/" + image_path).props(
+                            'fit=contain alt="Метка кубика и область, которую SAM 3 выделила по слову cube"'
+                        ).style("width:100%;max-width:330px;aspect-ratio:1.6").classes("rounded")
+                ui.label("Зелёный контур — зарегистрированный кубик, жёлтая рамка — ответ на текст. Захват здесь не проверялся.").classes("work-muted")
+            else:
+                ui.label("Архив проверки на реальном кадре недоступен.")
+            with ui.row().classes("work-links"):
+                evidence_link("Результаты обеих подсказок", sam_path + "result.json")
+                if report:
+                    ui.link("Веса Meta SAM 3", "https://huggingface.co/facebook/sam3/tree/" + report["sam_revision"])
+                evidence_link("YOLOE и SAM 3 на 12 кадрах", REPORT + "cube-detector-comparison-v1/result.json")
+                ui.link("Проверка зрения", "/sim/vision")
+        with ui.element("section").classes("work-box"):
+            ui.label("Библиотеки на Homebrain и роботах").classes("work-name")
+            ui.label("LeRobot ACT и Diffusion обучены на показах ROSMASTER. Внешнюю ACT для SO-101 проверяли по ранее записанным действиям оператора.")
+            with ui.row().classes("work-links"):
+                evidence_link("ACT и Diffusion · исходы", REPORT + "conditioned-grasp-v1/summary.json")
+                evidence_link("Внешняя ACT · воспроизведение", REPORT + "so101-external-shadow.json")
+            ui.label("ROS 2 и Nav2 · в проверке Tank и ROSMASTER поступали лидары и одометрия. Для штатной навигации нужны привязка карты и доступный сервер NavigateToPose.")
+            with ui.row().classes("work-links"):
+                evidence_link("Что ответило по ROS 2", register + "nav2-readiness.json")
+                evidence_link("Драйверы и контроллеры роботов", register + "robots.html")
+            ui.label("NoMaD рассматривается для Tank после проверки локализации и задержки на записях. Для дообучения π0 требуется больше памяти, чем доступно на Homebrain.").classes("work-muted")
+            with ui.row().classes("work-links"):
+                evidence_link("Сравнение исходных работ и кода", register + "lineage.html")
 
 
 def results():
@@ -238,6 +318,7 @@ def install(jobs, css):
                     "Исследования и изменения в коде",
                     "/simlab-media/reports/research-register-20261122/lineage.html",
                 )
+                ui.link("Модели и библиотеки", "#methods")
                 ui.link("Пульт", "/")
                 ui.link("Совместное управление", "/swarm")
                 ui.link("Все датчики", "/fleet/live")
@@ -309,6 +390,9 @@ def install(jobs, css):
             ui.label(
                 "Сортировка по нескольким коробкам и непрерывное сопровождение человека требуют самостоятельной проверки."
             ).classes("work-muted")
+        ui.link_target("methods")
+        ui.label("Модели и библиотеки").classes("work-section")
+        methods()
         ui.label("Очередь обучения").classes("work-section").props("id=training-queue")
         ui.label(
             "Два независимых эксперимента. Оба работают на Homebrain. Порядок задан заранее."
@@ -466,8 +550,6 @@ def install(jobs, css):
             ui.button(
                 "Проверить камеру SO-101 без движения", on_click=check_station
             ).props("outline no-caps")
-            evidence_link("Распознавание кубика SO-101 в реальном показе",
-                          REPORT + "so101-instance-replay-v3/first-frame.png")
             ui.link("Совместный подъезд и лист-мишень", "/peer-dock-real")
             ui.link("Подготовить физическую проверку", "/team/real")
             ui.link("Записать показ", "/recording/collect")

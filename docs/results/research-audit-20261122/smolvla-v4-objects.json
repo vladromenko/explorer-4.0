@@ -1,0 +1,186 @@
+{
+  "counts": {
+    "ball": {
+      "with_size": {
+        "failure": 4
+      },
+      "without_size": {
+        "failure": 4
+      }
+    },
+    "block": {
+      "with_size": {
+        "failure": 2,
+        "success": 1
+      },
+      "without_size": {
+        "failure": 3
+      }
+    },
+    "bottle": {
+      "with_size": {
+        "failure": 7
+      },
+      "without_size": {
+        "failure": 7
+      }
+    },
+    "cube": {
+      "with_size": {
+        "failure": 5,
+        "success": 1
+      },
+      "without_size": {
+        "failure": 6
+      }
+    }
+  },
+  "input_sha256": "befaa12493d13f9e733c232f2e1b6b625e2894be6041ed24eab68459f90f66e1",
+  "phase_checks_sha256": "063b03b1861056576f2332a569ad4b80ad90c257965f84ef887fdad82977086b",
+  "phase_crosschecks": 4,
+  "rows": [
+    {
+      "instruction": "pick up the cube, 2.9 x 3.1 cm, 3.6 cm high",
+      "object": "cube",
+      "seed": 10000,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 4.4 x 4.4 cm, 9.0 cm high",
+      "object": "bottle",
+      "seed": 10001,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the cube, 3.5 x 3.9 cm, 3.4 cm high",
+      "object": "cube",
+      "seed": 10002,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the cube, 2.9 x 3.0 cm, 2.7 cm high",
+      "object": "cube",
+      "seed": 10003,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 4.3 x 3.8 cm, 9.5 cm high",
+      "object": "bottle",
+      "seed": 10004,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the block, 4.7 x 2.9 cm, 2.6 cm high",
+      "object": "block",
+      "seed": 10005,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the block, 6.7 x 2.7 cm, 2.5 cm high",
+      "object": "block",
+      "seed": 10006,
+      "with_size": "success",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the ball, 5.1 x 4.1 cm, 3.6 cm high",
+      "object": "ball",
+      "seed": 10007,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the ball, 4.6 x 3.7 cm, 3.6 cm high",
+      "object": "ball",
+      "seed": 10008,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 4.0 x 3.6 cm, 10.0 cm high",
+      "object": "bottle",
+      "seed": 10009,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the ball, 4.6 x 4.5 cm, 4.4 cm high",
+      "object": "ball",
+      "seed": 10010,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the cube, 3.3 x 3.8 cm, 3.2 cm high",
+      "object": "cube",
+      "seed": 10011,
+      "with_size": "success",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the cube, 2.7 x 3.0 cm, 3.6 cm high",
+      "object": "cube",
+      "seed": 10012,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 3.5 x 3.3 cm, 9.4 cm high",
+      "object": "bottle",
+      "seed": 10013,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the ball, 4.2 x 4.1 cm, 4.5 cm high",
+      "object": "ball",
+      "seed": 10014,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 3.4 x 3.4 cm, 9.3 cm high",
+      "object": "bottle",
+      "seed": 10015,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 3.8 x 4.0 cm, 7.8 cm high",
+      "object": "bottle",
+      "seed": 10016,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the bottle, 3.7 x 3.9 cm, 9.0 cm high",
+      "object": "bottle",
+      "seed": 10017,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the block, 5.0 x 2.3 cm, 3.1 cm high",
+      "object": "block",
+      "seed": 10018,
+      "with_size": "failure",
+      "without_size": "failure"
+    },
+    {
+      "instruction": "pick up the cube, 3.2 x 2.5 cm, 3.7 cm high",
+      "object": "cube",
+      "seed": 10019,
+      "with_size": "failure",
+      "without_size": "failure"
+    }
+  ],
+  "scope": "The reset supplies the object and instruction for each seed. All terminal outcomes come unchanged from the historical evaluation. The phase diagnostics serve only to check the instructions.",
+  "simulation_xml_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+  "source_sha256": "f1af54497fe9e9fc3a580f36662ac80b12cb05f172a004a7cc26260b31515c39"
+}
