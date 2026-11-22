@@ -56,7 +56,7 @@ def calibration_entry(robot,frame):
 def fixture_pose(fleet):
     robots={}
     for robot in field.ROBOTS:
-        pose,_,frame=fleet.pose_frame(robot,MAX_AGE_S)
+        pose,_,frame=field.real_pose(fleet,robot)
         if pose is None:
             raise ValueError('Нет свежей позы '+robot+' на общей карте')
         e=calibration_entry(robot,frame)
@@ -210,7 +210,7 @@ class PairedAttempt:
 
     def _command(self,rgb):
         age=time.monotonic()-self.start
-        pose,_,frame=self.fleet.pose_frame('tank',MAX_AGE_S)
+        pose,_,frame=field.real_pose(self.fleet,'tank')
         scan=self.fleet.scan('tank')
         if self.done:
             return [0.,0.]

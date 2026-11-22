@@ -9,6 +9,11 @@ from fastapi.responses import StreamingResponse
 from pathlib import Path
 from nicegui import app,ui
 from nicegui.server import Server
+# Choose the live lidar consumer before control modules import the shared map.
+# Frozen offline studies construct the original FleetMap outside this entry point.
+from . import fleet_map
+from .peer_dock_localizer import PhysicalFleetMap
+fleet_map.FLEET = PhysicalFleetMap()
 from . import catalog
 from .control import Control
 from .jobs import Jobs
@@ -458,7 +463,7 @@ def index(request:Request):
             rel=FLEET.relative('tank','rosmaster')
             if rel:
                 side='слева' if rel['bearing']>.2 else 'справа' if rel['bearing']<-.2 else 'впереди' if abs(rel['bearing'])<1.5 else 'сзади'
-                lines.append(f"Tank видит ROSMASTER в {rel['distance']:.1f} м {side} ({math.degrees(rel['bearing']):.0f}°)")
+                lines.append(f"На общей карте ROSMASTER в {rel['distance']:.1f} м {side} от Tank ({math.degrees(rel['bearing']):.0f}°)")
             lines.append(f"сканов в карте: {st['scans']}")
             map_text.set_content('<br>'.join(lines))
             map_image.set_source(f'/fleet-map.png?t={time.time():.0f}')

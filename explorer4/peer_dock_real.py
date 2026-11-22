@@ -79,6 +79,33 @@ def board_pose(rgb,info):
     return {**result,'board_valid':True,'optical_from_board':T.tolist(),'corners_px':pixels,'max_reprojection_px':px}
 
 
+def real_pose(fleet,robot):
+    # The fleet simulator temporarily occupies the same map object as the real localizer.
+    from .fleet_map import FLEET
+    if fleet is FLEET:
+        from .peer_dock_survey import require_real_map
+        try:
+            require_real_map()
+        except ValueError:
+            return None,None,fleet.frame_id
+    return fleet.pose_frame(robot,MAX_AGE_S)
+
+
+def observation_pose(fleet,robot):
+    from .peer_dock_localizer import PhysicalFleetMap
+    if not isinstance(fleet,PhysicalFleetMap):
+        return (*real_pose(fleet,robot),None)
+    with fleet.lock:
+        pose,stamp,frame = real_pose(fleet,robot)
+        ref = fleet.track.get(robot,{}).get("floor_survey",{})
+        source = None
+        if pose is not None and ref.get("status")=="confirmed":
+            source = {"method":"local lidar match to independently surveyed floor pose",
+                      "survey":ref["id"],"confirmation_sha256":ref["confirmation_sha256"],
+                      "global_uniqueness_established":False}
+        return pose,stamp,frame,source
+
+
 def observe(robot, directory, fleet):
     client = SensorClient(robot=robot,isolated=robot=='tank')
     try:
@@ -111,11 +138,13 @@ def observe(robot, directory, fleet):
         pairs = np.rint(result['corners_px']).astype(np.int32).reshape(2,4,2)
         cv2.polylines(bgr,list(pairs),True,(52,210,113),2,cv2.LINE_AA)
         cv2.imwrite(str(preview),bgr,[cv2.IMWRITE_JPEG_QUALITY,85])
-    pose,stamp,frame = fleet.pose_frame(robot,MAX_AGE_S)
+    pose,stamp,frame,source = observation_pose(fleet,robot)
     result['map_frame_id'] = frame
     if pose is not None and abs(time.time()-stamp-result['rgb_age_s'])<=MAX_AGE_S:
         result['base_pose_map'] = [float(x) for x in pose]
         result['pose_at'] = stamp
+        if source:
+            result['map_pose_source'] = source
     odom = streams.get('odometry') or {}
     if robot=='rosmaster' and stream_age(packet,'odometry',now_ns=packet['received_ns'])<=MAX_AGE_S:
         result['odometry_frames'] = [odom.get('frame_id'),odom.get('child_frame')]
@@ -255,7 +284,7 @@ def measured_goal(report,fleet):
         raise ValueError('Ориентация листа не соответствует измеренной стене')
     target = centre + STANDOFF_M*surveyed
     for participant in {'tank',robot}:
-        pose,stamp,frame = fleet.pose_frame(participant,MAX_AGE_S)
+        pose,stamp,frame = real_pose(fleet,participant)
         if pose is None or frame!=obs.get('map_frame_id'):
             raise ValueError('Нет подтверждённой общей системы координат камер и Tank')
     if fleet.scan('tank') is None:
@@ -271,7 +300,7 @@ def operator_drive(goal, fleet):
 
     class MeasuredDock(DriveTo):
         def _command(self):
-            pose,_,frame=fleet.pose_frame('tank',MAX_AGE_S)
+            pose,_,frame=real_pose(fleet,'tank')
             if pose is None or frame!=goal['map_frame_id'] or fleet.scan('tank') is None:
                 self.finish('lost_localization','Остановка: устарели поза или лидар Tank')
                 return [0.,0.]

@@ -1,6 +1,8 @@
 """Operator view and explicit handoff to the existing Tank session."""
 import asyncio
 import json
+import math
+import re
 
 from fastapi import HTTPException
 from fastapi.responses import FileResponse,HTMLResponse
@@ -45,6 +47,19 @@ def install(control=None):
             raise HTTPException(404)
         return FileResponse(path)
 
+    @app.get('/api/peer-dock/survey/{ident}')
+    @app.get('/api/peer-dock/survey/{ident}/{filename}')
+    def survey_receipt(ident: str, filename: str = 'receipt.json'):
+        suffix = {'receipt.json':'.json','inputs.npz':'.npz','confirmation.json':'-confirmation.json',
+                  'confirmation.npz':'-confirmation.npz'}.get(filename)
+        if not suffix or not re.fullmatch('[0-9a-f]{32}', ident):
+            raise HTTPException(404)
+        base = study.RUNS/'surveys'
+        path = base/(ident+suffix)
+        if not (base/(ident+'.json')).is_file() or not path.is_file():
+            raise HTTPException(404)
+        return FileResponse(path,media_type='application/json' if suffix.endswith('.json') else 'application/octet-stream')
+
     @ui.page('/peer-dock-real')
     async def page():
         ui.dark_mode().enable()
@@ -85,6 +100,8 @@ def install(control=None):
         button = ui.button('Получить кадры двух машин',on_click=capture)
         displayed['report'] = latest()
         status()
+        if control is not None:
+            donor_survey(control)
         with ui.expansion('Измерить положение камеры').classes('w-full'):
             ui.label('Для каждого робота зафиксируйте камеру. На общей карте измерьте центр большой метки и направление её лицевой стороны. После первого снимка передвиньте лист по стене минимум на 10 см, измерьте новое положение и получите второй снимок.')
             robot = ui.select(['tank','rosmaster'],value='tank',label='Камера')
@@ -112,6 +129,61 @@ def install(control=None):
         if control is not None:
             series_page.controls(control)
         ui.link('Пульт оператора Tank','/')
+
+
+def donor_survey(control):
+    from .fleet_map import FLEET
+    from .peer_dock_survey import anchor_donor
+    with ui.expansion('Общая карта: привязать неподвижный ROSMASTER').classes('w-full'):
+        ui.link('Открыть общую карту и состояние лидаров', '/swarm', new_tab=True)
+        @ui.refreshable
+        def positions():
+            for robot in study.ROBOTS:
+                pose, _, frame = study.real_pose(FLEET,robot)
+                ui.label(f'{robot.upper()} · ' + (f'X {pose[0]:.2f} м, Y {pose[1]:.2f} м, '
+                         f'курс {math.degrees(pose[2]):.0f}°, карта {frame[:8]}' if pose is not None
+                         else 'нет актуальной позиции на общей карте'))
+            with FLEET.lock:
+                ref = (FLEET.track.get('rosmaster') or {}).get('floor_survey',{}).copy()
+            if ref.get('status') == 'confirmed':
+                ui.link('Независимый скан: локальное подтверждение измеренной позы',
+                        '/api/peer-dock/survey/'+ref['id']+'/confirmation.json',new_tab=True)
+            elif ref.get('status') == 'rejected':
+                ui.label('Лидар не подтвердил измеренную опору. Проверьте отметки или дождитесь общей локализации по комнате.')
+        positions()
+        ui.button('Обновить позиции', on_click=positions.refresh).props('flat')
+        ui.label('Если Tank уже виден на карте, а ROSMASTER строит свою карту, нажмите STOP. Отметьте '
+                 'центры обеих баз и их передние оси на полу. Измерьте положение центра ROSMASTER '
+                 'от центра Tank вдоль двух осей Tank и угол между передними осями. '
+                 'Положительные направления — вперёд, влево и против часовой стрелки при взгляде сверху.')
+        with ui.row():
+            forward = ui.number('Вперёд от центра Tank, мм')
+            left = ui.number('Влево от центра Tank, мм')
+            angle = ui.number('Курс ROSMASTER относительно Tank, °')
+        ui.label('Кнопка сохраняет результат замера и даёт лидарному трекеру стартовую подсказку. '
+                 'Калибровка камер и начало попытки доступны отдельными действиями.')
+        measured = ui.checkbox('Обе базы стоят на отметках. Смещения и угол измерены на полу')
+        result = ui.column()
+        async def register():
+            button.disable()
+            try:
+                if any(v.value is None for v in (forward,left,angle)):
+                    raise ValueError('Введите оба смещения и измеренный угол')
+                evidence = await asyncio.to_thread(anchor_donor,control,FLEET,forward.value/1000.,left.value/1000.,
+                                                   angle.value,measured.value)
+                measured.value = False
+                result.clear()
+                with result:
+                    ui.label('Стартовая подсказка сохранена. Локальную привязку должен подтвердить следующий независимый '
+                             'пакет обоих лидаров. Обновите позиции и дождитесь координат '
+                             'обеих машин, затем снимите мишень на двух положениях для проверки камер.')
+                    ui.link('Исходные измерения и согласование с картой', '/api/peer-dock/survey/'+evidence['id'],new_tab=True)
+                positions.refresh()
+            except Exception as exc:
+                ui.notify(str(exc),type='negative')
+            finally:
+                button.enable()
+        button = ui.button('Проверить измерение по двум сканам ROSMASTER',on_click=register)
 
 
 def add_operator_action(control,session,owner):
