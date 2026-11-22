@@ -16,7 +16,7 @@ def contract(cfg):
         'state':cfg.get('state_channels',cfg['channels']),'state_units':cfg.get('state_units',cfg['units'])}
 
 
-def check_source(source,target):
+def check_source(source,target,*,floor_cube_pilot=False):
     if target not in TARGETS:raise ValueError('Выберите задачу ROSMASTER')
     cfg=json.loads(source['config'])
     if source['status']!='completed' or cfg.get('kind','train')!='train' or not source.get('checkpoint'):
@@ -27,7 +27,18 @@ def check_source(source,target):
     validate_recipe(source['policy'],source['profile'])
     plan=datasets.load_plan(cfg['plan_id'])
     if plan['domain']!='sim' or plan['profile']!=source['profile']:raise ValueError('Исходный план не соответствует весам')
-    if contract(plan['profile_contract'])!=contract(real) or contract(sim)!=contract(real):
+    source_contract = contract(plan['profile_contract'])
+    current_contract = contract(sim)
+    if floor_cube_pilot:
+        if (target != 'rosmaster_pick_place' or source['policy'] != 'act'
+            or source['profile'] != 'rosmaster_floor_pick_noknowledge_sim'):
+            raise ValueError('Expected the ACT floor-pick source for this cube pilot')
+        for source_profile in (plan['profile_contract'], sim):
+            if source_profile.get('task_variant') != 'rosmaster_floor_pick' or source_profile.get('task_template') != 'pick up the {object}':
+                raise ValueError('Unrecognised floor-pick task template')
+        real = {**real, 'task': datasets.FLOOR_CUBE_TASK}
+        source_contract['task'] = current_contract['task'] = datasets.FLOOR_CUBE_TASK
+    if source_contract!=contract(real) or current_contract!=contract(real):
         raise ValueError('Камера, частота, единицы или порядок каналов различаются; нужен явный адаптер')
     root=Path(source['checkpoint']);weights=json.loads((root/'config.json').read_text())
     state=weights['input_features'].get('observation.state',{})
@@ -38,10 +49,11 @@ def check_source(source,target):
     return plan,contract(real),checkpoint_hash(root)
 
 
-def prepare(source,target,episode_ids,*,steps,batch,seed,device):
+def prepare(source,target,episode_ids,*,steps,batch,seed,device,floor_cube_pilot=False):
     validate_budget(steps,batch,seed,device)
-    old,channels,fingerprint=check_source(source,target)
-    plan_id,plan=datasets.freeze(target,False,seed=seed,selected_ids=episode_ids,min_real_episodes=3)
+    options = {'floor_cube_pilot': True} if floor_cube_pilot else {}
+    old,channels,fingerprint=check_source(source,target,**options)
+    plan_id,plan=datasets.freeze(target,False,seed=seed,selected_ids=episode_ids,min_real_episodes=3,**options)
     source_plan_id=json.loads(source['config'])['plan_id']
     frames={role:sum(e['frames'] for e in rows) for role,rows in plan['splits'].items()}
     common={'version':1,'kind':'train','profile':target,'policy':source['policy'],'smoke':False,

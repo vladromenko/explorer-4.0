@@ -1,4 +1,4 @@
-.venv/
+/.venv
 __pycache__/
 *.pyc
 .pytest_cache/
@@ -10,10 +10,10 @@ __pycache__/
 *.pt
 runtime/
 
-.venv-sim/
-.venv-cognitive/
+/.venv-sim
+/.venv-cognitive
 .playwright/
 
 MUJOCO_LOG.TXT
 
-.venv-browser/
+/.venv-browser

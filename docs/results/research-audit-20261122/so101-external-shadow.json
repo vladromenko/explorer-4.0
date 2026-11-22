@@ -1,0 +1,57 @@
+{
+  "source": "Piersondong/act_so101_wrist_v1",
+  "revision": "bcf73e8e84d63bb6bcfe6791d63222d9b0660fa9",
+  "source_data_revision": "d10137caea03c8149119558118c1b6abb69a90f3",
+  "weights_sha256": "0ef9bd3e05ed7c3ec5d13b5177e48241b38415387fddbcfdedefbde0b16441f7",
+  "bundle_sha256": "6d35ec79e60e5b4e102c32a697fbe394c18a2ea0eb81c3fc53a47ddb0423b603",
+  "lerobot": "0.6.1",
+  "local_plan": "a800f4387723cf55ea800f691b10578a2aa9315fe371f18621b2f6a54f181bd7",
+  "role": "train_replay",
+  "frames": 36,
+  "episodes": 3,
+  "channels": [
+    "shoulder_pan",
+    "shoulder_lift",
+    "elbow_flex",
+    "wrist_flex",
+    "wrist_roll",
+    "gripper"
+  ],
+  "units": [
+    "degrees",
+    "degrees",
+    "degrees",
+    "degrees",
+    "degrees",
+    "percent_calibrated_range"
+  ],
+  "mae_by_channel": {
+    "hold": [
+      1.3089134395122528,
+      1.9560436424281862,
+      2.7643469042248197,
+      2.068376647101508,
+      1.2405369313847687,
+      1.4228983852598402
+    ],
+    "degree_source": [
+      17.599427547719742,
+      47.571187971366776,
+      52.43655783600278,
+      15.03295644124349,
+      19.709719230731327,
+      6.820210744937261
+    ],
+    "normalized_source": [
+      18.330649337724886,
+      43.49769755204883,
+      47.084764378609385,
+      13.12717425331237,
+      17.01125318540467,
+      6.1449606120586395
+    ]
+  },
+  "motion_commands": 0,
+  "physical_trials": 0,
+  "limitation": "Conditional action error on operator observations. Source calibration and units are unconfirmed. Holding position is a one-frame reference. No task-success estimate."
+}

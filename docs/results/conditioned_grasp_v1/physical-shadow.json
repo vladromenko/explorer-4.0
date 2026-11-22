@@ -1,0 +1,84 @@
+{
+  "domain": "archived_real",
+  "status": "completed",
+  "physical_commands": 0,
+  "physical_trials": 0,
+  "plan_id": "22a6506624dc67b0ff460e0e9d4a45b078fb0ad91a6a764c766026606e7f5978",
+  "split": "validation",
+  "reserved_test_opened": false,
+  "reference_vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+  "models": {
+    "act": "210bf8947236aacfb8b394d93317343afa24f42a3709d4097686a79d250b6b31",
+    "diffusion": "a4b14d935dd1dd607bb97194bd590d97b55175dde004f8421341dc80e0fbec32"
+  },
+  "supported_episodes": 0,
+  "episodes": [
+    {
+      "episode": "d8187db7e725432596d90e9111ccb2d6",
+      "frames": 745,
+      "timed_stationary_unique_rgb_frames": 565,
+      "camera_pose_only_frames": 0,
+      "look_eligible_frames": 0,
+      "calibration_sha256": null,
+      "unsupported_reasons": [
+        "missing_recording_bound_measured_localization_calibration",
+        "no_camera_frame_in_fixed_look_window",
+        "no_frame_with_matching_arm_wrist_and_open_gripper"
+      ],
+      "nearest_look": {
+        "frame": 636,
+        "translation_m": 0.05197313228428033,
+        "angle_deg": 13.486342055327002
+      },
+      "method": "Nominal vendor camera FK, measured servo states interpolated to camera reception. 2 cm/5 degrees describes the reference view, independent metric calibration is required for real localization.",
+      "commands_sent": 0,
+      "planners": {
+        "rbf": {
+          "status": "unsupported",
+          "predicted_actions": 0
+        },
+        "act": {
+          "status": "unsupported",
+          "predicted_actions": 0
+        },
+        "diffusion": {
+          "status": "unsupported",
+          "predicted_actions": 0
+        }
+      }
+    },
+    {
+      "episode": "6352595336064846b59a13a52feee5eb",
+      "frames": 1042,
+      "timed_stationary_unique_rgb_frames": 783,
+      "camera_pose_only_frames": 1,
+      "look_eligible_frames": 0,
+      "calibration_sha256": null,
+      "unsupported_reasons": [
+        "missing_recording_bound_measured_localization_calibration",
+        "no_frame_with_matching_arm_wrist_and_open_gripper"
+      ],
+      "nearest_look": {
+        "frame": 943,
+        "translation_m": 0.01859177706900757,
+        "angle_deg": 3.999725871831169
+      },
+      "method": "Nominal vendor camera FK, measured servo states interpolated to camera reception. 2 cm/5 degrees describes the reference view, independent metric calibration is required for real localization.",
+      "commands_sent": 0,
+      "planners": {
+        "rbf": {
+          "status": "unsupported",
+          "predicted_actions": 0
+        },
+        "act": {
+          "status": "unsupported",
+          "predicted_actions": 0
+        },
+        "diffusion": {
+          "status": "unsupported",
+          "predicted_actions": 0
+        }
+      }
+    }
+  ]
+}

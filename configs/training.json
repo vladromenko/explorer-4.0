@@ -12,7 +12,7 @@
     "seed": 1000,
     "push_to_hub": false,
     "vision_backbone": "resnet18",
-    "note": "Orin NX: ~1 s/step at batch 8 (measured 2026-11-14) -> ~11 h; 40k steps is enough for ~50 episodes of one task"
+    "note": "Orin NX: ~1 s/step at batch 8 (measured 2026-11-14) -> ~11 h. This is a compute budget. Choose a policy using held-out task success and a matched baseline"
   },
   "smolvla": {
     "profile": "so101_pick_place",

@@ -1,8 +1,10 @@
 # Explorer 4.0 — robot learning from demonstrations and selective help across a robot fleet
 
-Explorer runs on Homebrain, a Jetson Orin NX workstation. An operator can record a demonstration, turn it into a LeRobot dataset, train a policy and replay it on controlled MuJoCo scenes. The research question is practical: **when a robot struggles to pick up an object, does it need a better estimate of the object's position, information about its shape, or more examples of the movement?**
+Explorer runs on Homebrain, a Jetson Orin NX workstation. An operator can record a demonstration, turn it into a LeRobot dataset, train a policy and replay it on controlled MuJoCo scenes. The research asks when a robot benefits from asking a teammate for a measurement, how the receiving controller uses that information and whether local sensing can solve the same task for less cost.
 
 The research register traces the fleet’s controllers, pretrained policies and assistance mechanisms to their primary sources. It includes the measured results, known gaps, and the acceptance test for each proposed change. [Research register](docs/RESEARCH_REGISTER.md) · [Read on Homebrain](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/index.html)
+
+[Open the fleet workspace on Homebrain](http://192.168.0.168:8030/workspace) for individual controls, demonstrations, training release, simulation replay and physical camera checks. The two research jobs stay prepared until the operator releases them. [Research queue](explorer4/study_queue.py) · [English manuscript source](docs/paper/peer-assisted-robots.tex)
 
 ## How the fleet works
 
@@ -24,13 +26,16 @@ The research register traces the fleet’s controllers, pretrained policies and 
 
 | Setting | Measured outcome |
 | --- | --- |
+| **Peer camera and active local search** | On 24 matched MuJoCo scenes the visibility rule docked 24 times using 13 calls. Active local search achieved 24 with zero calls. When an opaque screen blocked the local view in 12 development scenes, local search achieved 0/12 and donor assistance 12/12. [Paired docking outcomes](docs/results/peer-camera-docking/paired.csv) · [Screen development](docs/results/peer-camera-docking/screen-development.json) |
+| **Three robots sharing one order** | A wrist camera on SO-101 supplied a colour, ROSMASTER located the corresponding dock, and Tank reached it in 4/4 scripted layouts. Removing or swapping either message yielded 0/4 correct endpoints in each of four controls. [Scene records](http://192.168.0.168:8030/simlab-media/reports/three-robot-dock-v1/result.json) · [Replay](http://192.168.0.168:8030/simlab-media/reports/three-robot-dock-v1/868000/replay.mp4) |
+| **Conditioned ACT and Diffusion** | The fixed-look pipelines held 15/20 and 18/20 cubes on fresh scenes. Trajectory interpolation held 20/20, geometric IK 18/20. All three constant-goal ablations held 2/20. [Weights and totals](docs/results/conditioned_grasp_v1/study.json) · [Trial records](docs/results/conditioned_grasp_v1/trials.csv) |
 | **Choosing a helper in a 2D delivery task** | On the same ten rooms, the rule that requested help according to missing knowledge completed **10/10** deliveries. ROSMASTER alone completed **3/10**, with Tank alone **2/10**, and with SO-101 alone **9/10**. [Paired room results](docs/results/knowledge_gap_sim/20261116-v2/summary.json) |
 | **Grasp orientation in MuJoCo** | On 82 scenes with narrow objects, a controller given object size succeeded **58/82** times. Adding the closing direction brought this to **74/82**. For the 38 wide-object scenes, every condition scored **1/38**. [Geometry experiment](docs/results/knowledge_transfer_mujoco_v3/ANALYSIS.md) |
 | **Learning the movement of a fixed cube grasp** | A frozen RGB model estimated the cube's position, and a joint trajectory was interpolated from simulated demonstrations. Training the movement on 5, 11, 20 and 32 demonstrations yielded **40, 53, 54 and 55 holds out of 60** respectively. Giving the same 32-demonstration model the mean training position yielded **6/60**. The shared vision model had its own 1,024 labelled simulation images. |
 | **Requesting a larger movement library** | On 40 additional simulation scenes, the robot asked for help when the estimated target lay outside the region covered by its five local examples. It held the cube **38/40** times with **26 requests**. Always asking yielded **37/40** with 40 requests, and acting locally yielded **36/40**. |
 | **Training on physical demonstrations** | Two ACT policies trained on 11 archived human demonstrations each held the cube **0/20** times when replayed in MuJoCo. Pretraining reduced mean joint-command error on two diagnostic recordings from **6.73° to 6.13°**. Physical grasp success and the number of human demonstrations saved still require trials on the robot. |
 
-The first two experiments link to evidence in Git. The November 22 trajectory, assistance and human-demonstration studies have separate records on Homebrain. Under the data directory, open `simlab/reports/article-20261122/index.html` for the manuscript and the per-scene results. Each study identifies its demonstration set and evaluation scenes.
+The research register links the protocols, implementation and individual trial records. The current English draft uses the paired camera experiments as its primary evidence. [Manuscript source](docs/paper/peer-assisted-robots.tex) · [Compiled draft on Homebrain](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/peer-assisted-robots.pdf)
 
 ## Repository structure
 

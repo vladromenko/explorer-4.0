@@ -51,6 +51,11 @@ def prepare(kind, ident):
             raise ValueError('Нужен завершённый trainer с checkpoint')
         job=json.loads(row['config'])
         if job.get('kind','train')!='train':raise ValueError('Выберите именно обучение')
+        from .deploy_gate import scope_for
+        scope = scope_for(row)
+        cfg = profile(scope['real_profile'])
+        plan.update(profile=scope['real_profile'], instruction=scope['instruction'],start_pose=scope['start_pose'],
+                    channels=cfg['channels'],units=cfg['units'],fps=cfg['fps'])
         root=Path(row['checkpoint']).resolve()
         if not root.is_relative_to(DATA/'checkpoints'):raise ValueError('Checkpoint outside Explorer storage')
         weights=root/'model.safetensors'
@@ -126,6 +131,8 @@ class PolicyActions:
             raise ValueError('Policy checkpoint changed')
         self.core=PolicyCore(root,'cuda',instruction=plan.get('instruction'))
         self.policy=self.core.policy
+        self.initial_start=plan.get('start_pose')
+        self.check_start=self.initial_start
         self.environment_shape=self.core.environment
         self.task=profile(plan['profile'])['task']
         self.decision_info={}
@@ -134,6 +141,12 @@ class PolicyActions:
         return self.core.needs_inference()
 
     def next(self,observation):
+        if self.check_start:
+            state = observation['observation.state']
+            target = self.check_start['center']
+            if len(state)!=len(target) or any(not math.isfinite(a) or abs(a-b)>self.check_start['tolerance'] for a,b in zip(state,target)):
+                raise ValueError('Measured initial arm pose is outside the evaluated starting envelope')
+            self.check_start=None
         replanned=self.needs_inference()
         start=time.monotonic_ns()
         action=self.core.act(observation['observation.state'],
@@ -148,4 +161,5 @@ class PolicyActions:
 
     def reset(self):
         self.core.reset()
+        self.check_start=self.initial_start
         self.decision_info={}

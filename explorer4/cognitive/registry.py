@@ -60,7 +60,8 @@ def cards():
             verifier='existing environment.info/complete_step independent of planner text',sim_admission='available',
             real_admission='blocked',limitation='AG0–AG2 Homebrain only; scripted teacher uses simulator state; physical authorization absent')
         result[identifier]=card
-    source='explorer4/sim/cooperation.py';sha=file_hash(source)
+    source='explorer4/sim/cooperation.py'
+    sha=digest({f:file_hash(f) for f in (source, 'explorer4/sim/peer_dock.py', 'explorer4/peer_dock_config.py', 'explorer4/sim/peer_screens.py', 'explorer4/simlab/perception.py')})
     base=result['rosmaster.pick_place.scripted.v1']
     for name,description,timeout in [('scan_dock','bounded fixed camera scan',5.),('observe_dock','direct fixed camera observation',3.5)]:
         ident=f'rosmaster.{name}.geometric.v1'
@@ -72,7 +73,21 @@ def cards():
     base=result['tank.dock_fixed.scripted.v1'];ident='tank.dock_observed.scripted.v1'
     result[ident]=base.model_copy(update={'skill_id':ident,
         'version':digest({'parent':base.version,'admission_source':sha}),
+        'source_ref':source+':CooperationWorld.dock','policy_sha256':sha,
+        'verified_scope':['RGB marker position with surveyed wall heading and integrated body twist'],
+        'limitation':'Simulation-only calibration, surveyed start and stationary board during each approach',
         'preconditions':[*base.preconditions,'target_observed_by_helper']})
+    local='tank.dock_local.geometric.v1'
+    result[local]=result[ident].model_copy(update={'skill_id':local,'kind':'geometric',
+        'version':digest({'recipient':result[ident].version,'source':'local_rgb'}),
+        'preconditions':[*base.preconditions,'target_observed_locally']})
+    scan='tank.scan_local.geometric.v1'
+    result[scan]=result[local].model_copy(update={'skill_id':scan,
+        'version':digest({'recipient':result[local].version,'source':'active_camera_scan'}),
+        'source_ref':source+':CooperationWorld.local_scan','preconditions':base.preconditions,
+        'verified_scope':['Bounded 3 s onboard rotation and a fresh RGB marker pose before the approach']})
+    from .three_robot_cards import add as add_three_robot_cards
+    add_three_robot_cards(result, file_hash)
     from explorer4 import catalog
     with catalog.connect() as db:
         exists = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='cognitive_skills'").fetchone()

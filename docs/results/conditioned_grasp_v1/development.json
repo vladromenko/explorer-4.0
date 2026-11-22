@@ -1,0 +1,1099 @@
+{
+  "protocol": {
+    "version": 1,
+    "task": "Rosmaster recorded-start cube lift and stable carry at 20 Hz",
+    "profile": "rosmaster_floor_pick_recorded_start_sim",
+    "physics": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+    "vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+    "motor_examples": 32,
+    "original_split": [
+      32,
+      4,
+      4
+    ],
+    "training_images": 1024,
+    "training_seed": 1000,
+    "optimizer_steps": {
+      "act": 1000,
+      "diffusion": 2000
+    },
+    "batch_size": 32,
+    "development": [
+      940100,
+      940107
+    ],
+    "fresh": [
+      940200,
+      940219
+    ],
+    "historical_confirmation": [
+      88500,
+      88519
+    ],
+    "arms": [
+      "act",
+      "diffusion",
+      "rbf",
+      "ik",
+      "constant",
+      "act_constant",
+      "diffusion_constant"
+    ],
+    "selection": "Final weights at fixed update budgets. Open confirmation after at least one new learned planner attains a terminal hold on development. Evaluate every declared arm including negative results. No checkpoint selection on confirmation.",
+    "controls": "Constant substitutes the mean XY of the same 32 training points in each matched architecture. RBF uses the frozen SciPy thin-plate recipe. IK uses the vendor solver. Both neural policies predict eight PCA coefficients and share the same training-only decoder. DDIM uses fixed initial noise. All seven arms share the RGB observation, look, rate limits, reset and existing task scorer.",
+    "terminal": "held_in_carry_pose for the simulator-configured stable interval",
+    "contact_sampling": "At 20 Hz after each control step, score contacts between the cube and a left/right gripper link. Bilateral requires both sides in the same sample. Peak lift relative to reset cube height. No contact or simulator target position enters policy inference.",
+    "historical_comparison": "The old RGB ACT-25 and Diffusion used raw images/joint feedback from reset. Match their recorded initial arm and cube vectors and physics on the same historical seeds. The new systems also have a deliberate camera look, a supervised localizer and a compressive action representation. This comparison measures a pipeline change.",
+    "physical_trials": 0
+  },
+  "protocol_sha256": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+  "block": "development",
+  "total": 8,
+  "counts": {
+    "act": 7,
+    "diffusion": 8,
+    "rbf": 8,
+    "ik": 8,
+    "constant": 0,
+    "act_constant": 0,
+    "diffusion_constant": 0
+  },
+  "paired": {
+    "act_vs_act_constant": {
+      "gains": 7,
+      "losses": 0,
+      "exact_p": 0.015625
+    },
+    "diffusion_vs_diffusion_constant": {
+      "gains": 8,
+      "losses": 0,
+      "exact_p": 0.0078125
+    },
+    "rbf_vs_constant": {
+      "gains": 8,
+      "losses": 0,
+      "exact_p": 0.0078125
+    },
+    "act_vs_rbf": {
+      "gains": 0,
+      "losses": 1,
+      "exact_p": 1.0
+    },
+    "diffusion_vs_rbf": {
+      "gains": 0,
+      "losses": 0,
+      "exact_p": 1.0
+    },
+    "act_vs_ik": {
+      "gains": 0,
+      "losses": 1,
+      "exact_p": 1.0
+    },
+    "diffusion_vs_ik": {
+      "gains": 0,
+      "losses": 0,
+      "exact_p": 1.0
+    }
+  },
+  "models": {
+    "act": {
+      "architecture": "act",
+      "steps": 1000,
+      "batch": 32,
+      "seed": 1000,
+      "source_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+      "parameters": 120449,
+      "weights_sha256": "210bf8947236aacfb8b394d93317343afa24f42a3709d4097686a79d250b6b31",
+      "decoder_sha256": "2375c542a9ec142a54e7125cb2155d758f038f0d72b0cef64c66b265ebd449aa",
+      "optimizer": "AdamW",
+      "learning_rate": 0.0006,
+      "device": "cuda",
+      "history": [
+        {
+          "step": 100,
+          "objective": 0.15618443489074707,
+          "seconds": 3.1844210909912363
+        },
+        {
+          "step": 200,
+          "objective": 0.07967910170555115,
+          "seconds": 5.868796149996342
+        },
+        {
+          "step": 300,
+          "objective": 0.05315205827355385,
+          "seconds": 8.430167448997963
+        },
+        {
+          "step": 400,
+          "objective": 0.03392321243882179,
+          "seconds": 11.071016634989064
+        },
+        {
+          "step": 500,
+          "objective": 0.032804928719997406,
+          "seconds": 13.730054625993944
+        },
+        {
+          "step": 600,
+          "objective": 0.029235070571303368,
+          "seconds": 16.348054166999646
+        },
+        {
+          "step": 700,
+          "objective": 0.026053063571453094,
+          "seconds": 19.023947527995915
+        },
+        {
+          "step": 800,
+          "objective": 0.022777533158659935,
+          "seconds": 21.67681102998904
+        },
+        {
+          "step": 900,
+          "objective": 0.02869974449276924,
+          "seconds": 24.319145978995948
+        },
+        {
+          "step": 1000,
+          "objective": 0.01702975668013096,
+          "seconds": 26.97184755599301
+        }
+      ]
+    },
+    "diffusion": {
+      "architecture": "diffusion",
+      "steps": 2000,
+      "batch": 32,
+      "seed": 1000,
+      "source_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+      "parameters": 177249,
+      "weights_sha256": "a4b14d935dd1dd607bb97194bd590d97b55175dde004f8421341dc80e0fbec32",
+      "decoder_sha256": "2375c542a9ec142a54e7125cb2155d758f038f0d72b0cef64c66b265ebd449aa",
+      "optimizer": "AdamW",
+      "learning_rate": 0.0006,
+      "device": "cuda",
+      "history": [
+        {
+          "step": 100,
+          "objective": 0.055957913398742676,
+          "seconds": 4.766193111005123
+        },
+        {
+          "step": 200,
+          "objective": 0.010567372664809227,
+          "seconds": 8.64899354201043
+        },
+        {
+          "step": 300,
+          "objective": 0.004554337356239557,
+          "seconds": 12.548333974002162
+        },
+        {
+          "step": 400,
+          "objective": 0.007011806592345238,
+          "seconds": 16.305181309013278
+        },
+        {
+          "step": 500,
+          "objective": 0.005438675172626972,
+          "seconds": 20.023821564012906
+        },
+        {
+          "step": 600,
+          "objective": 0.006209027022123337,
+          "seconds": 23.790010614000494
+        },
+        {
+          "step": 700,
+          "objective": 0.004690352361649275,
+          "seconds": 27.510914844009676
+        },
+        {
+          "step": 800,
+          "objective": 0.001969653880223632,
+          "seconds": 31.35060931800399
+        },
+        {
+          "step": 900,
+          "objective": 0.003522344399243593,
+          "seconds": 35.13780580800085
+        },
+        {
+          "step": 1000,
+          "objective": 0.003918439149856567,
+          "seconds": 38.908493690003525
+        },
+        {
+          "step": 1100,
+          "objective": 0.002616016659885645,
+          "seconds": 42.94822623601067
+        },
+        {
+          "step": 1200,
+          "objective": 0.002726157894358039,
+          "seconds": 46.81293490900134
+        },
+        {
+          "step": 1300,
+          "objective": 0.0016241897828876972,
+          "seconds": 50.6020688360004
+        },
+        {
+          "step": 1400,
+          "objective": 0.002944618696346879,
+          "seconds": 54.39202042001125
+        },
+        {
+          "step": 1500,
+          "objective": 0.002454452682286501,
+          "seconds": 58.16955172001326
+        },
+        {
+          "step": 1600,
+          "objective": 0.0005003241822123528,
+          "seconds": 62.0683601040073
+        },
+        {
+          "step": 1700,
+          "objective": 0.0004020468331873417,
+          "seconds": 65.94050892000087
+        },
+        {
+          "step": 1800,
+          "objective": 0.0002298629260621965,
+          "seconds": 69.80732424701273
+        },
+        {
+          "step": 1900,
+          "objective": 0.000212363142054528,
+          "seconds": 73.56371532101184
+        },
+        {
+          "step": 2000,
+          "objective": 0.0002034632780123502,
+          "seconds": 77.34249916201225
+        }
+      ]
+    }
+  },
+  "trials": [
+    {
+      "seed": 940100,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          84.24546813964844,
+          54.59916687011719,
+          22.362028121948242,
+          22.409454345703125,
+          71.35063171386719,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19968424518708972,
+          0.0245541272188414,
+          0.018000000000000002
+        ],
+        "reset_sha256": "61b14c4006edeaa5069435917774f0613332efd01143fb4c3125e01dd71168b4"
+      },
+      "lookup_state_sha256": "e2115fe5c5732e882a996d9542a768d8df18c63e29997113132a8fc9a3d5b5c4",
+      "rgb_sha256": "3adbe2ae694f7dcd8e2a7b5893d15e9dbeea9b3fbdf6a248f6b88f83498daca0",
+      "predicted_xy": [
+        0.19210946559906006,
+        0.02272716723382473
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 296,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24485648187765513,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 222,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24182601737318887,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 387,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23985339701384478,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 434,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24023639478287,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0046361426324162715,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004615754511080896,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.00471643037663369,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940101,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          80.23416137695312,
+          57.474849700927734,
+          27.218149185180664,
+          20.853839874267578,
+          74.8351821899414,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17410875508870702,
+          -0.025249853956969926,
+          0.018000000000000002
+        ],
+        "reset_sha256": "18e39546976e4c60c8f81a023cdbfb8b7d5626e99d649b8f489d2118b799c364"
+      },
+      "lookup_state_sha256": "c5219f5c63d093dcd0f1664787f4657c2ee8689a6fb855927c7617485a8856d4",
+      "rgb_sha256": "c5f10162b1ae18cf6954614231802e5160258cce2d53184ec054e95806e1e261",
+      "predicted_xy": [
+        0.17436493933200836,
+        -0.02349988743662834
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 302,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23614694209303427,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 335,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2360494795699884,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 218,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2349653857971975,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 260,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23352724188348278,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004664271412657149,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004624312200740492,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004607270309731917,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940102,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          83.5865707397461,
+          54.581851959228516,
+          26.442441940307617,
+          19.946918487548828,
+          75.62895965576172,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22934389054782434,
+          0.049427253023596435,
+          0.018000000000000002
+        ],
+        "reset_sha256": "ee94277b373f351202c1e8a724f35b05ccda43c5d9a5ebabfc09a4ddf772747c"
+      },
+      "lookup_state_sha256": "6f7fed4df4efd31a761efedda6c0d4d48fa293033014d35d56326da453291251",
+      "rgb_sha256": "efffb56b45ca468b3e7573f06c730a83448e86bb29aee3ef8902b71fb9087af1",
+      "predicted_xy": [
+        0.22813743352890015,
+        0.043007295578718185
+      ],
+      "arms": {
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00593217106154308,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 386,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2379237739535192,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 369,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23674878042638547,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 391,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23903306563000026,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940103,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          78.87252044677734,
+          59.3889045715332,
+          26.098289489746094,
+          22.14421844482422,
+          74.1214370727539,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19244192168681834,
+          0.03227694310021789,
+          0.018000000000000002
+        ],
+        "reset_sha256": "400852bc208e66fadaa409dbe298d13e412f03bbe412bbfb66402271eff53f1c"
+      },
+      "lookup_state_sha256": "faceec674d64196ea2a024a607952b8296dbe14aa63182a9923ea68fe643ca30",
+      "rgb_sha256": "9cf70bab53fdf9e1f9b695b5bd57ecb66ee56facb9dafcd9f8cfb33a665e9b07",
+      "predicted_xy": [
+        0.19429083168506622,
+        0.027791354805231094
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 302,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23774158181364563,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 289,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24134283253770256,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 382,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23864542963602947,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 367,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23775673019120996,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.005212669420344498,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.006311013427616887,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004619334874235787,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940104,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          79.50331115722656,
+          57.05764389038086,
+          26.89040756225586,
+          19.879003524780273,
+          76.17855834960938,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24654812693275413,
+          -0.03377222129578769,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6550df72f5620ee7a7b15ffe801660f3dc2cce52c1419bb9fca38959c53e24d7"
+      },
+      "lookup_state_sha256": "becfd51ffe57c5ab33e1e44b82e0989f890c0faecd089a6ea5bf2543a1b053e4",
+      "rgb_sha256": "904b2b1905155dad1117a82529e1c4342f9df65e9d9fcb54a88a38371ed8bcf8",
+      "predicted_xy": [
+        0.2377959042787552,
+        -0.02704811654984951
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 275,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23280309202990002,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 338,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23217144338522544,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 282,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23286620959432047,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 279,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23290020420614682,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940105,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          81.83688354492188,
+          54.83829879760742,
+          22.617660522460938,
+          18.2890682220459,
+          75.25143432617188,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20375428614832805,
+          0.03482400542987338,
+          0.018000000000000002
+        ],
+        "reset_sha256": "8656d85dab80d108360919a78d5e565ffc73d32ba7e772cc1a2c54fdd9541b7f"
+      },
+      "lookup_state_sha256": "f70198bb5b6e5eadb1447f28b97c09b533914917523d787a07e529562c130b13",
+      "rgb_sha256": "c0dd85d62a87276c8856868cc074d84b61bd00f05f3b1cd67e62b70e79c4d4be",
+      "predicted_xy": [
+        0.20624485611915588,
+        0.036236267536878586
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 340,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2396657138882986,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 352,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2364689370364197,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 360,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23809526106068385,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 359,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2373213868232919,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.00461950182403769,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004381215527285112,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0045872955868228454,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940106,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          80.82693481445312,
+          56.579505920410156,
+          22.523000717163086,
+          21.79664421081543,
+          72.33001708984375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20231654989496534,
+          -0.025823934493953784,
+          0.018000000000000002
+        ],
+        "reset_sha256": "af5bdf772e309470728372d0424e185b85f0f63416018b8808952056864c6480"
+      },
+      "lookup_state_sha256": "9cb3b1cae61c372b58268d4fc28b8d3db3f13e4aa2c3c6c200e222c3f1cf8040",
+      "rgb_sha256": "58a50f80523feaef89bac6ab3daf12fcbba9eb2eaed3613a4ae87bc4fa87ea0e",
+      "predicted_xy": [
+        0.20045650005340576,
+        -0.02066025510430336
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 367,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2408957374802823,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 386,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23833629415683305,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 366,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24069312880036675,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 366,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23954215468630635,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004621888832413157,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.00462584036456834,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0046265010950810245,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    },
+    {
+      "seed": 940107,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+        "observations": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b"
+      },
+      "initial": {
+        "arm": [
+          79.5721435546875,
+          54.216773986816406,
+          25.797298431396484,
+          18.422441482543945,
+          73.84829711914062,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22023114372541433,
+          -0.010970491739518348,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e44e54e62eedea5c1ddefd9394440cc49df2aca5de8527ae30246971dd15ad71"
+      },
+      "lookup_state_sha256": "90aaa12faae09036a8789c3c2d1c8878da25a55a8d06229ed7f24efe318c9919",
+      "rgb_sha256": "316c4cb9bb2e3f57e300439ba10eb5cec59e9d475fdf218f0df289e30195ffe8",
+      "predicted_xy": [
+        0.21991877257823944,
+        -0.011332125402987003
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 366,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23935775356061356,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 372,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23971511521832845,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 376,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24068183142892258,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 378,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23830270110423285,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.003841766789909041,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.003767862322645761,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0034653052132849853,
+          "max_stable_carry_s": 0.0
+        }
+      }
+    }
+  ]
+}

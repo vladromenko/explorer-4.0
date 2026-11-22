@@ -7,5 +7,14 @@
  "first_step_jump_deg_p95": 25.0,
  "latency_budget_fraction": 0.8,
  "mujoco_min_success": 0.5,
- "mujoco_min_episodes": 20
+ "mujoco_min_episodes": 20,
+ "velocity_mae": {
+  "m/s": 0.05,
+  "rad/s": 0.12
+ },
+ "velocity_first_step_p95": {
+  "m/s": 0.08,
+  "rad/s": 0.2
+ },
+ "gripper_first_step_p95": 25
 }

@@ -1,0 +1,333 @@
+{
+  "status": "completed",
+  "domain": "simulation",
+  "scenes": 24,
+  "protocol_sha256": "37754ba2c3b7fd0141a022a4db355dd05d6ceb5429b4bbea2a72f1ec23132630",
+  "conditions": {
+    "local_only": {
+      "successes": 11,
+      "calls": 0,
+      "scenes": 24,
+      "median_elapsed_sim_s": 0.0
+    },
+    "local_scan": {
+      "successes": 24,
+      "calls": 0,
+      "scenes": 24,
+      "median_elapsed_sim_s": 8.099999999998408
+    },
+    "always": {
+      "successes": 24,
+      "calls": 24,
+      "scenes": 24,
+      "median_elapsed_sim_s": 10.975000000001922
+    },
+    "selective": {
+      "successes": 24,
+      "calls": 13,
+      "scenes": 24,
+      "median_elapsed_sim_s": 9.850000000000547
+    },
+    "matched_random": {
+      "successes": 16,
+      "calls": 13,
+      "scenes": 24,
+      "median_elapsed_sim_s": 9.725000000000394
+    },
+    "stale": {
+      "successes": 0,
+      "calls": 24,
+      "scenes": 24,
+      "median_elapsed_sim_s": 3.000000000000169
+    },
+    "shuffled": {
+      "successes": 4,
+      "calls": 24,
+      "scenes": 24,
+      "median_elapsed_sim_s": 19.99999999999874
+    }
+  },
+  "paired_vs_random": {
+    "gains": 8,
+    "losses": 0,
+    "n": 24,
+    "exact_two_sided_p": 0.0078125
+  },
+  "calibration": {
+    "conditions": {
+      "local_only": {
+        "successes": 4,
+        "calls": 0,
+        "scenes": 6,
+        "median_elapsed_sim_s": 7.549999999998535
+      },
+      "local_scan": {
+        "successes": 6,
+        "calls": 0,
+        "scenes": 6,
+        "median_elapsed_sim_s": 8.14999999999847
+      },
+      "always": {
+        "successes": 6,
+        "calls": 6,
+        "scenes": 6,
+        "median_elapsed_sim_s": 10.8750000000018
+      },
+      "selective": {
+        "successes": 6,
+        "calls": 2,
+        "scenes": 6,
+        "median_elapsed_sim_s": 8.1749999999985
+      },
+      "matched_random": {
+        "successes": 5,
+        "calls": 2,
+        "scenes": 6,
+        "median_elapsed_sim_s": 8.1749999999985
+      },
+      "stale": {
+        "successes": 0,
+        "calls": 6,
+        "scenes": 6,
+        "median_elapsed_sim_s": 3.000000000000169
+      },
+      "shuffled": {
+        "successes": 0,
+        "calls": 6,
+        "scenes": 6,
+        "median_elapsed_sim_s": 19.99999999999874
+      }
+    },
+    "paired_vs_random": {
+      "gains": 1,
+      "losses": 0,
+      "n": 6,
+      "exact_two_sided_p": 1.0
+    }
+  },
+  "weight_updates": 0,
+  "physical_robot_commands": 0,
+  "evidence": [
+    {
+      "seed": 848000,
+      "room": "inspection",
+      "outcomes": "848000/outcomes.json",
+      "local_frame": "848000/recipient-before.png",
+      "donor_frame": "848000/donor-observation.png",
+      "final_frame": "848000/recipient-final.png",
+      "overview": "848000/world-final.png"
+    },
+    {
+      "seed": 848001,
+      "room": "workshop",
+      "outcomes": "848001/outcomes.json",
+      "local_frame": "848001/recipient-before.png",
+      "donor_frame": "848001/donor-observation.png",
+      "final_frame": "848001/recipient-final.png",
+      "overview": "848001/world-final.png"
+    },
+    {
+      "seed": 848002,
+      "room": "storage",
+      "outcomes": "848002/outcomes.json",
+      "local_frame": "848002/recipient-before.png",
+      "donor_frame": "848002/donor-observation.png",
+      "final_frame": "848002/recipient-final.png",
+      "overview": "848002/world-final.png"
+    },
+    {
+      "seed": 848003,
+      "room": "inspection",
+      "outcomes": "848003/outcomes.json",
+      "local_frame": "848003/recipient-before.png",
+      "donor_frame": "848003/donor-observation.png",
+      "final_frame": "848003/recipient-final.png",
+      "overview": "848003/world-final.png"
+    },
+    {
+      "seed": 848004,
+      "room": "workshop",
+      "outcomes": "848004/outcomes.json",
+      "local_frame": "848004/recipient-before.png",
+      "donor_frame": "848004/donor-observation.png",
+      "final_frame": "848004/recipient-final.png",
+      "overview": "848004/world-final.png"
+    },
+    {
+      "seed": 848005,
+      "room": "storage",
+      "outcomes": "848005/outcomes.json",
+      "local_frame": "848005/recipient-before.png",
+      "donor_frame": "848005/donor-observation.png",
+      "final_frame": "848005/recipient-final.png",
+      "overview": "848005/world-final.png"
+    },
+    {
+      "seed": 848006,
+      "room": "inspection",
+      "outcomes": "848006/outcomes.json",
+      "local_frame": "848006/recipient-before.png",
+      "donor_frame": "848006/donor-observation.png",
+      "final_frame": "848006/recipient-final.png",
+      "overview": "848006/world-final.png"
+    },
+    {
+      "seed": 848007,
+      "room": "workshop",
+      "outcomes": "848007/outcomes.json",
+      "local_frame": "848007/recipient-before.png",
+      "donor_frame": "848007/donor-observation.png",
+      "final_frame": "848007/recipient-final.png",
+      "overview": "848007/world-final.png"
+    },
+    {
+      "seed": 848008,
+      "room": "storage",
+      "outcomes": "848008/outcomes.json",
+      "local_frame": "848008/recipient-before.png",
+      "donor_frame": "848008/donor-observation.png",
+      "final_frame": "848008/recipient-final.png",
+      "overview": "848008/world-final.png"
+    },
+    {
+      "seed": 848009,
+      "room": "inspection",
+      "outcomes": "848009/outcomes.json",
+      "local_frame": "848009/recipient-before.png",
+      "donor_frame": "848009/donor-observation.png",
+      "final_frame": "848009/recipient-final.png",
+      "overview": "848009/world-final.png"
+    },
+    {
+      "seed": 848010,
+      "room": "workshop",
+      "outcomes": "848010/outcomes.json",
+      "local_frame": "848010/recipient-before.png",
+      "donor_frame": "848010/donor-observation.png",
+      "final_frame": "848010/recipient-final.png",
+      "overview": "848010/world-final.png"
+    },
+    {
+      "seed": 848011,
+      "room": "storage",
+      "outcomes": "848011/outcomes.json",
+      "local_frame": "848011/recipient-before.png",
+      "donor_frame": "848011/donor-observation.png",
+      "final_frame": "848011/recipient-final.png",
+      "overview": "848011/world-final.png"
+    },
+    {
+      "seed": 848012,
+      "room": "inspection",
+      "outcomes": "848012/outcomes.json",
+      "local_frame": "848012/recipient-before.png",
+      "donor_frame": "848012/donor-observation.png",
+      "final_frame": "848012/recipient-final.png",
+      "overview": "848012/world-final.png"
+    },
+    {
+      "seed": 848013,
+      "room": "workshop",
+      "outcomes": "848013/outcomes.json",
+      "local_frame": "848013/recipient-before.png",
+      "donor_frame": "848013/donor-observation.png",
+      "final_frame": "848013/recipient-final.png",
+      "overview": "848013/world-final.png"
+    },
+    {
+      "seed": 848014,
+      "room": "storage",
+      "outcomes": "848014/outcomes.json",
+      "local_frame": "848014/recipient-before.png",
+      "donor_frame": "848014/donor-observation.png",
+      "final_frame": "848014/recipient-final.png",
+      "overview": "848014/world-final.png"
+    },
+    {
+      "seed": 848015,
+      "room": "inspection",
+      "outcomes": "848015/outcomes.json",
+      "local_frame": "848015/recipient-before.png",
+      "donor_frame": "848015/donor-observation.png",
+      "final_frame": "848015/recipient-final.png",
+      "overview": "848015/world-final.png"
+    },
+    {
+      "seed": 848016,
+      "room": "workshop",
+      "outcomes": "848016/outcomes.json",
+      "local_frame": "848016/recipient-before.png",
+      "donor_frame": "848016/donor-observation.png",
+      "final_frame": "848016/recipient-final.png",
+      "overview": "848016/world-final.png"
+    },
+    {
+      "seed": 848017,
+      "room": "storage",
+      "outcomes": "848017/outcomes.json",
+      "local_frame": "848017/recipient-before.png",
+      "donor_frame": "848017/donor-observation.png",
+      "final_frame": "848017/recipient-final.png",
+      "overview": "848017/world-final.png"
+    },
+    {
+      "seed": 848018,
+      "room": "inspection",
+      "outcomes": "848018/outcomes.json",
+      "local_frame": "848018/recipient-before.png",
+      "donor_frame": "848018/donor-observation.png",
+      "final_frame": "848018/recipient-final.png",
+      "overview": "848018/world-final.png"
+    },
+    {
+      "seed": 848019,
+      "room": "workshop",
+      "outcomes": "848019/outcomes.json",
+      "local_frame": "848019/recipient-before.png",
+      "donor_frame": "848019/donor-observation.png",
+      "final_frame": "848019/recipient-final.png",
+      "overview": "848019/world-final.png"
+    },
+    {
+      "seed": 848020,
+      "room": "storage",
+      "outcomes": "848020/outcomes.json",
+      "local_frame": "848020/recipient-before.png",
+      "donor_frame": "848020/donor-observation.png",
+      "final_frame": "848020/recipient-final.png",
+      "overview": "848020/world-final.png"
+    },
+    {
+      "seed": 848021,
+      "room": "inspection",
+      "outcomes": "848021/outcomes.json",
+      "local_frame": "848021/recipient-before.png",
+      "donor_frame": "848021/donor-observation.png",
+      "final_frame": "848021/recipient-final.png",
+      "overview": "848021/world-final.png"
+    },
+    {
+      "seed": 848022,
+      "room": "workshop",
+      "outcomes": "848022/outcomes.json",
+      "local_frame": "848022/recipient-before.png",
+      "donor_frame": "848022/donor-observation.png",
+      "final_frame": "848022/recipient-final.png",
+      "overview": "848022/world-final.png"
+    },
+    {
+      "seed": 848023,
+      "room": "storage",
+      "outcomes": "848023/outcomes.json",
+      "local_frame": "848023/recipient-before.png",
+      "donor_frame": "848023/donor-observation.png",
+      "final_frame": "848023/recipient-final.png",
+      "overview": "848023/world-final.png"
+    }
+  ],
+  "by_room": {
+    "workshop": 8,
+    "storage": 8,
+    "inspection": 8
+  }
+}

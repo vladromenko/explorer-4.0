@@ -1,0 +1,101 @@
+{
+  "version": 2,
+  "splits": {
+    "train": {
+      "room": "workshop_screen",
+      "seeds": [
+        861000,
+        861001,
+        861002,
+        861003,
+        861004,
+        861005,
+        861006,
+        861007,
+        861008,
+        861009,
+        861010,
+        861011,
+        861012,
+        861013,
+        861014,
+        861015
+      ]
+    },
+    "calibration": {
+      "room": "storage_screen",
+      "seeds": [
+        862000,
+        862001,
+        862002,
+        862003,
+        862004,
+        862005,
+        862006,
+        862007
+      ]
+    },
+    "test": {
+      "room": "inspection_screen",
+      "seeds": [
+        863000,
+        863001,
+        863002,
+        863003,
+        863004,
+        863005,
+        863006,
+        863007,
+        863008,
+        863009,
+        863010,
+        863011,
+        863012,
+        863013,
+        863014,
+        863015
+      ]
+    }
+  },
+  "random_order": [
+    863009,
+    863002,
+    863005,
+    863001,
+    863000,
+    863007,
+    863012,
+    863014,
+    863010,
+    863004,
+    863006,
+    863015,
+    863013,
+    863003,
+    863008,
+    863011
+  ],
+  "development": "Workshop trains. Storage selects one threshold. Inspection opens only after fit.",
+  "scene": "Opaque contact-enabled screen on a bracket. Alternating sheltered and parked across each room. Targets and starting angles vary independently.",
+  "local_comparator": "Use the initial camera pose if available, otherwise rotate on the pad for at most 3 s, then drive only from a valid measured pose.",
+  "primary": "Independent stable docking; compare learned and matched-random with identical numbers of requests and active local fallback.",
+  "utility": "I(success) - 0.10 * peer_calls - 0.005 * total_simulated_seconds",
+  "call_cost": 0.1,
+  "per_second_cost": 0.005,
+  "subjects": "simulated Tank + ROSMASTER",
+  "software_hashes": {
+    "scripts/peer_dock_study.py": "a8643f4f999cfedcb92d95eb8fd47bbc5f0e66702d06cbb9ed23147228c845ba",
+    "explorer4/sim/cooperation.py": "287b9c1e1744cfb5451a754dfeff1837f8b5c3ec812e7e99cac87e9230936506",
+    "explorer4/sim/peer_dock.py": "6279225421ebacc75cd8ce0695951bc7e4eaf96171670409ad64c3f2d5dc84d0",
+    "explorer4/sim/fleet.py": "1884e6480f07cf7110f15a80e9706b1d4dfcd529128137fb2cd5659b24823b74",
+    "explorer4/sim/mobile.py": "ba31b40f6f03d35dc48beec685373a0eee94041fe5b7aff0f12b94f040e747c2",
+    "explorer4/simlab/perception.py": "233464ffa16661848bed739d480ab5f513d54db0db8832ea3b4ddf586d616f2b",
+    "explorer4/sim/room.py": "91983b2a5dd0edc72af650e8bd189e0fa88cafeb53d638e564003a7d54315d8c",
+    "explorer4/sim/tank_model.py": "da2de72a50167a78f1a7a66adb924fc9ef988ecb38c6245c3266f5d9738ac57f",
+    "explorer4/sim/state_codec.py": "c2029c5380266fb4391d6f590b2219ae2a27523453569fbc30aab7d06913d7c3",
+    "explorer4/peer_dock_config.py": "afaf0fd2870b32e632e8fecb678dd56d5871817b5a08ac2d10e407ce838d50c2",
+    "explorer4/sim/peer_screens.py": "85d436519b99f4878a76e5ad7241badd7ff4e7b617a3945aa8f68cd879899e7f",
+    "explorer4/peer_request_policy.py": "fef57c27b6df31a00c74cddd10ccbc06e01c1cee1c6098cfccca0b6a090361e5",
+    "scripts/peer_screen_evidence.py": "8fd1a179bb05f5eaf63bd9dd9409ba360728985fc71a74ab95730ae20f03a108"
+  }
+}

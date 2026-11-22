@@ -28,16 +28,22 @@ class SO101Station:
             return {'ok': False, 'reason': 'верхняя камера SO-101 не подключена'}
         self.log(f'SO-101: измеряю «{prompt}» верхней камерой (SAM 3 + калибровка стола)')
         try:
-            m = measure.measure(prompt, device=self.device)
+            from .station_check import capture
+            control = capture()
+            if not control['ok']:
+                return {'ok': False, 'reason': 'Не подтверждена текущая геометрия камеры SO-101: '+control['reason']}
+            m = measure.measure(prompt, image=control['image'], device=self.device)
         except Exception as exc:
             return {'ok': False, 'reason': f'стенд SO-101: {type(exc).__name__}: {exc}'}
         if not m['ok']:
             return m
+        if not m.get('height_measured'):
+            return {'ok':False,'reason':'Высота объекта по этому ракурсу не измерена','dir':m['dir']}
         params = {'width_m': m['width_m'], 'length_m': m['length_m'], 'height_m': m['height_m'],
                   'grasp_height_m': round(max(.012, min(m['height_m'], .06) / 2), 3)}
         self.log(f'SO-101: «{prompt}» {m["width_m"] * 100:.1f}×{m["length_m"] * 100:.1f} см, высота {m["height_m"] * 100:.1f} см ({m["model"]})')
         item = knowledge.add(prompt, 'so101_station', params, success=None,
-                             evidence={k: m[k] for k in ('model', 'silhouette_rmse_px', 'score', 'overlay', 'dir', 'height_sigma_m')})
+                             evidence={'camera_control':control, **{k: m[k] for k in ('model', 'silhouette_rmse_px', 'score', 'overlay', 'dir', 'height_sigma_m')}})
         return {'ok': True, 'knowledge': item}
 
 

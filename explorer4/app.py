@@ -36,6 +36,8 @@ research.initialize()
 local_pages.install(jobs)
 from . import sensor_pages
 sensor_pages.install()
+from . import grasp_calibration_page
+grasp_calibration_page.install()
 from . import recording_pages
 from .recording_readiness import Service as RecordingReadiness
 
@@ -158,6 +160,10 @@ from . import training_pages
 training_pages.install(CSS,jobs)
 from . import learn_pages
 learn_pages.install(jobs)
+from . import workspace_page
+workspace_page.install(jobs, CSS)
+from . import peer_dock_page
+peer_dock_page.install(control)
 (DATA/'world').mkdir(parents=True,exist_ok=True)
 app.add_media_files('/world-media',DATA/'world')
 from fastapi.responses import Response as _Response
@@ -228,6 +234,7 @@ def index(request:Request):
             ui.label('Показы → обучение → проверяемые испытания').classes('muted')
         ui.button('STOP · всё управление Explorer',icon='stop_circle',color='negative',on_click=stop_all).props('size=lg')
     ui.html('<div class="nav">'
+            '<a class="main" href="/workspace">Центр экспериментов</a>'
             '<a class="main" href="/swarm">Рой</a>'
             '<a class="main" href="/recording/collect">Сбор датасета</a>'
             '<a href="/learn">Обучение</a>'
@@ -510,6 +517,7 @@ def index(request:Request):
                     goal=getattr(control,'goal',None)
                     if goal is not None:goto_state.set_text(goal.status()['message'])
                 ui.timer(.5,goto_refresh)
+                peer_dock_page.add_operator_action(control, session, owner)
             tank_pilot_state=ui.label('').classes('notice')
             with ui.row() as correction_controls:
                 def correction_done():
@@ -719,9 +727,21 @@ def index(request:Request):
                     ui.button('ACT · основное обучение',on_click=act_full)
                     smol_button=ui.button('SmolVLA · smoke',on_click=smol_smoke)
                     smol_full_button=ui.button('SmolVLA · основное обучение',on_click=smol_full)
-                ui.label('Основной рецепт: ACT 40 000 шагов (~11 ч), SmolVLA 20 000 шагов (~9 ч) на Homebrain; checkpoint каждые 5 000. Validation отдельно; test не используется для подбора. Незавершённое обучение продолжается только явно.').classes('muted')
+                ui.link('ACT, Diffusion и сравнение контроллеров на одинаковых сценах', '/workspace')
                 job_table=ui.table(columns=[{'name':k,'label':v,'field':k} for k,v in [('id','Задание'),('profile','Задача'),('policy','Модель'),('status','Состояние'),('gate','Допуск к роботу'),('checkpoint','Checkpoint'),('error','Ошибка')]],rows=[],row_key='id',selection='single')
                 ui.label('«Допуск к роботу»: совпадение входов/выходов с роботом, время расчёта на Homebrain, точность на настоящих показах вне обучения, отсутствие рывка на старте и успех в MuJoCo на задаче, повторяющей блок записи. Испытание модели на роботе запускается только после допуска.').classes('muted')
+                from .deploy_gate import scope_for
+                from .datasets import load_plan
+                real_development = {}
+                for saved in (DATA/'plans').glob('*.json'):
+                    try:
+                        split = load_plan(saved.stem, verify=False)
+                    except (OSError, ValueError):
+                        continue
+                    if split.get('domain') == 'real' and not split.get('smoke') and split['splits'].get('validation'):
+                        real_development[saved.stem] = (split['profile'], len(split['splits']['validation']))
+                dev_plan = ui.select({k:f'{v[0]} · {v[1]} проверочных · {k[:8]}' for k,v in real_development.items()},
+                                     label='План реальных записей для проверки переноса из MuJoCo',clearable=True).classes('w-full')
                 def selected_job_action(action):
                     try:
                         if not job_table.selected:raise ValueError('Выберите задание')
@@ -732,7 +752,12 @@ def index(request:Request):
                         elif action=='benchmark':
                             result=jobs.benchmark(ident);ui.notify('Проверка нагрузки в очереди '+result[:8])
                         elif action=='gate':
-                            gate=jobs.deploy_gate(ident);ui.notify('Допуск к роботу: проверка в очереди '+gate[:8]+' (и проверка в MuJoCo, если её не было)')
+                            chosen = dev_plan.value
+                            row = jobs.get(ident)
+                            scope = scope_for(row)
+                            if chosen and real_development[chosen][0] != scope['real_profile']:
+                                raise ValueError('Выбран план другого робота или задачи')
+                            gate=jobs.deploy_gate(ident,development_plan_id=chosen);ui.notify('Допуск к роботу: проверка в очереди '+gate[:8]+' (и проверка в MuJoCo, если её не было)')
                         elif action in {'evaluate','test'}:
                             result=jobs.evaluate(ident,'test' if action=='test' else 'validation');ui.notify('Диагностика в очереди '+result[:8])
                     except Exception as exc:notify_error(exc)

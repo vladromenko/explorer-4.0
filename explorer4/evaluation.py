@@ -28,6 +28,7 @@ def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic
         ds = LeRobotDataset('local/evaluation', root=root, video_backend='pyav',
                             delta_timestamps=delta_timestamps)
         errors, predictions, durations, losses = [], [], [], []
+        current_action_index = list(cfg.action_delta_indices or [0]).index(0)
         for index in np.linspace(0, len(ds)-1, min(len(ds), max_samples), dtype=int):
             frame = ds[int(index)]
             batch = default_collate([frame])
@@ -36,7 +37,13 @@ def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic
             torch.cuda.synchronize()
             start = time.perf_counter()
             with torch.inference_mode():
-                action = post(policy.select_action(prepared)).cpu().numpy()[0]
+                # Diffusion's dataset already contains an observation history. The online
+                # select_action path would queue this history as if it were one frame.
+                if cfg.type == 'diffusion':
+                    prediction = policy.predict_action_chunk(prepared)[:, 0]
+                else:
+                    prediction = policy.select_action(prepared)
+                action = post(prediction).cpu().numpy()[0]
             torch.cuda.synchronize()
             durations.append(time.perf_counter() - start)
             with torch.inference_mode():
@@ -44,7 +51,7 @@ def evaluate(checkpoint, datasets, destination, max_samples=32, role='diagnostic
             if not np.isfinite(action).all() or not torch.isfinite(loss):
                 raise ValueError('Nonfinite policy output or validation loss')
             target = frame['action'].numpy()
-            target = target[0] if target.ndim == 2 else target
+            target = target[current_action_index] if target.ndim == 2 else target
             if action.shape != target.shape:
                 raise ValueError('Checkpoint/action schema mismatch')
             predictions.append(action)

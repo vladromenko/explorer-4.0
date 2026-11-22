@@ -390,8 +390,8 @@ def learning_summary():
         real = {p: len(eligible(p)) for p in ('rosmaster_pick_place', 'so101_pick_place')}   # only this block's demos
         align = json.loads((ROOT / 'configs/sim-alignment.json').read_text())
         src = {k: v.get('source', '?') for k, v in align.items() if isinstance(v, dict)}
-        from .deploy_gate import GATES
-        gates = [json.loads(p.read_text()) for p in sorted(GATES.glob('*.json'))][-3:] if GATES.exists() else []
+        from .deploy_gate import GATES, latest
+        gates = [latest(p.stem) for p in sorted(GATES.glob('*.json'),key=lambda p:p.stat().st_mtime)[-3:]]
         ready = sum(g['verdict'] == 'ready' for g in gates)
         return (f'показы: ROSMASTER {real["rosmaster_pick_place"]}/50, SO-101 {real["so101_pick_place"]}/50 · '
                 f'сцена MuJoCo: {", ".join(f"{k}={v}" for k, v in src.items())} · допущено моделей: {ready} из {len(gates)} проверенных')

@@ -68,17 +68,18 @@ body{background:#0d1117!important}
 '''
 
 PRESETS = [('check', 'Проверка', 50, 'проходит ли весь тракт'), ('short', 'Короткое', 5000, 'первый результат'),
-           ('standard', 'Стандарт', 30000, 'рабочий навык'), ('full', 'Полное', 100000, 'максимум качества')]
+           ('standard', 'Стандарт', 30000, 'фиксированный бюджет'), ('full', 'Длинное', 100000, 'расширенный бюджет')]
 STATUS = {'queued': ('В очереди', 'info'), 'running': ('Идёт', 'busy'), 'completed': ('Готово', 'ok'),
           'failed': ('Ошибка', 'bad'), 'cancelled': ('Отменено', ''), 'interrupted': ('Прервано', 'bad')}
-NAMES = {'so101_pick_place': 'SO-101 · передача человеку (блок 4)', 'tank_dock': 'Tank · подъезд по камере',
+NAMES = {'so101_pick_place': 'SO-101 · манипуляции рукой', 'tank_dock': 'Tank · подъезд по камере',
          'tank_dock_rgbd_lidar': 'Tank · подъезд с глубиной и лидаром', 'rosmaster_dock': 'ROSMASTER · подъезд к цели',
          'rosmaster_pick_place': 'ROSMASTER · взять с пола (блок 3)',
          'rosmaster_dock_rgbd_lidar': 'ROSMASTER · подъезд с глубиной и лидарами',
          'rosmaster_pick_place_rgbd_lidar': 'ROSMASTER · взять с пола, с глубиной и лидарами',
          'so101_pick_place_sim': 'SO-101 · кубик в коробку (симуляция)', 'tank_dock_sim': 'Tank · подъезд (симуляция)',
          'rosmaster_dock_sim': 'ROSMASTER · подъезд (симуляция)', 'rosmaster_pick_place_sim': 'ROSMASTER · кубик (симуляция)',
-         'so101_handover_sim': 'SO-101 · передача человеку (симуляция = блок 4)', 'rosmaster_floor_pick_sim': 'ROSMASTER · взять с пола (симуляция = блок 3)'}
+         'so101_handover_sim': 'SO-101 · передача человеку (симуляция = блок 4)', 'rosmaster_floor_pick_sim': 'ROSMASTER · взять с пола (симуляция = блок 3)',
+         'rosmaster_floor_pick_recorded_start_sim': 'ROSMASTER · кубик с пола из записанной позы (MuJoCo)'}
 
 
 def task_name(name):
@@ -111,10 +112,14 @@ def real_profiles():
     return {k: v for k, v in PROFILES.items() if v.get('domain', 'real') == 'real'}
 
 
-def readiness(name):
-    eps = datasets.eligible(name)
+def readiness(name, instruction=None):
+    tasks = datasets.recordings_by_instruction(name)
+    if instruction is None:
+        eps = [entry for group in tasks.values() for entry in group]
+    else:
+        eps = tasks.get(instruction,[])
     groups = len(datasets.connected_groups(eps)) if eps else 0
-    return {'episodes': len(eps), 'groups': groups, 'frames': sum(e['frames'] for e in eps), 'list': eps}
+    return {'episodes': len(eps), 'groups': groups, 'frames': sum(e['frames'] for e in eps), 'list': eps, 'tasks':list(tasks)}
 
 
 def big_number(text):
@@ -287,11 +292,11 @@ def install(jobs):
     app.add_media_files('/simlab-media', DATA / 'simlab')
 
     @ui.page('/learn')
-    async def learn_page():
+    async def learn_page(tab: str = 'sim', profile: str = ''):
         ui.add_css(CSS)
         ui.dark_mode().enable()
         ui.colors(primary='#24a08f', secondary='#5b6b80', positive='#2fb39f', negative='#d9534f', warning='#f2b65a')
-        state = {'profile': next(iter(real_profiles())), 'policy': 'act', 'preset': 'standard', 'source': 'new',
+        state = {'profile': profile if profile in real_profiles() else next(iter(real_profiles())), 'policy': 'act', 'preset': 'standard', 'source': 'new',
                  'excluded': set(), 'batch': 8, 'seed': 1000, 'device': 'cuda', 'custom_steps': None}
 
         with ui.element('div').classes('lx'):
@@ -302,6 +307,7 @@ def install(jobs):
                 chips = ui.element('div').classes('lx-chips')
             with ui.row().classes('row').style('margin:6px 0 14px'):
                 ui.link('← Explorer', '/')
+                ui.link('Центр экспериментов', '/workspace')
                 ui.link('Сбор датасета', '/recording/collect')
                 ui.link('Готовность парка', '/recording/readiness')
 
@@ -314,7 +320,7 @@ def install(jobs):
                 elif active_run():
                     ui.label('GPU: ' + active_run()['title']).classes('chip busy')
                 else:
-                    ui.label('GPU свободен').classes('chip ok')
+                    ui.label('Очередь панели свободна').classes('chip ok')
                 if queued:
                     ui.label(f'В очереди: {len(queued)}').classes('chip info')
                 free = disk_free_gb()
@@ -326,7 +332,9 @@ def install(jobs):
                 t_real = ui.tab('real', 'Реальные показы', icon='videocam')
                 t_sim = ui.tab('sim', 'Симуляция MuJoCo', icon='view_in_ar')
                 t_jobs = ui.tab('jobs', 'Задания', icon='insights')
-            with ui.tab_panels(tabs, value=t_real).classes('w-full').style('background:transparent'):
+            selected={'sim':t_sim,'jobs':t_jobs}.get(tab,t_real)
+            tabs.set_value(selected)
+            with ui.tab_panels(tabs, value=selected).classes('w-full').style('background:transparent'):
                 with ui.tab_panel(t_real).style('padding:14px 0'):
                     real_tab(state, jobs, tabs)
                 with ui.tab_panel(t_sim).style('padding:14px 0'):
@@ -342,7 +350,6 @@ def install(jobs):
             with ui.element('div').classes('grid'):
                 for name, prof in real_profiles().items():
                     r = readiness(name)
-                    pct = min(100, r['episodes'] * 2)
                     sel = ' sel' if name == state['profile'] else ''
                     card = ui.element('div').classes('card click' + sel)
                     card.on('click', lambda n=name: choose(n))
@@ -351,15 +358,13 @@ def install(jobs):
                         with ui.element('div').classes('spread').style('margin:10px 0 6px'):
                             ui.html(f'<div><div class="num">{r["episodes"]}</div><div class="muted">успешных показов</div></div>')
                             ui.html(f'<div style="text-align:right"><div class="num">{r["groups"]}</div><div class="muted">серий-групп</div></div>')
-                        ui.html(f'<div class="bar{"" if r["episodes"] >= 50 else " warn"}"><div style="width:{pct}%"></div></div>')
                         if r['groups'] < 3:
-                            ui.label('Нужно ещё серий: минимум 3 разные').classes('muted').style('color:#ff9b93;margin-top:6px')
-                        elif r['episodes'] < 50:
-                            ui.label(f'До рекомендуемых 50: ещё {50 - r["episodes"]}').classes('muted').style('color:#f2c46a;margin-top:6px')
+                            ui.label('Для разбиения нужны три независимые серии').classes('muted')
                         else:
-                            ui.label('Данных достаточно для обучения').classes('muted').style('color:#7fe0bd;margin-top:6px')
+                            ui.label('Доступно групповое разбиение').classes('muted')
 
         def choose(name):
+            state['instruction'] = None
             state['profile'] = name
             state['excluded'] = set()
             state['source'] = 'new'
@@ -372,7 +377,16 @@ def install(jobs):
         @ui.refreshable
         def settings():
             name = state['profile']
-            r = readiness(name)
+            tasks = readiness(name)['tasks']
+            if state.get('instruction') not in tasks:
+                default_task = datasets.FLOOR_CUBE_TASK if name == 'rosmaster_pick_place' else PROFILES[name]['task']
+                state['instruction'] = default_task if default_task in tasks else next(iter(tasks),None)
+            if tasks:
+                def choose_instruction(event):
+                    state.update(instruction=event.value,excluded=set(),source='new')
+                    settings.refresh()
+                ui.select(tasks, label='Инструкция в записи',value=state['instruction'],on_change=choose_instruction)
+            r = readiness(name,state['instruction'])
             available = {}
             for ident, label in POLICIES.items():
                 try:
@@ -390,6 +404,10 @@ def install(jobs):
                     ui.toggle(available, value=state['policy'],
                               on_change=lambda e: (state.update(policy=e.value), settings.refresh())).props('no-caps rounded unelevated toggle-color=positive')
                     sources = {'new': 'Новая модель'}
+                    if name == 'so101_pick_place' and state['policy'] == 'act':
+                        from .wrist_pretraining import source_path
+                        if (source_path()/'model.safetensors').is_file():
+                            sources['wrist_encoder'] = 'Зрение из публичной ACT SO-101 · новая моторная политика'
                     for j in catalog.rows('jobs'):
                         if (j['profile'] == name and j['policy'] == state['policy'] and j['status'] == 'completed'
                                 and j['checkpoint'] and json.loads(j['config']).get('kind', 'train') == 'train'):
@@ -422,7 +440,7 @@ def install(jobs):
                     used = [e for e in r['list'] if e['id'] not in state['excluded']]
                     groups = len(datasets.connected_groups(used)) if used else 0
                     ui.html('<div class="step"><div class="n">4</div><div><div class="t">Данные</div>'
-                            '<div class="muted">Все успешные показы задачи. Серии делятся на обучение, проверку и итоговый тест целиком</div></div></div>')
+                            '<div class="muted">Выбранная инструкция. Серии делятся на обучение, проверку и итоговый тест целиком</div></div></div>')
                     with ui.element('div').classes('spread').style('margin:6px 0'):
                         ui.html(f'<div><div class="num">{len(used)}</div><div class="muted">показов</div></div>')
                         ui.html(f'<div><div class="num">{groups}</div><div class="muted">групп</div></div>')
@@ -431,9 +449,9 @@ def install(jobs):
                         ui.html('<div class="note bad">Для честной проверки нужно минимум 3 независимые серии '
                                 '(разные сессии и расстановки). Запишите ещё серии в «Сбор датасета».</div>')
                     elif len(used) < 50:
-                        ui.html(f'<div class="note warn">Показов {len(used)} из рекомендуемых 50 — обучить можно, но навык будет слабее.</div>')
+                        ui.label('Малый пилот по имеющимся записям. В плане будут указаны состав выборки и отложенные группы.').classes('muted')
                     else:
-                        ui.html('<div class="note ok">Данных достаточно.</div>')
+                        ui.html('<div class="note ok">Можно подготовить разбиение.</div>')
                     with ui.expansion(f'Список показов ({len(r["list"])})', icon='list').classes('w-full').style('margin-top:8px'):
                         with ui.column().style('max-height:260px;overflow:auto;gap:2px;width:100%'):
                             for e in r['list']:
@@ -449,13 +467,14 @@ def install(jobs):
         async def prepare_and_start(button):
             name = state['profile']
             steps = state['custom_steps'] or dict((k, s) for k, _, s, _ in PRESETS)[state['preset']]
-            ids = [e['id'] for e in readiness(name)['list'] if e['id'] not in state['excluded']]
+            ids = [e['id'] for e in readiness(name,state['instruction'])['list'] if e['id'] not in state['excluded']]
             button.props('loading')
             try:
-                parent = None if state['source'] == 'new' else jobs.get(state['source'])
+                parent = jobs.get(state['source']) if state['source'] not in {'new','wrist_encoder'} else None
                 draft_id, draft = await asyncio.to_thread(
                     training_drafts.prepare, name, state['policy'], ids, steps=int(steps), batch=int(state['batch']),
-                    seed=int(state['seed']), device=state['device'], source=parent)
+                    seed=int(state['seed']), device=state['device'], source=parent, wrist_encoder=state['source']=='wrist_encoder',
+                    task_instruction=state['instruction'],real_pilot=len(ids)<50 or (name=='rosmaster_pick_place' and state['instruction']==datasets.FLOOR_CUBE_TASK))
             except Exception as exc:
                 ui.notify(str(exc), type='negative', multi_line=True)
                 return
@@ -465,6 +484,7 @@ def install(jobs):
             with ui.dialog() as dlg, ui.card().style('background:#141b24;color:#e6edf3;min-width:min(520px,92vw);border-radius:16px'):
                 ui.label('Готово к запуску').style('font-size:20px;font-weight:700')
                 ui.label(f"{draft['policy'].upper()} · {task_name(name)}").classes('muted')
+                ui.label(draft.get('recorded_instruction',name))
                 names = {'train': 'Обучение', 'validation': 'Проверка во время обучения', 'test': 'Итоговый тест'}
                 for role, count in draft['split_counts'].items():
                     with ui.element('div').classes('spread'):
@@ -490,9 +510,27 @@ def install(jobs):
 
     # ------------------------------------------------------------ simulation
     def sim_tab():
-        ui.html('<div class="muted" style="margin-bottom:12px">Робот учится в MuJoCo на GPU: тысячи копий одновременно, '
-                'с теми же датчиками, что у настоящего (лидар, гироскоп, метка цели). Каждый запуск сам проходит '
-                '«обучение → проверка на 100 новых стартах в полной физике → видео». Допуск на робота — от 80 % успеха.</div>')
+        report = DATA / 'simlab/reports/recorded-start-night.html'
+        if report.is_file():
+            with ui.element('div').classes('card job').style('margin-bottom:14px'):
+                ui.html('<h3>ROSMASTER · поднять кубик с пола</h3>')
+                ui.label('В исходной серии ACT использовали 40 показов MuJoCo: 32 учебных, 4 для валидации, 4 отложенных. '
+                         'До и после — те же 20 самостоятельных сцен.').classes('muted')
+                status=ui.label('').classes('chip info')
+                def recorded_status():
+                    try:
+                        value=json.loads((report.parent/'recorded-start-night/status.json').read_text())
+                        status.set_text(value['summary'])
+                    except (OSError,ValueError,KeyError):
+                        status.set_text('Ход обучения и результаты — в отчёте')
+                recorded_status()
+                ui.timer(5,recorded_status)
+                with ui.row().classes('row'):
+                    ui.link('Обучение, видео и сравнение', '/simlab-media/reports/' + report.name)
+                    ui.link('Основной журнал', '/simlab-media/reports/recorded-start-training-2026-11-21.html')
+                    ui.link('Журнал основного ACT', '/jobs/a3487bcecce548a3869bde3bb16e2a1d')
+        ui.label('Другие задачи симуляции').classes('lx-sub')
+        ui.link('PPO · перекладывание кубика и другие сцены', '/sim')
 
         @ui.refreshable
         def sim_cards():

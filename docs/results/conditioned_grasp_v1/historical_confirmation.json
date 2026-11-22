@@ -1,0 +1,2621 @@
+{
+  "protocol": {
+    "version": 1,
+    "task": "Rosmaster recorded-start cube lift and stable carry at 20 Hz",
+    "profile": "rosmaster_floor_pick_recorded_start_sim",
+    "physics": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+    "vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+    "motor_examples": 32,
+    "original_split": [
+      32,
+      4,
+      4
+    ],
+    "training_images": 1024,
+    "training_seed": 1000,
+    "optimizer_steps": {
+      "act": 1000,
+      "diffusion": 2000
+    },
+    "batch_size": 32,
+    "development": [
+      940100,
+      940107
+    ],
+    "fresh": [
+      940200,
+      940219
+    ],
+    "historical_confirmation": [
+      88500,
+      88519
+    ],
+    "arms": [
+      "act",
+      "diffusion",
+      "rbf",
+      "ik",
+      "constant",
+      "act_constant",
+      "diffusion_constant"
+    ],
+    "selection": "Final weights at fixed update budgets. Open confirmation after at least one new learned planner attains a terminal hold on development. Evaluate every declared arm including negative results. No checkpoint selection on confirmation.",
+    "controls": "Constant substitutes the mean XY of the same 32 training points in each matched architecture. RBF uses the frozen SciPy thin-plate recipe. IK uses the vendor solver. Both neural policies predict eight PCA coefficients and share the same training-only decoder. DDIM uses fixed initial noise. All seven arms share the RGB observation, look, rate limits, reset and existing task scorer.",
+    "terminal": "held_in_carry_pose for the simulator-configured stable interval",
+    "contact_sampling": "At 20 Hz after each control step, score contacts between the cube and a left/right gripper link. Bilateral requires both sides in the same sample. Peak lift relative to reset cube height. No contact or simulator target position enters policy inference.",
+    "historical_comparison": "The old RGB ACT-25 and Diffusion used raw images/joint feedback from reset. Match their recorded initial arm and cube vectors and physics on the same historical seeds. The new systems also have a deliberate camera look, a supervised localizer and a compressive action representation. This comparison measures a pipeline change.",
+    "physical_trials": 0
+  },
+  "protocol_sha256": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+  "block": "historical_confirmation",
+  "total": 20,
+  "counts": {
+    "act": 19,
+    "diffusion": 20,
+    "rbf": 20,
+    "ik": 20,
+    "constant": 1,
+    "act_constant": 2,
+    "diffusion_constant": 1,
+    "native_rgb_act": 6,
+    "native_rgb_diffusion": 1
+  },
+  "paired": {
+    "act_vs_act_constant": {
+      "gains": 17,
+      "losses": 0,
+      "exact_p": 1.52587890625e-05
+    },
+    "diffusion_vs_diffusion_constant": {
+      "gains": 19,
+      "losses": 0,
+      "exact_p": 3.814697265625e-06
+    },
+    "rbf_vs_constant": {
+      "gains": 19,
+      "losses": 0,
+      "exact_p": 3.814697265625e-06
+    },
+    "act_vs_rbf": {
+      "gains": 0,
+      "losses": 1,
+      "exact_p": 1.0
+    },
+    "diffusion_vs_rbf": {
+      "gains": 0,
+      "losses": 0,
+      "exact_p": 1.0
+    },
+    "act_vs_ik": {
+      "gains": 0,
+      "losses": 1,
+      "exact_p": 1.0
+    },
+    "diffusion_vs_ik": {
+      "gains": 0,
+      "losses": 0,
+      "exact_p": 1.0
+    }
+  },
+  "models": {
+    "act": {
+      "architecture": "act",
+      "steps": 1000,
+      "batch": 32,
+      "seed": 1000,
+      "source_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+      "parameters": 120449,
+      "weights_sha256": "210bf8947236aacfb8b394d93317343afa24f42a3709d4097686a79d250b6b31",
+      "decoder_sha256": "2375c542a9ec142a54e7125cb2155d758f038f0d72b0cef64c66b265ebd449aa",
+      "optimizer": "AdamW",
+      "learning_rate": 0.0006,
+      "device": "cuda",
+      "history": [
+        {
+          "step": 100,
+          "objective": 0.15618443489074707,
+          "seconds": 3.1844210909912363
+        },
+        {
+          "step": 200,
+          "objective": 0.07967910170555115,
+          "seconds": 5.868796149996342
+        },
+        {
+          "step": 300,
+          "objective": 0.05315205827355385,
+          "seconds": 8.430167448997963
+        },
+        {
+          "step": 400,
+          "objective": 0.03392321243882179,
+          "seconds": 11.071016634989064
+        },
+        {
+          "step": 500,
+          "objective": 0.032804928719997406,
+          "seconds": 13.730054625993944
+        },
+        {
+          "step": 600,
+          "objective": 0.029235070571303368,
+          "seconds": 16.348054166999646
+        },
+        {
+          "step": 700,
+          "objective": 0.026053063571453094,
+          "seconds": 19.023947527995915
+        },
+        {
+          "step": 800,
+          "objective": 0.022777533158659935,
+          "seconds": 21.67681102998904
+        },
+        {
+          "step": 900,
+          "objective": 0.02869974449276924,
+          "seconds": 24.319145978995948
+        },
+        {
+          "step": 1000,
+          "objective": 0.01702975668013096,
+          "seconds": 26.97184755599301
+        }
+      ],
+      "config_sha256": "51c47fa33c708ca780fb6d1144b603dc9e30723fcc0a1a493e4463f1797d4a75"
+    },
+    "diffusion": {
+      "architecture": "diffusion",
+      "steps": 2000,
+      "batch": 32,
+      "seed": 1000,
+      "source_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+      "parameters": 177249,
+      "weights_sha256": "a4b14d935dd1dd607bb97194bd590d97b55175dde004f8421341dc80e0fbec32",
+      "decoder_sha256": "2375c542a9ec142a54e7125cb2155d758f038f0d72b0cef64c66b265ebd449aa",
+      "optimizer": "AdamW",
+      "learning_rate": 0.0006,
+      "device": "cuda",
+      "history": [
+        {
+          "step": 100,
+          "objective": 0.055957913398742676,
+          "seconds": 4.766193111005123
+        },
+        {
+          "step": 200,
+          "objective": 0.010567372664809227,
+          "seconds": 8.64899354201043
+        },
+        {
+          "step": 300,
+          "objective": 0.004554337356239557,
+          "seconds": 12.548333974002162
+        },
+        {
+          "step": 400,
+          "objective": 0.007011806592345238,
+          "seconds": 16.305181309013278
+        },
+        {
+          "step": 500,
+          "objective": 0.005438675172626972,
+          "seconds": 20.023821564012906
+        },
+        {
+          "step": 600,
+          "objective": 0.006209027022123337,
+          "seconds": 23.790010614000494
+        },
+        {
+          "step": 700,
+          "objective": 0.004690352361649275,
+          "seconds": 27.510914844009676
+        },
+        {
+          "step": 800,
+          "objective": 0.001969653880223632,
+          "seconds": 31.35060931800399
+        },
+        {
+          "step": 900,
+          "objective": 0.003522344399243593,
+          "seconds": 35.13780580800085
+        },
+        {
+          "step": 1000,
+          "objective": 0.003918439149856567,
+          "seconds": 38.908493690003525
+        },
+        {
+          "step": 1100,
+          "objective": 0.002616016659885645,
+          "seconds": 42.94822623601067
+        },
+        {
+          "step": 1200,
+          "objective": 0.002726157894358039,
+          "seconds": 46.81293490900134
+        },
+        {
+          "step": 1300,
+          "objective": 0.0016241897828876972,
+          "seconds": 50.6020688360004
+        },
+        {
+          "step": 1400,
+          "objective": 0.002944618696346879,
+          "seconds": 54.39202042001125
+        },
+        {
+          "step": 1500,
+          "objective": 0.002454452682286501,
+          "seconds": 58.16955172001326
+        },
+        {
+          "step": 1600,
+          "objective": 0.0005003241822123528,
+          "seconds": 62.0683601040073
+        },
+        {
+          "step": 1700,
+          "objective": 0.0004020468331873417,
+          "seconds": 65.94050892000087
+        },
+        {
+          "step": 1800,
+          "objective": 0.0002298629260621965,
+          "seconds": 69.80732424701273
+        },
+        {
+          "step": 1900,
+          "objective": 0.000212363142054528,
+          "seconds": 73.56371532101184
+        },
+        {
+          "step": 2000,
+          "objective": 0.0002034632780123502,
+          "seconds": 77.34249916201225
+        }
+      ],
+      "config_sha256": "ec3cc2485a9fea696b8e871399265fb01680b00a8f287f2319c7740f4eadb4fb"
+    }
+  },
+  "trials": [
+    {
+      "seed": 88500,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          84.1004409790039,
+          57.33258056640625,
+          21.916229248046875,
+          18.166282653808594,
+          73.30221557617188,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1958222161296139,
+          0.030822748283454826,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4ea1de3342829779defb6a0bb625cc665b19160d83b8d612667bf2c59243ed19"
+      },
+      "lookup_state_sha256": "cf18ba05e3833367e05adfda23a1f6c52d9294c2e29e05a001327a1789931fdb",
+      "rgb_sha256": "2f3528b7f6ae7707e3824f2086326b48bd182205fd18b80a94e606b2a5032d46",
+      "predicted_xy": [
+        0.20033016800880432,
+        0.030911847949028015
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 336,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2408856793128269,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 351,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23801834240792513,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 361,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2376279971463997,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 360,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2369057739879703,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.006303658691324522,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.006107573184318028,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004618247823819751,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.24385829150862626,
+          "ever_held": true,
+          "steps": 389
+        },
+        "native_rgb_diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.2632010465693569,
+          "ever_held": true,
+          "steps": 431
+        }
+      }
+    },
+    {
+      "seed": 88501,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          79.83113098144531,
+          55.59599685668945,
+          21.481426239013672,
+          23.429702758789062,
+          71.51936340332031,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2265791660796539,
+          -0.01249619844018228,
+          0.018000000000000002
+        ],
+        "reset_sha256": "acab003a1a746e16ae005ce23b303800748ebdc9fa6861b5254b56833679e126"
+      },
+      "lookup_state_sha256": "13854971fc65c185584d26e8b0267799f5d536a8f69f428b0735a5daf6e5c589",
+      "rgb_sha256": "b79150e03ba71ca4fd7f6c30a31aea6e8ab1604d165ad1d1f0b1b39a4940e401",
+      "predicted_xy": [
+        0.22469161450862885,
+        -0.013405849225819111
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23883363763358767,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 387,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23883627965789506,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 384,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23868277578461783,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 383,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23870860709262554,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0023017385385956483,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.002620170797509678,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.002513690925511094,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.23868046377125496,
+          "ever_held": true,
+          "steps": 479
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88502,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.4442367553711,
+          56.52751541137695,
+          23.155719757080078,
+          22.756977081298828,
+          76.7277603149414,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17996852908566763,
+          0.02142983475547773,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9b3eb63cfd7f34ff570156d706a663846208c35665c355f2d75014a6ecebff72"
+      },
+      "lookup_state_sha256": "0a7b79ed44c6942b5e2ec29f53480ec98d69fb6fee5dd1505a7251530c9b74d4",
+      "rgb_sha256": "6e5e03030337736d41d998ab9c831a72b598cab8ca5b985e6d75971b6e689084",
+      "predicted_xy": [
+        0.17901954054832458,
+        0.015110536478459835
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 395,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23902844469843681,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 333,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24311550689768718,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 361,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24012971710887304,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 338,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24043751647258127,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.00459809167585189,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004604281616265079,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004596228054523449,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88503,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.24335479736328,
+          55.706077575683594,
+          25.546228408813477,
+          22.602018356323242,
+          76.40340423583984,
+          112.00909423828125
+        ],
+        "cube": [
+          0.230838972949199,
+          0.025539574510772406,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b544e97d1e802bdaae534c4bc959ffed4821a47e6f0ee6135323f94dabcc2e8e"
+      },
+      "lookup_state_sha256": "f97e425818a2d5cdaae07aa743202057b61c33633615bfb35e49418fac2422b7",
+      "rgb_sha256": "5fe05952ee0649eb0ffc0f83aa998e5a9987c194218b9c272d03244fbdfe27e0",
+      "predicted_xy": [
+        0.2322828620672226,
+        0.03248007595539093
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 367,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23585958124894546,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 359,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23546371787578518,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 365,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23668356146565,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 359,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23678257938329533,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 3.353770267179243e-05,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.003096528225670775,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0032056300739702927,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.005818934617627482,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.008913449301593532,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88504,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          84.07274627685547,
+          54.04097366333008,
+          21.51568031311035,
+          22.95137596130371,
+          76.04977416992188,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22892632366979324,
+          -0.034382330381900854,
+          0.018000000000000002
+        ],
+        "reset_sha256": "8bd7537b12449285d169f7a4a9fcc2782b05e57ef4dff26848b8844e9a64eac9"
+      },
+      "lookup_state_sha256": "b2ddd4ee6b3cab479e827ec97f70370ecf7667f59d95ba00ad36019ff181567e",
+      "rgb_sha256": "62d5e9fb816f75e3d9393dc1c6578469145f8dbead63f66959f959c6b41b80cb",
+      "predicted_xy": [
+        0.22419217228889465,
+        -0.032228149473667145
+      ],
+      "arms": {
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24010501690612696,
+          "max_stable_carry_s": 0.1
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 388,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23918893289802984,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 422,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2394115763339396,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 418,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23970576569325325,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.23649104342524058,
+          "ever_held": true,
+          "steps": 289
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88505,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.20783996582031,
+          56.70522689819336,
+          25.49860382080078,
+          22.05830192565918,
+          77.2548828125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21640239370701647,
+          0.041740878320319974,
+          0.018000000000000002
+        ],
+        "reset_sha256": "73c96edbde65c1ea4437884413c3d429a10e30a4d7281e592af07e15308c48c5"
+      },
+      "lookup_state_sha256": "cb11b9068445039d2a77a954f9a73c47925e8aab074e0537fd15e0b6e9b5629b",
+      "rgb_sha256": "93c35690e87d09de2256530e71a8eee69ff253e234ff504d49c191e16fe0ff9b",
+      "predicted_xy": [
+        0.21257337927818298,
+        0.039953265339136124
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 398,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23883696561369339,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 391,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23792397372904078,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 396,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23957278133116694,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 384,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23954272723759823,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004998269044231663,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0020503684041876594,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88506,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          80.1385269165039,
+          59.19438171386719,
+          21.846649169921875,
+          21.793354034423828,
+          71.7169189453125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19804888609195542,
+          0.047037953174485045,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0722027ebab11658c1c615967188c6e7e8ffbfdffc8afd583226cee9eb953fdc"
+      },
+      "lookup_state_sha256": "34f6045be875cbc6dd0a3d898245b7da39f3ca55dd2a038eb0bde3dd8057e4a2",
+      "rgb_sha256": "56bdaad20ad4e60b8ecbb5ee0c9a558fe88f5020129676f94abde9551a916655",
+      "predicted_xy": [
+        0.20151090621948242,
+        0.042675524950027466
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 364,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24188678091328664,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 360,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24239018374547905,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 364,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23924618056276598,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 362,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23759215040444376,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0046195097119235,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004619718544356999,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004622968377061654,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004495457700981375,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88507,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          81.26335906982422,
+          57.47831344604492,
+          22.90607261657715,
+          21.08749008178711,
+          73.84442901611328,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1747100238558981,
+          -0.01865326242958467,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1e6c6edf33f79d7e70a82e7830624010231e320a22b3702fbdc3fd0de2e303c0"
+      },
+      "lookup_state_sha256": "e1e460c90529393c4fa855dba5c3a675db1e7b9433ffca45fae4338ce38d8247",
+      "rgb_sha256": "f2a60c40502f9279f6a0bfae3e4a8d30f523b42d7bd3da5a0587db3fb0598b5f",
+      "predicted_xy": [
+        0.17037098109722137,
+        -0.018259352073073387
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 298,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23584428730678397,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 311,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23770266051559802,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 217,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24212409864204226,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 237,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23334817987420042,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004622757249418068,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004623688932542648,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004634641393077725,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004611195046835985,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88508,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          84.11922454833984,
+          59.434452056884766,
+          27.18047332763672,
+          23.42820930480957,
+          76.47857666015625,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24610480969749327,
+          0.009659364188591077,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0afc0ce22c59ddcb7cdd73e009c18f569cf50b61c56bdd2ddbffe4cfb90534fb"
+      },
+      "lookup_state_sha256": "2a333c2e73f10c16486b7f473c38a11198853918b4c80c2cf80f2152e401818a",
+      "rgb_sha256": "37303e6075e0352dcdd58d3b25be0766856afa21298e29cdf14e4ef723cd25b4",
+      "predicted_xy": [
+        0.24320952594280243,
+        0.0124660674482584
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 344,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23837532994254806,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 409,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23904217254287868,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 385,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23898995993733269,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 426,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23856462195746603,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004240837359297915,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004045535875180761,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004208935685599453,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.007797633919869065,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004584022638862137,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88509,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          82.388671875,
+          55.16745376586914,
+          23.911422729492188,
+          19.47764015197754,
+          74.23979949951172,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19279171284240829,
+          0.029467574965820864,
+          0.018000000000000002
+        ],
+        "reset_sha256": "5e51e83c78c6bd162d1a67ea510c3eeb4870e36629f8fb0fd363dcaeafb7190b"
+      },
+      "lookup_state_sha256": "83ee973c82dca72f17f0a58a3501f6ece2822be248df84d71a2d7651b45a2506",
+      "rgb_sha256": "62fe33dca966a374647bcc8a0b31622096827fde0455f811637e10d6799ab8db",
+      "predicted_xy": [
+        0.19184184074401855,
+        0.02958936057984829
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 293,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2378139805903724,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 312,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2406081153867592,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 406,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23937146477822752,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 394,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2385455623920092,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004619245651079143,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.005347664398174929,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0046203954602669,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004619713529449947,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88510,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          81.71800994873047,
+          57.48896408081055,
+          23.800901412963867,
+          18.251197814941406,
+          77.08979797363281,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24430160757085362,
+          -0.001567279636899975,
+          0.018000000000000002
+        ],
+        "reset_sha256": "be1c72b6719a4598957ecb8489f5d571ee911b601341e7e95c5d9ad9596e1546"
+      },
+      "lookup_state_sha256": "0bb8cb07bdf0bcec56cafc8814f1a0fa72ee363614e6cf8a84a0988079c9632a",
+      "rgb_sha256": "85f92db63ce150658f8fdaad5fd01a1400bf4256a86c947252d90eac8d50aef3",
+      "predicted_xy": [
+        0.24611085653305054,
+        -9.651826985646039e-05
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 353,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23638835121089224,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 368,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23723152808105052,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 359,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23771227254795957,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 330,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23673624635878826,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0038843713205835677,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.00376138597764495,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004176019658743743,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.001433846626242137,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88511,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.10321807861328,
+          55.11341094970703,
+          25.625015258789062,
+          20.075931549072266,
+          75.88565826416016,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23720291212510375,
+          -0.030481184627601767,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4236d1a2909d18f3b04c1e6caa1ee07602b67f00d72ddc759ec38187c7e51f87"
+      },
+      "lookup_state_sha256": "db7e1fe711e5fa3a6699ac4e603ba014e9e76f5748b3112c54e4673a3f554ec1",
+      "rgb_sha256": "97eec4f9afcad766c13c10a5c77f16e43c4cd159fd85f60043094fcb63b8cf2e",
+      "predicted_xy": [
+        0.23556481301784515,
+        -0.03488072752952576
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 385,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23842684923618646,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 365,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23824262624252762,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 366,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23826134292106244,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 368,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23831703788844527,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.2396093021587269,
+          "ever_held": true,
+          "steps": 271
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004461093554642057,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88512,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          81.01428985595703,
+          57.084938049316406,
+          24.045846939086914,
+          19.575944900512695,
+          73.36361694335938,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20130476752526763,
+          -0.006549769121240889,
+          0.018000000000000002
+        ],
+        "reset_sha256": "371c9b4ac7e85d373c64f0f181529df00c7736c4bbf48c1b320a73ebab2e3cd7"
+      },
+      "lookup_state_sha256": "e1938ff41fa7ebe995047e901affffff2a9d31052982711be6822e26247f7891",
+      "rgb_sha256": "68121577d536f498c8d2497561838a0af38289eba999170b8c86ee80fdb91e1c",
+      "predicted_xy": [
+        0.2016882747411728,
+        -0.006001336965709925
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 371,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23975330745539541,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 361,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23847007117403984,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 365,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23962427027884958,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 363,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23815504062316672,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004622594933713725,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0046228132816874545,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004528884686790944,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.005704593284457136,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88513,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.22814178466797,
+          55.64747619628906,
+          21.855911254882812,
+          22.21143913269043,
+          72.97428131103516,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2034321561510631,
+          0.006556314582885539,
+          0.018000000000000002
+        ],
+        "reset_sha256": "835e6eafa157ee544f7cd960901a01640b6f02be92c492738bcb3e6de876a1be"
+      },
+      "lookup_state_sha256": "58f36131318b888ad5f0de488b00c739b83f435bf66ebd627e1edb7fd66d1c18",
+      "rgb_sha256": "80c23117d41d2f58835df687be7f656bfd6f13dc449ccb96c617e5589fac2204",
+      "predicted_xy": [
+        0.2002791315317154,
+        0.007491604425013065
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 403,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23942605235093684,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 359,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24110690386233358,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 390,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2411138048344565,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 374,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.239322934288345,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 361,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23806356534532103,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "act_constant": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 363,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23772610771992592,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion_constant": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 353,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23815796303330755,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "native_rgb_act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.24253227497731106,
+          "ever_held": true,
+          "steps": 313
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0009290812292478169,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88514,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          82.08720397949219,
+          58.2013053894043,
+          23.690006256103516,
+          17.566038131713867,
+          73.24897003173828,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22295402029486458,
+          -0.009666782445180641,
+          0.018000000000000002
+        ],
+        "reset_sha256": "68debf2ae770658734a22ed208631724cdd3be3382e4b352ee80f1d077089401"
+      },
+      "lookup_state_sha256": "8f941758e75298d4d7e8d5ae0a366beff2fd7b3cb9a29abeb78c8d27f2896a2f",
+      "rgb_sha256": "28d4c78f7b9e28f27686adbcafd70287ddd78cd165b50c5c3a6c8cf079912c0d",
+      "predicted_xy": [
+        0.22301709651947021,
+        -0.008775933645665646
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2388549753167044,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 377,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2389705709423745,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 376,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23822685695747736,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 376,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2382072627491063,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004103785730002467,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004064231571571798,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004109023784994715,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.006458773631239919,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004611230393694078,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88515,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.17747497558594,
+          55.727691650390625,
+          27.065937042236328,
+          20.423858642578125,
+          75.51436614990234,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18524447905453584,
+          0.016468389623754437,
+          0.018000000000000002
+        ],
+        "reset_sha256": "937427735118f909846a2800c6e5061c6e80608a3eaf1d77e5362aa0c6917e60"
+      },
+      "lookup_state_sha256": "589851e6119bf88c450d5c978a7c25bee0125bc71647d66340f1d9d128e8d733",
+      "rgb_sha256": "9df9d53fe3f39659064a8dc1c6b1929594d73e10ec886e4efa01eadc1f09e59d",
+      "predicted_xy": [
+        0.18311335146427155,
+        0.019139455631375313
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 415,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23876419940268928,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 378,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23880871878220422,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 411,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23902476799353878,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 429,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23727259231932052,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 342,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.22699000577254042,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.002489759775376077,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "peak_lift_m": 0.23605342144300995,
+          "ever_held": true,
+          "steps": 298
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88516,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          84.17110443115234,
+          55.963714599609375,
+          23.55108070373535,
+          21.118610382080078,
+          74.84317016601562,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17001301582296457,
+          0.03479691393727606,
+          0.018000000000000002
+        ],
+        "reset_sha256": "33c371722e9e2fef0990a5e49f0c816176f55cddc4a3f780e6c4f7c7f91f4f45"
+      },
+      "lookup_state_sha256": "dfda7cb828e4883b489325768ee98be9044fd50e84cae546fac797ba45689702",
+      "rgb_sha256": "8e72700f60dda7769f90da96045586c1bcea5743de65cd42c58df004d38adb3c",
+      "predicted_xy": [
+        0.1771133840084076,
+        0.03577914088964462
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 391,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2296900481556879,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 402,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.22966550830707616,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 400,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2293687479340612,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 403,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.22927148038738826,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004623214634406864,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004616954599214393,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004682898088256303,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88517,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          79.04794311523438,
+          57.633270263671875,
+          27.30794906616211,
+          23.28168296813965,
+          76.65861511230469,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24521256623892795,
+          0.00234968666638128,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e6fba46b170b1df53dcc83efe28e7b43f91d544f3373174eac91a6103ffe9d41"
+      },
+      "lookup_state_sha256": "a0df9bb104ec335f893c4e3196512c7b45cdd969144539b798f716a71d35d2c2",
+      "rgb_sha256": "95915270766567e2475a057434b670206a307857b4c1ecf18346b1f665ed8601",
+      "predicted_xy": [
+        0.2495928406715393,
+        0.002170710591599345
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 364,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23717062927549581,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 319,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23678093613064166,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 297,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23563765686183646,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 313,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23597205936414611,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004383906562107513,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.00438093039775192,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004439647130876311,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004554516786628868,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88518,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          83.93289947509766,
+          54.73311233520508,
+          25.195770263671875,
+          19.740264892578125,
+          71.91983795166016,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19350562457548343,
+          0.03739985339058978,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9184d6016a51c19efd6e0a5592cef3981fe01b063c78bdd6bc73cc944ba51740"
+      },
+      "lookup_state_sha256": "efaf36289d256d3a7e7b8525576d65b32b3a979cde1b1f07a03a22aa2a1ca300",
+      "rgb_sha256": "7e1591ee9956377aada583de24a1e734c98ea30e77a9c790a382d4f9ae65f1b0",
+      "predicted_xy": [
+        0.19024263322353363,
+        0.038074444979429245
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 329,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23988891176909927,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 321,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23977695168748098,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 401,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23994610827130197,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 387,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23880827626786943,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.006705293146148615,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.004953273006369996,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.008573796904629904,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.0046207368148441855,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.004277473603355685,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    },
+    {
+      "seed": 88519,
+      "inputs": {
+        "protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+        "plans": "ea8109d30941f686a642ef12137ffe42f00647be65ae42f8a7c2102941daeace",
+        "observations": "a7385e2cce245204f0e7da8ef1a1d2583cdaefa13015376b3c19433dac54945d"
+      },
+      "initial": {
+        "arm": [
+          78.78886413574219,
+          58.25932693481445,
+          25.875076293945312,
+          19.800548553466797,
+          74.51813507080078,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20734642133947315,
+          -0.017956053832807926,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3ee0efca618a0fc0cb4848b07120f8cefa734e3d2a3c1ed326030cf7e3404a16"
+      },
+      "lookup_state_sha256": "db4c2d03ef48bc5ce81ffdc36bd053cd4782c14d739fde7059da3963b998f53b",
+      "rgb_sha256": "91038044895b142c964bdcca04951f40727b660a227db94aac3d7ee40d398827",
+      "predicted_xy": [
+        0.20852604508399963,
+        -0.01879430003464222
+      ],
+      "arms": {
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 355,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23969437657159987,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 357,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2386869915737302,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 352,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23907106715393095,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "ik": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 354,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23779858692957673,
+          "max_stable_carry_s": 1.0000000000000002
+        },
+        "constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0017350232996524786,
+          "max_stable_carry_s": 0.0
+        },
+        "act_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0018772004315375096,
+          "max_stable_carry_s": 0.0
+        },
+        "diffusion_constant": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0018649752895082243,
+          "max_stable_carry_s": 0.0
+        },
+        "native_rgb_act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.007839636524750358,
+          "ever_held": false,
+          "steps": 500
+        },
+        "native_rgb_diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "peak_lift_m": 0.006540504143628258,
+          "ever_held": false,
+          "steps": 500
+        }
+      }
+    }
+  ],
+  "native_rgb_references": {
+    "act": {
+      "source": "improvement-confirmation-25-trials.json",
+      "sha256": "f27bdfdb2ee012eaf5919501cebea3aebc873e78f9edcddce35c38f44b95c2f3",
+      "weights_sha256": "cc1ba441676c76c8728e234695c6403fc0e6ffe79eb664a3c98361991dc5de79",
+      "n_action_steps": 25
+    },
+    "diffusion": {
+      "source": "improvement-confirmation-diffusion-trials.json",
+      "sha256": "dc8e2ac188d518dc4897f8b203685472db5ca64d48b6a4d186859e6c29dda194",
+      "weights_sha256": "90dc5f9385139622aed36a65ad4364f9de2414952af5e5223eceb873b4eea7c9",
+      "n_action_steps": 10
+    }
+  }
+}

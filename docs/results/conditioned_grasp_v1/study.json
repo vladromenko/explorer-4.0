@@ -1,0 +1,48 @@
+{
+  "domain": "MuJoCo",
+  "physical_trials": 0,
+  "training_seed": 1000,
+  "sha256": "85e26da30e59836440a11eec75822238344f1dd271879ae4c6a97836bd2cfff2",
+  "file": "simulation-grasp-bundle.zip",
+  "counts": {
+    "development": {
+      "act": 7,
+      "diffusion": 8,
+      "rbf": 8,
+      "ik": 8,
+      "constant": 0,
+      "act_constant": 0,
+      "diffusion_constant": 0
+    },
+    "fresh": {
+      "act": 15,
+      "diffusion": 18,
+      "rbf": 20,
+      "ik": 18,
+      "constant": 2,
+      "act_constant": 2,
+      "diffusion_constant": 2
+    },
+    "historical_confirmation": {
+      "act": 19,
+      "diffusion": 20,
+      "rbf": 20,
+      "ik": 20,
+      "constant": 1,
+      "act_constant": 2,
+      "diffusion_constant": 1,
+      "native_rgb_act": 6,
+      "native_rgb_diffusion": 1
+    }
+  },
+  "n": {
+    "development": 8,
+    "fresh": 20,
+    "historical_confirmation": 20
+  },
+  "protocol_sha256": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a",
+  "models": {
+    "act": "210bf8947236aacfb8b394d93317343afa24f42a3709d4097686a79d250b6b31",
+    "diffusion": "a4b14d935dd1dd607bb97194bd590d97b55175dde004f8421341dc80e0fbec32"
+  }
+}

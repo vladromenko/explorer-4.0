@@ -20,42 +20,74 @@ def _core(state=6, action=6, cams=('observation.images.wrist',)):
 
 def test_contract_matches_robot_or_says_what_differs(tmp_path, monkeypatch):
     monkeypatch.setattr(deploy_gate, 'DATA', tmp_path)
-    assert deploy_gate.check_contract(_core(), 'so101_pick_place', 'j')['status'] == 'pass'
-    bad = deploy_gate.check_contract(_core(state=5, cams=('observation.images.front',)), 'so101_pick_place', 'j')
-    assert bad['status'] == 'fail' and 'состояния' in bad['message'] and 'wrist' in bad['message']
+    from explorer4.profiles import profile
+    cfg = profile('so101_pick_place')
+    assert deploy_gate.check_contract(_core(),'so101_pick_place','j',cfg)['status']=='fail'
+    out=tmp_path/'jobs/j/train/meta'
+    out.mkdir(parents=True)
+    (out/'info.json').write_text(json.dumps({'fps':cfg['fps'],'features':{
+        'action':{'names':cfg['channels']},'observation.state':{'names':cfg['channels']},
+        'observation.images.wrist':{'shape':[480,640,3]}}}))
+    assert deploy_gate.check_contract(_core(),'so101_pick_place','j',cfg)['status']=='pass'
+    bad=deploy_gate.check_contract(_core(state=5,cams=('observation.images.front',)), 'so101_pick_place','j',cfg)
+    assert bad['status']=='fail' and 'observation.state' in bad['message'] and 'wrist' in bad['message']
+    assert deploy_gate.check_contract(_core(),'so101_pick_place','j',{**cfg,'units':['m/s']*6})['status']=='fail'
 
 
-def test_sim_profile_is_checked_against_its_robot_task():
-    assert deploy_gate.real_profile_of('so101_handover_sim') == 'so101_pick_place'
-    assert deploy_gate.real_profile_of('rosmaster_pick_place') == 'rosmaster_pick_place'
-
-
-def test_trial_needs_a_passed_gate_for_the_same_weights(tmp_path, monkeypatch):
-    monkeypatch.setattr(deploy_gate, 'GATES', tmp_path)
-    import explorer4.training_drafts as td
-    monkeypatch.setattr(td, 'checkpoint_hash', lambda path: 'h-' + path)
-    plan = {'source_id': 'job1', 'checkpoint': 'ck'}
-    with pytest.raises(PermissionError, match='не проверена'):
+def test_trial_needs_scoped_current_report_and_processors(tmp_path,monkeypatch):
+    monkeypatch.setattr(deploy_gate,'GATES',tmp_path)
+    plan={'source_id':'job1','checkpoint':'ck','profile':'rosmaster_pick_place','instruction':'pick up the cube'}
+    with pytest.raises(PermissionError):
         deploy_gate.require(plan)
-    (tmp_path / 'job1.json').write_text(json.dumps({'checkpoint_bundle_sha256': 'h-ck', 'verdict': 'blocked', 'meaning': 'Не допущена: x'}))
-    with pytest.raises(PermissionError, match='Не допущена'):
+    out=tmp_path/'job1.json'
+    out.write_text(json.dumps({'verdict':'ready','meaning':'legacy'}))
+    with pytest.raises(PermissionError,match='stale'):
         deploy_gate.require(plan)
-    (tmp_path / 'job1.json').write_text(json.dumps({'checkpoint_bundle_sha256': 'h-old', 'verdict': 'ready', 'meaning': ''}))
-    with pytest.raises(PermissionError, match='изменились'):
+    monkeypatch.setattr(deploy_gate,'bundle_identity',lambda _: {'checkpoint_bundle_sha256':'bundle'})
+    monkeypatch.setattr(deploy_gate,'scene_revision',lambda _: 'revision')
+    monkeypatch.setattr(deploy_gate,'probe_geometry',lambda _: {'xml_sha256':'xml'})
+    report={'version':2,'verdict':'ready','scope':{'real_profile':plan['profile'],'instruction':plan['instruction']},
+            'checkpoint_bundle_sha256':'old','development':{'episodes':['v']},'thresholds':deploy_gate.thresholds(),
+            'sim_protocol':{'scene':'rosmaster_floor_pick_sim','scene_revision':'revision','xml_sha256':'xml'}}
+    out.write_text(json.dumps(report))
+    with pytest.raises(PermissionError,match='процессоры'):
         deploy_gate.require(plan)
-    (tmp_path / 'job1.json').write_text(json.dumps({'checkpoint_bundle_sha256': 'h-ck', 'verdict': 'ready', 'meaning': ''}))
-    assert deploy_gate.require(plan)['verdict'] == 'ready'
+    out.write_text(json.dumps({**report,'checkpoint_bundle_sha256':'bundle'}))
+    assert deploy_gate.require(plan)['verdict']=='ready'
+    with pytest.raises(PermissionError,match='instruction'):
+        deploy_gate.require({**plan,'instruction':'place in box'})
 
 
-def test_holdout_excludes_training_episodes(monkeypatch):
-    rows = [{'id': i, 'profile': 'so101_pick_place', 'outcome': 'success', 'excluded': 0, 'category': 'demonstration',
-             'session': 'old' if i == 'd' else 's'} for i in 'abcde']
-    monkeypatch.setattr(deploy_gate.catalog, 'rows', lambda table: rows)
-    from explorer4 import datasets
-    monkeypatch.setattr(datasets, 'series_text', lambda: {'s': 'передача: кубик hand over the cube', 'old': 'кубик в коробку'})
-    monkeypatch.setattr(deploy_gate, 'training_ids', lambda job: {'a', 'b'})
-    # training episodes and the old «into the box» task are not the hand-over test set
-    assert [e['id'] for e in deploy_gate.holdout_episodes({}, 'so101_pick_place')] == ['c', 'e']
+def test_development_excludes_train_test_and_derived_relatives(tmp_path,monkeypatch):
+    real='rosmaster_pick_place'
+    rows=[]
+    for ident in ('train','test','v1','v2','v3'):
+        root=tmp_path/ident
+        root.mkdir()
+        meta={'domain':'real','synthetic':False,'command_source':'human','profile':{'task':'pick up the cube'}}
+        if ident=='v2':
+            meta['source_episode']='test'
+        (root/'provenance.json').write_text(json.dumps(meta))
+        rows.append({'id':ident,'profile':real,'session':ident,'scene':ident if ident!='v3' else 'train',
+                     'dataset':str(root),'sha256':ident,'outcome':'success','excluded':False,'category':'demonstration'})
+    frozen={'domain':'real','profile':real,'splits':dict(train=rows[:1],test=rows[1:2],validation=rows[2:])}
+    monkeypatch.setattr(deploy_gate.datasets,'load_plan',lambda ident,verify: frozen if not verify else pytest.fail('reserved data accessed'))
+    monkeypatch.setattr(deploy_gate.catalog,'rows',lambda _:rows)
+    monkeypatch.setattr(deploy_gate.datasets,'fingerprint',lambda path:'v1' if str(path).endswith('v1') else pytest.fail('reserved data read'))
+    job={'id':'job','profile':real,'config':json.dumps({'plan_id':'plan'})}
+    held,meta=deploy_gate.development_selection(job,deploy_gate.scope_for(job))
+    assert [e['id'] for e in held]==['v1'] and set(meta['excluded'])=={'v2','v3'}
+    with pytest.raises(ValueError,match='Select a frozen'):
+        deploy_gate.development_selection({**job,'profile':'rosmaster_floor_pick_sim'},deploy_gate.scope_for(job))
+
+
+def test_semantics_of_native_velocity_and_gripper(monkeypatch):
+    import numpy as np
+    core=types.SimpleNamespace(cfg=types.SimpleNamespace(n_action_steps=100))
+    monkeypatch.setattr(deploy_gate,'replay_real',lambda *args:(np.array([[0.0,0.2]]),np.array([[0.1,0.0]]),[0.001]))
+    result=deploy_gate.replay_checks(core,[{}],'tank_dock',deploy_gate.thresholds())
+    assert result['real_holdout']['status']=='fail' and result['first_step']['status']=='fail'
+    assert result['real_holdout']['units']==['m/s','rad/s']
 
 
 def test_cotraining_adds_sim_only_to_train_and_caps_frames(monkeypatch, tmp_path):
@@ -74,3 +106,30 @@ def test_cotraining_adds_sim_only_to_train_and_caps_frames(monkeypatch, tmp_path
     assert info['splits_with_sim'] == ['train']
     with pytest.raises(ValueError):
         datasets.cotraining_episodes('tank_dock', 100, 1.0)
+
+
+def test_only_predeclared_standard_simulation_with_matching_bundle_and_scenes_is_eligible(tmp_path,monkeypatch):
+    from explorer4.sim_protocol import model_identity
+    scene='rosmaster_floor_pick_sim'
+    source={'id':'source','profile':'rosmaster_pick_place','checkpoint':'ck','config':'{}','status':'completed'}
+    seeds=list(range(10000,10020))
+    env={'xml_sha256':'geometry','mesh':'revision1'}
+    bundle={'checkpoint_bundle_sha256':'bundle','checkpoint_sha256':'weights','processors':{'post':'frozen'}}
+    p={'version':2,'scene':scene,'task':'pick up the cube','scene_revision':'rev','scene_seeds':seeds,
+       **model_identity(env),**bundle,'n_action_steps':100}
+    cfg={'kind':'sim_evaluate','source_job':'source','expected_model_hash':'geometry','scene_seeds':seeds,'profile':scene,'protocol':p}
+    active={'id':'eval','status':'completed','created':4.,'config':json.dumps(cfg)}
+    diagnostic={**active,'id':'diagnostic','created':5.,'config':json.dumps({**cfg,'diagnostic':'floor_probe'})}
+    old={**active,'id':'legacy','created':6.,'config':json.dumps({k:v for k,v in cfg.items() if k!='protocol'})}
+    monkeypatch.setattr(deploy_gate.catalog,'rows',lambda _:[source,active,diagnostic,old])
+    monkeypatch.setattr(deploy_gate,'scene_revision',lambda _: 'rev')
+    monkeypatch.setattr(deploy_gate,'DATA',tmp_path)
+    result={'status':'completed','domain':'sim','model':env,'checkpoint_sha256':'weights','profile':scene,'protocol':p,
+            'new_process_reload':True,'privileged_input':False,'success_fraction':1.,'n_action_steps':100,
+            'trials':[{'seed':s,'initial_qpos_sha256':str(s),'outcome':'success'} for s in seeds]}
+    out=tmp_path/'jobs/eval/result.json';out.parent.mkdir(parents=True);out.write_text(json.dumps(result))
+    assert deploy_gate.mujoco_result('source',identity=bundle)['job']=='eval'
+    assert deploy_gate.mujoco_result('source',identity={**bundle,'processors':{'post':'new'}}) is None
+    for change in ({'trials':result['trials'][::-1]},{'model':{**env,'mesh':'different'}},{'n_action_steps':1}):
+        out.write_text(json.dumps({**result,**change}))
+        assert deploy_gate.mujoco_result('source',identity=bundle) is None

@@ -1,0 +1,98 @@
+\documentclass[conference]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage[numbers]{natbib}
+\usepackage{graphicx}
+\pagestyle{empty}
+\begin{document}
+\title{When Should a Mobile Robot Ask a Peer for Another View?}
+\author{Author names omitted for anonymous review}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+A tracked robot that loses sight of a docking target can ask a wheeled manipulator to look for it, or turn its own camera. We compare those choices by restoring the same simulated world before each intervention and measuring the recipient's terminal pose. On 24 scenes across three room presets, a visibility rule requested 13 peer observations and completed all 24 docks. A random allocation of 13 requests completed 16. Stale reports yielded zero completions and reports from a different scene yielded four. However, a recipient allowed three seconds to look for itself also completed all 24 docks, with zero calls and shorter median completion time. A separate manipulation experiment tested the importance of target information. Given a single RGB estimate and 32 demonstration trajectories, a spline controller held a cube in a carry pose in 20 of 20 fresh scenes, a diffusion policy in 18 and an action-chunking transformer in 15. Replacing the target estimate with a constant yielded two successes for each. These experiments show how an intervention can measure the value of message content, while an active local alternative can change the conclusion about the need for a peer. The closed-loop findings are from simulation.
+\end{abstract}
+\IEEEpeerreviewmaketitle
+
+\section{Choosing between two ways to see}
+Suppose a robot turns toward a known wall, but its first camera frame contains no docking target. A second robot can point its own camera at that wall and transmit a metric waypoint. A successful dock after the exchange admits several explanations. The recipient may have reached the target using a previously known location. Turning its own camera may have been enough. Finally, it may genuinely have needed the peer's viewpoint. These alternatives give different predictions when we change the reported waypoint or the recipient's sensing budget.
+
+Our experiment holds the vehicles, terminal criterion and controller fixed while changing who looks and which message reaches the controller. We also compare a visibility rule with a fixed-budget random assignment. These comparisons answer distinct questions. The first concerns a message's causal effect on a task. The second concerns the ability to allocate calls on a particular set of scenes. A third comparison gives the recipient an active sensing action at the same time budget as the donor.
+
+\subsection{Related work}
+KnowNo calibrates when a language-model planner needs human clarification \cite{ren}. Fleet-DAgger allocates scarce human supervision across robots \cite{hoque}. Proactive collaboration has already demonstrated that embodied agents can recruit heterogeneous teammates \cite{recruitment}. Physical viewpoint assistance has used a moving camera to recover object shape for manipulation \cite{viewpoint}. When2com learns communication groups, and V2V4Real compares collaborative perception across vehicles and synchronization conditions \cite{liu,xu}. Here the outcome is a tracked recipient's terminal pose. An inexpensive active local sensing action provides a comparator to the peer's observation.
+
+\section{An actionable observation in a shared world}
+A tracked base and a wheeled manipulator occupy one MuJoCo world. A fixed wall heading and a surveyed start pad define the task frame. We vary the board position in the plane near the wall and the tracked robot's starting heading. The initial camera can face away from the board. Six engineering scenes preceded the fixed set of 24 evaluation seeds. Both sets use the same three room presets. The seeds define different starts within those presets.
+
+The recipient first inspects its own RGB frame. An OpenCV detector identifies a known 180\,mm square fiducial and estimates its metric pose. When requested, the manipulator points its camera toward the board at a fixed observation pose. The message contains an estimated waypoint, frame, simulation timestamp and source image identity. The recipient steers using the waypoint, known mounting geometry and odometry integrated from ideal body velocity measurements. Its actuator path has no access to the true target or base pose. A separate physics verifier reads those states. Docking requires position error below 8\,cm, absolute yaw error below 0.15\,rad and a stable stop for 0.5\,s. Calibration, odometry drift, image noise and arbitrary target-facing headings remain open transfer questions.
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{@{}cc@{}}
+\includegraphics[width=.47\columnwidth]{figures/recipient-before.png}&
+\includegraphics[width=.47\columnwidth]{figures/donor-observation.png}\\
+(a) Initial recipient view & (b) Helper observation
+\end{tabular}
+\caption{Actual policy inputs from evaluation scene 848000. The tracked robot's initial frame did not yield a target pose. The donor's measured waypoint drove 160 commands and the recipient stopped 2.37\,cm from the scoring position. A replay reproduced the command hash and terminal error.}
+\end{figure}
+
+\subsection{Paired interventions}
+We save the initial state, local frame and request decision before branching. For the three donor-packet conditions we restore the same state after the donor has looked. One branch receives the correct measurement, one receives a report older than the 0.75\,s freshness limit, and one receives the report from the next scene in a fixed cyclic permutation. A fixed visibility rule calls whenever the initial local detector fails. A random policy makes exactly the same number of calls using a preassigned seed ordering. For the active comparator, the recipient can rotate toward the surveyed wall and attempt detection repeatedly for up to three seconds. It then uses the same docking controller. Immediate failures from missing or expired packets count as failures.
+
+\begin{table}[t]
+\centering\caption{Matched docking outcomes in 24 simulated scenes.}
+\begin{tabular}{lrr}\hline
+Policy or packet condition & Docks & Peer calls \\\hline
+Local initial frame & 11 & 0 \\
+Local active search & 24 & 0 \\
+Always request & 24 & 24 \\
+Request on missing pose & 24 & 13 \\
+Random allocation, matched count & 16 & 13 \\
+Expired packet & 0 & 24 \\
+Packet from another scene & 4 & 24 \\\hline
+\end{tabular}
+\end{table}
+
+The visibility rule gained eight scenes over the prespecified random assignment with zero losses (exact two-sided paired binomial test on discordant scenes, $p=0.0078$). Random assignment has appreciable finite-sample variation. Every always-request attempt succeeded, while the local initial frame solved 11 scenes. Uniformly allocating 13 calls therefore yields $11+13(13/24)=18.04$ expected successes conditional on this set. The other-scene and expired controls establish sensitivity to both message content and the freshness check.
+
+Active local search completed all 24 docks, with a median of 8.10 simulated seconds per attempt. The visibility rule required 9.85\,s, and unconditional assistance 10.98\,s. All attempts completed under these three conditions, so the time comparison uses identical scenes without censoring. The tracked robot had a known wall heading and enough turning room to recover its view. These assumptions explain why the cheaper option worked. A benchmark that scored only an unmoving local camera would have supported a substantially different engineering decision.
+
+\subsection{A three-robot message chain}
+A tabletop arm viewed a coloured token with its wrist camera. The wheeled manipulator saw two docks and measured the one named by the token message. The tracked base received this pose and drove to the corresponding dock. Both colours appeared on each side of the target board across four prescribed layouts. The independent terminal check used the pose of the originally requested dock, including when the requested colour or the transmitted pose was deliberately changed. The team completed all four orders with the two correct messages. Suppressing or swapping either message yielded zero correct docks in each of the four interventions. This small test exercises routing, sensing and execution in one world. It does not estimate success on unseen arrangements or transfer to the physical fleet.
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{@{}cc@{}}
+\includegraphics[width=.47\columnwidth]{figures/so101-order.png}&
+\includegraphics[width=.47\columnwidth]{figures/rosmaster-stations.png}\\
+(a) Order at the tabletop & (b) Two candidate docks
+\end{tabular}
+\caption{Simultaneous roles in scene 868000. The wrist view supplied the colour and the mobile manipulator supplied metric position. The tracked robot received only the selected waypoint.}
+\end{figure}
+
+\section{Does the target measurement matter for grasping?}
+A separate wheeled-arm experiment isolates localization from motor learning. A supervised ResNet-18 learned planar cube position from 1,024 simulated RGB images. The training labels use simulator geometry. At evaluation the arm takes a prescribed look, estimates the target from one image, then executes a rate-limited trajectory. Thirty-two training demonstrations provide 220-step, six-channel motor trajectories. Eight principal components fitted to these trajectories describe their variation. We used the LeRobot implementations of ACT \cite{act} and Diffusion Policy \cite{diffusion} to predict coefficients conditional on target position. This is a compressed trajectory adaptation of the two architectures. A thin-plate spline interpolates the demonstrations, and a geometric inverse-kinematics controller provides a second baseline. The experiment terminates on a stable hold in a carry pose. Placement and release require a different experiment.
+
+\begin{table}[t]
+\centering\caption{Successful simulated carry holds on the same 20 fresh starts per column. Each constant ablation uses the same training-set mean position.}
+\begin{tabular}{lrr}\hline
+Motor policy & Visual estimate & Constant target \\\hline
+ACT & 15 & 2 \\
+Diffusion & 18 & 2 \\
+Thin-plate spline & 20 & 2 \\
+Inverse kinematics & 18 & --- \\\hline
+\end{tabular}
+\end{table}
+
+The first training seed used 1,000 ACT and 2,000 diffusion optimizer updates. Frozen development and fresh evaluation sets comprised eight and 20 scenes, respectively. Diffusion gained 16 fresh scenes over its own constant-target control and lost zero. A second, retrospective comparison matched initial arm angles, cube position and physics revision against 20 historical starts. Raw image-to-action ACT had produced six holds and raw diffusion one. The position-conditioned pipelines produced 19 and 20. Localization supervision, the deliberate look and the motor representation all changed together, so that comparison cannot isolate an architecture effect. The spline result also demonstrates that the extra neural motor model provided no observed advantage on the fresh set.
+
+\section{Transfer and limits}
+We retained the split between physical development recordings and sealed final evaluation recordings. On two archived physical development episodes, the first yielded no RGB frame within the required camera pose window. The second yielded one camera-pose match while wrist and gripper configuration differed from the trained observation posture. Neither episode had an independently checked mapping from RGB estimates to measured floor coordinates. The robot issued zero motor commands. Physical duplication of a simulated hold, or completion of a coordinated docking trial, remains to be measured.
+
+\subsection{Opaque-screen follow-up}
+We built a second instrumented scene with a collision-enabled screen on a bracket beside the target. Its two positions preserve a traversable route and an oblique donor view. In 24 development scenes, the recipient solved all 12 open views and none of the 12 screened views using active search. The donor-assisted controller solved all 24. In the screened attempts the recipient inspected 15 frames during its three-second turn. Positioning the screen changes the information available to the two robots while retaining the same terminal test. These are development observations. Sixteen further scenes in a separate room preset remain reserved for a learned decision rule. Its planned utility subtracts 0.10 per call and 0.005 per simulated second from the binary success score. These coefficients are study design choices. The closed evaluation will compare the trained rule to active search and an equal-budget random assignment. Physical evaluation additionally needs an independently surveyed target, camera-to-base checks, measured stopping behavior and a separate endpoint observation. The open-view comparison shows that recipient motion can eliminate the benefit of a peer. The screened comparison identifies a geometry in which an additional viewpoint changed task completion throughout development. The held-out policy test addresses whether the recipient can distinguish those cases before moving.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

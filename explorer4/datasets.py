@@ -47,6 +47,25 @@ def in_task_block(episode, texts=None):
     return any(w in texts.get(episode['session'], '') for w in words)
 
 
+def recordings_by_instruction(name):
+    """Index recorded task text before selecting any training or evaluation frames."""
+    result = {}
+    for entry in catalog.rows('episodes'):
+        if (entry['profile'] != name or entry['excluded'] or entry['outcome'] != 'success'
+                or entry['category'] not in {'demonstration','correction'}):
+            continue
+        path = Path(entry['dataset'])/'provenance.json'
+        try:
+            provenance = json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+        task = provenance.get('profile',{}).get('task')
+        if task and provenance.get('synthetic') is False:
+            role = FLOOR_CUBE_ROLES.get(provenance.get('hardware',{}).get('collection',{}).get('description'))
+            result.setdefault(task,[]).append({**entry,'recorded_role':role})
+    return result
+
+
 def eligible(name):
     profile(name)
     texts = series_text()
@@ -60,7 +79,10 @@ def lineage_tokens(episode):
     sources = list(episode.get('lineage_sources', []))
     path = Path(episode['dataset']) / 'provenance.json' if episode.get('dataset') else None
     if path is not None and path.is_file():
-        meta = json.loads(path.read_text()).get('hardware', {})
+        provenance = json.loads(path.read_text())
+        if provenance.get('source_episode'):
+            sources.append(provenance['source_episode'])
+        meta = provenance.get('hardware', {})
         transfer = meta.get('transfer_lineage', {})
         sources.extend(entry['id'] for entry in transfer.get('source_episodes', []))
         sources.extend(transfer.get('ancestor_episode_ids', []))
@@ -149,9 +171,38 @@ def cotraining_episodes(name, real_train_frames, ratio):
                     'reference': 'Sim-and-Real Co-Training, arXiv:2503.24361'}
 
 
-def freeze(name, smoke, seed=1000, sim_model_hash=None, *, selected_ids=None, min_sim_episodes=None,min_real_episodes=None,cotrain_sim=None):
+FLOOR_CUBE_TASK = 'pick up the cube'
+FLOOR_CUBE_ROLES = {'cube, обучение': 'train', 'cube, исправления': 'train',
+                    'cube, диагностика': 'validation', 'cube, отложенные': 'test'}
+
+
+def floor_cube_split(episodes, roles):
+    splits = {role: [] for role in ('train', 'validation', 'test')}
+    for group in connected_groups(episodes):
+        assigned = {roles[e['id']] for e in group}
+        if len(assigned) != 1:
+            raise ValueError('Linked cube recordings have conflicting research roles')
+        splits[assigned.pop()].extend(group)
+    if not all(splits.values()):
+        raise ValueError('Cube pilot needs separate training, development and reserved test series')
+    return splits
+
+
+def freeze(name, smoke, seed=1000, sim_model_hash=None, *, selected_ids=None, min_sim_episodes=None,min_real_episodes=None,cotrain_sim=None,floor_cube_pilot=False,task_instruction=None):
     domain=profile(name).get('domain','real')
-    episodes = eligible(name)
+    target_profile = profile(name)
+    roles = {}
+    if floor_cube_pilot:
+        if name != 'rosmaster_pick_place' or domain != 'real' or not selected_ids or smoke or cotrain_sim or not min_real_episodes:
+            raise ValueError('Explicit real-only ROSMASTER floor-cube pilot required')
+        target_profile = {**target_profile, 'task': FLOOR_CUBE_TASK}
+    if task_instruction is None:
+        episodes = eligible(name)
+    else:
+        if domain != 'real' or (floor_cube_pilot and task_instruction != FLOOR_CUBE_TASK):
+            raise ValueError('Instruction does not match this recording protocol')
+        episodes = recordings_by_instruction(name).get(task_instruction,[])
+        target_profile = {**target_profile, 'task':task_instruction}
     if selected_ids is not None:
         ids=set(selected_ids)
         if not ids or not ids.issubset({e['id'] for e in episodes}):raise ValueError('Выбранный показ отсутствует или не допущен')
@@ -173,7 +224,15 @@ def freeze(name, smoke, seed=1000, sim_model_hash=None, *, selected_ids=None, mi
         if provenance.get('domain','real')!=domain or provenance.get('synthetic') is not (domain!='real'):
             raise ValueError('Синтетические данные запрещены в физическом наборе')
         from .training_drafts import semantic_contract
-        if semantic_contract(provenance.get('profile'))!=semantic_contract(profile(name)):
+        series = provenance.get('hardware', {}).get('collection', {})
+        if not floor_cube_pilot and FLOOR_CUBE_ROLES.get(series.get('description')) in ('validation','test'):
+            raise ValueError('У этой записи закреплена проверочная роль. Выберите протокол кубика с сохранением ролей.')
+        if floor_cube_pilot:
+            role = FLOOR_CUBE_ROLES.get(series.get('description'))
+            if not role or series.get('instruction') != FLOOR_CUBE_TASK or series.get('id') != episode['session'] or series.get('profile') != name:
+                raise ValueError('Unexpected cube collection series or instruction: '+episode['id'])
+            roles[episode['id']] = role
+        if semantic_contract(provenance.get('profile'))!=semantic_contract(target_profile):
             raise ValueError('Камера, частота, единицы или каналы записи отличаются от текущего профиля: '+episode['id'])
         validation = DATA / 'validation' / f"episode-{episode['id']}.json"
         digest = fingerprint(root)
@@ -187,12 +246,18 @@ def freeze(name, smoke, seed=1000, sim_model_hash=None, *, selected_ids=None, mi
         if not sources or not sources.issubset({'human'} if domain=='real' else {'human','scripted_expert','ppo_expert'}):
             raise ValueError('Behavior cloning принимает только отдельные сегменты human без границ переключения')
         episode['sha256'] = digest
-    splits = {'train': episodes, 'validation': [], 'test': []} if smoke else grouped_split(episodes, seed)
-    plan = {'version': 1, 'domain':domain, 'profile': name, 'profile_contract': profile(name), 'smoke': bool(smoke),
+    if floor_cube_pilot:
+        splits = floor_cube_split(episodes, roles)
+    else:
+        splits = {'train': episodes, 'validation': [], 'test': []} if smoke else grouped_split(episodes, seed)
+    plan = {'version': 1, 'domain':domain, 'profile': name, 'profile_contract': target_profile, 'smoke': bool(smoke),
             'seed': seed, 'statistics': 'train_only', 'splits': splits,'sim_model_hash':sim_model_hash,
             'limitation': 'Smoke использует все показы; это не независимая оценка качества' if smoke else
                           'Split заморожен; test не используется для выбора модели'}
+    if task_instruction is not None:plan['recorded_instruction'] = task_instruction
     if min_real_episodes is not None:plan.update(pilot=True,minimum_episodes=min_real_episodes)
+    if floor_cube_pilot:
+        plan.update(task_variant='rosmaster_floor_cube_pilot', split_rule='series purpose, grouped by lineage; diagnostics for development only')
     if cotrain_sim:
         if domain!='real' or smoke:raise ValueError('Совместное обучение — для основного обучения на настоящих показах')
         extra,info=cotraining_episodes(name,sum(e['frames'] for e in splits['train']),float(cotrain_sim))

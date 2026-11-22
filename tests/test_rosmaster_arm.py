@@ -94,7 +94,12 @@ def test_learned_pick_runs_only_an_admitted_policy_and_checks_holding(monkeypatc
     arm.move = lambda pose, **k: [90., 130., 0., 25., 90., 100.]
     arm.measured = lambda: [90., 130., 0., 25., 90., 100.]          # gripper stalled at 100 < 125
     monkeypatch.setattr(policy_runtime, 'PolicyCore', Core)
-    monkeypatch.setattr(deploy_gate, 'latest', lambda job: {'checkpoint': 'ck', 'policy': 'smolvla', 'verdict': 'ready'})
+    monkeypatch.setattr(deploy_gate, 'latest', lambda job: {'checkpoint':'ck','policy':'smolvla','verdict':'ready',
+        'scope':{'instruction':'pick up the cookie','real_profile':'rosmaster_pick_place'},'checkpoint_bundle_sha256':'valid','sim_protocol':{'scene':'rosmaster_floor_pick_sim','xml_sha256':'xml'}})
+    monkeypatch.setattr(deploy_gate,'probe_geometry',lambda _: {'xml_sha256':'xml'})
+    monkeypatch.setattr(deploy_gate,'bundle_identity',lambda path:{'checkpoint_bundle_sha256':'valid'})
+    assert not arm.policy_pick('cube','job1',seconds=.1)['ok']
+    assert not sent
     result = arm.policy_pick('cookie', 'job1', seconds=.3)
     assert result['ok'] and result['policy_job'] == 'job1' and sent and sent[0] == {'arm': [90., 120., 10., 30., 90., 125.]}
     arm.measured = lambda: [90., 130., 0., 25., 90., 125.]          # closed fully: nothing in the hand

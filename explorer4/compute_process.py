@@ -11,7 +11,7 @@ def unit_name(ident):
 
 
 def command(ident, args, config):
-    if config.get('kind', 'train') not in {'train', 'sim_evaluate'}:
+    if config.get('kind', 'train') not in {'train', 'sim_evaluate', 'workspace_study'}:
         return args, None
     # Homebrain uses a cgroup: limiting the queue's launcher does not limit the
     # separate UI process which actually starts a job. Never fall back uncapped.

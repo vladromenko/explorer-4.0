@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "at": 1795373243.284484,
+  "motor_writes": 0,
+  "reason": "ValueError: red calibration mark is not confidently visible"
+}

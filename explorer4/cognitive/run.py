@@ -61,8 +61,8 @@ class Sim:
         self.log=(work/'physics.log').open('w')
         self.process=subprocess.Popen([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.sim.cooperation',str(work/'scene'),str(seed),scene],
             cwd=ROOT,env={**offline_environment(),'MUJOCO_GL':'egl'},stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.log,text=True)
-    def request(self,command,timeout=30):
-        self.process.stdin.write(json.dumps({'command':command})+'\n');self.process.stdin.flush()
+    def request(self,command,timeout=60,**payload):
+        self.process.stdin.write(json.dumps({'command':command,**payload})+'\n');self.process.stdin.flush()
         if not select.select([self.process.stdout],[],[],timeout)[0]:raise TimeoutError('Simulation deadline exceeded')
         line=self.process.stdout.readline()
         if not line:raise RuntimeError('Simulation worker stopped; see physics.log')
@@ -94,6 +94,10 @@ def execute(config,work):
         experiment=experiments.load(config['comparison_plan'])
         if experiments.cell_config(config['comparison_plan'],config['comparison_cell'])!=config:
             raise ValueError('Comparison cell parameters changed')
+    learned = config['comparison'] == 'peer_learned'
+    if learned:
+        from explorer4.peer_request_policy import load_model, local_features, score
+        model = load_model(config['peer_model_sha256'])
     try:
         with ResourceLease('cognitive-mission'):
             sim=Sim(work,config['seed'],config.get('scene','workshop'));snapshot=sim.request('snapshot')
@@ -101,8 +105,9 @@ def execute(config,work):
             for key in ('recipient','donor'):
                 camera=snapshot[key]
                 item=observe(camera['robot'],{**camera['measurement'],'conditions':{**snapshot['conditions'],
-                    'observation_skill_available':True,'recipient_can_continue':False},
-                    'simulation_time_s':camera['simulation_time_s'],'scene':snapshot['scene'],'model_sha256':snapshot['model_sha256']},'mujoco_robot_rgb',camera['image'])
+                    'observation_skill_available':True,'recipient_can_continue':bool(snapshot['recipient'].get('packet')),
+                    **({'target_observed_locally':bool(camera.get('packet'))} if key=='recipient' else {})},
+                    'packet':camera.get('packet'),'simulation_time_s':camera['simulation_time_s'],'scene':snapshot['scene'],'model_sha256':snapshot['model_sha256']},'mujoco_robot_rgb',camera['image'])
                 initial.append(item.id)
             m=broker.create_mission('ROSMASTER уточняет фиксированную цель, Tank подъезжает и останавливается',initial)
             if experiment:m=update(m['id'],memory_snapshot=experiment['memory_snapshot'])
@@ -110,17 +115,17 @@ def execute(config,work):
             (work/'mission.json').write_text(json.dumps({'mission_id':m['id']}))
             store.event(m['id'],'role_evidence',{'role':'SceneObserver','evidence_ids':initial})
             memory=tool(m,'AssistanceBroker','retrieve_cases',{'task':TASK,'effect':EFFECT,'recipient_skill_id':RECIPIENT,
-                'goal_id':'fixed_dock','comparison':config['comparison']})
+                'goal_id':'fixed_dock','comparison':'M0' if learned else config['comparison']})
             manifest=ExperimentManifest(id=work.name,comparison=config['comparison'],memory_sha256=m['memory_snapshot']['sha256'],
                 memory_ids=[x['case']['id'] for x in memory['accepted']],
                 skill_versions={c.skill_id:c.version for c in registry.cards().values()},
                 scenes=[snapshot['scene']],seeds=[config['seed']],budgets={'model_steps':4,'format_repairs':1,'replans_per_reason':2,
                     'memory_cases':5,'helper_sim_seconds':5,'recipient_sim_seconds':30,'model_wall_seconds':100},
-                split=experiment['split'] if experiment else 'diagnostic',memory_updates=experiment is None,evaluator_version=registry.file_hash('explorer4/sim/cooperation.py'),
+                split=experiment['split'] if experiment else 'diagnostic',memory_updates=experiment is None and not learned,evaluator_version=registry.file_hash('explorer4/sim/cooperation.py'),
                 scene_sha256=snapshot['model_sha256'],
-                model_revision=json.loads((ROOT/'configs/cognitive-model.json').read_text())['revision'],
-                model_config_sha256=registry.file_hash('configs/cognitive-model.json'),
-                decision_protocol_version=DECISION_PROTOCOL,
+                model_revision=config['peer_model_sha256'] if learned else json.loads((ROOT/'configs/cognitive-model.json').read_text())['revision'],
+                model_config_sha256=model['plan_sha256'] if learned else registry.file_hash('configs/cognitive-model.json'),
+                decision_protocol_version='peer-request-active-scan-v2' if learned else DECISION_PROTOCOL,
                 decision_protocol_sha256=registry.file_hash('explorer4/cognitive/protocol.py'))
             (work/'experiment.json').write_text(store.encoded(manifest))
             store.event(m['id'],'experiment_prepared',{'role':'LearningAndExperimentCurator','manifest':manifest.model_dump(),
@@ -137,13 +142,26 @@ def execute(config,work):
             request['assistance']=select(['continue','observe','human'],store.evidence(initial,domain='sim'))
             store.event(m['id'],'assistance_ranked',{'role':'AssistanceBroker',**request['assistance']})
             allowed=request['allowed_choices']
-            (work/'decision-protocol.json').write_text(store.encoded({'version':DECISION_PROTOCOL,
+            (work/'decision-protocol.json').write_text(store.encoded({'version':request.get('protocol_version', DECISION_PROTOCOL),
                 'source_sha256':registry.file_hash('explorer4/cognitive/protocol.py'),
                 'allowed_choices':allowed,'instruction':request['instruction'],
                 'diagnostic_only':True,'historical_v1_results_comparable':False}))
             store.event(m['id'],'model_started',{'role':'MissionCoordinator','allowed_choices':allowed})
-            if config['comparison']=='M0':
-                proposal={'proposal':{'choice':'scan_then_dock','reason':'Fixed baseline without model or memory'},'backend':'fixed_rules_v1'}
+            if learned:
+                camera = snapshot['recipient']
+                features = local_features(camera.get('packet'), camera['measurement'])
+                prediction = score(model, features)
+                ask = prediction >= model['threshold']
+                choice = 'observe_then_dock' if ask else 'active_local_then_dock'
+                proposal = {'backend':model['schema'], 'model_sha256':config['peer_model_sha256'],
+                            'plan_sha256':model['plan_sha256'], 'features':features, 'score':prediction,
+                            'threshold':model['threshold'], 'decision_time_s':camera['simulation_time_s'],
+                            'source_evidence_id':initial[0],
+                            'source_image_sha256':hashlib.sha256(Path(camera['image']).read_bytes()).hexdigest(),
+                            'proposal':{'choice':choice,'reason':'Predicted incremental utility versus the active local scan.'}}
+            elif config['comparison']=='M0':
+                choice='local_then_dock' if snapshot['recipient'].get('packet') else 'observe_then_dock'
+                proposal={'proposal':{'choice':choice,'reason':'Use a valid local marker pose, otherwise request a fresh peer observation'},'backend':'local_visibility_rule_v1'}
             else:proposal=model_proposal(work,request)
             current=store.mission(m['id'])
             if current['phase']=='cancelled' or current['generation']!=m['generation']:raise ValueError('Late model proposal discarded')
@@ -155,6 +173,8 @@ def execute(config,work):
             if choice in ('wait','human'):
                 update(m['id'],phase='completed',outcome='unknown',reason=proposal['proposal']['reason'])
                 result={'mission_id':m['id'],'outcome':'unknown','proposal':proposal,'training_started':False}
+            elif choice in ('local_then_dock','active_local_then_dock'):
+                result=execute_local(sim,m,initial,snapshot,proposal)
             else:result=execute_graph(sim,m,initial,snapshot,proposal,memory,usable,config,work)
             result.update(wall_time_s=time.monotonic()-started,physical_robot_access=False,training_started=False)
             if experiment:
@@ -170,6 +190,26 @@ def execute(config,work):
         raise
     finally:
         if sim is not None:sim.close()
+
+
+def execute_local(sim, mission, evidence_ids, snapshot, proposal):
+    packet = snapshot['recipient'].get('packet')
+    active = proposal['proposal']['choice'] == 'active_local_then_dock'
+    if packet is None and not active:
+        raise ValueError('Local dock requires a fresh recipient observation')
+    recipient = registry.get('tank.scan_local.geometric.v1' if active else 'tank.dock_local.geometric.v1')
+    graph = {'nodes':[{'id':'dock','skill_id':recipient.skill_id,'skill_version':recipient.version,
+                       'robot':'tank','goal_id':'fixed_dock','deadline_s':30.}],
+             'evidence_ids':evidence_ids,'rationale':proposal['proposal']['reason']}
+    tool(mission,'MissionCoordinator','propose_graph',graph)
+    tool(mission,'MissionCoordinator','prepare_skill_job',{'node_id':'dock'})
+    with broker.execution_step(mission['id'],'dock'):
+        outcomes=sim.request('local_scan' if active else 'local_dock',packet=packet)
+    evidence=observe('tank',outcomes,'fixed_outcome_verifier')
+    update(mission['id'],phase='completed',outcome=outcomes['task'],verified_nodes=['dock'])
+    return {'mission_id':mission['id'],'outcome':outcomes['task'],'helper':'not_requested',
+            'recipient':outcomes['recipient'],'task':outcomes['task'],'proposal':proposal,
+            'graph':graph,'evidence_ids':[*evidence_ids,evidence.id],'measurements':outcomes}
 
 
 def execute_graph(sim,m,initial,snapshot,proposal,memory,usable,config,work):
@@ -211,17 +251,17 @@ def execute_graph(sim,m,initial,snapshot,proposal,memory,usable,config,work):
         raise ValueError('Helper did not establish target visibility')
     # Source is explicitly the donor's measured RGB; no invented Tank camera.
     fact=store.put_fact(WorldFact(id=uuid.uuid4().hex,subject='fixed_dock_marker',relation='visible_in_camera',
-        value={'visible':True,'boxes':measured['measurement']['detections']},domain='sim',frame_id=helper_e.frame_id,
+        value={'visible':True,'boxes':measured['measurement']['detections'],'packet':measured['packet']},domain='sim',frame_id=helper_e.frame_id,
         evidence_ids=[helper_e.id],valid_since=helper_e.created_at,expires_at=helper_e.expires_at,status='observed'))
     recipient_e=observe('tank',{'conditions':{**measured['conditions'],'target_observed_by_helper':fact.value['visible']},
         'world_fact_id':fact.id,'donor_evidence_id':helper_e.id,
-        'simulation_time_s':measured['simulation_time_s'],'observation_transferred':True},'verified_helper_observation')
+        'simulation_time_s':measured['simulation_time_s'],'observation_transferred':True,'packet':fact.value['packet']},'verified_helper_observation')
     update(m['id'],verified_nodes=['observe'])
     m=broker.refresh_snapshot(m['id'],[helper_e.id,recipient_e.id])
     store.event(m['id'],'helper_verified',{'role':'OutcomeVerifier','evidence_ids':m['snapshot_ids'],
         'helper':'success','recipient':'unknown','task':'unknown'})
     tool(m,'MissionCoordinator','prepare_skill_job',{'node_id':'dock'})
-    with broker.execution_step(m['id'],'dock'):outcomes=sim.request('dock')
+    with broker.execution_step(m['id'],'dock'):outcomes=sim.request('dock',packet=recipient_e.payload['packet'])
     scope=CompatibilityRecord(recipient_skill_id=recipient.skill_id,recipient_version=recipient.version,
         policy_sha256=recipient.policy_sha256,camera_sha256=recipient.camera_sha256,calibration_sha256=None,
         domain='sim',goal_id='fixed_dock',checked_conditions=recipient.preconditions,unknown_conditions=[],evidence_ids=initial)
@@ -249,7 +289,7 @@ def execute_graph(sim,m,initial,snapshot,proposal,memory,usable,config,work):
     return {'mission_id':m['id'],'outcome':outcomes['task'],'helper':outcomes['helper'],'recipient':outcomes['recipient'],
         'task':outcomes['task'],'proposal':proposal,'graph':graph,'memory':memory,'case_id':case.id if manifest.memory_updates else None,
         'evidence_ids':initial+m['snapshot_ids']+verifier_ids,'experiment':manifest.model_dump(),
-        'scientific_hypothesis_tested':False,'limitations':['privileged scripted docking teacher','fixed nominal shared scene','uncalibrated hardware model']}
+        'scientific_hypothesis_tested':False,'limitations':['camera pose and dead reckoning rely on simulated calibration','surveyed parallel marker planes','uncalibrated hardware model']}
 
 
 if __name__=='__main__':execute(json.loads(Path(sys.argv[1]).read_text()),Path(sys.argv[2]))

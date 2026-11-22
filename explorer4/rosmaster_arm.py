@@ -286,9 +286,16 @@ class ArmSkills:
         from .policy_runtime import PolicyCore
         from .profiles import profile
         report = deploy_gate.latest(job)
-        from .training_drafts import checkpoint_hash
-        if not report or report.get('verdict') != 'ready' or checkpoint_hash(report['checkpoint']) != report.get('checkpoint_bundle_sha256'):
-            return {'ok': False, 'reason': 'выбранная модель изменилась или её допуск не пройден'}
+        if not report:
+            return {'ok':False,'reason':'No deployment evidence'}
+        try:
+            start_pose=(report.get('scope') or {}).get('start_pose')
+            if start_pose and max(abs(a-b) for a,b in zip(SEARCH_FAR,start_pose['center']))>start_pose['tolerance']:
+                raise PermissionError('This skill starts in a different arm pose than the evaluated task')
+            deploy_gate.require({'source_id':job,'profile':'rosmaster_pick_place','start_pose':start_pose,
+                                 'checkpoint':report['checkpoint'],'instruction':f'pick up the {prompt}'})
+        except (PermissionError, ValueError, OSError) as exc:
+            return {'ok':False,'reason':str(exc)}
         cfg = profile('rosmaster_pick_place')
         obj = self.look(prompt)
         if obj is None:
@@ -298,6 +305,11 @@ class ArmSkills:
             self.log(f'захват моделью: ставлю предмет в зону показов, подъезжаю {forward:+.2f} м')
             self.drive(forward, turn)
         self.move(SEARCH_FAR)
+        if start_pose:
+            state=self.measured()
+            if len(state)!=len(start_pose['center']) or any(not np.isfinite(a) or abs(a-b)>start_pose['tolerance']
+                    for a,b in zip(state,start_pose['center'])):
+                return {'ok':False,'reason':'Measured start pose differs from the evaluated task'}
         core = PolicyCore(report['checkpoint'], 'cuda', instruction=f'pick up the {prompt}')
         self.log(f'захват моделью {report["policy"].upper()} {job[:8]} (допуск пройден)')
         import cv2

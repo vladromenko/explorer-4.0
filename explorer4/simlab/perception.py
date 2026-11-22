@@ -49,12 +49,13 @@ class MarkerDetector:
                 into = -R[:, 2]
                 score = abs(into[1]) + (0.0 if into @ tvec.ravel() > 0 else 10.0) + 0.01 * float(err)
                 if best is None or score < best[0]:
-                    best = (score, R, tvec.ravel())
-            _, R, t = best
+                    best = (score, R, tvec.ravel(), float(err))
+            _, R, t, error = best
             into_board = -R[:, 2]                         # marker normal points out of the board
             return {'distance': float(math.hypot(t[0], t[2])), 'bearing': float(math.atan2(-t[0], t[2])),
                     'yaw': float(-math.atan2(-into_board[0], into_board[2])), 'visible': 1, 'age_s': 0.0,
-                    'corners_px': c.reshape(4, 2).tolist()}
+                    'corners_px': c.reshape(4, 2).tolist(), 'translation_optical_m': t.tolist(),
+                    'normal_optical': R[:, 2].tolist(), 'reprojection_error_px': error}
         return None
 
 

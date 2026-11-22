@@ -15,7 +15,7 @@ from .schemas import Contract
 
 
 class Proposal(Contract):
-    choice:Literal['scan_then_dock','observe_then_dock','wait','human']
+    choice:Literal['local_then_dock','scan_then_dock','observe_then_dock','wait','human']
     reason:str=Field(min_length=1,max_length=600)
 
 

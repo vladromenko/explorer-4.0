@@ -71,15 +71,28 @@ class Jobs:
                        steps=int(TRAINING[policy].get('finetune_steps',TRAINING[policy].get('steps',20000)//2)))
         return self._insert(name,policy,cfg)
 
-    def cognitive_simulation(self,comparison='M3',seed=17,scene='workshop'):
+    def cognitive_simulation(self,comparison='M3',seed=17,scene='workshop',*,peer_model_sha=None):
         from .sim.room import PRESETS
-        if scene not in PRESETS:raise ValueError('Unknown scene')
-        if comparison not in {'M0','M1','M2','M3'}:raise ValueError('Unknown comparison')
+        if scene not in {*PRESETS, *(k+'_screen' for k in PRESETS)}:raise ValueError('Unknown scene')
+        extra = {}
+        if comparison == 'peer_learned':
+            from .peer_request_policy import load_model
+            load_model(peer_model_sha)
+            extra = {'peer_model_sha256':peer_model_sha}
+        if comparison not in {'M0','M1','M2','M3','peer_learned'}:raise ValueError('Unknown comparison')
         if type(seed) is not int or not 0<=seed<2**31:raise ValueError('Invalid scene seed')
         if any(j['status'] in {'queued','running'} and json.loads(j['config']).get('kind')=='cognitive_simulation' for j in catalog.rows('jobs')):
             raise ValueError('Проверка команды уже выполняется; дождитесь результата или нажмите STOP')
         return self._insert('fleet_lab_sim','cognitive',{'kind':'cognitive_simulation','comparison':comparison,
-            'seed':seed,'scene':scene,'device':'cuda','training_requested':False,'real_authorized':False})
+            'seed':seed,'scene':scene,'device':'cpu' if comparison in ('M0','peer_learned') else 'cuda',
+            'training_requested':False,'real_authorized':False,**extra})
+
+    def three_robot_docking(self,seed,scene):
+        from .sim.room import PRESETS
+        if type(seed) is not int or not 0 <= seed < 2**31 or scene not in PRESETS:
+            raise ValueError('Некорректная сцена или расстановка.')
+        return self._insert('fleet_lab_sim','geometric',{'kind':'three_robot_docking','seed':seed,
+            'scene':scene,'device':'cpu','training_requested':False,'real_authorized':False})
 
     def cognitive_observation(self,evidence_ids,question,method='vlm'):
         from .cognitive import observer,store
@@ -199,26 +212,30 @@ class Jobs:
         source=self.get(job_id)
         if source['status']!='completed' or source['policy'] not in {'act','smolvla','diffusion'} or not source['checkpoint']:
             raise ValueError('Выберите завершённое обучение политики')
-        if profile(source['profile']).get('domain')!='sim':
-            # A policy trained on real demonstrations is checked on the MuJoCo task that mirrors its
-            # recording block (same camera, joints, start pose and success rule).
-            target=SIM_FOR_REAL.get(source['profile'])
-            if target is None:raise ValueError('Для этой реальной задачи нет выровненной сцены MuJoCo')
-            return self._insert(source['profile'],source['policy'],{'kind':'sim_evaluate','profile':target,
-                'source_job':job_id,'checkpoint':source['checkpoint'],'device':'cuda','expected_model_hash':None,
-                'episodes':3 if json.loads(source['config']).get('smoke') else 20})
-        from .datasets import load_plan,select_simulation_revision
-        config=json.loads(source['config'])
-        if config.get('plan_id'):
-            split=load_plan(config['plan_id'])['splits']
-        else:
-            split=json.loads((DATA/'jobs'/job_id/'split.json').read_text())
-        _,model_hash=select_simulation_revision([e for group in split.values() for e in group])
-        if model_hash is None:raise ValueError('Нет версии физики обучающего набора')
-        return self._insert(source['profile'],source['policy'],{'kind':'sim_evaluate','profile':source['profile'],
+        from .sim_protocol import protocol, probe_geometry
+        from .deploy_gate import evaluation_scene
+        from .datasets import load_plan
+        config = json.loads(source['config'])
+        target = evaluation_scene(source)
+        if not target:
+            raise ValueError('No aligned MuJoCo task for this sensor and action contract')
+        geometry = probe_geometry(target)
+        model = geometry['xml_sha256']
+        if profile(source['profile']).get('domain') == 'sim':
+            if config.get('plan_id'):
+                recorded = load_plan(config['plan_id'], verify=False)['sim_model_hash']
+            else:
+                from .datasets import select_simulation_revision
+                split = json.loads((DATA/'jobs'/job_id/'split.json').read_text())
+                _, recorded = select_simulation_revision(split['train'])
+            if not recorded or model != recorded:
+                raise ValueError('MuJoCo geometry differs from the training scene')
+        count = 3 if config.get('smoke') else 20
+        seeds = list(range(10000, 10000 + count))
+        return self._insert(source['profile'],source['policy'],{'kind':'sim_evaluate','profile':target,
             'source_job':job_id,'checkpoint':source['checkpoint'],'device':'cuda',
-            'expected_model_hash':model_hash,
-            'episodes':3 if json.loads(source['config']).get('smoke') else 20})
+            'expected_model_hash':model,'episodes':count,'scene_seeds':seeds,
+            'protocol':protocol(target,seeds,geometry,source['checkpoint'])})
 
     def compare_sim_branches(self,name,*,source_job=None,seed=14,warmup_s=.5,delay_s=.5,correction_s=5.,horizon_s=15.):
         from .branching_config import validate_config
@@ -305,18 +322,18 @@ class Jobs:
         """M0/M2/M3 help comparison in the virtual room (scripts/swarm_help_experiment.py)."""
         return self._insert('help_experiment','swarm',{'kind':'help_experiment','rooms':int(rooms),'device':'cpu'})
 
-    def deploy_gate(self, job_id):
+    def deploy_gate(self, job_id, development_plan_id=None):
         """«Допуск к роботу» for a completed training (explorer4/deploy_gate.py); queues the MuJoCo
         check on the mirrored task first when it has not run."""
         source=self.get(job_id)
         if source['status']!='completed' or not source['checkpoint'] or source['policy'] not in {'act','smolvla','diffusion'}:
             raise ValueError('Выберите завершённое обучение политики')
-        from .deploy_gate import mujoco_result
-        if mujoco_result(job_id) is None and not any(json.loads(j['config']).get('kind')=='sim_evaluate' and json.loads(j['config']).get('source_job')==job_id
-                                                     and j['status'] in ('queued','running') for j in catalog.rows('jobs')):
+        from .deploy_gate import is_standard_sim_evaluation, mujoco_result
+        if mujoco_result(job_id) is None and not any(j['status'] in ('queued','running') and is_standard_sim_evaluation(j, job_id) and json.loads(j['config']).get('protocol')
+                                                     for j in catalog.rows('jobs')):
             try:self.sim_evaluate(job_id)
             except ValueError:pass
-        return self._insert(source['profile'],source['policy'],{'kind':'deploy_gate','source_job':job_id,'device':'cuda'})
+        return self._insert(source['profile'],source['policy'],{'kind':'deploy_gate','source_job':job_id,'device':'cuda','development_plan_id':development_plan_id})
 
     def evaluate(self, job_id, partition="validation"):
         if partition not in {"validation","test"}:raise ValueError("Unknown evaluation split")
@@ -360,6 +377,12 @@ class Jobs:
             if job['status'] not in {'failed', 'cancelled', 'interrupted'}:
                 raise ValueError('Возобновляется только остановленное задание')
             cfg = json.loads(job['config'])
+            if cfg.get('kind') == 'workspace_study':
+                from .study_queue import verify
+                verify(cfg['study_plan'])
+                with catalog.connect() as db:
+                    db.execute("UPDATE jobs SET status='queued',error=NULL WHERE id=? AND status IN ('failed','cancelled','interrupted')", (ident,))
+                return
             if cfg.get('kind')=='sim_ppo':
                 from .sim.checkpoints import latest
                 try:checkpoint=latest(DATA/'jobs'/ident)
@@ -390,7 +413,7 @@ class Jobs:
         ident = job['id']
         try:
             cfg=json.loads(job['config'])
-            gpu=cfg.get('kind','train') in {'train','evaluate','sim_evaluate','deploy_gate','benchmark','vision','cognitive_simulation','cognitive_observation','cognitive_order'} and cfg.get('device','cuda').startswith('cuda')
+            gpu=cfg.get('kind','train') in {'workspace_study','train','evaluate','sim_evaluate','deploy_gate','benchmark','vision','cognitive_simulation','cognitive_observation','cognitive_order'} and cfg.get('device','cuda').startswith('cuda')
             with ResourceLease('physical-activity'), ResourceLease('compute'), (ExistingTrainingLease() if gpu else contextlib.nullcontext()):
                 path = DATA/'jobs'/f'{ident}.json'
                 path.write_text(job['config'])

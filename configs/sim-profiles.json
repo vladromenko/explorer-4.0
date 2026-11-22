@@ -416,5 +416,80 @@
     "real_profile": "rosmaster_pick_place",
     "model_status": "manufacturer_geometry_uncalibrated",
     "task_variant": "rosmaster_floor_pick"
+  },
+  "rosmaster_floor_pick_recorded_start_sim": {
+    "robot": "rosmaster",
+    "fps": 20,
+    "version": 3,
+    "task": "pick up the cube",
+    "policy": "act",
+    "camera": "front",
+    "channels": [
+      "base_rotation",
+      "shoulder",
+      "elbow",
+      "wrist_pitch",
+      "wrist_roll",
+      "gripper"
+    ],
+    "units": [
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees"
+    ],
+    "schema_status": "simulation_with_train_only_recorded_start",
+    "recording_status": "not_verified",
+    "training_status": "not_verified",
+    "physical_skill_status": "not_applicable",
+    "state_channels": [
+      "measured_base_rotation",
+      "measured_shoulder",
+      "measured_elbow",
+      "measured_wrist_pitch",
+      "measured_wrist_roll",
+      "measured_gripper"
+    ],
+    "state_provenance": "simulator observable state in the real profile channel order; not physical sensor data",
+    "camera_status": "orbbec_rgb_on_arm_480x640",
+    "image_shape": [
+      480,
+      640,
+      3
+    ],
+    "state_units": [
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees",
+      "native_servo_degrees"
+    ],
+    "action_provenance": "submitted simulation control target; no hardware command or acknowledgement",
+    "base_rule": "base stays still (agent profile refuses drive input)",
+    "feature_scales": [
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0
+    ],
+    "domain": "sim",
+    "real_profile": "rosmaster_pick_place",
+    "model_status": "manufacturer_geometry_uncalibrated",
+    "task_variant": "rosmaster_floor_pick",
+    "start_center_deg": [
+      81.65454545454543,
+      56.945454545454524,
+      24.38181818181816,
+      20.536363636363618,
+      74.33132530120481,
+      112.00909090909089
+    ],
+    "start_source_episode": "f83324dba752428a897a2e9350361258",
+    "start_source_real_plan": "df90f11b3b89ba67acc8c1a13e62d8781b79fc2e52c9322eed7f4fbac55371f0"
   }
 }

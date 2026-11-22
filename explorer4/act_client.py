@@ -54,7 +54,8 @@ class PolicyClient:
     def observation_request(self,command,obs,cfg):
         ok,png=cv2.imencode('.png',cv2.cvtColor(obs['rgb'],cv2.COLOR_RGB2BGR))
         if not ok:raise RuntimeError('Camera encode failed')
-        return self.request(command,state=obs['state'].tolist(),rgb=base64.b64encode(png).decode(),camera_key='observation.images.'+cfg['camera'],task=cfg['task'])
+        environment = obs.get('observation.environment_state', obs.get('environment_state'))
+        return self.request(command,environment=None if environment is None else list(map(float,environment)),state=obs['state'].tolist(),rgb=base64.b64encode(png).decode(),camera_key='observation.images.'+cfg['camera'],task=cfg['task'])
 
     def close(self):
         self.process.stdin.close()

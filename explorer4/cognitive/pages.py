@@ -27,6 +27,8 @@ def cancel_job(jobs,ident,reason):
 
 def install(css,jobs,physical_session=None):
     store.initialize();store.recover_interrupted()
+    from explorer4.three_robot_page import install as install_three
+    install_three(jobs)
     install_archive_review(css)
     from .observation_pages import install as install_observations
     install_observations(css,jobs)
@@ -57,7 +59,8 @@ def install(css,jobs,physical_session=None):
         async def launch():
             nonlocal active,selected,last_heartbeat,displayed
             try:
-                active=await asyncio.to_thread(jobs.cognitive_simulation,comparison.value,int(seed.value),scene.value)
+                kwargs = {'peer_model_sha':selector.value} if comparison.value == 'peer_learned' else {}
+                active=await asyncio.to_thread(jobs.cognitive_simulation,comparison.value,int(seed.value),scene.value,**kwargs)
                 selected=active;last_heartbeat=__import__('time').monotonic();displayed=None
                 status.set_text('В очереди · только симуляция');start.disable()
                 saved.set_options({j['id']:j['id'][:8]+' · '+LABELS[j['status']] for j in history()},value=selected)
@@ -83,6 +86,7 @@ def install(css,jobs,physical_session=None):
         with ui.row():
             ui.link('Explorer','/');ui.link('Общий стенд','/sim/fleet');ui.link('Реальные датчики','/fleet/live')
             ui.link('Наблюдения ROSMASTER','/team/rosmaster')
+            ui.link('Заказ для трёх роботов','/team/three')
             ui.link('Кадры команды','/team/observations');ui.link('Подготовить сравнение','/team/comparison')
             ui.link('Задача на роботах','/team/real')
             ui.link('Восстановительные показы','/sim/recovery-data')
@@ -95,7 +99,7 @@ def install(css,jobs,physical_session=None):
                 with ui.element('div').classes('team-grid'):
                     with ui.column().classes('sim-panel'):
                         ui.label('Увидеть цель и подъехать').classes('sim-title')
-                        ui.label('Tank не видит фиксированную цель. ROSMASTER направляет на неё свою камеру. Только новое подтверждённое наблюдение разрешает Tank подъехать и остановиться.').classes('muted')
+                        ui.label('Tank ищет метку дока своей камерой. ROSMASTER может передать измеренную позицию со своего ракурса. Результат определяют положение и остановка Tank.').classes('muted')
                         ui.label('Общий мир · обзор, не вход политики').classes('muted')
                         overview=ui.image().props('no-spinner')
                         with ui.element('div').classes('team-cameras'):
@@ -109,10 +113,21 @@ def install(css,jobs,physical_session=None):
                         ui.label('Проверить взаимодействие').classes('sim-title')
                         ui.label('Первый запуск собирает опыт. Повтор использует подходящий случай, но снова проверяет цель и остановку.').classes('muted')
                         from explorer4.sim.room import PRESETS
-                        scene=ui.select({k:v['label'] for k,v in PRESETS.items()},value='workshop',label='Окружение').classes('w-full')
+                        rooms = {k:v['label'] for k,v in PRESETS.items()}
+                        rooms.update({k+'_screen':v['label']+' · передвижная ширма' for k,v in PRESETS.items()})
+                        scene=ui.select(rooms,value='workshop',label='Окружение').classes('w-full')
                         seed=ui.number('Расстановка',value=17,min=0,max=2**31-1,precision=0)
                         comparison=ui.select({'M3':'С моделью и проверяемой памятью','M1':'С моделью, без памяти',
-                            'M2':'Память без фильтра получателя · сравнение','M0':'Фиксированный план · без модели'},value='M3',label='Режим проверки').classes('w-full')
+                            'M2':'Память без фильтра получателя · сравнение','M0':'Выбор по видимости метки','peer_learned':'Обученный выбор между обзором Tank и помощью'},value='M0',label='Режим проверки').classes('w-full')
+                        from explorer4.peer_request_policy import available_models
+                        weights = available_models()
+                        selector = ui.select({k:k[:12]+' · план '+v['plan_sha256'][:10] for k,v in weights.items()},
+                            value=next(iter(weights),None),label='Проверенная модель выбора помощи').classes('w-full')
+                        selector.bind_visibility_from(comparison, 'value', backward=lambda value:value=='peer_learned')
+                        if not weights:
+                            selector.disable()
+                            pending=ui.label('Ожидает обучения и проверки · обученный выбор пока недоступен.').classes('muted')
+                            pending.bind_visibility_from(comparison, 'value', backward=lambda value:value=='peer_learned')
                         start=ui.button('Выполнить в симуляции',icon='play_arrow',on_click=launch)
                         ui.label('Реальные роботы не подключаются. Обучение не запускается. При уходе со страницы текущая задача отменяется.').classes('muted')
                         saved=ui.select({j['id']:j['id'][:8]+' · '+LABELS[j['status']] for j in history()},label='Сохранённые проверки',on_change=choose).classes('w-full')

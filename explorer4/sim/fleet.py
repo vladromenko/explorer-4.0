@@ -25,7 +25,7 @@ OPTIONS={'timestep':'.0005','integrator':'implicitfast','iterations':'100',
          'ls_iterations':'20','cone':'elliptic','impratio':'10'}
 
 
-def build(scene='workshop'):
+def build(scene='workshop', *, peer_dock=False):
     root=ET.Element('mujoco',model='Explorer shared laboratory')
     ET.SubElement(root,'option',**OPTIONS)
     ET.SubElement(root,'statistic',center='.5 0 .15',extent='2.5')
@@ -40,7 +40,14 @@ def build(scene='workshop'):
     builders={'so101':so101_model,'rosmaster':rosmaster_arm_model,'tank':lambda:(model_xml('tank')[0],None)}
     for name,builder in builders.items():
         child=ET.fromstring(builder()[0])
-        if name=='tank':dock_frame(child)
+        if name=='tank':
+            dock_frame(child)
+            if peer_dock:
+                from .peer_dock import instrument_dock
+                instrument_dock(child)
+                if peer_dock == "screen":
+                    from .peer_screens import install_screen
+                    install_screen(child)
         child.find('option').attrib.clear();child.find('option').attrib.update(OPTIONS)
         # One shared floor, lighting and sky. MjSpec namespaces all referenced
         # joints/meshes/equalities, including the manufacturer's mimic links.
@@ -101,8 +108,8 @@ class FleetWorld:
     fps=20
     profile='fleet_lab_sim'
 
-    def __init__(self,seed=0,scene='workshop'):
-        self.model,self.manifest=build(scene);self.data=mujoco.MjData(self.model)
+    def __init__(self,seed=0,scene='workshop',*,peer_dock=False):
+        self.model,self.manifest=build(scene,peer_dock=peer_dock);self.data=mujoco.MjData(self.model)
         self.views={name:TaskView(name,make(profile),self.model,self.data) for name,profile in PROFILES.items()}
         self.manifest['tasks']={name:v.env.manifest for name,v in self.views.items()}
         self.renderer=None;self.agent_renderers={};self.operator=None;self.operator_switches=0

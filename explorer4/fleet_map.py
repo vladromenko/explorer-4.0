@@ -14,6 +14,7 @@ Wi-Fi only carries the scans to Homebrain, where the map lives. Radio signal str
 """
 import math
 import threading
+import uuid
 import time
 
 import cv2
@@ -278,6 +279,7 @@ class FleetMap:
 
     def __init__(self):
         self.grid = Grid()
+        self.frame_id = uuid.uuid4().hex
         self.lock = threading.Lock()
         self.track = {}      # robot -> {'pose', 'quality', 'at', 'odom', 'state', 'message'}
         self.heard = {}      # robot -> last scan time (not cleared by reset)
@@ -291,11 +293,16 @@ class FleetMap:
 
     def pose(self, robot, max_age=3.):
         """Latest confident pose and the time it was measured, or (None, None)."""
+        pose,stamp,_ = self.pose_frame(robot,max_age)
+        return pose,stamp
+
+    def pose_frame(self, robot, max_age=3.):
+        """A reset creates a new room origin. Never combine poses or survey headings across origins."""
         with self.lock:
             s = self.track.get(robot) or {}
-            if s.get('pose') is None or s.get('state') not in ('mapping', 'tracking') or time.time() - s['at'] > max_age:
-                return None, None
-            return s['pose'], s['at']
+            if s.get('pose') is None or s.get('state') not in ('mapping','tracking') or time.time()-s['at']>max_age:
+                return None,None,self.frame_id
+            return s['pose'],s['at'],self.frame_id
 
     def stale(self, robot, message):
         """The robot's lidar stopped updating: its pose and scan must not be used for driving."""
@@ -533,7 +540,7 @@ class FleetMap:
         MAP_DIR.mkdir(parents=True, exist_ok=True)
         with self.lock:
             tmp = MAP_DIR / 'map.tmp.npz'                  # atomic: a stop mid-write never corrupts the map
-            np.savez_compressed(tmp, hits=self.grid.hits, free=self.grid.free, seen=self.grid.seen, scans=self.grid.scans)
+            np.savez_compressed(tmp, hits=self.grid.hits, free=self.grid.free, seen=self.grid.seen, scans=self.grid.scans, frame_id=self.frame_id)
             tmp.replace(MAP_DIR / 'map.npz')
 
     def load(self):
@@ -547,6 +554,7 @@ class FleetMap:
             self.grid.free = data['free'].astype(np.float32) if 'free' in data else np.zeros_like(self.grid.hits)
             self.grid.seen = data['seen'].astype(bool) if 'seen' in data else np.zeros(self.grid.hits.shape, bool)
             self.grid.scans = int(data['scans'])
+            self.frame_id = str(data['frame_id']) if 'frame_id' in data else uuid.uuid4().hex
             self.grid.refresh()
         return True
 
@@ -558,6 +566,7 @@ class FleetMap:
     def reset(self):
         with self.lock:
             self.grid = Grid()
+            self.frame_id=uuid.uuid4().hex
             self.track.clear()
             self.last_key.clear()
             self.subs.clear()

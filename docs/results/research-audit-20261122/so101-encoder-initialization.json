@@ -1,0 +1,17 @@
+{
+  "source": {
+    "repo_id": "Piersondong/act_so101_wrist_v1",
+    "revision": "bcf73e8e84d63bb6bcfe6791d63222d9b0660fa9",
+    "sha256": "0ef9bd3e05ed7c3ec5d13b5177e48241b38415387fddbcfdedefbde0b16441f7",
+    "scope": "ACT ResNet18 backbone only",
+    "license": "Apache-2.0"
+  },
+  "seed": 1000,
+  "encoder_tensors": 100,
+  "bundle_sha256": "9c5da2a518fd88d66f4fee034d840e8d69d2922dddd2d9cf96693d7b26f82fd2",
+  "output_channels": 6,
+  "all_finite": true,
+  "optimizer_steps": 0,
+  "physical_trials": 0,
+  "verification": "Official LeRobot ACT with fresh motor layers and Explorer train-episode normalization. Inert synthetic input."
+}

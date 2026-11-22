@@ -14,6 +14,8 @@ from lerobot.policies.factory import get_policy_class,make_pre_post_processors
 def main(checkpoint,device):
     torch.set_num_threads(2)
     from explorer4.policy_runtime import PolicyCore
+    from explorer4.training_drafts import checkpoint_hash
+    bundle_sha256 = checkpoint_hash(checkpoint)
     core=PolicyCore(checkpoint,device)          # the same runtime as real trials and the swarm
     cfg,policy,pre,post=core.cfg,core.policy,core.pre,core.post
     import numpy as np
@@ -23,12 +25,15 @@ def main(checkpoint,device):
         return None if value is None else {'values':value.detach().cpu().tolist(),'dtype':str(value.dtype).split('.')[-1]}
     def restore_tensor(value):
         return None if value is None else torch.tensor(value['values'],dtype=getattr(torch,value['dtype']),device=device)
-    print('EXPLORER_JSON '+json.dumps({'ready':True,'policy_id':fingerprint,
+    print('EXPLORER_JSON '+json.dumps({'ready':True,'policy_id':fingerprint,'checkpoint_bundle_sha256':bundle_sha256,
         'policy_type':cfg.type,'features':f'ACT {cfg.vision_backbone} layer4 spatial mean, frozen' if cfg.type=='act' else None,
-        'chunk_size':getattr(cfg,'chunk_size',getattr(cfg,'horizon',None))}),flush=True)
+        'chunk_size':getattr(cfg,'chunk_size',getattr(cfg,'horizon',None)),
+        'n_action_steps':getattr(cfg,'n_action_steps',None)}),flush=True)
     for line in sys.stdin:
         req=json.loads(line)
         if req['command']=='reset':
+            if 'seed' in req:
+                torch.manual_seed(req['seed'])
             policy.reset();result={'reset':True}
         elif req['command']=='snapshot':
             ensemble=getattr(policy,'temporal_ensembler',None)
@@ -54,10 +59,10 @@ def main(checkpoint,device):
             if bgr is None:raise ValueError('Invalid camera')
             rgb=cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB)
             if req['command']=='action':
-                result={'action':core.act(req['state'],{req['camera_key']:rgb},req['task'])}
+                result={'action':core.act(req['state'],{req['camera_key']:rgb},req['task'],req.get('environment'))}
                 print('EXPLORER_JSON '+json.dumps(result),flush=True)
                 continue
-            batch=core.batch(req['state'],{req['camera_key']:rgb},req['task'])
+            batch=core.batch(req['state'],{req['camera_key']:rgb},req['task'],req.get('environment'))
             with torch.inference_mode():
                 prepared=pre(batch)
                 if req['command']=='embed':

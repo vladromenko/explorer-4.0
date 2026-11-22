@@ -1,0 +1,245 @@
+"""Counterbalanced physical pilot; independent endpoint measurements, existing leased Tank execution."""
+import concurrent.futures
+import hashlib
+import json
+import math
+import time
+import uuid
+
+import numpy as np
+
+from . import fleet_config
+from .paths import DATA,ROOT
+from . import peer_dock_real as field
+from .peer_dock_config import MAX_AGE_S
+from .navigation import RADIUS, guard, wrap
+
+SERIES = DATA/'peer-dock-field/series.json'
+CONFIG = ROOT/'configs/peer-dock-field.json'
+
+
+def prepare():
+    with fleet_config.locked():
+        if SERIES.exists():
+            return json.loads(SERIES.read_text())
+        spec=json.loads(CONFIG.read_text())
+        state={'protocol':spec,'protocol_sha256':hashlib.sha256(CONFIG.read_bytes()).hexdigest(),
+               'created':time.time(),'fixtures':{},'attempts':[]}
+        field.write_json(SERIES,state)
+        return state
+
+
+def state():
+    return json.loads(SERIES.read_text()) if SERIES.exists() else prepare()
+
+
+def next_slot(s):
+    rows=s['attempts']
+    if rows and 'endpoint' not in rows[-1]:
+        raise ValueError('Нужна остановка и независимый замер предыдущей попытки')
+    order=s['protocol']['order']
+    if len(rows)>=len(order):
+        raise ValueError('Все восемь попыток уже учтены')
+    return order[len(rows)]
+
+
+def calibration_entry(robot,frame):
+    entries=json.loads(field.CALIBRATION.read_text()) if field.CALIBRATION.exists() else {}
+    e=entries.get(robot,{})
+    if (e.get('robot')!=robot or not e.get('verified') or e.get('map_frame_id')!=frame or
+        time.time()>=e.get('valid_until',0)):
+        raise ValueError('Нужна действующая проверенная калибровка '+robot+' в общей карте')
+    return e
+
+
+def fixture_pose(fleet):
+    robots={}
+    for robot in field.ROBOTS:
+        pose,_,frame=fleet.pose_frame(robot,MAX_AGE_S)
+        if pose is None:
+            raise ValueError('Нет свежей позы '+robot+' на общей карте')
+        e=calibration_entry(robot,frame)
+        robots[robot]={'pose':list(map(float,pose)),'map_frame_id':frame,'calibration_run':e['validation_run'],
+                       'outward_deg':e['outward_deg']}
+    if robots['tank']['map_frame_id']!=robots['rosmaster']['map_frame_id']:
+        raise ValueError('Роботы находятся в разных картах')
+    if abs(wrap(math.radians(robots['tank']['outward_deg']-robots['rosmaster']['outward_deg'])))>.15:
+        raise ValueError('Калибровки описывают разные направления стены')
+    return robots
+
+
+def label_layout(layout,note,fleet,control):
+    if control.owner is not None or not control.stop_event.is_set():
+        raise ValueError('Сначала нажмите STOP')
+    if layout not in ('A','B') or not note.strip():
+        raise ValueError('Выберите A/B и опишите метки пола для этой расстановки')
+    poses=fixture_pose(fleet)
+    with fleet_config.locked():
+        s=json.loads(SERIES.read_text())
+        if layout in s['fixtures']:
+            raise ValueError('Эта расстановка уже зафиксирована')
+        s['fixtures'][layout]={'note':note.strip(),'robots':poses,'created':time.time()}
+        field.write_json(SERIES,s)
+
+
+def check_position(s,layout,fleet):
+    fixture=s['fixtures'].get(layout)
+    if not fixture:
+        raise ValueError('Зарегистрируйте маркированную исходную расстановку '+layout)
+    actual=fixture_pose(fleet)
+    spec=s['protocol']
+    for r,p in actual.items():
+        ref=fixture['robots'][r]
+        if (ref['map_frame_id']!=p['map_frame_id'] or ref['calibration_run']!=p['calibration_run'] or
+            math.dist(ref['pose'][:2],p['pose'][:2])>spec['start_position_tolerance_m'] or
+            abs(wrap(ref['pose'][2]-p['pose'][2]))>spec['start_yaw_tolerance_rad']):
+            raise ValueError('Восстановите исходную отметку, курс и калибровку '+r+' для '+layout)
+    return actual
+
+
+def terminal(run_id,evidence):
+    with fleet_config.locked():
+        s=json.loads(SERIES.read_text());row=s['attempts'][-1]
+        if row['id']!=run_id or 'runtime' in row:
+            return
+        row['runtime']=evidence
+        field.write_json(SERIES,s)
+
+
+def observe_one(robot,run_dir,iteration,fleet):
+    ident=f'{iteration:03d}-{robot}'
+    folder=run_dir/ident
+    folder.mkdir(parents=True)
+    obs=field.observe(robot,folder,fleet)
+    result={'id':run_dir.name+'/'+ident,'selected':robot,'observations':{robot:obs}}
+    field.write_json(folder/'observation.json',result)
+    if not obs['board_valid']:
+        return None,{'capture':ident,'reason':obs['reason']}
+    goal=field.measured_goal(result,fleet)
+    return goal,{'capture':ident,'valid':True,'source_robot':robot}
+
+
+class PairedAttempt:
+    """Returns bounded command requests only to TankSource.sample; the browser lease owns all actuation."""
+    prompt='paired_dock'
+
+    def __init__(self,run_id,condition,spec,fixture,fleet):
+        self.id,self.condition,self.spec,self.fleet=run_id,condition,spec,fleet
+        self.start=time.monotonic()
+        self.run_dir=SERIES.parent/run_id
+        self.run_dir.mkdir()
+        self.pool=concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        self.future=None;self.initial=True;self.driver=None;self.attempts=0
+        self.done=False;self.active=True;self.events=[];self.samples=[]
+        self.heading=wrap(math.radians(fixture['tank']['outward_deg'])+math.pi)
+        self.frame_id=fixture['tank']['map_frame_id']
+        self.submit('tank')
+
+    def submit(self,robot):
+        self.attempts+=1
+        self.future=self.pool.submit(observe_one,robot,self.run_dir,self.attempts,self.fleet)
+
+    def finish(self,reason):
+        if self.done:
+            return
+        self.done=True;self.active=False
+        self.pool.shutdown(wait=False,cancel_futures=True)
+        if self.driver and self.driver.active:
+            self.driver.cancel(reason)
+        terminal(self.id,{'reason':reason,'finished':time.time(),'seconds':time.monotonic()-self.start,
+                 'observations':self.events,'command_requests':self.samples,
+                 'scope':'Controller requests only. Physical endpoint requires an independent manual measurement.'})
+
+    def cancel(self,reason='operator_stop'):
+        self.finish(reason)
+
+    def status(self):
+        return {'active':self.active,'message':f'{self.condition}: '+('еду к измеренной цели' if self.driver else 'поиск'),
+                'state':'driving' if self.driver else 'sensing','prompt':self.prompt}
+
+    def command(self,rgb):
+        age=time.monotonic()-self.start
+        pose,_,frame=self.fleet.pose_frame('tank',MAX_AGE_S)
+        scan=self.fleet.scan('tank')
+        if self.done:
+            return [0.,0.]
+        if pose is None or frame!=self.frame_id or scan is None:
+            self.finish('localization_or_lidar_lost');return [0.,0.]
+        if age>=self.spec['total_budget_s']:
+            self.finish('total_deadline');return [0.,0.]
+        if self.driver is None:
+            if age>=self.spec['sensing_budget_s']:
+                self.finish('no_measurement_before_deadline');return [0.,0.]
+            if self.future.done():
+                try:
+                    goal,info=self.future.result()
+                except Exception as exc:
+                    goal,info=None,{'reason':str(exc)}
+                self.events.append({'at_s':age,**info})
+                self.initial=False
+                if goal:
+                    self.driver=field.operator_drive(goal,self.fleet)
+                else:
+                    self.submit('tank' if self.condition=='local_scan' else 'rosmaster')
+        if self.driver:
+            v,w=self.driver.command(rgb)
+            if not self.driver.active:
+                self.finish(self.driver.state)
+        elif self.initial or self.condition=='selective':
+            v,w=0.,0.
+        else:
+            # The local comparison can rotate only with a clear swept footprint. Translation stays zero.
+            if len(scan)==0 or np.linalg.norm(scan,axis=1).min()<RADIUS['tank']+self.spec['scan_clearance_m']:
+                self.finish('unsafe_local_turn_clearance');return [0.,0.]
+            limit=self.spec['scan_max_turn_rad_s']
+            turn=np.clip(2*wrap(self.heading-pose[2]),-limit,limit)
+            v,w,why=guard(scan,'tank',0.,float(turn))
+            if why and abs(turn)>.05 and w==0.:
+                self.finish('local_turn_blocked_by_lidar');return [0.,0.]
+        v=float(np.clip(v,-self.spec['max_drive_m_s'],self.spec['max_drive_m_s']))
+        w=float(np.clip(w,-self.spec['max_drive_turn_rad_s'],self.spec['max_drive_turn_rad_s']))
+        if self.active:
+            self.samples.append([round(age,3),v,w])
+        return [v,w]
+
+
+def start(control,session,owner,fleet):
+    epoch=field.operator_session(control,session,owner)
+    with fleet_config.locked(),control.lock:
+        s=json.loads(SERIES.read_text())
+        layout,condition=next_slot(s)
+        poses=check_position(s,layout,fleet)
+        if field.operator_session(control,session,owner)!=epoch:
+            raise PermissionError('Сессия изменилась')
+        if fleet.scan('tank') is None:
+            raise ValueError('Нет свежего лидара Tank')
+        ident=uuid.uuid4().hex
+        s['attempts'].append({'id':ident,'layout':layout,'condition':condition,'slot':len(s['attempts']),
+                              'start':time.time(),'start_poses':poses})
+        field.write_json(SERIES,s)
+        control.goal=PairedAttempt(ident,condition,s['protocol'],poses,fleet)
+        return ident
+
+
+def score(control,run_id,dx,dy,yaw_deg,stationary,intervention,note):
+    if control.owner is not None or not control.stop_event.is_set():
+        raise ValueError('Физический STOP обязателен до независимого замера')
+    if not note.strip() or any(v is None or not math.isfinite(v) for v in (dx,dy,yaw_deg)):
+        raise ValueError('Нужны независимые замеры и источник (линейка, угломер или видео)')
+    with fleet_config.locked():
+        s=json.loads(SERIES.read_text())
+        if not s['attempts'] or s['attempts'][-1]['id']!=run_id:
+            raise ValueError('Выберите текущую попытку')
+        row=s['attempts'][-1]
+        if 'endpoint' in row:
+            raise ValueError('Замер уже сохранён')
+        spec=s['protocol'];runtime=row.get('runtime',{})
+        # A controller arrival is insufficient. Intervention or an interrupted/lost run never
+        # earns a task success. A successful goal requires actual admitted perception evidence.
+        measured=math.hypot(dx,dy)<spec['terminal_position_tolerance_m'] and abs(wrap(math.radians(yaw_deg)))<spec['terminal_yaw_tolerance_rad']
+        valid=any(e.get('valid') for e in runtime.get('observations',[])) and runtime.get('reason') in ('arrived','total_deadline')
+        row['endpoint']={'x_error_m':dx,'y_error_m':dy,'heading_error_deg':yaw_deg,'stationary_half_second':stationary,
+                         'operator_intervention':intervention,'measurement_source':note.strip(),'at':time.time(),
+                         'valid_run':valid,'success':bool(valid and measured and stationary and not intervention)}
+        field.write_json(SERIES,s)
+        return row['endpoint']

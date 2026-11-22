@@ -66,13 +66,27 @@ def validate_budget(steps,batch,seed,device):
     if device not in {'cpu','cuda'}:raise ValueError('Выберите CPU или GPU')
 
 
-def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquisition_request=None):
+def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquisition_request=None,wrist_encoder=False,task_instruction=None,real_pilot=False):
     validate_budget(steps,batch,seed,device)
     domain=profile(name).get('domain','real')
     if domain not in ('real','sim'):raise ValueError('Unknown recording domain')
     validate_recipe(policy,name)
+    encoder = None
+    if wrist_encoder:
+        if source or policy != 'act' or name not in {'so101_pick_place','so101_pick_place_sim'}:
+            raise ValueError('Зрительный энкодер совместим с новой ACT для кистевой камеры SO-101')
+        from .wrist_pretraining import recipe
+        encoder = recipe()
+    options = {}
+    if task_instruction is not None:
+        options['task_instruction'] = task_instruction
+    if real_pilot:
+        if domain != 'real':
+            raise ValueError('Real pilot requires a physical recording profile')
+        options['min_real_episodes'] = 3
+        options['floor_cube_pilot'] = name == 'rosmaster_pick_place' and task_instruction == datasets.FLOOR_CUBE_TASK
     plan_id,plan=datasets.freeze(name,False,seed=seed,selected_ids=episode_ids,
-        min_sim_episodes=3 if domain=='sim' else None)
+        min_sim_episodes=3 if domain=='sim' else None, **options)
     # A draft is a new run; resume is a separate existing job action.
     initial=None;prior=None;source_plan_id=None;fingerprint=None
     if source:
@@ -103,6 +117,10 @@ def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquis
         'test_rule':'prior hold-outs retained; test not used for training or validation selection',
         'training_started':False,'preparation_only':True,
         'limitation':'Independent groups and the recording count are technical gates, not proof of sufficient data or learned skill'}
+    if task_instruction is not None:
+        draft.update(recorded_instruction=task_instruction, pilot=real_pilot)
+    if encoder:
+        draft.update(vision_initializer=encoder,mode='public_wrist_encoder_new_motor_policy')
     if acquisition_request:
         from .cognitive.broker import acquisition_training_lineage, record_acquisition_draft
         draft.update(acquisition_training_lineage(acquisition_request, plan))

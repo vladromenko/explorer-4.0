@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "study": "peer-dock-field-pilot-v1",
+  "scope": "Descriptive paired physical pilot; two marked layouts repeated twice.",
+  "order": [
+    ["A", "selective"], ["A", "local_scan"],
+    ["B", "local_scan"], ["B", "selective"],
+    ["A", "local_scan"], ["A", "selective"],
+    ["B", "selective"], ["B", "local_scan"]
+  ],
+  "sensing_budget_s": 3.0,
+  "total_budget_s": 20.0,
+  "scan_max_turn_rad_s": 0.5,
+  "scan_clearance_m": 0.10,
+  "max_drive_m_s": 0.10,
+  "max_drive_turn_rad_s": 0.60,
+  "start_position_tolerance_m": 0.035,
+  "start_yaw_tolerance_rad": 0.10,
+  "terminal_position_tolerance_m": 0.08,
+  "terminal_yaw_tolerance_rad": 0.15,
+  "independent_stationary_s": 0.50,
+  "search": "If Tank initially misses the board, selective stays still and reads ROSMASTER; local_scan turns Tank in place toward the surveyed wall and reads only Tank. Both stop sensing at the same deadline.",
+  "outcome": "After physical STOP, measure the Tank centre relative to the taped target cross and heading relative to its taped axis. A stationary in-tolerance endpoint, valid attempt and no intervention are required. Controller status alone never scores success.",
+  "physical_difference_from_simulation": "The donor arm remains parked at its independently validated camera pose. Real localization uses lidar and ROSMASTER encoders, with bounded local rotation and the existing DriveTo/STOP loop."
+}

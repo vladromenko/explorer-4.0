@@ -78,6 +78,17 @@ def run_job(path: Path):
     cfg = json.loads(path.read_text())
     work = DATA/'jobs'/path.stem
     work.mkdir(exist_ok=True)
+    if cfg.get('kind') == 'three_robot_docking':
+        public = DATA/'simlab/reports/three-robot-dock-v1/jobs'/work.name
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','scripts.three_robot_study',
+                        '--output',str(public),'--seed',str(int(cfg['seed'])),'--room',cfg['scene']],
+                       cwd=ROOT,env={**offline_environment(),'MUJOCO_GL':'egl'},check=True,timeout=300)
+        (work/'result.json').write_bytes((public/'result.json').read_bytes())
+        return
+    if cfg.get('kind') == 'workspace_study':
+        from .study_queue import execute
+        execute(cfg, work)
+        return
     if cfg.get('kind')=='noise_demonstrations':
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.noise_demonstrations',str(path),str(work)],
             cwd=ROOT,env={**offline_environment(),'MUJOCO_GL':'egl'},check=True,timeout=1200)
@@ -167,12 +178,25 @@ def run_job(path: Path):
         return
     if cfg.get('kind') == 'deploy_gate':
         from .deploy_gate import run
-        run(cfg['source_job'], work)
+        run(cfg['source_job'], work, development_plan_id=cfg.get('development_plan_id'))
         return
     if cfg.get('kind') == 'sim_evaluate':
+        if cfg.get('diagnostic') == 'floor_grasp_start_pose':
+            subprocess.run([str(ROOT/'.venv-sim/bin/python'), str(ROOT/'scripts/floor_grasp_probe.py'),
+                            '--job', str(path)], check=True, timeout=1800,
+                           env={**offline_environment(), 'MUJOCO_GL':'egl'})
+            return
+        seed_args = ['--seeds', *map(str, cfg['scene_seeds'])] if 'scene_seeds' in cfg else []
+        action_steps = ['--act-action-steps',str(cfg['act_action_steps'])] if 'act_action_steps' in cfg else []
+        improvement = cfg.get('diagnostic') == 'recorded_start_improvement_20261122'
+        record_floor = improvement or cfg.get('diagnostic') in {
+            'recorded_start_adaptation', 'recorded_start_control', 'recorded_start_transfer'}
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.sim.evaluate',cfg['checkpoint'],
-            str(work/'result.json'),'--profile',cfg['profile'],'--count',str(cfg['episodes'])]+
-            (['--expected-model-sha256',cfg['expected_model_hash']] if cfg.get('expected_model_hash') else []),
+            str(work/'result.json'),'--profile',cfg['profile'],'--count',str(cfg['episodes'])]+seed_args+
+            (['--expected-model-sha256',cfg['expected_model_hash']] if cfg.get('expected_model_hash') else [])+
+            (['--queue-config',str(path)] if cfg.get('protocol') else [])+
+            (['--record-floor'] if record_floor else [])+
+            action_steps+(['--seed-policy-per-scene'] if improvement else []),
             check=True,env={**offline_environment(),'MUJOCO_GL':'egl'})
         return
     if cfg.get('kind') == 'sim_ppo':
@@ -210,7 +234,7 @@ def run_job(path: Path):
     if cfg.get('draft_id'):
         from .training_drafts import load
         reviewed=load(cfg['draft_id'])
-        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256'):
+        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer'):
             if cfg.get(key)!=reviewed.get(key):raise ValueError('Job differs from the reviewed training draft: '+key)
     if cfg.get('plan_id'):
         plan = load_plan(cfg['plan_id'])
@@ -230,6 +254,12 @@ def run_job(path: Path):
     resume = cfg.get('resume_checkpoint')
     if resume and cfg.get('initial_checkpoint') and cfg.get('resume_of_existing_job')!=path.stem:
         raise ValueError('Fine-tuning and optimizer resume are different jobs')
+    initial = cfg.get('initial_checkpoint')
+    if cfg.get('vision_initializer') and not resume:
+        from .wrist_pretraining import initialize, recipe
+        if cfg['vision_initializer'] != recipe() or cfg['policy'] != 'act' or not cfg['profile'].startswith('so101_') or initial:
+            raise ValueError('Incompatible external initialization')
+        initial = initialize(work/'train',work/'wrist-encoder-initialization',cfg['seed'])
     if resume:
         saved = json.loads((Path(resume)/'train_config.json').read_text())
         batches = (saved['batch_size'],)
@@ -242,8 +272,15 @@ def run_job(path: Path):
             output = DATA/'checkpoints'/f'{path.stem}-b{batch}'
             command = ([sys.executable, '-m', 'lerobot.scripts.lerobot_train',
                         f'--config_path={resume}/train_config.json', '--resume=true'] if resume else
-                       train_command(work/'train', output, cfg['policy'], steps, batch, cfg['seed'],cfg.get('device','cuda'),cfg.get('initial_checkpoint')))
-            if profile(cfg['profile']).get('domain') == 'sim' and not resume:
+                       train_command(work/'train', output, cfg['policy'], steps, batch, cfg['seed'],cfg.get('device','cuda'),initial))
+            if not resume and cfg.get('diffusion_floor_recipe'):
+                if cfg['policy'] != 'diffusion' or cfg.get('initial_checkpoint'):
+                    raise ValueError('Floor cube diffusion recipe requires a new diffusion policy')
+                command.extend(['--policy.resize_shape=[240,320]', '--policy.crop_ratio=1.0',
+                                '--policy.noise_scheduler_type=DDIM', '--policy.num_inference_steps=16',
+                                '--policy.horizon=32', '--policy.n_action_steps=10',
+                                '--policy.drop_n_last_frames=21', '--policy.down_dims=[128,256,512]'])
+            if not resume and (profile(cfg['profile']).get('domain') == 'sim' or cfg.get('checkpoint_interval') is not None):
                 # Long runs need optimizer checkpoints before the final step. The
                 # checkpoint volume is external; raw recordings remain on DATA.
                 interval = int(cfg.get('checkpoint_interval', 1000))

@@ -150,7 +150,7 @@ class AssistanceCase(Contract):
 
 class ExperimentManifest(Contract):
     id:Identifier
-    comparison:Literal['M0','M1','M2','M3']
+    comparison:Literal['M0','M1','M2','M3','peer_learned']
     memory_sha256:Digest
     memory_ids:list[Identifier]
     skill_versions:dict[Identifier,Digest]

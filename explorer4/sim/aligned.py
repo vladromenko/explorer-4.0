@@ -282,6 +282,17 @@ class RosmasterFloorPick(RosmasterPickPlace):
         return self.observation(), reward + 10. * success, terminated, truncated, info
 
 
+class RecordedStartFloorPick(RosmasterFloorPick):
+    """Fixed cube task with an initial arm pose derived exclusively from physical training demos."""
+    profile = 'rosmaster_floor_pick_recorded_start_sim'
+
+    def __init__(self, **kwargs):
+        from explorer4.profiles import profile
+        super().__init__(**kwargs)
+        self.home_native = np.asarray(profile(self.profile)['start_center_deg'], dtype=float)
+        self.reset(seed=0)
+
+
 class ScriptedHandover:
     """Privileged geometric teacher for so101_handover_sim (not a learned policy, not a human)."""
     def __init__(self, env):

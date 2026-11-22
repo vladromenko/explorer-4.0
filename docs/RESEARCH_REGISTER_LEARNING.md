@@ -1,5 +1,7 @@
 # Learning from demonstrations and public model weights
 
+The conditioned grasp comparison has now completed. On the same 20 fresh scenes the ACT and diffusion variants held 15 and 18 cubes respectively. A thin-plate spline held all 20. Giving the same planners a constant target yielded two holds each. The selected checkpoint report identifies the separate visual and motor training data, the manual look posture and the limits of physical transfer. The SO-101 learning panel can initialize only an ACT vision encoder from the pinned public wrist weights and rebuild the motor heads and normalization from the target training split. [Per-scene results](results/conditioned_grasp_v1/trials.csv) · [External encoder](../explorer4/wrist_pretraining.py) · [Physical shadow](results/conditioned_grasp_v1/physical-shadow.json)
+
 [Research register](RESEARCH_REGISTER.md)
 
 | Upstream result or implementation | Explorer evidence and limitation | Proposed change and acceptance evidence |
