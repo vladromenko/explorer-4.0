@@ -57,7 +57,7 @@ The position audit compared 532 archived frame pairs and could assign zero episo
 
 ## Publication decision
 
-[Updated English draft on Homebrain (PDF)](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/peer-assisted-robots.pdf) · [Editable LaTeX, bibliography and figures](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/peer-assisted-robots-source.zip). The draft reports the completed paired camera intervention, active-search control, grasp ablation and screen-development evidence. It has not been submitted.
+[Updated English draft on Homebrain (PDF)](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/peer-assisted-robots.pdf) · [Editable LaTeX, bibliography and figures](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/peer-assisted-robots-source.zip). The working draft includes the 16 held-out camera scenes, the 96-room assistance study and the physical measurements still needed. The linked PDF and source archive are the 23 November revision.
 
 The earlier eight-page working manuscript, *What knowledge does a robot need to grasp an object?*, combines room simulations, simulated grasp comparisons and archived physical images. Its best supported result is the effect of target information on a grasp. It currently offers several diagnostics for a claim about selective peer assistance. Published physical systems already recruit peers or use a mobile camera to guide manipulation. A stronger contribution here is the measured value of asking at a particular time. [Physical viewpoint assistance](https://pmc.ncbi.nlm.nih.gov/articles/PMC12115303/) · [Proactive robot collaboration](https://doi.org/10.1038/s41467-026-72797-8)
 
