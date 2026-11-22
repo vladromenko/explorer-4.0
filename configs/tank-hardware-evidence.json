@@ -1,0 +1,131 @@
+{
+  "model": "Hiwonder MentorPi T1 Advanced",
+  "variant_id": 41789241655383,
+  "product_url": "https://www.hiwonder.com/products/mentorpi-t1?variant=41789241655383",
+  "user_confirmed": "2026-11-13",
+  "catalog_variant": "MentorPi T1 Advanced / Without Raspberry Pi 5",
+  "installed_computer": {
+    "model": "Raspberry Pi 5 Model B Rev 1.1",
+    "ram_class_gb": 8,
+    "reported_memory_kib": 8384512,
+    "cpu_count": 4,
+    "evidence": "validation/tank-incident/previous-kernel.jsonl",
+    "evidence_sha256": "cbe40d6b52a683ebc50356e9b4ce3728fb01cdbfa92e7b09c3c22f498b263682",
+    "kernel_messages": [
+      "Machine model: Raspberry Pi 5 Model B Rev 1.1",
+      "Memory: 7896288K/8384512K available (13376K kernel code, 2222K rwdata, 4288K rodata, 5056K init, 1213K bss, 160544K reserved, 327680K cma-reserved)",
+      "smp: Brought up 1 node, 4 CPUs"
+    ],
+    "live_rechecked": true,
+    "available_memory_now": null,
+    "thermal_headroom_now": null,
+    "live_rechecked_date": "2026-11-14",
+    "available_memory_at_probe_kib": 6503424,
+    "temperature_at_probe_c": 57.1,
+    "live_evidence": "docs/tank-stage-c-readonly.json"
+  },
+  "manufacturer_specs": {
+    "dimensions_m": [
+      0.278,
+      0.195,
+      0.182
+    ],
+    "mass_kg": 1.88,
+    "battery_nominal_v": 7.4,
+    "battery_capacity_mah": 2200,
+    "battery_discharge_c": 10,
+    "controller": "RRC Lite",
+    "camera": "Aurora930 Pro",
+    "lidar": "COIN-D6",
+    "source": "https://www.hiwonder.com/products/mentorpi-t1",
+    "scope": "Published depth-camera model; mass not a measurement of user-added Pi/accessories"
+  },
+  "installed_camera": {
+    "driver": "deptrum-ros-driver-aurora930",
+    "rgb_shape": [
+      400,
+      640,
+      3
+    ],
+    "evidence": "docs/TANK.md and validation/tank-handoff-before.json",
+    "intrinsics": {
+      "width": 640,
+      "height": 400,
+      "k": [
+        415.288330078125,
+        0.0,
+        318.0754089355469,
+        0.0,
+        416.09375,
+        188.47833251953125,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "p": [
+        415.288330078125,
+        0.0,
+        318.0754089355469,
+        0.0,
+        0.0,
+        416.09375,
+        188.47833251953125,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "d": [
+        0.011891799978911877,
+        -0.05691109970211983,
+        6.319559906842187e-05,
+        -0.000561447988729924,
+        0.03300280123949051
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "rgb_camera_link"
+    },
+    "live_evidence": "docs/tank-stage-c-readonly.json"
+  },
+  "unknown": [
+    "actual total mass with user accessories",
+    "track contact/slip coefficients",
+    "motor torque and inertia",
+    "optical camera extrinsics relative to CAD mount",
+    "installed lidar hardware revision",
+    "controller-side timeout under USB loss"
+  ],
+  "simulation_model_status": "All 10 cached CAD files match installed Tank package by SHA256; dynamics still uncalibrated",
+  "compute_placement": {
+    "Homebrain": [
+      "simulation",
+      "training",
+      "policy inference",
+      "research"
+    ],
+    "Tank": [
+      "camera/telemetry transport",
+      "native motor bridge",
+      "local command expiry"
+    ]
+  },
+  "sensor_runtime": {
+    "lidar_driver": "oradar_lidar/oradar_scan",
+    "lidar_device_model_parameter": "MS200",
+    "lidar_hardware_label": "not_physically_read",
+    "lidar_parameters_source": "installed peripherals/launch/include/ms200_scan.launch.py",
+    "depth_camera": "Aurora930 installed driver",
+    "depth_encoding": "mono16",
+    "depth_unit": "millimetres; manufacturer cloud conversion divides by 1000",
+    "sensor_observer_ports": [
+      8043,
+      8044
+    ],
+    "ros2": "Humble",
+    "rgb_transport": "JPEG quality 85",
+    "depth_ir_scan_imu_transport": "lossless NPZ",
+    "sensor_schema": "tank_environment_v1",
+    "environment_channels": 178
+  }
+}

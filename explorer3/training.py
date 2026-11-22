@@ -1,0 +1,279 @@
+"""Prepare grouped splits then invoke the pinned official trainer, never a replacement loop."""
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+from .paths import DATA,ROOT,offline_environment
+from .profiles import profile, TRAINING
+from .datasets import grouped_split, load_plan
+
+
+split_episodes = grouped_split
+
+def combine(episodes: list[dict], destination: Path, name: str):
+    from lerobot.datasets.lerobot_dataset import LeRobotDataset
+    from lerobot.datasets.dataset_tools import merge_datasets
+    sources=[LeRobotDataset('local/'+episode['id'],root=episode['dataset'],video_backend='pyav')
+             for episode in episodes]
+    # Upstream aggregation preserves the recorded MP4 files without a lossy re-encode.
+    # Only the selected training sources contribute to the merged normalization statistics.
+    return merge_datasets(sources,output_repo_id='local/'+name,output_dir=destination,
+                          concatenate_videos=False,concatenate_data=False)
+
+
+def loader_workers():
+    """Video-decoding DataLoader workers. 0 (the default) decodes in the trainer process and made a
+    16-sample ACT batch take ~1.5 s with an idle GPU; DATA/configs/training.json may raise it (max 6)."""
+    try:
+        from .paths import DATA
+        value=json.loads((DATA/'configs/training.json').read_text()).get('num_workers',0)
+    except (OSError,ValueError):
+        return 0
+    return value if type(value) is int and 0<=value<=6 else 0
+
+
+def train_command(dataset: Path, output: Path, policy='act',steps=50,batch=8,seed=1000,device='cuda',initial_checkpoint=None):
+    args=[sys.executable,'-m','lerobot.scripts.lerobot_train',f'--dataset.repo_id=local/{dataset.name}',
+          f'--dataset.root={dataset}','--dataset.video_backend=pyav','--dataset.use_imagenet_stats=false',
+          f'--policy.type={policy}',f'--policy.device={device}','--policy.push_to_hub=false',
+          '--wandb.enable=false',f'--output_dir={output}',f'--steps={steps}',f'--batch_size={batch}',
+          f'--num_workers={loader_workers()}','--persistent_workers=false',f'--seed={seed}','--env_eval_freq=0',
+          '--log_freq=10',f'--save_freq={min(steps,5000)}']
+    info_path=dataset/'meta/info.json'
+    if info_path.exists() and 'observation.environment_state' in json.loads(info_path.read_text())['features'] and not initial_checkpoint:
+        normalization='MIN_MAX' if policy=='diffusion' else 'MEAN_STD'
+        args.append('--policy.normalization_mapping='+json.dumps({
+            'VISUAL':'MEAN_STD','STATE':normalization,'ACTION':normalization,'ENV':normalization}))
+    if initial_checkpoint:
+        args.remove(f'--policy.type={policy}')
+        args.append(f'--policy.path={initial_checkpoint}')
+    if policy=='smolvla':
+        from .policy_catalog import smolvla_paths
+        base,vlm=smolvla_paths()
+        if not initial_checkpoint:args.remove('--policy.type=smolvla')
+        info=json.loads((dataset/'meta/info.json').read_text())
+        if 'observation.environment_state' in info['features']:
+            raise ValueError('SmolVLA recipe cannot silently discard depth/lidar environment_state')
+        features={}
+        for key,value in info['features'].items():
+            if key=='observation.state':
+                features[key]={'type':'STATE','shape':value['shape']}
+            elif key.startswith('observation.images.'):
+                shape=value['shape']
+                features[key]={'type':'VISUAL','shape':[shape[2],shape[0],shape[1]]}
+        if not initial_checkpoint:args.append(f'--policy.path={base}')
+        args.extend([f'--policy.vlm_model_name={vlm}',
+                     '--policy.input_features='+json.dumps(features),
+                     '--policy.output_features='+json.dumps({'action':{'type':'ACTION','shape':info['features']['action']['shape']}})])
+    return args
+
+
+def evaluation_command(checkpoint, roots, destination, role):
+    return [sys.executable, '-m', 'explorer3.evaluation', '--checkpoint', str(checkpoint),
+            '--output', str(destination), '--role', role] + [v for root in roots for v in ('--dataset', str(root))]
+
+
+def run_job(path: Path):
+    cfg = json.loads(path.read_text())
+    work = DATA/'jobs'/path.stem
+    work.mkdir(exist_ok=True)
+    if cfg.get('kind')=='noise_demonstrations':
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer3.noise_demonstrations',str(path),str(work)],
+            cwd=ROOT,env={**offline_environment(),'MUJOCO_GL':'egl'},check=True,timeout=1200)
+        return
+    if cfg.get('kind')=='cognitive_order':
+        from .cognitive.real_execution import propose_order
+        propose_order(cfg,work)
+        return
+    if cfg.get('kind')=='cognitive_tracking':
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer3.cognitive.tracking',str(path),str(work)],
+            cwd=ROOT,env={**offline_environment(),'YOLO_AUTOINSTALL':'false'},check=True,timeout=30)
+        return
+    if cfg.get('kind')=='cognitive_observation':
+        from .cognitive.observation_job import execute
+        execute(cfg,work)
+        return
+    if cfg.get('kind')=='cognitive_simulation':
+        from .cognitive.run import execute
+        execute(cfg,work)
+        return
+    if cfg.get('kind')=='rosmaster_identification':
+        from .rosmaster_preparation import load_identification
+        from .sim.rosmaster_sysid import identify,simulator_values
+        plan=load_identification(cfg['plan_id'])
+        result=identify(plan['entries'],plan['profile'],holdout_fraction=plan['holdout_fraction'])
+        result.update(plan_id=cfg['plan_id'],simulator_values=simulator_values(result),training_started=False,
+            physical_robot_access=False,applied_to_simulator=False)
+        (work/'result.json').write_text(json.dumps(result,indent=2))
+        return
+    if cfg.get('kind')=='branch_gain_train':
+        from .gain_model import fit_plan
+        fit_plan(cfg['plan_id'],work)
+        return
+    if cfg.get('kind')=='fleet_execution':
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer3.sim.fleet_run',str(path),str(work)],
+                       check=True,env={**offline_environment(),'MUJOCO_GL':'egl'})
+        return
+    if cfg.get('kind')=='sim_correction_import':
+        from .sim.import_episode import ingest
+        result=ingest(cfg['spool'],review=cfg['review'])
+        (work/'result.json').write_text(json.dumps({**result,'training_started':False,'review':cfg['review']},indent=2))
+        return
+    if cfg.get('kind')=='sim_branches':
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer3.sim.branching',str(path),str(work)],
+                       check=True,env={**offline_environment(),'MUJOCO_GL':'egl'})
+        return
+    if cfg.get('kind')=='vision':
+        interpreter=ROOT/('.venv-sim/bin/python' if cfg['method']=='yoloe' else '.venv/bin/python')
+        subprocess.run([str(interpreter),'-m','explorer3.perception',cfg['image'],str(work),
+            '--method',cfg['method'],'--prompt',cfg['prompt'],'--device',cfg['device']],
+            check=True,env={**offline_environment(),'YOLO_AUTOINSTALL':'false'})
+        return
+    if cfg.get('kind')=='support_calibration':
+        from .act_support import prepare
+        prepare(cfg['source_job'],work)
+        return
+    if cfg.get('kind') == 'sim_align':
+        result = subprocess.run([str(ROOT/'.venv-sim/bin/python'), str(ROOT/'scripts/sim_align.py'), '--apply'],
+                                cwd=ROOT, env={**offline_environment(), 'MUJOCO_GL': 'egl'}, capture_output=True, text=True, timeout=600)
+        (work/'alignment.json').write_text(result.stdout or json.dumps({'error': result.stderr[-2000:]}))
+        if result.returncode:
+            raise RuntimeError('Подстройка сцены не выполнена: ' + result.stderr[-300:])
+        report = json.loads(result.stdout[result.stdout.index('{'):])
+        # demonstrations of the (re)aligned scenes for co-training; report what was really obtained
+        import random
+        from . import catalog as _catalog
+        def successes(name):
+            return sum(1 for e in _catalog.rows('episodes') if e['profile'] == name and e['outcome'] == 'success')
+        demos = {}
+        for name, block in (('so101_handover_sim', 'so101_handover'), ('rosmaster_floor_pick_sim', 'rosmaster_floor_pick')):
+            before = successes(name)
+            start = random.randint(20000, 900000)
+            proc = subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer3.sim.collect', '--start', str(start),
+                                   '--count', str(cfg.get('demos', 70)), '--profile', name], cwd=ROOT,
+                                  env={**offline_environment(), 'MUJOCO_GL': 'egl'}, capture_output=True, text=True, timeout=4 * 3600)
+            demos[name] = {'scene_from': 'measured' if 'measured' in report.get(block, {}) else 'instructions (not enough real demonstrations)',
+                           'kept': report.get(block, {}).get('kept'), 'seeds': [start, start + cfg.get('demos', 70)],
+                           'attempts': cfg.get('demos', 70), 'successful_demonstrations': successes(name) - before,
+                           'process_error': proc.stderr[-500:] if proc.returncode else None}
+        (work/'result.json').write_text(json.dumps({'alignment': report, 'demonstrations': demos}, ensure_ascii=False, indent=1))
+        return
+    if cfg.get('kind') == 'help_experiment':
+        subprocess.run([sys.executable, str(ROOT/'scripts/swarm_help_experiment.py'), '--rooms', str(cfg.get('rooms', 30)),
+                        '--out', str(work)], cwd=ROOT, env=offline_environment(), check=True, timeout=48 * 3600)
+        runs = sorted(p for p in work.iterdir() if p.is_dir())
+        (work/'result.json').write_text((runs[-1]/'summary.json').read_text() if runs else '{}')
+        return
+    if cfg.get('kind') == 'deploy_gate':
+        from .deploy_gate import run
+        run(cfg['source_job'], work)
+        return
+    if cfg.get('kind') == 'sim_evaluate':
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer3.sim.evaluate',cfg['checkpoint'],
+            str(work/'result.json'),'--profile',cfg['profile'],'--count',str(cfg['episodes'])]+
+            (['--expected-model-sha256',cfg['expected_model_hash']] if cfg.get('expected_model_hash') else []),
+            check=True,env={**offline_environment(),'MUJOCO_GL':'egl'})
+        return
+    if cfg.get('kind') == 'sim_ppo':
+        subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer3.sim.ppo','--job',str(path)],
+                       check=True,env=offline_environment())
+        return
+    if cfg.get('kind') == 'benchmark':
+        from .benchmark import run
+        run(cfg['source_job'],work/'result.json')
+        return
+    if cfg.get('kind') == 'research':
+        from .research import analyze
+        analyze(work)
+        return
+    if cfg.get('kind') == 'evaluate':
+        source = DATA/'jobs'/cfg['source_job']
+        split = json.loads((source/'split.json').read_text())
+        partition=cfg.get('partition','validation')
+        if partition=='test':
+            if not split['test']:raise ValueError('Smoke не содержит независимого test')
+            import hashlib
+            checksum=hashlib.sha256((Path(cfg['checkpoint'])/'model.safetensors').read_bytes()).hexdigest()
+            choice=source/'frozen-test-checkpoint.json'
+            if choice.exists() and json.loads(choice.read_text())['sha256']!=checksum:
+                raise ValueError('Test уже открыт для другого checkpoint; нельзя подбирать по test')
+            choice.write_text(json.dumps({'checkpoint':cfg['checkpoint'],'sha256':checksum}))
+        selected = split[partition] or split['train']
+        role = 'held_out_'+partition if split[partition] else 'training_data_diagnostic_not_generalization'
+        subprocess.run(evaluation_command(cfg['checkpoint'], [e['dataset'] for e in selected], work/'evaluation.json', role),
+                       env=offline_environment(), check=True)
+        (work/'result.json').write_text(json.dumps({'checkpoint': cfg['checkpoint'], 'evaluation': str(work/'evaluation.json'),
+                                                   'physical_skill_verified': False}))
+        return
+    profile(cfg['profile'])
+    if cfg.get('draft_id'):
+        from .training_drafts import load
+        reviewed=load(cfg['draft_id'])
+        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256'):
+            if cfg.get(key)!=reviewed.get(key):raise ValueError('Job differs from the reviewed training draft: '+key)
+    if cfg.get('plan_id'):
+        plan = load_plan(cfg['plan_id'])
+        splits = plan['splits']
+    else:
+        splits = json.loads((work/'split.json').read_text()) if (work/'split.json').exists() else (
+            {'train': cfg['episodes'], 'validation': [], 'test': []} if cfg['smoke'] else split_episodes(cfg['episodes'], cfg['seed']))
+    split_path = work/'split.json'
+    if split_path.exists() and json.loads(split_path.read_text()) != splits:
+        raise ValueError('Frozen split differs from previous run')
+    split_path.write_text(json.dumps(splits, indent=2))
+    if not (work/'train').exists():
+        combine(splits['train'], work/'train', cfg['profile'])
+    steps = TRAINING[cfg['policy']].get('smoke_steps', 50) if cfg['smoke'] else TRAINING[cfg['policy']].get('steps', 100000)
+    if cfg.get('steps') is not None:
+        steps=int(cfg['steps'])
+    resume = cfg.get('resume_checkpoint')
+    if resume and cfg.get('initial_checkpoint') and cfg.get('resume_of_existing_job')!=path.stem:
+        raise ValueError('Fine-tuning and optimizer resume are different jobs')
+    if resume:
+        saved = json.loads((Path(resume)/'train_config.json').read_text())
+        batches = (saved['batch_size'],)
+    else:
+        recipe=TRAINING[cfg['policy']]
+        batches = (int(cfg['batch_size']),) if cfg.get('batch_size') else tuple([int(recipe.get('batch_size',8))]+[int(b) for b in recipe.get('oom_batch_fallback',(4,2,1))])
+    done = False
+    for batch in batches:
+        if not done:
+            output = DATA/'checkpoints'/f'{path.stem}-b{batch}'
+            command = ([sys.executable, '-m', 'lerobot.scripts.lerobot_train',
+                        f'--config_path={resume}/train_config.json', '--resume=true'] if resume else
+                       train_command(work/'train', output, cfg['policy'], steps, batch, cfg['seed'],cfg.get('device','cuda'),cfg.get('initial_checkpoint')))
+            if profile(cfg['profile']).get('domain') == 'sim' and not resume:
+                # Long runs need optimizer checkpoints before the final step. The
+                # checkpoint volume is external; raw recordings remain on DATA.
+                interval = int(cfg.get('checkpoint_interval', 1000))
+                if interval < 1:
+                    raise ValueError('Checkpoint interval must be positive')
+                command = [a if not a.startswith('--save_freq=') else f'--save_freq={min(steps, interval)}' for a in command]
+            (work/f'command-b{batch}.json').write_text(json.dumps(command, indent=2))
+            log_path = work/f'trainer-b{batch}.log'
+            with log_path.open('a') as log:
+                result = subprocess.run(command, env=offline_environment(), stdout=log, stderr=subprocess.STDOUT)
+            if result.returncode == 0:
+                done = True
+                checkpoint = output/'checkpoints/last/pretrained_model'
+                subprocess.run([sys.executable, '-m', 'explorer3.reload_check', str(checkpoint), str(work/'train'),cfg.get('device','cuda')],
+                               env=offline_environment(), check=True)
+                if splits['validation']:
+                    subprocess.run(evaluation_command(checkpoint, [e['dataset'] for e in splits['validation']],
+                                   work/'evaluation.json', 'held_out_validation'), env=offline_environment(), check=True)
+                (work/'result.json').write_text(json.dumps({'checkpoint': str(checkpoint), 'effective_batch': batch,
+                    'seed': cfg['seed'], 'smoke': cfg['smoke'], 'steps': steps, 'plan_id': cfg.get('plan_id'),
+                    'physical_skill_verified': False, 'test_used': False,'domain':profile(cfg['profile']).get('domain','real'),
+                    'initial_checkpoint':cfg.get('initial_checkpoint'),'resume_checkpoint':resume,
+                    'draft_id':cfg.get('draft_id'),'mixture':cfg.get('mixture'),
+                    'normalization':cfg.get('normalization','train_only'),'training_started':True}))
+            elif resume or 'out of memory' not in log_path.read_text().lower() or batch == 1:
+                raise RuntimeError(f'Trainer failed: {log_path}')
+    if not done:raise RuntimeError('Обучение не завершилось в разрешённом размере batch; см. журнал задания')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--job', type=Path, required=True)
+    run_job(parser.parse_args().job)
