@@ -177,7 +177,15 @@ def methods():
             if episodes:
                 held = sum(row["outcome"] == "success" for row in episodes)
                 ui.label(f"PPO обучалась управлять двумя командами шасси за награду. В архивной проверке — {held}/{len(episodes)} стыковок.")
-                ui.label("В той серии положение цели имитировал датчик с шумом. Проверка по настоящим изображениям симулятора учитывается отдельно.").classes("work-muted")
+                camera = read(MEDIA / (REPORT + "tank-ppo-camera-v1/result.json")).get("methods", {})
+                if camera:
+                    learned, offset = camera["rgb_ppo"], camera["offset_ppo"]
+                    ui.label(
+                        f"Камера MuJoCo и OpenCV · {learned['success']}/{learned['scenes']} стыковок, "
+                        f"столкновений {learned['collision']}. При ошибке направления на 30° — "
+                        f"{offset['success']}/{offset['scenes']}."
+                    )
+                ui.label("В архивной серии положение цели поступало от имитированного датчика с шумом.").classes("work-muted")
                 evidence_link("PPO · исходы и ошибки положения", archived_ppo)
                 evidence_link("PPO и геометрическое управление по одной камере", REPORT + "tank-ppo-camera-v1/result.json")
             ui.label("Управление по показам и обратной связи").classes("work-name")
@@ -186,7 +194,8 @@ def methods():
                 evidence_link("ACT и Diffusion · исходы", REPORT + "conditioned-grasp-v1/summary.json")
                 evidence_link("Внешняя ACT · воспроизведение", REPORT + "so101-external-shadow.json")
                 evidence_link("Коррекция по новому кадру · смещение кубика", REPORT + "grasp-look-refresh-development-v1-1/result.json")
-                evidence_link("DAgger · коррекция на состояниях ученика", REPORT + "grasp-dagger-v1/result.json")
+                evidence_link("Камера после начала движения · проверка DAgger и возврата в обзор", REPORT + "grasp-dagger-v1/result.json")
+                evidence_link("Выбор 32 показов по положению кубика", REPORT + "rosmaster-grasp-coverage-design-v1-1/result.json")
             ui.label("ROS 2 и Nav2 · в проверке Tank и ROSMASTER поступали лидары и одометрия. Для штатной навигации нужны привязка карты и доступный сервер NavigateToPose.")
             with ui.row().classes("work-links"):
                 evidence_link("Что ответило по ROS 2", register + "nav2-readiness.json")
@@ -229,6 +238,18 @@ def results():
                         ui.label(f"{name} · {count}/{total} при первом обучении, {repeated}/{total} при повторном")
                     else:
                         ui.label(f"{name} · {count}/{total}")
+            field_report = REPORT + "grasp-admission-native-v3/result.json"
+            field = read(MEDIA / field_report)
+            if field:
+                historic, selected = field["historical"], field["conditional"]
+                ui.label("Штатное управление ROSMASTER в симуляции").classes("work-muted")
+                ui.label(
+                    f"На исходных {historic['denominator']} сценах удержаний {historic['terminal_holds']}. "
+                    f"Для точек с видимым кубиком внутри области показов — "
+                    f"{selected['terminal_holds']}/{selected['n']}. "
+                    f"Критериям подходили {selected['eligible_candidates']} из {len(selected['source_bank'])} стартов."
+                )
+                evidence_link("Сцены, отказы и удержание в конце команды", field_report)
             refresh_path = REPORT + "grasp-look-refresh-development-v1-1/result.json"
             refresh = read(MEDIA / refresh_path).get("all_scenes", {}).get("shifted")
             if refresh:
