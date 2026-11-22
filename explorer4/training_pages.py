@@ -11,8 +11,8 @@ from .sim_pages import STYLE
 
 def install(css,jobs):
     @ui.page('/sim/training')
-    async def page(acquisition: str = ''):
-        await builder_page('sim', acquisition)
+    async def page(acquisition: str = '', profile: str = ''):
+        await builder_page('sim', acquisition, profile)
 
     @ui.page('/training/prepare')
     async def real_page():
@@ -34,7 +34,7 @@ def install(css,jobs):
         text=(ROOT/'docs'/filename).read_text().replace('(PHYSICAL_ACCEPTANCE.md)','(/datasets/acceptance)').replace('(DATASET_GUIDE.md)','(/datasets/guide)')
         ui.markdown(text).classes('w-full dataset-guide')
 
-    async def builder_page(domain, acquisition_id=None):
+    async def builder_page(domain, acquisition_id=None, preferred_profile=''):
         ui.add_css(css+STYLE);ui.dark_mode().enable();ui.colors(primary='#2b9c8f',secondary='#748aa4',negative='#d45050')
         draft_id=None;preparing=False;loading=False;starting=False;selection_generation=0
         def refresh():
@@ -55,25 +55,26 @@ def install(css,jobs):
         async def prepare():
             nonlocal draft_id,preparing
             if preparing or loading or starting:return
-            draft_id=None;confirmed.value=False;start_button.disable()
+            draft_id=None;start_button.disable()
             preparing=True;prepare_button.disable();status.set_text('Проверка данных и сохранение плана · обучение не запущено')
             try:
                 parent=None if source.value=='new' else jobs.get(source.value)
                 draft_id,draft=await asyncio.to_thread(training_drafts.prepare,profile.value,policy.value,episodes.value,
-                    steps=int(steps.value),batch=int(batch.value),seed=int(seed.value),device=device.value,source=parent,acquisition_request=acquisition_id)
+                    steps=int(steps.value),batch=int(batch.value),seed=int(seed.value),device=device.value,source=parent,acquisition_request=acquisition_id,
+                    floor_development=(profile.value=='rosmaster_floor_pick_recorded_start_sim' and parent is None
+                        and policy.value in ('act','diffusion') and int(steps.value)>3000 and not acquisition_id))
                 show(draft);history.set_options(saved(),value=draft_id);status.set_text('План сохранён · обучение не запущено')
             except Exception as exc:
-                draft_id=None;confirmed.value=False;start_button.disable();status.set_text(str(exc))
+                draft_id=None;start_button.disable();status.set_text(str(exc))
             finally:preparing=False;prepare_button.enable()
         async def start():
             nonlocal starting
             if preparing or loading or starting:return
             try:
-                if not confirmed.value:raise ValueError('Сначала подтвердите запуск выбранного плана')
                 if draft_id is None:raise ValueError('Сначала подготовьте или откройте план')
-                selected_draft=draft_id;starting=True;start_button.disable();confirmed.value=False
+                selected_draft=draft_id;starting=True;start_button.disable()
                 ident=await asyncio.to_thread(jobs.start_prepared_training,selected_draft)
-                confirmed.value=False;status.set_text('Обучение поставлено в очередь · '+ident[:8])
+                status.set_text('Обучение поставлено в очередь · '+ident[:8])
                 with job_links:ui.link('Открыть задание · ход работы, отмена и продолжение','/jobs/'+ident)
             except Exception as exc:status.set_text(str(exc))
             finally:
@@ -81,10 +82,10 @@ def install(css,jobs):
         with ui.element('div').classes('hero'):
             with ui.column():
                 ui.label('HOMEBRAIN / ПОДГОТОВКА ОБУЧЕНИЯ').classes('kicker');ui.html('<h1>Explorer 4.0</h1>')
-                ui.label('Сначала проверить план, затем запустить самостоятельно').classes('muted')
+                ui.label('Проверьте данные и бюджет перед постановкой в очередь').classes('muted')
             ui.label('Реальные записи' if domain=='real' else 'Симуляционные данные').classes('sim-badge')
         with ui.row():
-            ui.link('← Explorer','/');ui.link('Как собрать датасет','/datasets/guide')
+            ui.link('← Explorer','/');ui.link('Очередь и время старта','/workspace#training-queue');ui.link('Как собрать датасет','/datasets/guide')
         if acquisition_id:
             from .cognitive.broker import acquisition
             request = acquisition(acquisition_id)
@@ -93,18 +94,21 @@ def install(css,jobs):
         names=({key:value.get('label',key) for key,value in PROFILES.items()} if domain=='real' else
             {'so101_pick_place_sim':'SO-101 · кубик в коробку','tank_dock_sim':'Tank · подъезд к цели',
              'rosmaster_pick_place_sim':'ROSMASTER · кубик в коробку','rosmaster_dock_sim':'ROSMASTER · подъезд к цели',
-             'so101_handover_sim':'SO-101 · передача человеку (как блок 4)','rosmaster_floor_pick_sim':'ROSMASTER · взять с пола (как блок 3)'})
+             'so101_handover_sim':'SO-101 · передача человеку (как блок 4)','rosmaster_floor_pick_sim':'ROSMASTER · взять с пола (как блок 3)',
+             'rosmaster_floor_pick_recorded_start_sim':'ROSMASTER · кубик с пола из записанной позы'})
         with ui.element('div').classes('sim-layout') as builder:
             with ui.column().classes('sim-panel'):
                 ui.label('Данные и исходная модель').classes('sim-title')
-                profile=ui.select(names,value='rosmaster_floor_pick_sim' if acquisition_id else next(iter(names)),label='Задача',on_change=lambda:refresh()).classes('w-full')
+                profile=ui.select(names,value='rosmaster_floor_pick_sim' if acquisition_id else (preferred_profile if preferred_profile in names else next(iter(names))),label='Задача',on_change=lambda:refresh()).classes('w-full')
                 policy=ui.select(POLICIES,value='act',label='Модель',on_change=lambda:refresh()).classes('w-full')
                 source=ui.select({},label='Начать заново или дообучить').classes('w-full')
                 episodes=ui.select({},multiple=True,label='Показы и исправления для нового плана').props('use-chips').classes('w-full')
                 ui.button('Обновить список данных',icon='refresh',on_click=refresh).props('outline')
-                ui.label(('Нужны минимум 50 успешных пригодных показов одного профиля и минимум три независимые группы.' if domain=='real' else
+                ui.label(('Основной рецепт принимает от 50 успешных показов одного профиля и трёх независимых групп.' if domain=='real' else
                     'Выберите успешные записи одной версии физики, минимум три независимые группы.')+
                     ' Общие сессии ИЛИ расстановки не разделяются между обучением и проверкой. Количество не гарантирует навык.').classes('muted')
+                if domain == 'real':
+                    ui.link('Пилот на существующих показах с отдельной проверочной серией', '/learn?tab=real&profile=rosmaster_pick_place')
                 ui.label('При дообучении прежние данные сохраняются. Сцены исходного обучения не попадут в проверку; прежние контрольные группы останутся контрольными.').classes('muted')
                 refresh()
             with ui.column().classes('sim-panel'):
@@ -113,6 +117,7 @@ def install(css,jobs):
                 batch=ui.number('Примеров за одно обновление',value=1,min=1,max=32,precision=0).classes('w-full')
                 seed=ui.number('Seed запуска',value=1000,min=0,precision=0).classes('w-full')
                 device=ui.select({'cuda':'GPU Homebrain','cpu':'CPU Homebrain'},value='cuda',label='Вычисления').classes('w-full')
+                ui.label('Для нового ACT или Diffusion по кубику из записанной позы при бюджете свыше 3 000 обновлений симулятор проверяет захват после 1 000 и 3 000. Если в обеих сериях нет ни удержаний, ни подъёма хотя бы на 1 см, обучение остановится с сохранением весов.').bind_visibility_from(profile,'value',backward=lambda v:v=='rosmaster_floor_pick_recorded_start_sim').classes('muted')
                 ui.label('Бюджет задаёте вы. Размер пакета не уменьшается незаметно при нехватке памяти. Длительность заранее не обещается: она зависит от модели и данных.').classes('muted')
                 prepare_button=ui.button('Подготовить план · не запускать',icon='description',on_click=prepare)
         def saved():
@@ -126,7 +131,7 @@ def install(css,jobs):
             selected_draft=history.value
             if selected_draft is not None and selected_draft==draft_id:return
             selection_generation+=1;generation=selection_generation
-            draft_id=None;confirmed.value=False;start_button.disable()
+            draft_id=None;start_button.disable()
             summary.clear();summary.set_visibility(False);loading=bool(selected_draft)
             if selected_draft:
                 status.set_text('Проверка выбранного плана · запуск недоступен')
@@ -147,18 +152,17 @@ def install(css,jobs):
             selection_generation+=1;loading=False;start_button.disable()
             draft_id=None;summary.clear();summary.set_visibility(False);builder.set_visibility(True)
             history.value=None
-            confirmed.value=False;status.set_text('Выберите параметры нового плана · обучение не запущено')
+            status.set_text('Выберите параметры нового плана · обучение не запущено')
         ui.button('Подготовить другой план',icon='edit',on_click=another).props('outline')
         summary=ui.column().classes('sim-panel');summary.set_visibility(False)
         with ui.column().classes('sim-panel'):
-            confirmed=ui.checkbox('Запустить обучение сейчас по показанному неизменяемому плану')
-            start_button=ui.button('Запустить подготовленное обучение',icon='play_arrow',on_click=start)
+            start_button=ui.button('Поставить подготовленное обучение в очередь',icon='playlist_add',on_click=start)
             start_button.disable()
             status=ui.label('Подготовка не запускает обучение.').classes('sim-status')
             job_links=ui.column().classes('w-full')
             ui.label('Продолжение прерванного задания выполняется отдельно через его карточку: оно сохраняет optimizer и прежний план. Дообучение здесь создаёт новое задание из выбранных весов.').classes('muted')
         def show(draft):
-            summary.clear();summary.set_visibility(True);builder.set_visibility(False);confirmed.value=False
+            summary.clear();summary.set_visibility(True);builder.set_visibility(False)
             job_links.clear()
             with job_links:
                 for task in catalog.rows('jobs'):

@@ -11,7 +11,7 @@ from nicegui import app
 from .rosmaster_control import operator, request, connection, ensure_agent
 from .rosmaster_session import RosmasterSession, PROFILES,control_profile
 from .paths import DATA
-from . import local_work
+from . import grasp_trial, local_work
 
 # Actions that open the robot (serial/camera/motors). STOP and status reads are never gated.
 HARDWARE_ACTIONS={'acquire','enable','prepare','mirror_on','mirror_toggle','leader','record_start','trial_start','preset','pair_capture','rgb'}
@@ -27,7 +27,12 @@ def plans():
         for path in sorted((DATA/'trials').glob('*.json')):
             plan=json.loads(path.read_text())
             if plan.get('profile') in PROFILES:
-                items.append({'id':plan['id'],'label':plan['profile']+' · '+plan['kind']+' · '+plan['id'][:8]})
+                item={'id':plan['id'],'kind':plan['kind'],'label':plan['profile']+' · '+plan['kind']+' · '+plan['id'][:8]}
+                if plan['kind']=='conditioned_grasp':
+                    audit=grasp_trial.result(plan['id'])
+                    item.update(claimed=bool(audit),can_score=bool(audit.get('finished_at') and not audit.get('endpoint')),
+                                measured=audit.get('success') if audit.get('endpoint') else None)
+                items.append(item)
         from . import research
         research.initialize()
         studies=[{'id':st['id'],'label':st['profile']+' · пилот '+st['id'][:8]+(' · точка '+str(st.get('decision_after_s'))+' с' if st.get('timing_accepted') else ' · время не подтверждено')}
@@ -39,6 +44,29 @@ def plans():
 @app.get('/rosmaster/control',response_class=HTMLResponse)
 def console():
     return (Path(__file__).parent/'static/rosmaster-console.html').read_text()
+
+
+@app.get('/api/rosmaster/grasp-trial/{ident}')
+def grasp_trial_result(ident:str):
+    from fastapi import HTTPException
+    try:
+        record=grasp_trial.result(ident)
+    except ValueError as exc:
+        raise HTTPException(404) from exc
+    if not record:
+        from .trials import load
+        try:
+            plan=load(ident)
+        except (OSError,ValueError):
+            raise HTTPException(404)
+        if plan.get('kind')!='conditioned_grasp':
+            raise HTTPException(404)
+        from .grasp_calibration import open_session
+        claimed=(open_session(plan['session'])/'physical-trial-claimed.json').is_file()
+        return {'plan_id':ident,'phase':'claimed_without_record' if claimed else 'prepared','success':None,'episodes':[]}
+    if record.get('phase')=='recording' and not recorder.active():
+        return {**record,'phase':'interrupted_without_final_record','success':None}
+    return record
 
 
 @app.post('/api/rosmaster/stop')
@@ -137,6 +165,9 @@ async def websocket(socket:WebSocket):
     action_lock=asyncio.Lock();pending=[]
     async def act(action,value):
         try:
+            if (recorder.active() and (recorder.plan or {}).get('kind')=='conditioned_grasp' and
+                action not in {'stop','emergency','record_finish','grasp_outcome'}):
+                raise PermissionError('Идёт одиночная проба. Сначала нажмите STOP')
             if action in HARDWARE_ACTIONS and not local_work.hardware_allowed('rosmaster'):
                 local_work.require_hardware_mode('rosmaster')
             if action=='stop':
@@ -172,9 +203,18 @@ async def websocket(socket:WebSocket):
                 require_space()
                 if recorder.active():raise RuntimeError('Сначала закончите текущую запись')
                 plan=None
+                generation=operator.generation
                 if action=='trial_start':
                     from . import trials
                     plan=trials.load(str(value.get('plan','')))
+                    if plan.get('kind')=='conditioned_grasp':
+                        if value.get('study') or value.get('collection'):
+                            raise ValueError('Одна автономная проба выполняется отдельно от сборов показов и исследований коррекции')
+                        await asyncio.to_thread(grasp_trial.start,plan,owner,generation,recorder,operator,
+                                                str(value.get('scene',''))[:60],value.get('confirmed') is True and value.get('observing') is True)
+                        state['notice']='Одиночная проба запущена. Стойте у STOP, наблюдайте высоту и время удержания.'
+                        log_action(owner,action,value,None)
+                        return
                     trials.require_physical(plan)
                     name=plan['profile']
                     study=None
@@ -198,6 +238,10 @@ async def websocket(socket:WebSocket):
                                'correction' if value.get('category')=='correction' else 'demonstration',
                                str(value.get('collection') or time.strftime('%Y-%m-%d')+'-'+name)[:80],plan=plan,study=study)
                 state['notice']=('Испытание' if plan else 'Запись')+' идёт: '+name+'. Затем «Успех», «Неуспех» или «Прервать»'
+            elif action=='grasp_outcome':
+                record=await asyncio.to_thread(grasp_trial.observe_outcome,str(value.get('plan','')),operator,
+                                               value.get('visibility'),value.get('lift_mm'),value.get('hold_s'),value.get('evidence'))
+                state['notice']='Исход сохранён: '+('куб удержан' if record['success'] else 'критерий не выполнен')
             elif action=='record_finish':
                 recorder.finish(value.get('outcome'));state['notice']='Сохранение эпизода: '+str(value.get('outcome'))
             elif action in ('mirror_flip','grip_capture','grip_save','grip_reset','pair_capture','pair_reset'):

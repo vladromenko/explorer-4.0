@@ -6,7 +6,8 @@ import time
 from pathlib import Path
 
 from nicegui import app, ui
-from . import study_queue
+from . import study_queue, training_schedule
+from .training_schedule_page import timing_controls
 from .paths import DATA
 
 MEDIA = DATA / "simlab"
@@ -146,6 +147,25 @@ def results():
                 "Разброс начальной позиции кубика ±2 см. Контроллеру доступна позиция объекта из симулятора.",
                 "policies/so101_bc_v1/videos/seed200500.mp4",
             )
+            so = REPORT + "so101-overhead-rgb-v1/"
+            score = read(MEDIA / (so + "result.json"))
+            if score:
+                for method, title in (
+                    ("rgb_pick_belief", "Замер по камере и энкодеры"),
+                    ("constant_pick_belief", "Постоянная цель и энкодеры"),
+                    ("overhead_rgb", "Последняя видимая позиция"),
+                ):
+                    row = score["summary"][method]
+                    ui.label(f"{title} · {row['success']}/{row['episodes']} укладок")
+                with ui.row().classes("work-links"):
+                    evidence_link("Все шесть условий", so + "result.json")
+                    evidence_link(
+                        "Видео укладки", so + "rgb_pick_belief-seed200000.mp4"
+                    )
+                    evidence_link(
+                        "Та же сцена с потерей видимости",
+                        so + "overhead_rgb-seed200000.mp4",
+                    )
         with ui.element("section").classes("work-box"):
             ui.label("Совместный подъезд · MuJoCo").classes("work-name")
             path = REPORT + "peer-observation-dock-v1/"
@@ -178,13 +198,16 @@ def results():
             ui.link("Общая сцена MuJoCo", "/sim/fleet")
             ui.link("Запуск агента помощи", "/team")
             ui.link("Заказ для трёх роботов", "/team/three")
-            ui.link("Доставка в 96 комнатах · журнал и парные исходы", "/simlab-media/reports/room-study-e1/index.html")
+            ui.link(
+                "Доставка в 96 комнатах · журнал и парные исходы",
+                "/simlab-media/reports/room-study-e1/index.html",
+            )
 
 
 def install(jobs, css):
     @app.get("/api/workspace/queue")
     def queue_info():
-        return study_queue.status()
+        return {**study_queue.status(), "training_jobs": training_schedule.queue()}
 
     @ui.page("/workspace")
     async def workspace():
@@ -194,6 +217,10 @@ def install(jobs, css):
         with ui.element("header").classes("work-head"):
             ui.label("Центр экспериментов").classes("work-title")
             with ui.row().classes("work-links"):
+                ui.link(
+                    "Исследования и изменения в коде",
+                    "/simlab-media/reports/research-register-20261122/lineage.html",
+                )
                 ui.link("Пульт", "/")
                 ui.link("Совместное управление", "/swarm")
                 ui.link("Все датчики", "/fleet/live")
@@ -265,7 +292,7 @@ def install(jobs, css):
             ui.label(
                 "Сортировка по нескольким коробкам и непрерывное сопровождение человека требуют самостоятельной проверки."
             ).classes("work-muted")
-        ui.label("Очередь обучения").classes("work-section")
+        ui.label("Очередь обучения").classes("work-section").props("id=training-queue")
         ui.label(
             "Два независимых эксперимента. Оба работают на Homebrain. Порядок задан заранее."
         ).classes("work-muted")
@@ -292,9 +319,9 @@ def install(jobs, css):
             except (ValueError, OSError) as exc:
                 message(exc)
 
-        async def launch(plan):
+        async def enqueue_plan(plan):
             try:
-                await asyncio.to_thread(study_queue.release, plan)
+                await asyncio.to_thread(study_queue.stage, plan)
                 queue_view.refresh()
             except (ValueError, OSError) as exc:
                 message(exc)
@@ -314,15 +341,14 @@ def install(jobs, css):
                 if not key:
                     ui.button("Подготовить очередь", on_click=update_plan)
                 elif not snapshot["tracks"]:
-                    ui.label("Подготовлена · ожидает команды").classes("work-name")
+                    ui.label("План двух экспериментов готов").classes("work-name")
                     ui.label("Версия " + key[:12]).classes("work-muted")
                     ui.button(
                         "Обновить подготовленный план", on_click=update_plan
                     ).props("flat")
                     ui.button(
-                        "Запустить обучение в симуляции",
-                        icon="play_arrow",
-                        on_click=lambda: launch(key),
+                        "Поставить в очередь",
+                        on_click=lambda: enqueue_plan(key),
                     )
                 else:
                     for job in snapshot["tracks"]:
@@ -344,13 +370,33 @@ def install(jobs, css):
                             if job["error"]:
                                 ui.label(job["error"])
                 ui.link("Все задания", "/learn?tab=jobs")
+            pending = training_schedule.queue()
+            for job in pending:
+                title = study_queue.LABELS.get(
+                    job["track"], job["profile"] + " · " + job["policy"].upper()
+                )
+                when = job["not_before"]
+                if when is None:
+                    detail = "ждёт команды"
+                elif when > time.time():
+                    detail = "старт " + training_schedule.local_label(when)
+                else:
+                    detail = "ожидает свободного исполнителя"
+                ui.label(title + " · " + detail).classes("work-muted")
 
         with queue_box:
             queue_view()
+            timing_controls(queue_view.refresh)
+            ui.label(
+                "Назначенное время указано по Москве. Если Homebrain выключен, очередь сможет стартовать при следующем включении. Новые задания ожидают отдельной команды."
+            ).classes("work-muted")
         ui.timer(15, queue_view.refresh)
         ui.label("Результаты в симуляции").classes("work-section")
         results()
-        ui.label("Проверка на реальных роботах").classes("work-section")
+        ui.label("Проверка на реальных роботах").classes("work-section").props(
+            "id=field-checks"
+        )
+        ui.link("Единый список подготовки и файлы печати", "/field-session")
         bridge = read(DATA / "ros2-hub/status.json")
         age = time.time() - bridge.get("updated_at", 0)
         if age < 10 and bridge.get("running"):

@@ -29,6 +29,11 @@ def initialize():
           id TEXT PRIMARY KEY, profile TEXT NOT NULL, policy TEXT NOT NULL,
           status TEXT NOT NULL, config TEXT NOT NULL, created REAL NOT NULL,
           error TEXT, checkpoint TEXT);
+        CREATE TABLE IF NOT EXISTS training_starts (
+          job_id TEXT PRIMARY KEY REFERENCES jobs(id), not_before REAL NOT NULL);
+        CREATE TRIGGER IF NOT EXISTS clear_training_start AFTER UPDATE OF status ON jobs
+          WHEN OLD.status != NEW.status
+          BEGIN DELETE FROM training_starts WHERE job_id=NEW.id; END;
         CREATE TABLE IF NOT EXISTS events (
           id INTEGER PRIMARY KEY, created REAL NOT NULL, level TEXT NOT NULL, message TEXT NOT NULL);
         ''')

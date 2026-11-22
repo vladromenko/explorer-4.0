@@ -66,11 +66,16 @@ def validate_budget(steps,batch,seed,device):
     if device not in {'cpu','cuda'}:raise ValueError('Выберите CPU или GPU')
 
 
-def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquisition_request=None,wrist_encoder=False,task_instruction=None,real_pilot=False):
+def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquisition_request=None,wrist_encoder=False,task_instruction=None,real_pilot=False,floor_development=False):
     validate_budget(steps,batch,seed,device)
     domain=profile(name).get('domain','real')
     if domain not in ('real','sim'):raise ValueError('Unknown recording domain')
     validate_recipe(policy,name)
+    if floor_development:
+        from .floor_development_gate import PROFILE, BOUNDARIES
+        if (name != PROFILE or domain != 'sim' or policy not in ('act','diffusion') or steps <= BOUNDARIES[-1]
+                or source or acquisition_request or wrist_encoder or real_pilot):
+            raise ValueError('Checkpoint gates require a fresh long recorded-start simulation ACT or Diffusion draft')
     encoder = None
     if wrist_encoder:
         if source or policy != 'act' or name not in {'so101_pick_place','so101_pick_place_sim'}:
@@ -119,6 +124,11 @@ def prepare(name,policy,episode_ids,*,steps,batch,seed,device,source=None,acquis
         'limitation':'Independent groups and the recording count are technical gates, not proof of sufficient data or learned skill'}
     if task_instruction is not None:
         draft.update(recorded_instruction=task_instruction, pilot=real_pilot)
+    if floor_development:
+        from .floor_development_gate import freeze_recipe, validate_split
+        validate_split(plan)
+        draft.update(floor_development_gate=freeze_recipe(name,policy,steps,plan['sim_model_hash']),
+                     checkpoint_interval=1000)
     if encoder:
         draft.update(vision_initializer=encoder,mode='public_wrist_encoder_new_motor_policy')
     if acquisition_request:

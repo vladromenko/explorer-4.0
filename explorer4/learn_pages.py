@@ -5,16 +5,14 @@ import asyncio
 import json
 import os
 import re
-import signal
-import subprocess
-import threading
 import time
 from pathlib import Path
 
 from nicegui import ui
+from scripts.simlab_pipeline import TITLES
 
 from . import catalog, datasets, training_drafts
-from .paths import DATA, ROOT
+from .paths import DATA
 from .policy_catalog import POLICIES, validate_recipe
 from .profiles import PROFILES
 
@@ -169,54 +167,12 @@ def disk_free_gb():
 
 
 # ---------------------------------------------------------------- simlab runner
-class SimRunner:
-    """Starts scripts/simlab_pipeline.py (train -> MuJoCo evaluation -> videos), one at a time,
-    holding the shared compute lease. Runs started elsewhere are seen through simlab/active.json."""
-
-    def __init__(self):
-        self.lock = threading.Lock()
-        self.process = None
-
-    def busy(self):
-        return active_run() is not None
-
-    def start(self, robot, kind, policy=None):
-        with self.lock:
-            if self.busy():
-                raise RuntimeError('Уже идёт: ' + active_run()['title'])
-            if any(j['status'] == 'running' for j in catalog.rows('jobs')):
-                raise RuntimeError('GPU занят обучением на реальных показах; дождитесь его окончания')
-            stamp = time.strftime('%m%d_%H%M%S')
-            log = DATA / 'simlab' / 'logs' / f'{robot}-{kind}-{stamp}.log'
-            log.parent.mkdir(parents=True, exist_ok=True)
-            env = {**os.environ, 'PYTHONPATH': str(ROOT), 'MUJOCO_GL': 'egl'}
-            args = ['scripts/simlab_pipeline.py', robot, kind, '--log', str(log)]
-            if policy:
-                args += ['--policy', policy]
-            handle = log.open('w')
-            self.process = subprocess.Popen([str(ROOT / '.venv-sim/bin/python'), '-u', *args], cwd=ROOT, env=env,
-                                            stdout=handle, stderr=subprocess.STDOUT, start_new_session=True)
-            process = self.process
-
-            def wait():
-                try:
-                    process.wait()
-                finally:
-                    handle.close()
-                    catalog.event('info', f'Simlab {robot} {kind}: завершено (код {process.returncode})')
-            threading.Thread(target=wait, daemon=True).start()
-            time.sleep(.5)
-
-    def stop(self):
-        run = active_run()
-        if run:
-            try:
-                os.killpg(os.getpgid(run['pid']), signal.SIGTERM)
-            except (ProcessLookupError, PermissionError):
-                pass
 
 
-TITLES = {'check': 'проверочный прогон', 'full': 'полное обучение', 'clone': 'клонирование учителя', 'eval': 'оценка и видео'}
+def simlab_jobs():
+    with catalog.connect() as db:
+        records=db.execute("SELECT id,status,created,config FROM jobs WHERE json_extract(config,'$.kind')='simlab_pipeline' ORDER BY created DESC")
+        return [{**dict(row), 'config':json.loads(row['config'])} for row in records]
 
 
 def active_run():
@@ -230,9 +186,12 @@ def active_run():
     return run
 
 
-def last_run(robot):
+def last_run(robot,managed=()):
     """Most recent pipeline log of this robot (running or finished)."""
     logs = sorted((DATA / 'simlab' / 'logs').glob(f'{robot}-*.log'), key=lambda p: p.stat().st_mtime) if (DATA / 'simlab' / 'logs').exists() else []
+    related=[j for j in managed if j['config']['robot']==robot]
+    managed_logs={DATA/'logs'/(j['id']+'.log'):j for j in related if (DATA/'logs'/(j['id']+'.log')).is_file()}
+    logs=sorted([*logs,*managed_logs],key=lambda p:p.stat().st_mtime)
     run = active_run()
     if run and run['robot'] == robot and run.get('log'):
         log = Path(run['log'])
@@ -258,13 +217,12 @@ def last_run(robot):
             except ValueError:
                 pass
     running = bool(run and run['robot'] == robot)
-    kind = log.name.split('-')[1] if '-' in log.name else ''
+    job=managed_logs.get(log)
+    kind=job['config']['simlab_action'] if job else (log.name.split('-')[1] if '-' in log.name else '')
     return {'rows': rows, 'stage': stage, 'running': running, 'done': done, 'kind': kind,
             'failed': not running and not done, 'started': run['started'] if running else log.stat().st_ctime,
             'tail': text[-1200:]}
 
-
-RUNNER = SimRunner()
 
 
 def sim_policies(robot):
@@ -503,7 +461,7 @@ def install(jobs):
                             tabs.set_value('jobs')
                         except Exception as exc:
                             ui.notify(str(exc), type='negative', multi_line=True)
-                    ui.button('Запустить', icon='play_arrow', on_click=launch).props('unelevated')
+                    ui.button('Поставить в очередь', icon='playlist_add', on_click=launch).props('unelevated')
             dlg.open()
 
         settings()
@@ -514,6 +472,7 @@ def install(jobs):
         if report.is_file():
             with ui.element('div').classes('card job').style('margin-bottom:14px'):
                 ui.html('<h3>ROSMASTER · поднять кубик с пола</h3>')
+                ui.link('План ACT или Diffusion с проверками захвата по ходу обучения', '/sim/training?profile=rosmaster_floor_pick_recorded_start_sim')
                 ui.label('В исходной серии ACT использовали 40 показов MuJoCo: 32 учебных, 4 для валидации, 4 отложенных. '
                          'До и после — те же 20 самостоятельных сцен.').classes('muted')
                 status=ui.label('').classes('chip info')
@@ -534,7 +493,7 @@ def install(jobs):
 
         @ui.refreshable
         def sim_cards():
-            busy = RUNNER.busy()
+            managed = simlab_jobs()
             with ui.column().classes('w-full').style('gap:16px'):
                 for robot, title, kind in SIM_TASKS:
                     pols = sim_policies(robot)
@@ -545,7 +504,9 @@ def install(jobs):
                             if best is None or key > best[2]:
                                 best = (p, ev, key)
                     show = best[0] if best else (pols[0] if pols else None)
-                    run = last_run(robot)
+                    run = last_run(robot,managed)
+                    queued=[j for j in managed if j['config']['robot']==robot and j['status'] in ('queued','running')]
+                    selected=next((j for j in queued if j['status']=='running'),queued[-1] if queued else None)
                     with ui.element('div').classes('card job'):
                         with ui.element('div').classes('spread'):
                             ui.html(f'<h3 style="font-size:19px">{title}</h3>')
@@ -559,6 +520,9 @@ def install(jobs):
                             ci = best[1].get('success_ci95')
                             ui.label(f"Лучшая политика {best[0]['name']} · проверка на {best[1].get('episodes')} новых стартах"
                                      + (f" · интервал {ci[0] * 100:.0f}–{ci[1] * 100:.0f} %" if ci else '')).classes('muted')
+                        for entry in reversed(queued):
+                            text='В очереди' if entry['status']=='queued' else 'Выполняется'
+                            ui.link(text+' · '+TITLES[entry['config']['simlab_action']]+' · '+entry['id'][:8],'/jobs/'+entry['id'])
                         if run and (run['running'] or run['rows']):
                             rows = run['rows']
                             if run['running']:
@@ -596,14 +560,15 @@ def install(jobs):
                                         ui.label(f"{label} · {v['seconds']} с").classes('chip ' + cls).style('align-self:flex-start')
                         with ui.row().classes('row'):
                             if kind == 'dock':
-                                ui.button('Проверочный прогон · 10 мин', icon='bolt', on_click=lambda r=robot: run_(r, 'check')).props('unelevated').set_enabled(not busy)
-                                ui.button('Полное обучение · ~4 ч', icon='rocket_launch', on_click=lambda r=robot: run_(r, 'full')).props('outline').set_enabled(not busy)
+                                ui.button('Проверочный прогон · 10 мин', icon='bolt', on_click=lambda r=robot: run_(r, 'check')).props('unelevated')
+                                ui.button('Полное обучение · ~4 ч', icon='rocket_launch', on_click=lambda r=robot: run_(r, 'full')).props('outline')
                             else:
-                                ui.button('Клонировать учителя · ~15 мин', icon='school', on_click=lambda r=robot: run_(r, 'clone')).props('unelevated').set_enabled(not busy)
+                                ui.button('Клонировать учителя · ~15 мин', icon='school', on_click=lambda r=robot: run_(r, 'clone')).props('unelevated')
                             if show:
-                                ui.button('Перепроверить и снять видео', icon='movie', on_click=lambda r=robot, p=show: run_(r, 'eval', p['path'])).props('flat').set_enabled(not busy)
-                            if run and run['running']:
-                                ui.button('Остановить', icon='stop', color='negative', on_click=lambda: (RUNNER.stop(), sim_cards.refresh())).props('flat')
+                                ui.button('Перепроверить и снять видео', icon='movie', on_click=lambda r=robot, p=show: run_(r, 'eval', p['path'])).props('flat')
+                            if selected:
+                                ui.button('Остановить' if selected['status']=='running' else 'Отменить в очереди', icon='stop', color='negative',
+                                          on_click=lambda _, ident=selected['id']: (jobs.cancel(ident), sim_cards.refresh())).props('flat')
                         if pols:
                             with ui.expansion(f'Все политики ({len(pols)})', icon='inventory_2').classes('w-full'):
                                 for p in pols[:10]:
@@ -612,8 +577,8 @@ def install(jobs):
 
         def run_(robot, kind, policy=None):
             try:
-                RUNNER.start(robot, kind, policy)
-                ui.notify('Запущено: ' + TITLES[kind], type='positive')
+                ident=jobs.enqueue_simlab_pipeline(robot,kind,policy)
+                ui.notify('В очереди · '+TITLES[kind]+' · '+ident[:8],type='positive')
             except Exception as exc:
                 ui.notify(str(exc), type='negative')
             sim_cards.refresh()
@@ -624,7 +589,8 @@ def install(jobs):
         def maybe_refresh():
             # Rebuild on changes; while a run is active only every 30 s so videos are not interrupted.
             run = active_run()
-            sig = (run and run['pid'], tuple(p['name'] + str(len(p['evals'])) for r, _, _ in SIM_TASKS for p in sim_policies(r)))
+            queue_state=tuple((j['id'],j['status']) for j in simlab_jobs())
+            sig = (run and run['pid'], queue_state, tuple(p['name'] + str(len(p['evals'])) for r, _, _ in SIM_TASKS for p in sim_policies(r)))
             if sig != state['sig'] or (run and time.time() - state['at'] > 30):
                 state['sig'] = sig
                 state['at'] = time.time()
@@ -634,6 +600,7 @@ def install(jobs):
     # ------------------------------------------------------------ jobs
     def jobs_tab(jobs, state, tabs):
         filt = {'value': 'train'}
+        ui.link('Очередь и время старта', '/workspace#training-queue')
 
         def show_log(ident):
             with ui.dialog() as dlg, ui.card().style('background:#0f141b;color:#e6edf3;width:min(1000px,94vw);max-width:94vw;border-radius:14px'):
@@ -670,7 +637,7 @@ def install(jobs):
         def job_list():
             rows = catalog.rows('jobs')
             if filt['value'] == 'train':
-                rows = [j for j in rows if json.loads(j['config']).get('kind', 'train') in ('train', 'evaluate')]
+                rows = [j for j in rows if json.loads(j['config']).get('kind', 'train') in ('train', 'evaluate', 'workspace_study', 'sim_ppo', 'simlab_pipeline', 'branch_gain_train')]
             if not rows:
                 ui.label('Заданий пока нет. Начните на вкладке «Реальные показы».').classes('muted')
                 return

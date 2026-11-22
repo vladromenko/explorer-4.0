@@ -200,3 +200,39 @@ def test_choose_leaves_peer_side_to_the_peer():
     # the peer stands right at the close frontier (clearly closer than me): leave it
     assert navigation.choose(fronts, [((1.1, 0.), None)])[:2] == (-2., 0.)
     assert navigation.choose([], []) is None
+
+
+def test_relocated_path_and_obstacle_cannot_expand_docking_tolerance(monkeypatch):
+    from types import SimpleNamespace
+    import time
+    from explorer4 import drive
+    pose = [[0., 0., 0.]]
+    monkeypatch.setattr(drive, 'pose_now', lambda *args: tuple(pose[0]))
+    monkeypatch.setattr(drive, 'FLEET', SimpleNamespace(grid=None, scan=lambda _: [], track={}))
+    monkeypatch.setattr(navigation, 'plan', lambda *args, **kw: [(.05,.05), (.35,.05)])
+    monkeypatch.setattr(navigation, 'guard', lambda *args: (0.,0.,'obstacle'))
+    task = drive.DriveTo('tank', (.50,0.,0.), tol=.06, heading_tol=.15)
+    task.command(None)
+    status = task.status()
+    assert status['planner_endpoint']['goal_cell_relocated']
+    assert status['planner_endpoint']['planned_xy_m']==(.35,.05)
+    assert status['planner_endpoint']['requested_xy_m']==(.5,0.)
+    # This is the cell reached in the archived-map replay, still 15.8 cm from the goal.
+    pose[0] = [.35,.05,0.]
+    task.blocked_since = time.monotonic()-4
+    assert task.command(None)==[0.,0.] and task.state=='blocked' and not task.active
+    assert task.tol==.06
+    assert '(0.50, 0.00)' in task.message and '(0.35, 0.05)' in task.message
+
+
+def test_final_docking_requires_observed_position_and_heading(monkeypatch):
+    from types import SimpleNamespace
+    from explorer4 import drive
+    observed = [(.87,0.,0.)]
+    monkeypatch.setattr(drive, 'FLEET', SimpleNamespace(grid=None, scan=lambda _: [], track={}))
+    monkeypatch.setattr(drive, 'pose_now', lambda _, command: (.99,0.,0.) if any(command) else observed[0])
+    task = drive.DriveTo('tank', (1.,0.,0.), tol=.06, heading_tol=.15)
+    task.last_cmd=(.15,0.)
+    assert task.command(None)==[0.,0.] and task.active and task.state=='localizing'
+    observed[0]=(.99,0.,0.)
+    assert task.command(None)==[0.,0.] and not task.active and task.state=='arrived'

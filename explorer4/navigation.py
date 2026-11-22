@@ -24,6 +24,18 @@ def _xy(c):
     return ((c[0] - SIZE // (2 * STEP) + .5) * PRES, (c[1] - SIZE // (2 * STEP) + .5) * PRES)
 
 
+def path_endpoint(requested_xy, path):
+    """Expose a relocated goal cell while preserving the list-of-waypoints planner interface."""
+    requested = tuple(map(float, requested_xy))
+    endpoint = tuple(map(float, path[-1])) if path else None
+    return {
+        "requested_xy_m": requested,
+        "planned_xy_m": endpoint,
+        "goal_cell_relocated": endpoint is not None and _cell(requested) != _cell(endpoint),
+        "endpoint_offset_m": math.dist(requested, endpoint) if endpoint is not None else None,
+    }
+
+
 def layers(grid, robot):
     """(blocked, free, unknown) boolean planning grids, indexed [y, x]."""
     n = SIZE // STEP

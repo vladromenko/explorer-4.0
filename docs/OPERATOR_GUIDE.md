@@ -52,6 +52,12 @@ For each task, the initial target is three usable demonstrations and a smoke tes
 
 Open Datasets to check the data and video or change exclusion status. In Training, select the task and choose the 50-step ACT smoke test or the main ACT recipe. A past Homebrain estimate for the main recipe was roughly 22 hours per task. The trainer runs offline and the robots can be switched off. Finish any recording session before launching training.
 
+### Queue timing and recovery
+
+Add ACT, Diffusion or PPO jobs from the usual training pages. In the MuJoCo tab of `/learn`, the short check, full dock training, SO-101 teacher cloning and saved-policy video evaluation all enter the same queue. Open `/workspace#training-queue` to release the jobs currently listed, save a Moscow start time or hold them. A later addition needs its own release. Homebrain stores the release in SQLite. If it was powered off at the chosen time, eligible jobs start when the interface service and its worker are running again and the resources are free. The job page retains the log. SimLab saves evaluations and videos with the selected policy.
+
+After a service restart, a job that was running is marked interrupted. Resume a LeRobot job from its saved optimizer state. A resumable SB3 PPO run requires its matching model and normalization checkpoint. Submit a fresh SimLab check, full run, clone or evaluation after interruption. The frozen article series supports `.venv/bin/python -m explorer4.study_queue stage` to queue its prepared tracks and `.venv/bin/python -m explorer4.study_queue start` to release just that series. Its ACT and Diffusion replications save progress every 1,000 updates. [Queue implementation](../explorer4/training_schedule.py) · [Frozen series](../explorer4/study_queue.py)
+
 ## Physical policy trials
 
 1. Select a completed training job and prepare a checkpoint trial from the Trials tab. For replay, select the saved recording and prepare its command sequence.

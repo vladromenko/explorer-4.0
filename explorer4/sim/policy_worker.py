@@ -32,9 +32,14 @@ def main(checkpoint,device):
     for line in sys.stdin:
         req=json.loads(line)
         if req['command']=='reset':
-            if 'seed' in req:
+            if req.get('confirm_seed'):
+                from lerobot.utils.random_utils import set_seed
+                set_seed(req['seed'])
+            elif 'seed' in req:
                 torch.manual_seed(req['seed'])
             policy.reset();result={'reset':True}
+            if req.get('confirm_seed'):
+                result['applied_seed']=torch.cuda.initial_seed() if device.startswith('cuda') else torch.initial_seed()
         elif req['command']=='snapshot':
             ensemble=getattr(policy,'temporal_ensembler',None)
             result={'policy_id':fingerprint,'queue':[tensor_state(x) for x in getattr(policy,'_action_queue',[])],

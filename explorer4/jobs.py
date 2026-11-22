@@ -9,7 +9,7 @@ import threading
 import time
 import uuid
 from pathlib import Path
-from . import catalog
+from . import catalog, training_schedule
 from .datasets import freeze
 from .paths import DATA, ROOT, offline_environment
 from .profiles import profile
@@ -70,6 +70,14 @@ class Jobs:
             cfg.update(initial_checkpoint=source['checkpoint'],initial_from_job=source['id'],
                        steps=int(TRAINING[policy].get('finetune_steps',TRAINING[policy].get('steps',20000)//2)))
         return self._insert(name,policy,cfg)
+
+    def enqueue_simlab_pipeline(self, robot, action, policy=None):
+        from scripts.simlab_pipeline import PROFILES, selection
+        chosen=selection(robot,action,policy)
+        config={'kind':'simlab_pipeline','robot':robot,'simlab_action':action,
+                'training_requested':action!='eval','real_authorized':False,
+                'device':'cpu' if action=='eval' else 'cuda',**chosen}
+        return self._insert(PROFILES[robot], 'simlab', config)
 
     def cognitive_simulation(self,comparison='M3',seed=17,scene='workshop',*,peer_model_sha=None):
         from .sim.room import PRESETS
@@ -402,7 +410,10 @@ class Jobs:
         with self.lock:
             if (self.thread and self.thread.is_alive()) or self.control.owner is not None or self.control.maintenance:
                 return
-            queued = [j for j in reversed(catalog.rows('jobs')) if j['status'] == 'queued']
+            with catalog.connect() as db:
+                starts = training_schedule.permits(db)
+                queued = [dict(row) for row in db.execute("SELECT * FROM jobs WHERE status='queued' ORDER BY created,id")
+                          if training_schedule.allowed(row, starts, time.time())]
             if queued:
                 self.cancel_requested.clear()
                 self.active_id = queued[0]['id']
@@ -413,7 +424,7 @@ class Jobs:
         ident = job['id']
         try:
             cfg=json.loads(job['config'])
-            gpu=cfg.get('kind','train') in {'workspace_study','train','evaluate','sim_evaluate','deploy_gate','benchmark','vision','cognitive_simulation','cognitive_observation','cognitive_order'} and cfg.get('device','cuda').startswith('cuda')
+            gpu=cfg.get('kind','train') in {'simlab_pipeline','workspace_study','train','evaluate','sim_evaluate','deploy_gate','benchmark','vision','cognitive_simulation','cognitive_observation','cognitive_order'} and cfg.get('device','cuda').startswith('cuda')
             with ResourceLease('physical-activity'), ResourceLease('compute'), (ExistingTrainingLease() if gpu else contextlib.nullcontext()):
                 path = DATA/'jobs'/f'{ident}.json'
                 path.write_text(job['config'])
@@ -425,6 +436,9 @@ class Jobs:
                         args, self.compute_unit = command(ident,
                             [sys.executable, '-m', 'explorer4.training', '--job', str(path)], cfg)
                         with catalog.connect() as db:
+                            db.execute('BEGIN IMMEDIATE')
+                            if not training_schedule.allowed(job, training_schedule.permits(db), time.time()):
+                                return
                             claimed = db.execute("UPDATE jobs SET status='running',error=NULL WHERE id=? AND status='queued'", (ident,))
                             if claimed.rowcount != 1:
                                 return  # another worker/cancellation changed this queued snapshot

@@ -113,7 +113,7 @@ class RosmasterSession:
     def active(self):
         return self.thread is not None and self.thread.is_alive()
 
-    def start(self, owner, name, scene, category='demonstration', collection=None, check=False, plan=None, study=None):
+    def start(self, owner, name, scene, category='demonstration', collection=None, check=False, plan=None, study=None, conditioned_lease=None):
         """check=True records without an armed control session (pipeline check, nothing is sent).
         plan: replay/policy trial; study: diagnostic pilot (one random correction assignment per trial)."""
         from .data_safety import require_space
@@ -136,6 +136,14 @@ class RosmasterSession:
                 raise ValueError('Пилот привязан к другой замороженной политике')
             if not study.get('timing_accepted'):
                 raise PermissionError('Сначала подтвердите безопасную точку решения и задержки (страница исследования)')
+        if plan and plan.get('kind')=='conditioned_grasp':
+            from . import grasp_trial
+            if (check or study or collection or category!='demonstration' or name!='rosmaster_pick_place' or
+                not conditioned_lease or not grasp_trial.same_lease(self.operator,owner,*conditioned_lease) or
+                grasp_trial.result(plan['id']).get('phase')!='claimed'):
+                raise PermissionError('Одиночная проба требует проверенного разового запуска в консоли')
+            grasp_trial.amend(plan['id'],phase='recording')
+        self.conditioned_lease=conditioned_lease
         if not check:
             if self.operator.owner != owner or not self.operator.lease:
                 raise PermissionError('Сначала «Включить управление» для этой задачи')
@@ -159,6 +167,8 @@ class RosmasterSession:
         if outcome not in {'success', 'failure', 'aborted'}:
             raise ValueError('Исход: success, failure или aborted')
         with self.lock:
+            if getattr(self,'conditioned_lease',None) and outcome!='aborted':
+                raise ValueError('Укажите независимые измерения подъёма и удержания после STOP')
             if not self.active() or self.stop_event.is_set():
                 return False
             if outcome != 'aborted' and (self.state['phase'] != 'recording' or self.state['frames'] < 1):
@@ -186,7 +196,7 @@ class RosmasterSession:
         cfg = profile(name)
         period = 1/cfg['fps']
         lease = ResourceLease('compute')
-        http = agent_client()
+        http = None
         provider = None
         pool = []
         segments = []           # one LeRobot episode per uninterrupted command source
@@ -197,9 +207,15 @@ class RosmasterSession:
         provenance = {}
         timing = {'sample_ms_max': 0., 'write_ms_max': 0., 'lag_ms_max': 0., 'late_steps': 0, 'gaps': []}
         sensors=None
+        conditioned=bool(self.plan and self.plan.get('kind')=='conditioned_grasp')
+        completed=False
+        acknowledged=False
+        if conditioned:
+            from . import grasp_trial
         base=control_profile(name)=='rosmaster_dock'
         try:
             lease.__enter__()
+            http = agent_client()
             clock = ClockMap(http)
             provenance = {'robot': 'rosmaster', 'profile_version': cfg['version'], 'clock_mapping': clock.probe(),
                           'agent': 'explorer4 native serial agent', 'pipeline_check': check,
@@ -217,9 +233,15 @@ class RosmasterSession:
                     raise RuntimeError('Не готовы глубина, оба лидара или IMU ROSMASTER')
                 provenance.update(environment_schema=cfg['sensor_schema'],
                     environment_alignment='latest packet received on Homebrain before the mapped agent observation; no future samples')
+            from .grasp_reference import prepare_recording, verify_start
+            grasp_binding = prepare_recording(collection) if not check and not self.plan and not base else None
             if self.plan:
                 from .trials import ReplayActions, PolicyActions
-                provider = (ReplayActions if self.plan['kind'] == 'replay' else PolicyActions)(self.plan)
+                if conditioned:
+                    from .grasp_admission import LiveGrasp
+                    provider=LiveGrasp(self.plan)
+                else:
+                    provider = (ReplayActions if self.plan['kind'] == 'replay' else PolicyActions)(self.plan)
                 provenance['trial_plan'] = self.plan
                 trial_id = __import__('uuid').uuid4().hex
                 provenance['trial_id'] = trial_id
@@ -237,6 +259,8 @@ class RosmasterSession:
             hold_until = human_until = None
             human_started = False
             while not self.stop_event.is_set():
+                if conditioned and not grasp_trial.same_lease(self.operator,owner,*self.conditioned_lease):
+                    raise InterruptedError(self.operator.error or 'STOP: сессия одиночной пробы завершена')
                 if not check and not self.operator.lease:
                     raise InterruptedError(self.operator.error or 'Управление остановлено')
                 now = time.monotonic()
@@ -246,6 +270,8 @@ class RosmasterSession:
                     break
                 sample_started = time.monotonic()
                 sample = self.sample(http, clock)
+                if grasp_binding is not None and 'rgb_camera_identity' not in provenance:
+                    provenance['rgb_camera_identity'] = verify_start(sample, grasp_binding)
                 if sensors:attach_environment(sample,sensors)
                 sample_ms = (time.monotonic()-sample_started)*1000
                 timing['sample_ms_max'] = max(timing['sample_ms_max'], sample_ms)
@@ -287,10 +313,33 @@ class RosmasterSession:
                                    'images': {cfg['camera']: {'image': sample['rgb']}},
                                    'observation_timestamp_ns': sample['observation_ns']}
                     if sensors:observation['observation.environment_state']=sample['observation.environment_state']
-                    action = provider.next(observation)
-                    self.operator.set_direct({'base': action} if base else {'arm': action})
-                    sample['requested_action'] = list(action)
-                    sample['decision'] = dict(getattr(provider, 'decision_info', {}))
+                    if conditioned:
+                        with self.operator.lock:
+                            grasp_trial.check_heartbeat(self.operator,owner)
+                        try:
+                            action=provider.next_sample(sample)
+                        except StopIteration:
+                            with self.operator.lock:
+                                if self.stop_event.is_set() or not grasp_trial.same_lease(self.operator,owner,*self.conditioned_lease):
+                                    raise InterruptedError('Оператор остановил одиночную пробу')
+                                grasp_trial.check_heartbeat(self.operator,owner)
+                                completed=True
+                                self.termination='sequence_completed'
+                                self.operator.set_direct(None)
+                                self.operator.stop('STOP: одиночная проба руки завершена')
+                                acknowledged=self.operator.error=='STOP: одиночная проба руки завершена'
+                        if not completed:
+                            with self.operator.lock:
+                                if not grasp_trial.same_lease(self.operator,owner,*self.conditioned_lease) or self.stop_event.is_set():
+                                    raise InterruptedError('STOP во время вычисления цели')
+                                grasp_trial.check_heartbeat(self.operator,owner)
+                                self.operator.set_direct({'arm':action})
+                    else:
+                        action = provider.next(observation)
+                        self.operator.set_direct({'base': action} if base else {'arm': action})
+                    if not completed:
+                        sample['requested_action'] = list(action)
+                        sample['decision'] = dict(getattr(provider, 'decision_info', {}))
                 if previous is not None:
                     frame = self.frame(name, cfg, previous, sample, 0)
                     source = frame['command_source']
@@ -323,6 +372,8 @@ class RosmasterSession:
                         elapsed = time.monotonic()-started
                         self.state['hz'] = round(self.state['frames']/elapsed, 1) if elapsed > 0 else None
                 previous = sample
+                if completed:
+                    break
                 deadline += period
                 lag = time.monotonic()-deadline
                 timing['lag_ms_max'] = max(timing['lag_ms_max'], lag*1000)
@@ -341,7 +392,8 @@ class RosmasterSession:
                 if lag > 0:
                     deadline = time.monotonic()
                 self.stop_event.wait(max(0., deadline-time.monotonic()))
-            provenance['clock_mapping_end'] = clock.probe(3)
+            if not conditioned:
+                provenance['clock_mapping_end'] = clock.probe(3)
         except InterruptedError as exc:
             self.outcome = 'aborted'
             # Separate a robot-side stop from an operator STOP / lost tab; both keep their text.
@@ -361,11 +413,38 @@ class RosmasterSession:
         finally:
             if sensors:sensors.close()
             provenance['recording_timing'] = timing
-            if provider is not None:
+            if conditioned:
+                with self.operator.lock:
+                    owned=grasp_trial.same_lease(self.operator,owner,*self.conditioned_lease)
+                    if owned:
+                        self.operator.set_direct(None)
+                        self.operator.stop('STOP: одиночная проба руки завершена')
+                        acknowledged=self.operator.error=='STOP: одиночная проба руки завершена'
+                reason=provenance.get('termination_reason') or self.termination
+                result=grasp_trial.amend(self.plan['id'],phase='awaiting_measurement',
+                    finished_at=time.time(),sequence_completed=completed,emergency=self.emergency,stop_acknowledged_by_agent=acknowledged,
+                    executor_reason=reason,stop_status=self.operator.error,
+                    episodes=[seg['writer'].id for seg in segments],
+                    frames=self.state['frames'],recording_error=self.state.get('error'))
+                provenance['conditioned_grasp_result']=f"/api/rosmaster/grasp-trial/{self.plan['id']}"
+                if completed and segments:
+                    with self.lock:
+                        self.state.update(phase='awaiting_grasp_verdict',grasp_plan=self.plan['id'])
+                    until=time.monotonic()+120
+                    while time.monotonic()<until and not self.stop_event.wait(.2):
+                        result=grasp_trial.result(self.plan['id'])
+                        if result.get('endpoint'):
+                            break
+                    # The endpoint remains available after closing or refreshing the console.
+                    self.outcome=('success' if result.get('success') else 'failure') if result.get('endpoint') else 'aborted'
+                    provenance['independent_endpoint']=result.get('endpoint')
+            elif provider is not None:
                 self.operator.set_direct(None)
                 self.operator.set_source(None)
+            if provider is not None:
                 provider.reset()
-            http.close()
+            if http is not None:
+                http.close()
             if decision is not None:
                 try:
                     research.record_event(trial_id, 'finish', time.monotonic_ns(), outcome=self.outcome,
@@ -396,6 +475,13 @@ class RosmasterSession:
                         self.state['error'] = f'Сохранение: {exc}'
                     catalog.event('error', 'ROSMASTER сохранение: '+str(exc))
             lease.__exit__(None, None, None)
+            if conditioned:
+                grasp_trial.amend(self.plan['id'],rollout_outcome_at_save=self.outcome,
+                                  recording_error=self.state.get('error'),recording_saved_at=time.time())
+            if not check and not self.plan and not base:
+                from .grasp_admission import schedule
+                try:schedule(collection)
+                except Exception as exc:catalog.event('error','Проверка диагностических показов: '+str(exc))
             with self.lock:
                 self.state['phase'] = 'idle'
                 self.state['outcome'] = self.outcome

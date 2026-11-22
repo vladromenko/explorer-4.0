@@ -15,8 +15,8 @@ from explorer4.conditioned_grasp import SLEW_DEGREES_PER_SECOND, file_hash
 from explorer4.grasp_shadow import close_to_look_state
 from explorer4.paths import DATA, ROOT
 from scripts.grasp_study.evaluate import (
-    GraspMetrics,
     OUTPUT,
+    GraspMetrics,
     environment,
     observe,
     save_json,
@@ -29,15 +29,9 @@ REFERENCE = DATA / "datasets/rosmaster_pick_place/d8187db7e725432596d90e9111ccb2
 
 
 def mock_executor(env, settings):
-    def reject_serial(*args, **kwargs):
-        raise AssertionError("No hardware transport exists in this experiment")
+    from cubebot.arm_model import ArmModel
+    from runtime import NativeIO, RelaxedArm, Runtime
 
-    with (
-        patch.dict(sys.modules, {"serial": types.SimpleNamespace(Serial=reject_serial)}),
-        patch.object(sys, "path", [str(ROOT / "agents/rosmaster"), str(NATIVE), *sys.path]),
-    ):
-        from runtime import NativeIO, RelaxedArm, Runtime
-        from cubebot.arm_model import ArmModel
     # Constructors acquire serial devices. Only the pure control methods are exercised.
     executor = object.__new__(Runtime)
     io = object.__new__(NativeIO)
@@ -103,6 +97,17 @@ def simulate(env, plan, height, settings):
 
 
 def worker(seeds):
+    def reject_serial(*args, **kwargs):
+        raise AssertionError("No hardware transport exists in this experiment")
+
+    with (
+        patch.dict(sys.modules, {"serial": types.SimpleNamespace(Serial=reject_serial)}),
+        patch.object(sys, "path", [str(ROOT / "agents/rosmaster"), str(NATIVE), *sys.path]),
+    ):
+        return simulate_seeds(seeds)
+
+
+def simulate_seeds(seeds):
     with REFERENCE.open() as f:
         limits = json.loads(next(f))["control_limits"]
     settings = limits["arm_settings"]

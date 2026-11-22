@@ -44,7 +44,7 @@ def test_new_points_cannot_hide_failed_localization(tmp_path):
             y,
             True,
             (10, 10, 20, 20),
-            score=lambda _: (predicted, hull),
+            score=lambda _, pred=predicted: (pred, hull),
         )
     result = summary(session)
     assert result["complete"] and result["status"] == "negative"

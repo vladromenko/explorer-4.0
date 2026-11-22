@@ -22,6 +22,8 @@ class DriveTo:
         self.path, self.planned_at = None, 0.
         self.last_cmd = (0., 0.)
         self.distance = None
+        self.endpoint = navigation.path_endpoint(self.goal[:2], None)
+        self.observed_pose = None
         self.blocked_since = None
         self.aligning = False            # inside the tolerance: turn to the heading (with hysteresis)
         self.episode = Episode(robot, 'drive', text) if record else None
@@ -44,6 +46,7 @@ class DriveTo:
             self.finish('timeout', f'Не доехал {self.text} за отведённое время')
             return [0., 0.]
         pose = pose_now(self.robot, self.last_cmd)
+        self.observed_pose = pose_now(self.robot, (0., 0.))
         if pose is None:
             self.state, self.message = 'localizing', 'Жду своё место на общей карте…'
             return [0., 0.]
@@ -54,11 +57,17 @@ class DriveTo:
             # really drifts away (2x tolerance), otherwise it alternates drive/turn forever
             self.aligning = True
             err = navigation.wrap(self.goal[2] - pose[2])
-            if abs(err) < self.heading_tol:
-                self.finish('arrived', f'На месте {self.text}')
+            if abs(err) >= self.heading_tol:
+                self.state, self.message = 'align', f'Разворачиваюсь {self.text}: {math.degrees(err):+.0f}°'
+                return [0., max(-.4, min(.4, 1.2 * err))]
+            if dist < self.tol:
+                observed = self.observed_pose
+                if (observed is not None and math.dist(observed[:2], self.goal[:2]) < self.tol and
+                    abs(navigation.wrap(self.goal[2] - observed[2])) < self.heading_tol):
+                    self.finish('arrived', f'На месте {self.text}')
+                else:
+                    self.state, self.message = 'localizing', 'Жду подтверждения исходной цели по локализации'
                 return [0., 0.]
-            self.state, self.message = 'align', f'Разворачиваюсь {self.text}: {math.degrees(err):+.0f}°'
-            return [0., max(-.4, min(.4, 1.2 * err))]
         self.aligning = False
         if dist < 3 * self.tol + .1:
             # last centimetres: straight at the point (the planned path may already be «finished»
@@ -72,16 +81,9 @@ class DriveTo:
             w = max(-.5, min(.5, 1.5 * b))
             v, w, why = navigation.guard(FLEET.scan(self.robot), self.robot, v, w)
             if why:
-                # Something (a wall, the furniture the object stands by) keeps the robot from the
-                # exact point. Close enough: align there; too far: give up now, not after minutes.
                 self.blocked_since = self.blocked_since or now
                 if now - self.blocked_since > 3:
-                    if dist < max(2 * self.tol, .25):
-                        self.aligning = True
-                        self.tol = dist + .02
-                        self.message = f'Ближе не подъехать ({dist * 100:.0f} см): разворачиваюсь'
-                        return [0., 0.]
-                    self.finish('blocked', f'Не подъехать {self.text}: {why}')
+                    self.finish('blocked', f'Цель {self.text} не достигнута: до неё {dist*100:.0f} см. {why}')
                     return [0., 0.]
             else:
                 self.blocked_since = None
@@ -91,6 +93,7 @@ class DriveTo:
         if self.path is None or now - self.planned_at > 2.:
             self.planned_at = now
             path = navigation.plan(FLEET.grid, self.robot, pose[:2], self.goal[:2], allow_unknown=True)
+            self.endpoint = navigation.path_endpoint(self.goal[:2], path)
             if path is None:
                 self.finish('no_path', f'Нет пути {self.text} по карте')
                 return [0., 0.]
@@ -98,6 +101,9 @@ class DriveTo:
             FLEET.track.setdefault(self.robot, {})['path'] = list(path)
         v, w, remaining = navigation.follow(pose, self.path, self.v_max, self.w_max, lookahead=min(.12, self.tol))
         if remaining < self.tol:
+            if self.endpoint['goal_cell_relocated']:
+                self.finish('blocked', f'Конец обходного пути достигнут. До исходной цели {dist*100:.0f} см')
+                return [0., 0.]
             v = 0.
         v, w, why = navigation.guard(FLEET.scan(self.robot), self.robot, v, w)
         self.state = 'blocked' if why else 'drive'
@@ -105,15 +111,27 @@ class DriveTo:
         return [v, w]
 
     def finish(self, state, message):
-        self.state, self.message, self.active = state, message, False
+        self.state, self.message, self.active = state, self.route_message(message), False
         FLEET.track.setdefault(self.robot, {})['path'] = None
         if self.episode is not None:
-            self.episode.finish(state, message)
+            self.episode.extra.update(planner_endpoint=self.endpoint, requested_pose=self.goal,
+                                      last_observed_pose=self.observed_pose, position_tolerance_m=self.tol,
+                                      yaw_tolerance_rad=self.heading_tol)
+            self.episode.finish(state, self.message)
 
     def cancel(self, reason='Отменено'):
         if self.active:
             self.finish('cancelled', reason)
 
+    def route_message(self, message):
+        if self.endpoint['goal_cell_relocated']:
+            x, y = self.goal[:2]
+            px, py = self.endpoint['planned_xy_m']
+            return f'{message} · цель ({x:.2f}, {y:.2f}) м, конец маршрута ({px:.2f}, {py:.2f}) м'
+        return message
+
     def status(self):
-        return {'state': self.state, 'message': self.message, 'prompt': self.prompt, 'active': self.active,
+        message = self.route_message(self.message) if self.active else self.message
+        return {'state': self.state, 'message': message, 'prompt': self.prompt, 'active': self.active,
+                'planner_endpoint': self.endpoint, 'requested_pose': self.goal, 'last_observed_pose': self.observed_pose,
                 'distance': self.distance, 'bearing': None, 'box': None, 'score': None, 'detect_ms': None}

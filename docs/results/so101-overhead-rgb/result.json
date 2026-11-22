@@ -1,0 +1,149 @@
+{
+  "status": "completed",
+  "primary_comparison": {
+    "rgb_only": 28,
+    "constant_only": 0,
+    "paired_success_difference": 0.56,
+    "n": 50,
+    "exact_two_sided_p": 7.450580596923828e-09
+  },
+  "protocol_sha256": "b26970ef59ffe1cc158258096b2ee91ba78ae07d8179ee18f6db79bc7a936f80",
+  "seeds": [
+    200000,
+    200001,
+    200002,
+    200003,
+    200004,
+    200005,
+    200006,
+    200007,
+    200008,
+    200009,
+    200010,
+    200011,
+    200012,
+    200013,
+    200014,
+    200015,
+    200016,
+    200017,
+    200018,
+    200019,
+    200020,
+    200021,
+    200022,
+    200023,
+    200024,
+    200025,
+    200026,
+    200027,
+    200028,
+    200029,
+    200030,
+    200031,
+    200032,
+    200033,
+    200034,
+    200035,
+    200036,
+    200037,
+    200038,
+    200039,
+    200040,
+    200041,
+    200042,
+    200043,
+    200044,
+    200045,
+    200046,
+    200047,
+    200048,
+    200049
+  ],
+  "same_initial_scene_every_pair": true,
+  "summary": {
+    "legacy_noisy": {
+      "episodes": 50,
+      "success": 48,
+      "contact_lift": 48,
+      "released_after_contact_lift": 48,
+      "terminal_box": 48,
+      "terminal_released": 50,
+      "terminal_stationary": 50
+    },
+    "overhead_rgb": {
+      "episodes": 50,
+      "success": 2,
+      "contact_lift": 3,
+      "released_after_contact_lift": 3,
+      "terminal_box": 2,
+      "terminal_released": 50,
+      "terminal_stationary": 50
+    },
+    "exact_xyz": {
+      "episodes": 50,
+      "success": 47,
+      "contact_lift": 47,
+      "released_after_contact_lift": 47,
+      "terminal_box": 47,
+      "terminal_released": 50,
+      "terminal_stationary": 50
+    },
+    "constant": {
+      "episodes": 50,
+      "success": 21,
+      "contact_lift": 24,
+      "released_after_contact_lift": 24,
+      "terminal_box": 21,
+      "terminal_released": 50,
+      "terminal_stationary": 50
+    },
+    "rgb_pick_belief": {
+      "episodes": 50,
+      "success": 48,
+      "contact_lift": 48,
+      "released_after_contact_lift": 48,
+      "terminal_box": 48,
+      "terminal_released": 50,
+      "terminal_stationary": 50
+    },
+    "constant_pick_belief": {
+      "episodes": 50,
+      "success": 20,
+      "contact_lift": 24,
+      "released_after_contact_lift": 24,
+      "terminal_box": 20,
+      "terminal_released": 50,
+      "terminal_stationary": 50
+    }
+  },
+  "paired_discordance": {
+    "legacy_noisy": {
+      "rgb_only": 0,
+      "other_only": 46
+    },
+    "overhead_rgb": {
+      "rgb_only": 0,
+      "other_only": 0
+    },
+    "exact_xyz": {
+      "rgb_only": 0,
+      "other_only": 45
+    },
+    "constant": {
+      "rgb_only": 1,
+      "other_only": 20
+    },
+    "rgb_pick_belief": {
+      "rgb_only": 0,
+      "other_only": 46
+    },
+    "constant_pick_belief": {
+      "rgb_only": 1,
+      "other_only": 19
+    }
+  },
+  "legacy_outcome_and_step_match_count": 50,
+  "physical_skill_verified": false,
+  "motor_commands_sent": 0
+}

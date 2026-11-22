@@ -3,14 +3,22 @@ import asyncio
 import json
 
 from fastapi import HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse,HTMLResponse
 from nicegui import app,ui
 
 from . import peer_dock_real as study
 from .paths import ROOT
+from . import peer_dock_series_page as series_page
 
 
 def install(control=None):
+    series_page.install_api()
+
+    @app.get('/peer-dock-real/screen', response_class=HTMLResponse)
+    def screen():
+        from .peer_dock_screen import target_html
+        return target_html()
+
     @app.get('/api/peer-dock/board.pdf')
     def board():
         return FileResponse(ROOT/'assets/peer_dock_180mm_A4.pdf',media_type='application/pdf',filename='Explorer-dock-180mm-A4.pdf')
@@ -43,6 +51,8 @@ def install(control=None):
         ui.label('Подъезд Tank с помощью камеры ROSMASTER').classes('text-h5')
         ui.link('Центр экспериментов','/workspace')
         ui.label('Распечатайте лист в масштабе 100%, проверьте чёрную сторону 180 мм и закрепите его вертикально. Нужны основной №7 и нижний №43 на одном листе.')
+        ui.label('Можно закрепить неподвижный монитор вместо листа. Выведите обе метки, настройте размер по линейке (180 мм), уберите отражения. Проверьте положение камер по двум измеренным точкам.')
+        ui.link('Открыть метку для монитора','/peer-dock-real/screen',new_tab=True)
         ui.link('Скачать лист A4','/api/peer-dock/board.pdf',new_tab=True)
         ui.label('Наблюдение записывает изображения и калибровки двух камер. Оно доступно при выключенном управлении приводами.')
         displayed = {}
@@ -99,6 +109,8 @@ def install(control=None):
                     ui.notify(str(exc),type='negative')
             ui.button('Сохранить первое положение',on_click=lambda:measure(False))
             ui.button('Проверить по второму положению',on_click=lambda:measure(True))
+        if control is not None:
+            series_page.controls(control)
         ui.link('Пульт оператора Tank','/')
 
 
@@ -115,3 +127,4 @@ def add_operator_action(control,session,owner):
         except Exception as exc:
             ui.notify(str(exc),type='negative')
     ui.button('Подъехать к измеренной совместной цели',on_click=accept).props('outline no-caps')
+    series_page.operator_button(control,session,owner)

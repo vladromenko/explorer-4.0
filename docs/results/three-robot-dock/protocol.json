@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "domain": "simulation",
+  "scenes": [
+    [
+      868000,
+      "workshop"
+    ],
+    [
+      868001,
+      "storage"
+    ],
+    [
+      868002,
+      "inspection"
+    ],
+    [
+      868003,
+      "workshop"
+    ]
+  ],
+  "conditions": [
+    "intact",
+    "missing_order",
+    "wrong_order",
+    "missing_pose",
+    "wrong_pose"
+  ],
+  "method": "SO-101 RGB token colour; ROSMASTER RGB square corners, IPPE and surveyed camera frame; Tank body-twist odometry and existing geometric drive.",
+  "evaluator": "Independent stored customer request, 8 cm, 0.15 rad, stationary for 0.5 s.",
+  "skills": {
+    "so101.read_dock_order.rgb.v1": "5feca27f17d1fcf84e6de7d8fbc738d878b51ea22488ef8249eb720d76b33afd",
+    "rosmaster.measure_station.rgb.v1": "4d8cb9112c83af5aa339540e57cb798117af928cf15019a9b7790fac6b28e81c",
+    "tank.dock_ordered.geometric.v1": "1deaded61c6fbe2cb84b6d08fd83d90c40bc8cca0ad8fb7ef77563dcde85c0eb"
+  },
+  "sources": {
+    "scripts/three_robot_study.py": "ac9c5259914f7f5194bda346ac885fe40fe501715cb999f47b4ad3ba74b9002e",
+    "explorer4/sim/three_robot_dock.py": "f102ac04c0dbb1c082ba143c484c1d3bfc2f5ed36320dc9531dbeab4d23e8a32",
+    "explorer4/cognitive/three_robot_cards.py": "cc4ea1d55ca20777f1966e578c829ddf3a4f1556fec1915a8d496b53ab9e40d8",
+    "explorer4/sim/fleet.py": "1884e6480f07cf7110f15a80e9706b1d4dfcd529128137fb2cd5659b24823b74",
+    "explorer4/sim/cooperation.py": "287b9c1e1744cfb5451a754dfeff1837f8b5c3ec812e7e99cac87e9230936506",
+    "explorer4/sim/peer_dock.py": "6279225421ebacc75cd8ce0695951bc7e4eaf96171670409ad64c3f2d5dc84d0",
+    "explorer4/sim/mobile.py": "ba31b40f6f03d35dc48beec685373a0eee94041fe5b7aff0f12b94f040e747c2"
+  },
+  "training": false,
+  "hardware": false
+}

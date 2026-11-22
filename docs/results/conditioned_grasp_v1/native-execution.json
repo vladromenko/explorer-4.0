@@ -1,0 +1,1819 @@
+{
+  "domain": "MuJoCo with archived native ROSMASTER direct-arm control",
+  "physical_trials": 0,
+  "physical_transport": "absent",
+  "optimizer_updates": 0,
+  "methods": [
+    "rbf",
+    "act",
+    "diffusion"
+  ],
+  "trials": [
+    {
+      "seed": 940200,
+      "methods": {
+        "rbf": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24200608511937166,
+          "max_stable_carry_s": 0.05,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.48897407117335945,
+            0.4922658450720121,
+            1.209053843533903,
+            0.49617443395186456,
+            0.47113725945777674,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 389,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24200964103385214,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 369,
+          "max_requested_to_native_deg": [
+            0.497742155723202,
+            0.4830433778948233,
+            1.1471543792485819,
+            0.49046612344682217,
+            0.4995269775390625,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 410,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2420927405570839,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 390,
+          "max_requested_to_native_deg": [
+            0.469049377637333,
+            0.49332311035702503,
+            1.0,
+            0.49081461912993873,
+            0.4995269775390625,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940201,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 340,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2312410610674675,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 320,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.48058706723064404,
+            1.2170360644746685,
+            0.4904671534895897,
+            0.4637990859217638,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 422,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23529921809350168,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 402,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4950696669504282,
+            1.8623593242165803,
+            0.4904671534895897,
+            0.4748298842010428,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 422,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23576343691891838,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 402,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49415983126965557,
+            2.5656798869320347,
+            0.4904671534895897,
+            0.48426552589793914,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940202,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 431,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2415078940156999,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 411,
+          "max_requested_to_native_deg": [
+            0.42765974610685475,
+            0.49335610172956024,
+            1.6367798441261547,
+            0.491856713474224,
+            0.4539548006852101,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 452,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24581963052138428,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 432,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49559530024611576,
+            2.443655724767944,
+            0.49046723637729883,
+            0.4995269775390625,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 427,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24161600857029714,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 407,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49943366792139443,
+            1.3085587571621327,
+            0.4963274551496113,
+            0.4995269775390625,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940203,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 241,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2516346717831269,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 221,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4983285338851928,
+            1.0,
+            1.0048039935592468,
+            0.4995269775390625,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00023748712193332605,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.49510360080641647,
+            0.4995502067666706,
+            1.0260709623598827,
+            0.8595677364612442,
+            0.46117143966399965,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            8.0
+          ],
+          "published_sim_outcome": "failure"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 346,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23519317170153659,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 326,
+          "max_requested_to_native_deg": [
+            0.45660730188841114,
+            0.4982670156414599,
+            1.042255963168774,
+            0.7408213750171857,
+            0.4519524514786326,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940204,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 365,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.240997402943808,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 345,
+          "max_requested_to_native_deg": [
+            0.4064045485260692,
+            0.4990677898671265,
+            1.6657861762427189,
+            0.4914083359581447,
+            0.40793364384674646,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 365,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24302560436845566,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 345,
+          "max_requested_to_native_deg": [
+            0.48818409970576226,
+            0.49741564715984055,
+            2.2044842290936764,
+            0.499106439423997,
+            0.39169798253652743,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 325,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24055154206299767,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 305,
+          "max_requested_to_native_deg": [
+            0.49719385996947096,
+            0.4892338244916594,
+            1.5957173674463423,
+            0.4923836906953909,
+            0.43829646300770264,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940205,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 220,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24059372815415603,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 200,
+          "max_requested_to_native_deg": [
+            0.49015042367078365,
+            0.4835961057349465,
+            2.103896714335468,
+            0.49110662261895754,
+            0.45923652309826934,
+            58.999999999999915
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 358,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24367572701624185,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 338,
+          "max_requested_to_native_deg": [
+            0.47652079350392285,
+            0.48100931344455944,
+            2.220528994367326,
+            0.4994358793409148,
+            0.4995269775390625,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 334,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2437388719249155,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 314,
+          "max_requested_to_native_deg": [
+            0.4610946153723603,
+            0.49988193965594974,
+            1.0348630491855837,
+            0.4954128438860792,
+            0.41262004181906775,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940206,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 320,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2380050072527818,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 300,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49459488500425763,
+            1.0,
+            0.7491864369416718,
+            0.4995269775390625,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 407,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24039699317287677,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 387,
+          "max_requested_to_native_deg": [
+            0.4917708883704961,
+            0.49282577084902,
+            1.0430161476095317,
+            0.8081207947134352,
+            0.4428930752517033,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 332,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24001286168544733,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 312,
+          "max_requested_to_native_deg": [
+            0.44450674017058134,
+            0.47838983320668405,
+            1.0551545039225863,
+            0.6156351365044337,
+            0.4268884533063044,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940207,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 361,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24098336728225112,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 341,
+          "max_requested_to_native_deg": [
+            0.4884451021644196,
+            0.49045263982976905,
+            1.6721460292784016,
+            0.49276970863945024,
+            0.4995269775390625,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 330,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23899241352837197,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 310,
+          "max_requested_to_native_deg": [
+            0.4462335120406635,
+            0.4942729858998547,
+            1.11840308526321,
+            0.4948674015332415,
+            0.43942323717988074,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 458,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24131171932255574,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 438,
+          "max_requested_to_native_deg": [
+            0.4717217822658739,
+            0.495131736932521,
+            1.0,
+            0.49148696256326474,
+            0.49158325377808865,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940208,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 383,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24379542009977817,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 363,
+          "max_requested_to_native_deg": [
+            0.48684619277734953,
+            0.49313626421069756,
+            2.6967801678796492,
+            0.491207878124051,
+            0.4043421362328985,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 383,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2441805258246082,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 363,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4604637001827996,
+            2.6127324762881177,
+            0.4985278574241647,
+            0.4862065900924222,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 383,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24122792902034357,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 363,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49887419263152566,
+            1.1081401899524979,
+            0.4904672121629119,
+            0.4841848737409151,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940209,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 375,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23463479436454804,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 355,
+          "max_requested_to_native_deg": [
+            0.46953481336664993,
+            0.4817623706177159,
+            1.8972397195886277,
+            0.49046618212014437,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 349,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23486792997021516,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 329,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49741436786487725,
+            2.6934908248873057,
+            0.4985313720804072,
+            0.47620590684829267,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 433,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.243823574478164,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 413,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4730768314718148,
+            3.2382080105362867,
+            0.49259642140219384,
+            0.45973377483250033,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940210,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 303,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23114024450514625,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 283,
+          "max_requested_to_native_deg": [
+            0.42209674217232873,
+            0.49167300931179625,
+            2.8328591191994112,
+            0.4904627464711666,
+            0.3919624635063599,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4895922796878267,
+            3.433726880579,
+            0.4904627464711666,
+            0.3912052926828409,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            5.0,
+            6.0,
+            6.0,
+            23.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 278,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23070439152060485,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 258,
+          "max_requested_to_native_deg": [
+            0.4938520027233153,
+            0.49723544479530446,
+            3.1331155123051992,
+            0.4904627464711666,
+            0.4889599733389076,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940211,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 351,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23257081879820152,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 331,
+          "max_requested_to_native_deg": [
+            0.3944082275316845,
+            0.49615527614511734,
+            1.2603399342105361,
+            0.49046703334897757,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 279,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23410739615839676,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 259,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49609426043019766,
+            1.8149485937943375,
+            0.49046703334897757,
+            0.4995269775390625,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 336,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23934433022841756,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 316,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4938302923444553,
+            1.1936641438720734,
+            0.49046703334897757,
+            0.4326464607523235,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940212,
+      "methods": {
+        "rbf": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.006431418176122576,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49124130155462353,
+            1.5448696649901765,
+            0.4904672596603632,
+            0.4272649781011779,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            9.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4983926760709849,
+            3.007510877679195,
+            0.4925110447164691,
+            0.4655362570952093,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            9.0
+          ],
+          "published_sim_outcome": "failure"
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49782094317083647,
+            2.504938774526206,
+            0.49909910950274394,
+            0.41740806666797425,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            8.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940213,
+      "methods": {
+        "rbf": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2417198827274346,
+          "max_stable_carry_s": 0.05,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4905361284915273,
+            0.4960717402826411,
+            1.0062242932553835,
+            1.2550795557525494,
+            0.4257268682772235,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            7.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 314,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23932517946423776,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 294,
+          "max_requested_to_native_deg": [
+            0.478094972171732,
+            0.49940344715007257,
+            1.0,
+            0.6398398229441291,
+            0.49007616024454137,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            7.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 243,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23346982601978483,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 223,
+          "max_requested_to_native_deg": [
+            0.49238972497789746,
+            1.0782702092302614,
+            1.0,
+            1.7228571224360714,
+            0.4200976246868038,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940214,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 397,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24452718753090474,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 377,
+          "max_requested_to_native_deg": [
+            0.4672788175228817,
+            0.4980710519048728,
+            1.9863007832283528,
+            0.490460810251534,
+            0.3951169233695282,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            7.0,
+            5.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.004754748642647848,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4611249677131042,
+            0.49980744759687923,
+            2.9330741270215093,
+            0.49775297124678275,
+            0.44006156389198736,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            10.0
+          ],
+          "published_sim_outcome": "failure"
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.005774192859897696,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4985429631994265,
+            0.4819186646540743,
+            1.653571336122365,
+            0.490460810251534,
+            0.4023010519731258,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            7.0,
+            5.0,
+            6.0,
+            6.0,
+            11.0
+          ],
+          "published_sim_outcome": "failure"
+        }
+      }
+    },
+    {
+      "seed": 940215,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 363,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24213157195896456,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 343,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49800509905715984,
+            2.313047648064269,
+            0.490467082709074,
+            0.45314610955936985,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.005391901334784861,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.49726390153225,
+            0.490159543289316,
+            1.258037789485093,
+            0.4985205243571045,
+            0.4821657561590058,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            9.0
+          ],
+          "published_sim_outcome": "failure"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 229,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2520571264700576,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 209,
+          "max_requested_to_native_deg": [
+            0.49643544100192116,
+            0.4920801069898495,
+            1.2625994878948887,
+            0.490467082709074,
+            0.4527137267865555,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940216,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 475,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24567583411011024,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 455,
+          "max_requested_to_native_deg": [
+            0.4421088885039808,
+            0.48919422205221963,
+            2.142084986661906,
+            0.492090927391704,
+            0.38409415997466567,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 475,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24696675258091505,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 455,
+          "max_requested_to_native_deg": [
+            0.4940506745546287,
+            0.4920979096031317,
+            2.5498615047513695,
+            0.49045274686068296,
+            0.49246525330238455,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 363,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24114970584674567,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 343,
+          "max_requested_to_native_deg": [
+            0.48218727549635787,
+            0.4993082771433279,
+            1.0265531727883923,
+            0.49045274686068296,
+            0.428983443737593,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940217,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 312,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23741675912821364,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 292,
+          "max_requested_to_native_deg": [
+            0.3776274760687528,
+            0.4806639084427644,
+            1.96788978065115,
+            0.4904670147225261,
+            0.4013083545023761,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 236,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23066442035974238,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 216,
+          "max_requested_to_native_deg": [
+            0.4626326274008079,
+            0.4936615750196438,
+            2.6012376766617393,
+            0.4904670147225261,
+            0.44927889234823226,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 223,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23246394060499714,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 203,
+          "max_requested_to_native_deg": [
+            0.46990588120036136,
+            0.4703613958398307,
+            4.009477239581766,
+            0.4904670147225261,
+            0.4887045750479757,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    },
+    {
+      "seed": 940218,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 344,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24570850913044712,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 324,
+          "max_requested_to_native_deg": [
+            0.4565682270731344,
+            0.4823577757411215,
+            2.806162191399342,
+            0.4904669960960746,
+            0.49498003550810665,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            6.0,
+            5.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00491525739712511,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4704978983024972,
+            0.4897036793982039,
+            1.4061500019426907,
+            0.49371645828163224,
+            0.49312004942365206,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            5.0,
+            7.0,
+            5.0,
+            9.0
+          ],
+          "published_sim_outcome": "failure"
+        },
+        "diffusion": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 500,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.00968030630568377,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 480,
+          "max_requested_to_native_deg": [
+            0.4936397347899799,
+            0.49371955187992,
+            1.2134149261034566,
+            0.49526767007517947,
+            0.37717144689828785,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            5.0,
+            6.0,
+            5.0,
+            12.0
+          ],
+          "published_sim_outcome": "failure"
+        }
+      }
+    },
+    {
+      "seed": 940219,
+      "methods": {
+        "rbf": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 333,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2391207014374866,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 313,
+          "max_requested_to_native_deg": [
+            0.4871083974578454,
+            0.4685312297943085,
+            1.046503087312087,
+            0.49046562518924475,
+            0.43447953048800514,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "act": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 333,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24177732414067976,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 313,
+          "max_requested_to_native_deg": [
+            0.4647805177567932,
+            0.4972189312782689,
+            2.559178852547074,
+            0.49046562518924475,
+            0.43395070892763954,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        },
+        "diffusion": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 271,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23969578957193993,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 251,
+          "max_requested_to_native_deg": [
+            0.4976315045801556,
+            0.48438142738675083,
+            1.616926145258141,
+            0.49622305939211486,
+            0.4952638293311651,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "published_sim_outcome": "success"
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "native_executor": "51057bfbb8ad7b7cfcb98988bbb4c7e64f9d90204be62e1824ff516cb5fd8ce7",
+    "native_base_io": "628c6526ca10c86771b29c0e1b92151d5b1d7523f0480cd781360c50f6c369d5",
+    "native_arm_model": "e38e4b56026e9cbe955dc0963a61aa65c4a3c964f9d5c0ecb84a0b8c9c7d8e4f",
+    "paired_plans": "a4b7396a05dba785ecb8789a1c875afe381def70fedb1757d8a01c6553a238fc"
+  },
+  "native_limits": {
+    "source": "recorded ROSMASTER development telemetry",
+    "floor_margin_m": 0.012,
+    "tcp_offset_m": 0.085,
+    "frequency_hz": 20,
+    "servo_slew_deg_s": 60,
+    "native_limit_inset_deg": 1,
+    "tracking_stop_deg": 12
+  },
+  "successes": {
+    "rbf": 17,
+    "act": 14,
+    "diffusion": 17
+  },
+  "native_stops": {
+    "rbf": 0,
+    "act": 0,
+    "diffusion": 0
+  },
+  "limitations": "Controlled physics mock with simulated servo feedback and unchanged native guard code. Physical camera calibration, controller tracking, latency and physical task outcome require measurements."
+}

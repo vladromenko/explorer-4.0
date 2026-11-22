@@ -97,8 +97,10 @@ def audit_episode(entry, bundle, source, vision):
     if info["features"].get(image_key, {}).get("shape") != [480, 640, 3]:
         reasons.append("front_rgb_format_mismatch")
     camera_digest = None
-    evidence = root / "localization-calibration.json"
+    from explorer4.grasp_reference import evidence_path
+
     try:
+        evidence = evidence_path(root, provenance)
         cal = calibration(evidence, vision)
     except (ValueError, KeyError, OSError) as exc:
         reasons.append("invalid_localization_calibration: " + str(exc))

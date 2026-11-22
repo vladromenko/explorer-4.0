@@ -11,7 +11,10 @@ def install():
     from fastapi import HTTPException
     from nicegui import app, run, ui
 
+    from .grasp_admission import resume_pending
     from .sensor_pages import jpeg
+
+    app.on_startup(resume_pending)
 
     @app.get("/api/rosmaster/grasp-calibration")
     def recent_calibrations():
@@ -23,6 +26,18 @@ def install():
             return capture.summary(capture.open_session(ident))
         except ValueError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @app.get("/api/rosmaster/grasp-calibration/{ident}/admission")
+    def admission_report(ident: str):
+        from .grasp_admission import EVIDENCE
+
+        try:
+            path = capture.open_session(ident) / EVIDENCE
+            if not path.is_file():
+                raise ValueError("Отчёт появится после трёх проверочных показов")
+            return json.loads(path.read_text())
+        except ValueError as exc:
+            raise HTTPException(404, str(exc)) from exc
 
     @app.get("/api/rosmaster/grasp-calibration/{ident}/offline-plans")
     def read_plans(ident: str):
@@ -63,6 +78,15 @@ def install():
             )
             ui.label(
                 "Измерьте ширину кубика и свободное расстояние между внутренними губками при подходе. Допустимая ошибка центра равна половине разницы этих размеров."
+            )
+        with ui.card().classes("grasp-card"):
+            ui.label("Готовность одной пробы на роботе").classes("text-h6")
+            ui.label(
+                "Штатные ограничения руки проверены на тех же 20 сценах в MuJoCo. Для пробы на самом ROSMASTER нужны проверенная камера и три независимые записи с реальными движениями. Исходы захвата, первое движение, задержка решения и погрешность по каждому суставу проверяются отдельно."
+            )
+            ui.link(
+                "Исходы со штатным исполнителем в MuJoCo",
+                "/simlab-media/reports/conditioned-grasp-v1/native-execution.json",
             )
         if not session:
             with ui.card().classes("grasp-card"):
@@ -151,6 +175,70 @@ def install():
 
         results()
         if capture.summary(path)["status"] == "positive":
+            ui.label(
+                "После проверки камеры запишите по одному успешному человеческому захвату в трёх отдельных расстановках. Начинайте в проверенной позе, на секунду удержите неподвижный кадр с целым кубиком, затем возьмите и удержите кубик. Укажите фактический исход каждой попытки. Записи попадут в диагностическую выборку."
+            )
+            from . import grasp_admission as admission
+
+            @ui.refreshable
+            def admitted():
+                selected = admission.references(path)
+                pos = min(4, len(selected) + 1)
+                point = capture.session_rows(path)[pos - 1]
+                x, y = point["independently_measured_base_xy_m"]
+                ui.label(
+                    f"Позиция {pos}: верните тот же кубик на метку X {1000 * x:.1f} мм, Y {1000 * y:.1f} мм. Исходных показов {len(selected)}/3."
+                )
+                report = path / admission.EVIDENCE
+                if report.is_file():
+                    state = json.loads(report.read_text())
+                    ui.label("Решение: " + state["reason"])
+                    if state.get("channel_mae_deg"):
+                        ui.label(
+                            "Средняя ошибка углов, °: "
+                            + " / ".join(f"{v:.1f}" for v in state["channel_mae_deg"])
+                        )
+                    ui.link(
+                        "Проверки, веса, кубик и все изученные эпизоды",
+                        f"/api/rosmaster/grasp-calibration/{session}/admission",
+                    )
+                    if state["status"] == "ready" and not (path / "physical-trial-claimed.json").exists():
+                        problem = ui.label("").classes("grasp-error")
+
+                        async def setup_trial():
+                            try:
+                                plan = await run.io_bound(admission.make_plan, session)
+                                ui.navigate.to(f"/rosmaster/control?trial={plan['id']}")
+                            except (OSError, ValueError, PermissionError) as exc:
+                                problem.set_text(str(exc))
+
+                        ui.button("Открыть одну наблюдаемую пробу ROSMASTER", on_click=setup_trial)
+                    elif (path / "physical-trial-claimed.json").is_file():
+                        ui.label("Одиночная проба использована.")
+                elif len(selected) == 3:
+                    ui.label(
+                        "Проверяются исходные записи и штатные допуски. Если панель перезапускалась, возобновите проверку."
+                    )
+
+                    async def resume_review():
+                        await run.io_bound(admission.schedule, selected[0][0]["series"])
+
+                    ui.button("Возобновить офлайн-проверку", on_click=resume_review)
+
+            admitted()
+            ui.button("Обновить статус записей и допуска", on_click=admitted.refresh)
+            reference_message = ui.label("")
+
+            def open_reference():
+                from .grasp_reference import reference_series
+
+                try:
+                    series = reference_series(path)
+                    ui.navigate.to(f"/recording/collect?task=rosmaster_pick_place&series={series}")
+                except (OSError, ValueError) as exc:
+                    reference_message.set_text(str(exc))
+
+            ui.button("Записать отдельный проверочный показ", on_click=open_reference)
             plans_message = ui.label("")
 
             async def compute_plans():

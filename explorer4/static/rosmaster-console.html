@@ -34,6 +34,19 @@ body.simple .adv{display:none!important}#simplebar{display:none;gap:10px;align-i
  <b id="notice" style="color:var(--warn)">Управление выключено</b><span class="grow"></span><label class="help"><input type="checkbox" id="allbtn" onchange="setSimple(!this.checked)"> показать всё (колёса, клавиатура, испытания)</label></nav>
 <div id="simplebar"><span class="num">1</span><button class="go step" id="smir" onclick="mirrorClick()">Включить зеркало</button><span class="num">2</span><button class="go step" id="srec" onclick="startRecording()">● Начать запись <small>Enter</small></button><span id="sout" style="display:none;gap:10px"><button class="go step" onclick="send({action:'record_finish',outcome:'success'})">✓ Успех <small>Enter</small></button><button class="step" onclick="send({action:'record_finish',outcome:'failure'})">✗ Неуспех <small>Backspace</small></button></span><b id="rstate2"></b></div>
 <div id="keyboardhint" class="help" style="padding:0 20px 8px;color:var(--warn)" role="status" hidden></div>
+<section id="grasp-pilot" class="card" style="margin:8px 16px" hidden>
+ <strong>Одна проверочная попытка подъёма кубика</strong>
+ <p>Остановите ROSMASTER. Положите тот же измеренный кубик точно в четвёртую точку из мастера камеры, восстановите проверенную позу руки и приготовьте линейку или видео со шкалой. Режим ограничен шестью суставами и неподвижным шасси.</p>
+ <div class="row"><label>Расстановка <input id="grasp-scene" maxlength="60" placeholder="Отметка на столе или полу"></label>
+ <label><input id="grasp-confirm" type="checkbox"> Шасси неподвижно, вижу кубик и нахожусь у STOP</label>
+ <button id="grasp-start" disabled>Запустить эту попытку</button></div>
+ <p>После STOP отметьте, держался ли кубик непрерывно в конечной позе до остановки. Успех требует отрыва больше 50 мм и удержания не меньше одной секунды.</p>
+ <div class="row"><select id="grasp-visible"><option value="">Наблюдаемый исход</option><option value="held">Кубик в захвате</option><option value="failed">Промах или кубик выпал</option><option value="unobservable">Исход не видно</option></select>
+ <label>Отрыв, мм <input type="number" min="0" id="grasp-lift"></label><label>Удержание, с <input type="number" min="0" step=".1" id="grasp-hold"></label>
+ <label>Замер или видео <input id="grasp-evidence" maxlength="250"></label>
+ <button id="grasp-score">Сохранить наблюдаемый исход</button><a id="grasp-result" target="_blank">Журнал JSON</a></div>
+ <p id="grasp-message" role="status"></p>
+</section>
 <main>
 <section>
   <div class="card"><img id="video" src="/api/rosmaster/camera.mjpg?light=0" alt="камера" onerror="videoRetry()"></div>
@@ -113,6 +126,17 @@ function profileChanged(){
 }
 window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&&e.data?.explorerRecordingStop)send({action:'stop'});});
 const recordingQuery=new URLSearchParams(location.search);
+const graspPlan=recordingQuery.get('trial');
+if (/^[a-f0-9]{32}$/.test(graspPlan||'')){
+ $('grasp-pilot').hidden=false;
+ $('grasp-result').href='/api/rosmaster/grasp-trial/'+graspPlan;
+ $('grasp-start').onclick=()=>{const scene=$('grasp-scene').value.trim(), confirmed=$('grasp-confirm').checked;
+    if(!scene||!confirmed){$('grasp-message').textContent='Введите расстановку и подтвердите присутствие у STOP.';return;}
+    $('grasp-confirm').checked=false;
+    send({action:'trial_start',plan:graspPlan,scene,observing:true,confirmed});};
+ $('grasp-score').onclick=()=>{const number=id=>$(id).value===''?null:Number($(id).value);
+    send({action:'grasp_outcome',plan:graspPlan,visibility:$('grasp-visible').value,lift_mm:number('grasp-lift'),hold_s:number('grasp-hold'),evidence:$('grasp-evidence').value});};
+}
 if(recordingQuery.has('series')){
  const p=recordingQuery.get('profile');
  if([...$('rprof').options].some(o=>o.value===p))$('rprof').value=p;
@@ -212,6 +236,13 @@ function render(s){
  const MC=s.mirror_check;if(MC){$('pairstate').textContent=MC.aligning?'Сейчас: рука встаёт в позу Leader…':'';const N=['основание','плечо','локоть','кисть','поворот кисти'];
   $('mcheck').innerHTML='<tr><th style="text-align:left">сустав</th><th>Leader Δ°</th><th>робот Δ°</th><th>знак</th><th></th></tr>'+MC.rows.map((r,i)=>{return '<tr><td>'+N[i]+'</td><td style="text-align:center">'+(r.leader??'—')+'</td><td style="text-align:center">'+(r.robot??'—')+'</td><td style="text-align:center">'+(MC.sign?(MC.sign[i]>0?'+':'−'):'?')+'</td><td><button onclick="send({action:\'mirror_flip\',joint:'+i+'})">⇄</button>'+'</td></tr>'}).join('');
   $('gstate').textContent='Leader '+(MC.leader_gripper??'—')+(MC.gripper_map?' · соответствие '+MC.gripper_map.map(v=>(+v).toFixed(0)).join(' → ')+' (открыт → закрыт)':' · относительный (прежний)');}
+ if (!$('grasp-pilot').hidden){
+   const match=(s.plans||[]).find(p=>p.id===graspPlan&&p.kind==='conditioned_grasp');
+   $('grasp-start').disabled=!match||match.claimed||s.enabled||s.recording?.phase!=='idle';
+   $('grasp-score').disabled=!match?.can_score||s.enabled;
+   $('grasp-message').textContent=typeof match?.measured==='boolean' ? (match.measured?'Измерение сохранено: куб удержан.':'Измерение сохранено: критерий не выполнен.') :
+     match?.can_score ? 'Попытка остановлена. Укажите наблюдение и замер.' : match?(s.notice||''):'Ожидание подготовленного плана из мастера камеры.';
+ }
  const R=s.recording||{};const P=R.pilot||{};const rec=R.phase&&R.phase!=='idle';
  $('control-profile').disabled=!!rec;$('rprof').disabled=!!rec;$('rscene').disabled=!!rec;$('rcat').disabled=!!rec;$('rcollection').disabled=!!rec;
  $('recstart').style.display=rec?'none':'flex';$('recout').style.display=rec?'flex':'none';

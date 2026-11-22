@@ -1,0 +1,153 @@
+{
+  "seeds": [
+    200000,
+    200001,
+    200002,
+    200003,
+    200004,
+    200005,
+    200006,
+    200007,
+    200008,
+    200009,
+    200010,
+    200011,
+    200012,
+    200013,
+    200014,
+    200015,
+    200016,
+    200017,
+    200018,
+    200019,
+    200020,
+    200021,
+    200022,
+    200023,
+    200024,
+    200025,
+    200026,
+    200027,
+    200028,
+    200029,
+    200030,
+    200031,
+    200032,
+    200033,
+    200034,
+    200035,
+    200036,
+    200037,
+    200038,
+    200039,
+    200040,
+    200041,
+    200042,
+    200043,
+    200044,
+    200045,
+    200046,
+    200047,
+    200048,
+    200049
+  ],
+  "modes": [
+    "legacy_noisy",
+    "overhead_rgb",
+    "exact_xyz",
+    "constant",
+    "rgb_pick_belief",
+    "constant_pick_belief"
+  ],
+  "robot": "so101",
+  "physics_engine": "4.0.1",
+  "weights_sha256": "3cc67853c9b65f47e26b8d4f9c814961d68b053d739b5215263f1780f15e22e2",
+  "export_sha256": "c27700feca8843476ea22adc6ec9b414aca8b77179cce6fc07b913efe514fb84",
+  "old_report_sha256": "e292971fe378551bfcaa06182cb4acf54827faff783cd46431c79f1ab0f18571",
+  "code": {
+    "scripts/so101_rgb_study.py": "5ebdc495c4eb616c0a726f8ea75c5774d42cb43f4851932b4858c9cb25f22972",
+    "explorer4/simlab/so101_rgb.py": "d62e99f22787e8137af67f0d3bfe944d9a51f6008203754d09e226b7459ee343",
+    "explorer4/simlab/perception.py": "233464ffa16661848bed739d480ab5f513d54db0db8832ea3b4ddf586d616f2b",
+    "explorer4/sim/environment.py": "892906a3ffc253241c53f79d4cdb0f478f7baacc4a90b54015fbb9adb946906b",
+    "explorer4/sim/models.py": "7424d4e19ee4bec57ad6fd0acf8dd4b8b765bc313158b6c18eaa374d22279657",
+    "explorer4/simlab/artifact.py": "1592dd16dfaf584e85084b10036647181dd666dcb8997c0f880603941874fc3a",
+    "explorer4/simlab/contract.py": "c10c6291a1a86ede23413509d17bec342ff36f2770742dd6b1046c50488fe0dd",
+    "explorer4/simlab/arm_warp.py": "01779f18c7d8ba7725ef0fa52cd1520618b7eb36b53bcb5134032d2080b96aef"
+  },
+  "cad_sensor": {
+    "camera": "evaluation_overhead_rgb",
+    "width": 256,
+    "height": 256,
+    "K": [
+      [
+        324.94693064503133,
+        0.0,
+        127.5
+      ],
+      [
+        0.0,
+        324.94693064503133,
+        127.5
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "optical_to_base": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.215
+      ],
+      [
+        0.0,
+        -1.0,
+        0.0,
+        0.025
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0,
+        0.56
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "fovy_deg": 43.0,
+    "known_cube_side_m": 0.032,
+    "sampling": "30 Hz, rendered RGB only"
+  },
+  "box_in_base_m": [
+    0.24,
+    0.1,
+    0.0
+  ],
+  "box_source": "fixed scene fixture in the Menagerie task extension (not estimated)",
+  "methods": {
+    "overhead_rgb": "Orange colour component via OpenCV; top-down pinhole XY and depth from known cube edge; reject partial/non-square components. Before first detection hold initial command, on occlusion hold last measured xyz with visible=0 and saturated age. No depth, segmentation buffer, true target or contact enters policy.",
+    "legacy_noisy": "Original noisy true cube XYZ, Gaussian 5 mm on each axis; numpy Generator seed 1 consumed sequentially.",
+    "exact_xyz": "Simulator cube centre delivered directly, no noise. Oracle control.",
+    "rgb_pick_belief": "First unobstructed top-face colour centroid projected onto the surveyed tabletop. Then a distinct encoder adapter updates a possible grasp from known arm FK, gripper closure and distance; release holds the estimated drop location. The actor receives estimate-available instead of pixel-visible, actual RGB acquisition is recorded separately. No true cube coordinates or contact.",
+    "constant_pick_belief": "Same encoder/closure adapter, identical estimate-available input; fixed workspace midpoint replaces initial RGB.",
+    "constant": "Workspace midpoint [.24,-.06,.016] m throughout, visible=1, age=0."
+  },
+  "success": "Original scorer: open separated gripper, stationary cube inside bin for at least 0.5 s",
+  "contact_lift": "Cube rose >30 mm above initial centre while both fixed and moving jaw bodies contacted it at a 30 Hz observation",
+  "scope": "Easy nominal fixture; static monocular calibration from camera design; no physical success claim",
+  "development_seeds": [
+    910000,
+    910001
+  ],
+  "primary_comparison": "rgb_pick_belief vs constant_pick_belief, exact two-sided McNemar test of discordant paired outcomes",
+  "test_recordings_used": 0,
+  "weight_updates": 0,
+  "motor_commands_sent": 0
+}

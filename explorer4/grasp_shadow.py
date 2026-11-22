@@ -41,14 +41,16 @@ class ArchiveGraspActions:
     reference-frame errors. A replay should retain the reason when we abstain.
     """
 
-    def __init__(self, bundle, source, vision, method, calibration):
+    input_domain = "archived_real"
+
+    def __init__(self, bundle, source, vision, method, calibration, *, localizer=None):
         import json
 
         if file_hash(source) != MOTOR_SHA256 or file_hash(vision) != VISION_SHA256:
             raise ValueError("Planner training data or RGB weights changed")
         self.calibration = calibration
         self.method = method
-        self.localizer = load_localizer(vision)
+        self.localizer = load_localizer(vision) if localizer is None else localizer
         with np.load(source, allow_pickle=False) as bank:
             xy, actions = bank["xy"], bank["action"]
         self.support = Delaunay(xy)
@@ -76,8 +78,8 @@ class ArchiveGraspActions:
         self.max_projection_deg = np.zeros(6)
 
     def next(self, observation):
-        if observation.get("domain") != "archived_real" or observation.get("robot_id") != "rosmaster":
-            raise ValueError("Only recorded ROSMASTER observations can enter this adapter")
+        if observation.get("domain") != self.input_domain or observation.get("robot_id") != "rosmaster":
+            raise ValueError("This action provider requires its verified ROSMASTER observation domain")
         state = np.asarray(observation["observation.state"], dtype=float)
         if state.shape != (6,) or not np.isfinite(state).all():
             raise ValueError("Incomplete native six-servo state")
@@ -118,8 +120,11 @@ class ArchiveGraspActions:
         box = observation.get("confirmed_cube_bbox_xyxy_px")
         if box is None or len(box) != 4 or not 0 < box[0] < box[2] < 640 or not 0 < box[1] < box[3] < 480:
             raise ValueError("A full initial target inside the recorded image is required")
-        xy = locate_cube(self.localizer, image)
+        xy = self.locate(observation, image)
         if self.support.find_simplex(xy) < 0:
             raise ValueError("Predicted cube is outside the motor demonstration hull")
         self.plan = self.rbf(xy[None] / 0.05)[0] if self.method == "rbf" else self.planner.trajectory(xy)
         self.last = state.copy()
+
+    def locate(self, observation, image):
+        return locate_cube(self.localizer, image)

@@ -78,6 +78,10 @@ def run_job(path: Path):
     cfg = json.loads(path.read_text())
     work = DATA/'jobs'/path.stem
     work.mkdir(exist_ok=True)
+    if cfg.get('kind') == 'simlab_pipeline':
+        from scripts.simlab_pipeline import run_managed
+        run_managed(cfg,work)
+        return
     if cfg.get('kind') == 'three_robot_docking':
         public = DATA/'simlab/reports/three-robot-dock-v1/jobs'/work.name
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','scripts.three_robot_study',
@@ -234,11 +238,16 @@ def run_job(path: Path):
     if cfg.get('draft_id'):
         from .training_drafts import load
         reviewed=load(cfg['draft_id'])
-        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer'):
+        for key in ('profile','policy','plan_id','steps','batch_size','seed','device','initial_checkpoint','initial_checkpoint_sha256','diffusion_floor_recipe','vision_initializer','floor_development_gate'):
             if cfg.get(key)!=reviewed.get(key):raise ValueError('Job differs from the reviewed training draft: '+key)
+    if cfg.get('floor_development_gate') and (not cfg.get('draft_id') or
+            cfg.get('checkpoint_interval') != reviewed.get('checkpoint_interval') or cfg.get('checkpoint_interval') != 1000):
+        raise ValueError('A checkpoint gate requires a reviewed simulation draft with 1000-step saves')
     if cfg.get('plan_id'):
         plan = load_plan(cfg['plan_id'])
         splits = plan['splits']
+        if cfg.get('floor_development_gate') and cfg['floor_development_gate']['expected_geometry_sha256'] != plan['sim_model_hash']:
+            raise ValueError('The reviewed gate and dataset use different simulated geometry')
     else:
         splits = json.loads((work/'split.json').read_text()) if (work/'split.json').exists() else (
             {'train': cfg['episodes'], 'validation': [], 'test': []} if cfg['smoke'] else split_episodes(cfg['episodes'], cfg['seed']))
@@ -289,22 +298,35 @@ def run_job(path: Path):
                 command = [a if not a.startswith('--save_freq=') else f'--save_freq={min(steps, interval)}' for a in command]
             (work/f'command-b{batch}.json').write_text(json.dumps(command, indent=2))
             log_path = work/f'trainer-b{batch}.log'
+            development = None
             with log_path.open('a') as log:
-                result = subprocess.run(command, env=offline_environment(), stdout=log, stderr=subprocess.STDOUT)
-            if result.returncode == 0:
+                if cfg.get('floor_development_gate'):
+                    from .floor_development_gate import run as run_gate
+                    development = run_gate(work,output,cfg,batch,command,resume,log)
+                    returncode = 0
+                else:
+                    returncode = subprocess.run(command, env=offline_environment(), stdout=log, stderr=subprocess.STDOUT).returncode
+            if returncode == 0:
                 done = True
-                checkpoint = output/'checkpoints/last/pretrained_model'
-                subprocess.run([sys.executable, '-m', 'explorer4.reload_check', str(checkpoint), str(work/'train'),cfg.get('device','cuda')],
-                               env=offline_environment(), check=True)
-                if splits['validation']:
-                    subprocess.run(evaluation_command(checkpoint, [e['dataset'] for e in splits['validation']],
-                                   work/'evaluation.json', 'held_out_validation'), env=offline_environment(), check=True)
-                (work/'result.json').write_text(json.dumps({'checkpoint': str(checkpoint), 'effective_batch': batch,
-                    'seed': cfg['seed'], 'smoke': cfg['smoke'], 'steps': steps, 'plan_id': cfg.get('plan_id'),
-                    'physical_skill_verified': False, 'test_used': False,'domain':profile(cfg['profile']).get('domain','real'),
-                    'initial_checkpoint':cfg.get('initial_checkpoint'),'resume_checkpoint':resume,
-                    'draft_id':cfg.get('draft_id'),'mixture':cfg.get('mixture'),
-                    'normalization':cfg.get('normalization','train_only'),'training_started':True}))
+                checkpoint = (development['selected_checkpoint'] if development else str(output/'checkpoints/last/pretrained_model'))
+                if checkpoint:
+                    subprocess.run([sys.executable, '-m', 'explorer4.reload_check', str(checkpoint), str(work/'train'),cfg.get('device','cuda')],
+                                   env=offline_environment(), check=True)
+                    if splits['validation']:
+                        subprocess.run(evaluation_command(checkpoint, [e['dataset'] for e in splits['validation']],
+                                       work/'evaluation.json', 'held_out_validation'), env=offline_environment(), check=True)
+                result = {'checkpoint':checkpoint, 'effective_batch':batch, 'seed': cfg['seed'], 'smoke': cfg['smoke'],
+                    'steps':steps, 'plan_id':cfg.get('plan_id'), 'physical_skill_verified':False,'test_used':False,
+                    'domain':profile(cfg['profile']).get('domain','real'),'initial_checkpoint':cfg.get('initial_checkpoint'),
+                    'resume_checkpoint':resume,'draft_id':cfg.get('draft_id'),'mixture':cfg.get('mixture'),
+                    'normalization':cfg.get('normalization','train_only'),'training_started':True}
+                if development:
+                    result.update(steps=development['last_step'],requested_steps=steps,training_result=development['status'],
+                                  selected_step=development['selected_step'],last_checkpoint=development['last_checkpoint'],
+                                  selected_checkpoint=checkpoint,development_gate=str(work/'development-gate/status.json'))
+                temporary = work/'result.tmp'
+                temporary.write_text(json.dumps(result))
+                temporary.replace(work/'result.json')
             elif resume or 'out of memory' not in log_path.read_text().lower() or batch == 1:
                 raise RuntimeError(f'Trainer failed: {log_path}')
     if not done:raise RuntimeError('Обучение не завершилось в разрешённом размере batch; см. журнал задания')

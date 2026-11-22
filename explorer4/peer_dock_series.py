@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import time
+import threading
 import uuid
 
 import numpy as np
@@ -60,7 +61,24 @@ def fixture_pose(fleet):
             raise ValueError('Нет свежей позы '+robot+' на общей карте')
         e=calibration_entry(robot,frame)
         robots[robot]={'pose':list(map(float,pose)),'map_frame_id':frame,'calibration_run':e['validation_run'],
-                       'outward_deg':e['outward_deg']}
+                       'outward_deg':e['outward_deg'],
+                       'mount_sha256':hashlib.sha256(json.dumps([e['camera_sha256'],e['base_from_optical'],
+                           e.get('arm_deg'),e.get('odometry_frames'),e['outward_deg']],sort_keys=True).encode()).hexdigest()}
+    client=field.SensorClient(robot='rosmaster')
+    try:
+        packet=client.snapshot(only=['arm','odometry'])
+    finally:
+        client.close()
+    stream=packet['meta']['streams'].get('arm',{})
+    arm=np.asarray(packet['arrays'].get('arm',[]))
+    odom=packet['meta']['streams'].get('odometry',{})
+    donor=calibration_entry('rosmaster',robots['rosmaster']['map_frame_id'])
+    if (field.stream_age(packet,'arm')>MAX_AGE_S or field.stream_age(packet,'odometry')>MAX_AGE_S or
+        [odom.get('frame_id'),odom.get('child_frame')]!=donor.get('odometry_frames') or
+        arm.shape!=(6,) or not np.isfinite(arm).all() or stream.get('names')!=[f'servo{i}' for i in range(1,7)] or
+        stream.get('unit')!='servo_degrees_from_CubeBot_bridge' or np.max(np.abs(arm-donor['arm_deg']))>2.):
+        raise ValueError('ROSMASTER должен стоять в проверенной позе руки с актуальной одометрией')
+    robots['rosmaster']['arm_deg']=arm.tolist()
     if robots['tank']['map_frame_id']!=robots['rosmaster']['map_frame_id']:
         raise ValueError('Роботы находятся в разных картах')
     if abs(wrap(math.radians(robots['tank']['outward_deg']-robots['rosmaster']['outward_deg'])))>.15:
@@ -68,17 +86,22 @@ def fixture_pose(fleet):
     return robots
 
 
-def label_layout(layout,note,fleet,control):
+def label_layout(layout,note,fleet,control,start_distance_m):
     if control.owner is not None or not control.stop_event.is_set():
         raise ValueError('Сначала нажмите STOP')
     if layout not in ('A','B') or not note.strip():
         raise ValueError('Выберите A/B и опишите метки пола для этой расстановки')
+    p=state()['protocol']
+    if start_distance_m is None or not math.isfinite(start_distance_m) or start_distance_m<=p['terminal_position_tolerance_m']+p['start_position_tolerance_m']:
+        raise ValueError('Измерьте начальное расстояние до креста: Tank должен начинать за пределами допуска')
     poses=fixture_pose(fleet)
-    with fleet_config.locked():
+    with fleet_config.locked(),control.lock:
+        if control.owner is not None or not control.stop_event.is_set():
+            raise ValueError('Во время измерения расстановки нужен STOP')
         s=json.loads(SERIES.read_text())
         if layout in s['fixtures']:
             raise ValueError('Эта расстановка уже зафиксирована')
-        s['fixtures'][layout]={'note':note.strip(),'robots':poses,'created':time.time()}
+        s['fixtures'][layout]={'note':note.strip(),'start_distance_m':start_distance_m,'robots':poses,'created':time.time()}
         field.write_json(SERIES,s)
 
 
@@ -90,7 +113,7 @@ def check_position(s,layout,fleet):
     spec=s['protocol']
     for r,p in actual.items():
         ref=fixture['robots'][r]
-        if (ref['map_frame_id']!=p['map_frame_id'] or ref['calibration_run']!=p['calibration_run'] or
+        if (ref['map_frame_id']!=p['map_frame_id'] or ref['mount_sha256']!=p['mount_sha256'] or
             math.dist(ref['pose'][:2],p['pose'][:2])>spec['start_position_tolerance_m'] or
             abs(wrap(ref['pose'][2]-p['pose'][2]))>spec['start_yaw_tolerance_rad']):
             raise ValueError('Восстановите исходную отметку, курс и калибровку '+r+' для '+layout)
@@ -110,13 +133,25 @@ def observe_one(robot,run_dir,iteration,fleet):
     ident=f'{iteration:03d}-{robot}'
     folder=run_dir/ident
     folder.mkdir(parents=True)
-    obs=field.observe(robot,folder,fleet)
+    try:
+        obs=field.observe(robot,folder,fleet)
+    except Exception as exc:
+        obs={'source_robot':robot,'board_valid':False,'reason':str(exc)}
     result={'id':run_dir.name+'/'+ident,'selected':robot,'observations':{robot:obs}}
     field.write_json(folder/'observation.json',result)
+    base=f'/api/peer-dock/field-series/{run_dir.name}/{ident}/'
+    info={'capture':ident,'source_robot':robot,'evidence':base+'observation.json'}
+    for key,name in (('packet',robot+'.npz'),('preview',robot+'.jpg')):
+        if (folder/name).is_file():
+            info[key]=base+name
     if not obs['board_valid']:
-        return None,{'capture':ident,'reason':obs['reason']}
-    goal=field.measured_goal(result,fleet)
-    return goal,{'capture':ident,'valid':True,'source_robot':robot}
+        return None,{**info,'reason':obs['reason']}
+    try:
+        goal=field.measured_goal(result,fleet)
+    except (ValueError,KeyError,OSError) as exc:
+        return None,{**info,'reason':str(exc)}
+    expires=obs['received_monotonic_ns']/1e9+MAX_AGE_S-obs['rgb_age_s']
+    return goal,{**info,'valid':True,'expires_monotonic_s':expires}
 
 
 class PairedAttempt:
@@ -129,17 +164,23 @@ class PairedAttempt:
         self.run_dir=SERIES.parent/run_id
         self.run_dir.mkdir()
         self.pool=concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        self.future=None;self.initial=True;self.driver=None;self.attempts=0
-        self.done=False;self.active=True;self.events=[];self.samples=[]
+        self.future=None;self.initial=True;self.driver=None;self.attempts=0;self.pending_capture=None
+        self.lock=threading.RLock()
+        self.done=False;self.active=True;self.events=[];self.samples=[];self.measured_goal=None
         self.heading=wrap(math.radians(fixture['tank']['outward_deg'])+math.pi)
         self.frame_id=fixture['tank']['map_frame_id']
         self.submit('tank')
 
     def submit(self,robot):
         self.attempts+=1
+        self.pending_capture=f'{self.attempts:03d}-{robot}'
         self.future=self.pool.submit(observe_one,robot,self.run_dir,self.attempts,self.fleet)
 
     def finish(self,reason):
+        with self.lock:
+            self._finish(reason)
+
+    def _finish(self,reason):
         if self.done:
             return
         self.done=True;self.active=False
@@ -147,17 +188,24 @@ class PairedAttempt:
         if self.driver and self.driver.active:
             self.driver.cancel(reason)
         terminal(self.id,{'reason':reason,'finished':time.time(),'seconds':time.monotonic()-self.start,
-                 'observations':self.events,'command_requests':self.samples,
+                 'observations':self.events,'command_requests':self.samples,'consumed_goal':self.measured_goal,
+                 'unconsumed_capture':self.pending_capture,
+                 'controller_endpoint':self.driver.status() if self.driver else None,
+                 'drive_episode_id':self.driver.episode.id if self.driver and self.driver.episode else None,
                  'scope':'Controller requests only. Physical endpoint requires an independent manual measurement.'})
 
     def cancel(self,reason='operator_stop'):
         self.finish(reason)
 
     def status(self):
-        return {'active':self.active,'message':f'{self.condition}: '+('еду к измеренной цели' if self.driver else 'поиск'),
-                'state':'driving' if self.driver else 'sensing','prompt':self.prompt}
+        details=self.driver.status() if self.driver else {'message':'поиск','state':'sensing'}
+        return {**details,'active':self.active,'message':f'{self.condition}: '+details['message'],'prompt':self.prompt}
 
     def command(self,rgb):
+        with self.lock:
+            return self._command(rgb)
+
+    def _command(self,rgb):
         age=time.monotonic()-self.start
         pose,_,frame=self.fleet.pose_frame('tank',MAX_AGE_S)
         scan=self.fleet.scan('tank')
@@ -175,9 +223,14 @@ class PairedAttempt:
                     goal,info=self.future.result()
                 except Exception as exc:
                     goal,info=None,{'reason':str(exc)}
+                if goal and (time.monotonic()>info['expires_monotonic_s'] or goal['map_frame_id']!=frame):
+                    goal=None
+                    info.update(valid=False,reason='pose expired before operator controller consumed it')
+                self.pending_capture=None
                 self.events.append({'at_s':age,**info})
                 self.initial=False
                 if goal:
+                    self.measured_goal=goal
                     self.driver=field.operator_drive(goal,self.fleet)
                 else:
                     self.submit('tank' if self.condition=='local_scan' else 'rosmaster')
@@ -203,19 +256,24 @@ class PairedAttempt:
         return [v,w]
 
 
-def start(control,session,owner,fleet):
+def start(control,session,owner,fleet,*,fixture_restored):
+    if not fixture_restored:
+        raise ValueError('Перед попыткой восстановите размеченные позиции цели, экрана и обеих машин')
     epoch=field.operator_session(control,session,owner)
+    before=state()
+    layout,condition=next_slot(before)
+    poses=check_position(before,layout,fleet)
     with fleet_config.locked(),control.lock:
         s=json.loads(SERIES.read_text())
-        layout,condition=next_slot(s)
-        poses=check_position(s,layout,fleet)
+        if len(s['attempts'])!=len(before['attempts']) or next_slot(s)!=[layout,condition]:
+            raise ValueError('Попытка уже была начата другим действием')
         if field.operator_session(control,session,owner)!=epoch:
             raise PermissionError('Сессия изменилась')
         if fleet.scan('tank') is None:
             raise ValueError('Нет свежего лидара Tank')
         ident=uuid.uuid4().hex
         s['attempts'].append({'id':ident,'layout':layout,'condition':condition,'slot':len(s['attempts']),
-                              'start':time.time(),'start_poses':poses})
+                              'start':time.time(),'start_poses':poses,'operator_confirmed_marked_fixture':True})
         field.write_json(SERIES,s)
         control.goal=PairedAttempt(ident,condition,s['protocol'],poses,fleet)
         return ident
@@ -226,7 +284,9 @@ def score(control,run_id,dx,dy,yaw_deg,stationary,intervention,note):
         raise ValueError('Физический STOP обязателен до независимого замера')
     if not note.strip() or any(v is None or not math.isfinite(v) for v in (dx,dy,yaw_deg)):
         raise ValueError('Нужны независимые замеры и источник (линейка, угломер или видео)')
-    with fleet_config.locked():
+    with fleet_config.locked(),control.lock:
+        if control.owner is not None or not control.stop_event.is_set():
+            raise ValueError('Для независимого замера требуется STOP')
         s=json.loads(SERIES.read_text())
         if not s['attempts'] or s['attempts'][-1]['id']!=run_id:
             raise ValueError('Выберите текущую попытку')
@@ -237,9 +297,28 @@ def score(control,run_id,dx,dy,yaw_deg,stationary,intervention,note):
         # A controller arrival is insufficient. Intervention or an interrupted/lost run never
         # earns a task success. A successful goal requires actual admitted perception evidence.
         measured=math.hypot(dx,dy)<spec['terminal_position_tolerance_m'] and abs(wrap(math.radians(yaw_deg)))<spec['terminal_yaw_tolerance_rad']
-        valid=any(e.get('valid') for e in runtime.get('observations',[])) and runtime.get('reason') in ('arrived','total_deadline')
+        terminal_reason=runtime.get('reason')
+        completed=terminal_reason in {'arrived','total_deadline','no_measurement_before_deadline','blocked','no_path',
+                                      'unsafe_local_turn_clearance','local_turn_blocked_by_lidar','timeout'}
+        admitted=any(e.get('valid') for e in runtime.get('observations',[]))
+        valid=completed and admitted
         row['endpoint']={'x_error_m':dx,'y_error_m':dy,'heading_error_deg':yaw_deg,'stationary_half_second':stationary,
-                         'operator_intervention':intervention,'measurement_source':note.strip(),'at':time.time(),
+                         'operator_intervention':intervention,'stop_reason':control.last_stop_reason,'measurement_source':note.strip(),'at':time.time(),
+                         'protocol_completed':completed,'perception_admitted':admitted,'independent_geometry_pass':measured,
                          'valid_run':valid,'success':bool(valid and measured and stationary and not intervention)}
         field.write_json(SERIES,s)
         return row['endpoint']
+
+
+
+def report():
+    s=state()
+    outcomes={}
+    for condition in ('selective','local_scan'):
+        rows=[r for r in s['attempts'] if r['condition']==condition]
+        measured=[r['endpoint'] for r in rows if 'endpoint' in r]
+        outcomes[condition]={'started':len(rows),'measured':len(measured),'independent_successes':sum(e['success'] for e in measured)}
+    calibration=json.loads(field.CALIBRATION.read_text()) if field.CALIBRATION.is_file() else {}
+    prerequisites={r:{'verified_current':bool(calibration.get(r,{}).get('verified') and
+                    calibration[r].get('valid_until',0)>time.time())} for r in field.ROBOTS}
+    return {**s,'outcomes':outcomes,'calibration':prerequisites}

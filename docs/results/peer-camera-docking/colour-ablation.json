@@ -1,0 +1,484 @@
+{
+  "protocol": "Post-hoc paired chroma ablation of pre-decision recipient images. Recompute all five selector features; preserve original branch labels.",
+  "colour_conversion": "OpenCV BGR2GRAY followed by GRAY2BGR",
+  "development_sha256": "e850c66bbf55be8007c0e423b0083f9c7b62e0dcabaaa4f5686fa0e3f558b702",
+  "source": "https://arxiv.org/abs/1703.06907",
+  "read_held_out_scenes": 0,
+  "trained_models": 0,
+  "new_motor_rollouts": 0,
+  "distinct_rgb_inputs": 22,
+  "distinct_monochrome_inputs": 5,
+  "identical_monochrome_inputs_with_conflicting_branch_labels": [
+    {
+      "input": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "n": 20,
+      "rescued": 12,
+      "unchanged": 8,
+      "harmed": 0
+    }
+  ],
+  "rows": [
+    {
+      "seed": 861000,
+      "image_sha256": "b65f8b6f58a3abc378e429db2297be06a0e48a1b8c4121b183b0e481b1364803",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861001,
+      "image_sha256": "101785807dbe01dd20f91d6b29e41772b23661f310bf6f658e21c55b0e91b5c7",
+      "rgb_features": [
+        1.0,
+        0.019273677079594598,
+        0.12373427421461708,
+        0.06168655327851128,
+        0.07346875
+      ],
+      "monochrome_features": [
+        1.0,
+        0.019273677079594598,
+        0.12373427421461708,
+        0.06168655327851128,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861002,
+      "image_sha256": "a6628fbfde181629b5c032802f4e5996847feafca44e605b47ea9b546efd6741",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.122078125
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861003,
+      "image_sha256": "e842341983c72fd08741a1b702f4ca9b1aa802b0553b545321329f62ad02d485",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.019
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861004,
+      "image_sha256": "5ab0e3804b9101aac11f1bba346e6ec99726a647ae21886e20dd34f0e8de1c43",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.13975
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861005,
+      "image_sha256": "eaf6f35d29ecdff1d6ec9e9b76ef396ecff9e5bff78d0bdfcb241937118273b0",
+      "rgb_features": [
+        1.0,
+        0.02005293213547904,
+        0.18374570275138788,
+        0.10064630240486136,
+        0.023203125
+      ],
+      "monochrome_features": [
+        1.0,
+        0.02005293213547904,
+        0.18374570275138788,
+        0.10064630240486136,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861006,
+      "image_sha256": "e521039a6a02fb53312474efa1078f6631ef7211a22ef898c47a549c9515a05b",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.115984375
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861007,
+      "image_sha256": "fce353faf2586af5f7d481b173ddae4983b3f928f913f2a2c37ec873ecceedbf",
+      "rgb_features": [
+        1.0,
+        0.016960508775105188,
+        0.10702173042226984,
+        0.04326451772273225,
+        0.018640625
+      ],
+      "monochrome_features": [
+        1.0,
+        0.016960508775105188,
+        0.10702173042226984,
+        0.04326451772273225,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861008,
+      "image_sha256": "a3490118ded8afba72271b87806e0302468ad5bbf3f1968de181d4439684182d",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.104125
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861009,
+      "image_sha256": "03c6bbd57e1ccb4494bdc271a58e47b355a97b4579610e8a9668cafb7ae51763",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.017421875
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861010,
+      "image_sha256": "9a3fe6f5a9f18e144c683ab6c0b57ba9e7e7e3f30822e813f552601ae11ab812",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.08809375
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861011,
+      "image_sha256": "b81f2c9bcec9120f501e86533d06e15d2bbf9fd08f72a0fc0977e1f10341a1d9",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.030796875
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861012,
+      "image_sha256": "430015b3a034760f15367bf245fb561c12c438513238a8c6f6b8416e33caa435",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861013,
+      "image_sha256": "61aea934a9a836af191cec84e18a9a3021cea6921965b5a23a9fd95a99091f20",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.03078125
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 861014,
+      "image_sha256": "025cdc66a6ec4651b8b02faf7976f39ff83e15d087bc43d466ea718e84731d64",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.111421875
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 861015,
+      "image_sha256": "63eccb5477d31993da0c244084c9a7439918f93ba3148d123f9ebcb3894f24a1",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.079296875
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 862000,
+      "image_sha256": "fe483535975cfe9bfe2da462ebc3a6ef450f8db0dca72b8f2d54155110418444",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.145703125
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 862001,
+      "image_sha256": "a0890f2efb1dbb814647e392423e5912744d7147b2a69d35fc189feb084024b9",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.024671875
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 862002,
+      "image_sha256": "79900cd13f7c04fc4bd3003abe078a43068cbfedff240fc403cb67cc8a097aac",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.117234375
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 862003,
+      "image_sha256": "ee4bd1714abcd3405ad354777607950fe731110b5af3b16996247ac2d3239879",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.05534375
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 862004,
+      "image_sha256": "3a70b298aa32cc68def845df42aaf3a9a8b034661b518ae0edb4a39a87bdd515",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 862005,
+      "image_sha256": "987e1017ed9262625f0069155cd21adc0177b631677f01de5e4e6c7ac4c1ee2c",
+      "rgb_features": [
+        1.0,
+        0.017975684876806564,
+        0.08838474119017044,
+        0.17276694775437645,
+        0.021015625
+      ],
+      "monochrome_features": [
+        1.0,
+        0.017975684876806564,
+        0.08838474119017044,
+        0.17276694775437645,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    },
+    {
+      "seed": 862006,
+      "image_sha256": "a0ba8fca1889e330ba1de669d42715364301089a47d56ed49860671560a3ea98",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.07034375
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 1
+    },
+    {
+      "seed": 862007,
+      "image_sha256": "98736fa5de233e57b59d2f929c5c6bfd8f5dbc506890ed43580cd855f5df5aac",
+      "rgb_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.032625
+      ],
+      "monochrome_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "archived_peer_minus_local_success": 0
+    }
+  ]
+}

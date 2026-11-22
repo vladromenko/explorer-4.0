@@ -9,7 +9,7 @@ import time
 import uuid
 from pathlib import Path
 
-from . import catalog
+from . import catalog, training_schedule
 from .paths import DATA, ROOT, offline_environment
 
 QUEUE = DATA / "runs" / "workspace-queue"
@@ -133,7 +133,7 @@ def entries(db, key):
     )
 
 
-def release(key):
+def stage(key):
     verify(key)
     with catalog.connect() as db:
         db.execute("BEGIN IMMEDIATE")
@@ -171,15 +171,26 @@ def release(key):
     return ids
 
 
+def release(key):
+    ids = stage(key)
+    training_schedule.set_start(ids, time.time())
+    return ids
+
+
 def status():
     key = prepared()
     with catalog.connect() as db:
         rows = entries(db, key) if key else []
+        starts = training_schedule.permits(db)
     return dict(
         plan=key,
-        disposition="released"
-        if rows
-        else ("awaiting_release" if key else "unprepared"),
+        disposition=(
+            "awaiting_release"
+            if all(r["status"] == "queued" and r["id"] not in starts for r in rows)
+            else "released"
+        )
+        if key
+        else "unprepared",
         prepared_tracks=[{"track": name, "label": LABELS[name]} for name in TRACKS]
         if key
         else [],
@@ -188,6 +199,7 @@ def status():
                 track=json.loads(r["config"])["track"],
                 id=r["id"],
                 status=r["status"],
+                not_before=starts.get(r["id"]),
                 error=r["error"],
             )
             for r in rows
@@ -254,10 +266,12 @@ def execute(cfg, work):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("prepare", "status", "start"))
+    parser.add_argument("action", choices=("prepare", "stage", "status", "start"))
     args = parser.parse_args()
     if args.action == "prepare":
         answer = prepare()
+    elif args.action == "stage":
+        answer = stage(prepared())
     elif args.action == "start":
         answer = release(prepared())
     else:

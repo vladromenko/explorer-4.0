@@ -15,8 +15,12 @@ from explorer4.sim_protocol import protocol, model_identity
 
 
 def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_model=None,device='cuda',record_floor=False,
-             seed_policy_per_scene=False, expected_protocol=None):
+             seed_policy_per_scene=False, expected_protocol=None, development_starts=None):
     seeds=list(seeds)
+    if development_starts is not None:
+        from .seeded_start import checked_fingerprint
+        if not record_floor or not seed_policy_per_scene or [row['seed'] for row in development_starts] != seeds:
+            raise ValueError('Unexpected order of frozen development starts')
     if record_floor and profile not in {'rosmaster_floor_pick_recorded_start_sim','rosmaster_floor_pick_sim'}:
         raise ValueError('Floor diagnostics require a floor-pick scene')
     output=Path(output);output.parent.mkdir(parents=True,exist_ok=True)
@@ -39,10 +43,17 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
         requested=os.environ.get('EXPLORER_N_ACTION_STEPS')
         if requested is not None and client.ready.get('n_action_steps')!=int(requested):
             raise RuntimeError('Policy worker did not apply the requested execution horizon')
-        for seed in seeds:
+        for index,seed in enumerate(seeds):
             obs,_=env.reset(seed=seed)
+            if development_starts is not None:
+                realized=checked_fingerprint(seed,env,obs,development_starts[index])
             initial_digest=hashlib.sha256(np.asarray(env.data.qpos, dtype='<f8').tobytes()).hexdigest()
-            client.request('reset', **({'seed':seed} if seed_policy_per_scene else {}))
+            if development_starts is not None:
+                reset=client.request('reset',seed=seed,confirm_seed=True)
+                if reset.get('applied_seed')!=seed:
+                    raise ValueError('Inference worker did not confirm the development scene seed')
+            else:
+                client.request('reset', **({'seed':seed} if seed_policy_per_scene else {}))
             # per-episode task text (knowledge-gap profiles carry the object's measured size)
             episode_cfg={**cfg,'task':getattr(env,'task_text',None) or cfg['task']}
             if record_floor:
@@ -63,6 +74,8 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
                 done=terminated or truncated
             trials.append({'seed':seed,'outcome':info['outcome'],'reason':info['termination_reason'],
                            'steps':env.steps,'sim_seconds':env.elapsed,'initial_qpos_sha256':initial_digest})
+            if development_starts is not None:
+                trials[-1].update(realized,policy_seed=reset['applied_seed'])
             if record_floor:
                 trials[-1].update(initial_state=initial_state,cube_xyz0=cube_start.tolist(),
                                   min_tip_cube_cm=100*min_distance,max_lift_cm=100*max_lift,ever_held=ever_held)
@@ -100,6 +113,8 @@ if __name__=='__main__':
     parser.add_argument('--profile',default='so101_pick_place_sim')
     parser.add_argument('--expected-model-sha256')
     parser.add_argument('--queue-config',type=Path)
+    parser.add_argument('--development-starts',type=Path)
+    parser.add_argument('--device',choices=('cpu','cuda'),default='cuda')
     parser.add_argument('--record-floor',action='store_true')
     parser.add_argument('--act-action-steps',type=int)
     parser.add_argument('--seed-policy-per-scene',action='store_true')
@@ -115,5 +130,6 @@ if __name__=='__main__':
             parser.error('Execution horizon comparison requires ACT without temporal ensembling')
         os.environ['EXPLORER_N_ACTION_STEPS']=str(args.act_action_steps)
     evaluate(args.checkpoint, args.output, seeds, args.profile, args.expected_model_sha256,
-             record_floor=args.record_floor, seed_policy_per_scene=args.seed_policy_per_scene,
-             expected_protocol=json.loads(args.queue_config.read_text())['protocol'] if args.queue_config else None)
+             device=args.device, record_floor=args.record_floor, seed_policy_per_scene=args.seed_policy_per_scene,
+             expected_protocol=json.loads(args.queue_config.read_text())['protocol'] if args.queue_config else None,
+             development_starts=json.loads(args.development_starts.read_text()) if args.development_starts else None)

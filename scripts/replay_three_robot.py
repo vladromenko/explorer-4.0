@@ -73,7 +73,57 @@ def replay(folder):
             world.close()
 
 
+def verify_endpoints(folder):
+    """Replay the two distinct commanded paths and independently recompute both terminal distances."""
+    trace=json.loads((folder/'trace.json').read_text())
+    state=load(folder/'observation-state.json')
+    records={}
+    with tempfile.TemporaryDirectory() as temp:
+        world=ThreeRobotDock(Path(temp),trace['seed'],trace['room'])
+        try:
+            observed=order_from_rgb(cv2.imread(str(folder/'so101-order.png'))[:,:,::-1])
+            donor=cv2.imread(str(folder/'rosmaster-stations.png'))[:,:,::-1]
+            required=trace['scorer_only']['customer_station']
+            goals=trace['scorer_only']['station_centres_xy_m']
+            if observed!=trace['order'] or observed['station']!=required:
+                raise ValueError('Source order differs from the scorer')
+            for condition in ('intact','wrong_order'):
+                world.rewind()
+                world.world.restore(state)
+                previous=trace['conditions'][condition]
+                message={**observed,'station':previous['received_order']}
+                pose=world.measure(donor,message)
+                if pose!=previous['consumed']:
+                    raise ValueError('Original camera does not reproduce the delivered pose')
+                current=world.drive(message,pose)
+                xy=world.world.views['tank'].env.data.qpos[:2].copy()
+                distances={k:float(np.linalg.norm(xy-np.asarray(goal))) for k,goal in goals.items()}
+                expected=(distances[required]<.08 and abs(current['yaw_error_rad'])<.15
+                          and current['stable_s']>=.5 and world.world.views['tank'].env.info()['stationary'])
+                if (current['commands_sha256']!=previous['commands_sha256'] or expected!=previous['success']
+                        or abs(distances[required]-previous['distance_to_ordered_dock_m'])>1e-9):
+                    raise ValueError('Independent terminal pose or original commands differ')
+                records[condition]={'terminal_xy_m':xy.tolist(),'distance_by_station_m':distances,
+                                    'confirmed':bool(expected),'commands_sha256':current['commands_sha256']}
+            if trace['conditions']['wrong_pose']['commands_sha256']!=records['wrong_order']['commands_sha256']:
+                raise ValueError('Swapped positions should have the same physical transcript')
+            if any(trace['conditions'][k]['actions']!=0 for k in ('missing_order','missing_pose')):
+                raise ValueError('Robots acted without an observation')
+        finally:
+            world.close()
+    return {'seed':trace['seed'],'room':trace['room'],'order':required,'trace_sha256':digest(folder/'trace.json'),
+            'so101_frame_sha256':trace['order']['frame_sha256'],
+            'rosmaster_frame_sha256':trace['requested_measurement']['source_frame_sha256'],
+            'ordered_xy_m':goals[required],'endpoints':records}
+
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--scene',type=Path,default=DATA/'simlab/reports'/NAME/'868000')
-    replay(parser.parse_args().scene)
+    parser.add_argument('--verify-endpoints',action='store_true')
+    args=parser.parse_args()
+    if args.verify_endpoints:
+        print(json.dumps(verify_endpoints(args.scene),indent=2))
+    else:
+        replay(args.scene)

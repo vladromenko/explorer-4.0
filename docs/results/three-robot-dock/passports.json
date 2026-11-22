@@ -1,0 +1,157 @@
+{
+  "protocol_sha256": "b183574ba493e741756f84ae90c3c95b2641bf5f7b848a28302d13d5f49eae1b",
+  "records": [
+    {
+      "seed": 868000,
+      "room": "workshop",
+      "order": "magenta",
+      "trace_sha256": "71e8a4a14c7b3f546e64efac2c445090e1faae3932658c46e421cf4badaf32a2",
+      "so101_frame_sha256": "663c65b53ff77abf4de28f35b5ef644cf9bcc300adad58e8e746c255a14188b1",
+      "rosmaster_frame_sha256": "ea1f3ed186106ee9345a3076319105102cc0ed15aba511f4da986d9cf94ff4d7",
+      "ordered_xy_m": [
+        0.8191778881235512,
+        -0.21860480552984396
+      ],
+      "endpoints": {
+        "intact": {
+          "terminal_xy_m": [
+            0.8066283651364602,
+            -0.19461206593480074
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.027076596545339303,
+            "blue": 0.36622234393377123
+          },
+          "confirmed": true,
+          "commands_sha256": "0091b77a70c058f68c416587fc9730cc95e30d28195368f069b729137c6ceae2"
+        },
+        "wrong_order": {
+          "terminal_xy_m": [
+            0.8017518856006217,
+            0.18371093338075142
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.40269295913773745,
+            "blue": 0.02133876727562055
+          },
+          "confirmed": false,
+          "commands_sha256": "a9f24291627ca0f583f8e009ca91405e2a8d5d14100493f936403789f45ee14e"
+        }
+      }
+    },
+    {
+      "seed": 868001,
+      "room": "storage",
+      "order": "blue",
+      "trace_sha256": "79687ce25f50ed25dda111b580d391d751717bc5ad8840f5f8243dc38c927ebe",
+      "so101_frame_sha256": "572f30ad202082987a54c8dc865bae70425a86f2083266649c3b43e0a3c9378f",
+      "rosmaster_frame_sha256": "364aa13c6caf8f8624b9ddae77137a334ec86bdbbd39bfc3536e39d1e96d5ec9",
+      "ordered_xy_m": [
+        0.8099661638371076,
+        0.19300574661963887
+      ],
+      "endpoints": {
+        "intact": {
+          "terminal_xy_m": [
+            0.8073255839507404,
+            0.21484521587789518
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.41184793443825674,
+            "blue": 0.021998524487306177
+          },
+          "confirmed": true,
+          "commands_sha256": "792a48b17bd6e9354453c7fa5926c9227dd6787534f96f9b6896a11c9f1a207d"
+        },
+        "wrong_order": {
+          "terminal_xy_m": [
+            0.7956135949331967,
+            -0.1807262522085962
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.021694333275444518,
+            "blue": 0.37400749081039725
+          },
+          "confirmed": false,
+          "commands_sha256": "4c2d73ebb76e42764a845d9248406a2dc969f23e853b3c7ff3a218202d88d5f8"
+        }
+      }
+    },
+    {
+      "seed": 868002,
+      "room": "inspection",
+      "order": "magenta",
+      "trace_sha256": "feebfc8ef2d286c929bd4198df90dac6f3af71ce92a3a29e185dc229dec8ed4c",
+      "so101_frame_sha256": "8673260a155a3ee317ff285acfb13b52d09640385d3b9a2cb586d60507ad72df",
+      "rosmaster_frame_sha256": "d8c0612fdf2371071f7261f571acb89016f804fef4e1332cc5b759402c58d25c",
+      "ordered_xy_m": [
+        0.7830550080935357,
+        0.20659109129722353
+      ],
+      "endpoints": {
+        "intact": {
+          "terminal_xy_m": [
+            0.7718895573039831,
+            0.2168481870197809
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.015161639225216529,
+            "blue": 0.40041279945525027
+          },
+          "confirmed": true,
+          "commands_sha256": "b8351386b279ef0e5594b3481c342b5641f83ecd8c14402c8f1b9c45164db713"
+        },
+        "wrong_order": {
+          "terminal_xy_m": [
+            0.7720083631514891,
+            -0.16617964896076276
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.3729343818380959,
+            "blue": 0.020466454400638653
+          },
+          "confirmed": false,
+          "commands_sha256": "21cc6436c11966b0eeaebbe4fe4994aa351554f98d78f881c17709df1be30f12"
+        }
+      }
+    },
+    {
+      "seed": 868003,
+      "room": "workshop",
+      "order": "blue",
+      "trace_sha256": "4879d0b32f0cbcca0a19a270609f27ac908446a4bb98c69945872dfabc65e699",
+      "so101_frame_sha256": "4864e7b75f8945b01de1e5ead08637d1261767055f333d8fde3f9a2d89a35dc9",
+      "rosmaster_frame_sha256": "0187ce4ab75fefa8c16624944c4f8f33325ad64cd0537ce95d29ad8ce326fd76",
+      "ordered_xy_m": [
+        0.7994852786558677,
+        -0.15929688871074443
+      ],
+      "endpoints": {
+        "intact": {
+          "terminal_xy_m": [
+            0.7987584227207236,
+            -0.13078373104162241
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.3614875730891722,
+            "blue": 0.028522420651386972
+          },
+          "confirmed": true,
+          "commands_sha256": "1c926a95bdb2a60037b85ae64bea46bf3dfeae50603b415d1f4b6780a58d0fa4"
+        },
+        "wrong_order": {
+          "terminal_xy_m": [
+            0.7799831870876477,
+            0.23324102052148862
+          ],
+          "distance_by_station_m": {
+            "magenta": 0.01966653398050332,
+            "blue": 0.3930220626885317
+          },
+          "confirmed": false,
+          "commands_sha256": "e49ba8e9f8d9a0b2b66294c7f5e3934d8337d8d21bb39e88e3569f7c5b61fae7"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1137 @@
+{
+  "checked_at": 1795375550.655018,
+  "nav2_readiness": {
+    "tank": {
+      "sampled_views": 2,
+      "navigate_to_pose_server_seen": false,
+      "full_observed_chain": [],
+      "observation_prerequisites_present": false,
+      "authorization": "Observation only. Motor ownership and physical clearance are separate."
+    },
+    "rosmaster": {
+      "sampled_views": 2,
+      "navigate_to_pose_server_seen": false,
+      "full_observed_chain": [],
+      "observation_prerequisites_present": false,
+      "authorization": "Observation only. Motor ownership and physical clearance are separate."
+    }
+  },
+  "same_map_comparison": {
+    "map_sha256": {
+      "explorer-map-20261030.yaml": "bab2052f08c2244f12763eca3c26ef31ecfc4b6af6d22bcc1ddc4a42b0fa97ef",
+      "explorer-map-20261030.pgm": "afde1bffc610fa3304319f32bee1ed93eb856bd9c9e007aeef14e0d256a93b87"
+    },
+    "start_m": [
+      0.0,
+      0.0
+    ],
+    "goal_m": [
+      0.5,
+      0.0
+    ],
+    "original_nav2": {
+      "status": "PASS",
+      "domain_id": 31,
+      "isolated_from_robot": true,
+      "actuator_commands": 0,
+      "map": "copied provisional Explorer map",
+      "start": [
+        0.0,
+        0.0
+      ],
+      "goal": [
+        0.5,
+        0.0
+      ],
+      "path_points": 16,
+      "path_length_m": 0.5191547295824355,
+      "planning_time_s": 0.006068299000162369
+    },
+    "original_nav2_endpoint_coordinates_saved": false,
+    "explorer": {
+      "grid_resolution_m": 0.1,
+      "unknown_traversal": false,
+      "inflation_radius_m": 0.22,
+      "waypoints_m": [
+        [
+          0.05,
+          0.05
+        ],
+        [
+          0.25,
+          0.05
+        ],
+        [
+          0.35000000000000003,
+          0.05
+        ]
+      ],
+      "path_length_between_returned_waypoints_m": 0.30000000000000004,
+      "first_waypoint_error_m": 0.07071067811865475,
+      "requested_cell_in_inflation": true,
+      "goal_cell_relocated": true,
+      "terminal_waypoint_error_m": 0.15811388300841894,
+      "terminal_within_8cm_dock_tolerance": false
+    },
+    "scope": "Planner-only historical NavFn and current Explorer A* on the same provisional map and requested pose. Cell-centre sampling and planner tolerances differ. No drive, localization or route-time comparison.",
+    "terminal_controller_regression": {
+      "kind": "offline state-machine fixture, measured archive-map endpoint, imposed obstacle for over three seconds, zero yaw error; no robot motion or physical endpoint",
+      "previous_source_sha256": "84208da6a6d94c5ff0a0438668acb9692b03b46992c736b8aa7a0a1cd48dd48f",
+      "new_source_sha256": "cd0fafa36f4c9e65094453114495c8268aa007c97187a20bbd87f80061f62ad8",
+      "previous": {
+        "controller_state": "arrived",
+        "final_tolerance_m": 0.17811388300841893,
+        "motor_commands_sent": 0
+      },
+      "updated": {
+        "controller_state": "blocked",
+        "final_tolerance_m": 0.06,
+        "motor_commands_sent": 0
+      }
+    }
+  },
+  "mode": "Ephemeral ROS graph discovery, five seconds per view; only scan, odometry and TF subscriptions.",
+  "motion_commands_sent": 0,
+  "services_called": 0,
+  "goals_sent": 0,
+  "views": {
+    "tank/1": {
+      "available": true,
+      "distro": "humble",
+      "installed_file_sha256": {
+        "/home/ubuntu/ros2_ws/src/navigation/config/nav2_params.yaml": "b8894f8b4af45c873737a6b3379e0a40889942031daf92a784b52c1667895b57",
+        "/home/ubuntu/ros2_ws/src/navigation/config/nav2_controller_dwb.yaml": "855c3c520f868937608f164742b9c38052734999c554c0bed5a8433de118fc27",
+        "/home/ubuntu/ros2_ws/src/navigation/launch/navigation.launch.py": "7078592b40d4f6cf6ff8aa1d566bcd9eb9a1d9ffddeaa998f713fe614a195b77",
+        "/home/ubuntu/ros2_ws/src/driver/controller/controller/odom_publisher_node.py": "e99e5d8ae07b923fd6b024735767607b3e1f32689fffff69cd8c62ad066f128c",
+        "/home/ubuntu/ros2_ws/src/driver/ros_robot_controller/ros_robot_controller/ros_robot_controller_sdk.py": "8799515186fe6f2a914759ad42d4988c45489646edc00aa5b38fb034e8f89ce6"
+      },
+      "previous_isolated_planning_report": null,
+      "domain": "0",
+      "localhost_only": "1",
+      "at_unix_s": 1795375549.9621296,
+      "graph_nodes": [
+        "/explorer3_sensor_observer",
+        "/hand_trajectory",
+        "/joystick_control",
+        "/lidar_app",
+        "/rosapi",
+        "/rosapi_params"
+      ],
+      "navigate_to_pose_servers": [],
+      "topics": {
+        "/explorer3/tank/scan_raw": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 0,
+          "publisher_nodes": []
+        },
+        "/scan_raw": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 0,
+          "publisher_nodes": []
+        },
+        "/tf_static": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 0,
+          "publisher_nodes": []
+        }
+      },
+      "frames_received": {},
+      "tf_edges": [],
+      "latest_tf_lookups": [],
+      "visible_packages": {
+        "app": "/home/ubuntu/ros2_ws/install/app",
+        "bringup": "/home/ubuntu/ros2_ws/install/bringup",
+        "controller": "/home/ubuntu/ros2_ws/install/controller",
+        "mentorpi_description": "/home/ubuntu/ros2_ws/install/mentorpi_description",
+        "nav2_amcl": "/opt/ros/humble",
+        "nav2_behavior_tree": "/opt/ros/humble",
+        "nav2_behaviors": "/opt/ros/humble",
+        "nav2_bringup": "/opt/ros/humble",
+        "nav2_bt_navigator": "/opt/ros/humble",
+        "nav2_collision_monitor": "/opt/ros/humble",
+        "nav2_common": "/opt/ros/humble",
+        "nav2_constrained_smoother": "/opt/ros/humble",
+        "nav2_controller": "/opt/ros/humble",
+        "nav2_core": "/opt/ros/humble",
+        "nav2_costmap_2d": "/opt/ros/humble",
+        "nav2_dwb_controller": "/opt/ros/humble",
+        "nav2_lifecycle_manager": "/opt/ros/humble",
+        "nav2_map_server": "/opt/ros/humble",
+        "nav2_mppi_controller": "/opt/ros/humble",
+        "nav2_msgs": "/opt/ros/humble",
+        "nav2_navfn_planner": "/opt/ros/humble",
+        "nav2_planner": "/opt/ros/humble",
+        "nav2_regulated_pure_pursuit_controller": "/opt/ros/humble",
+        "nav2_rotation_shim_controller": "/opt/ros/humble",
+        "nav2_rviz_plugins": "/opt/ros/humble",
+        "nav2_simple_commander": "/opt/ros/humble",
+        "nav2_smac_planner": "/opt/ros/humble",
+        "nav2_smoother": "/opt/ros/humble",
+        "nav2_theta_star_planner": "/opt/ros/humble",
+        "nav2_util": "/opt/ros/humble",
+        "nav2_velocity_smoother": "/opt/ros/humble",
+        "nav2_voxel_grid": "/opt/ros/humble",
+        "nav2_waypoint_follower": "/opt/ros/humble",
+        "navigation": "/home/ubuntu/ros2_ws/install/navigation",
+        "peripherals": "/home/ubuntu/ros2_ws/install/peripherals",
+        "robot_localization": "/opt/ros/humble",
+        "ros_robot_controller": "/home/ubuntu/ros2_ws/install/ros_robot_controller",
+        "slam": "/home/ubuntu/ros2_ws/install/slam",
+        "slam_toolbox": "/opt/ros/humble",
+        "tf2_ros": "/opt/ros/humble"
+      }
+    },
+    "tank/0": {
+      "available": true,
+      "distro": "humble",
+      "installed_file_sha256": {
+        "/home/ubuntu/ros2_ws/src/navigation/config/nav2_params.yaml": "b8894f8b4af45c873737a6b3379e0a40889942031daf92a784b52c1667895b57",
+        "/home/ubuntu/ros2_ws/src/navigation/config/nav2_controller_dwb.yaml": "855c3c520f868937608f164742b9c38052734999c554c0bed5a8433de118fc27",
+        "/home/ubuntu/ros2_ws/src/navigation/launch/navigation.launch.py": "7078592b40d4f6cf6ff8aa1d566bcd9eb9a1d9ffddeaa998f713fe614a195b77",
+        "/home/ubuntu/ros2_ws/src/driver/controller/controller/odom_publisher_node.py": "e99e5d8ae07b923fd6b024735767607b3e1f32689fffff69cd8c62ad066f128c",
+        "/home/ubuntu/ros2_ws/src/driver/ros_robot_controller/ros_robot_controller/ros_robot_controller_sdk.py": "8799515186fe6f2a914759ad42d4988c45489646edc00aa5b38fb034e8f89ce6"
+      },
+      "previous_isolated_planning_report": null,
+      "domain": "0",
+      "localhost_only": "0",
+      "at_unix_s": 1795375549.7663229,
+      "graph_nodes": [
+        "/MS200",
+        "/_ros2cli_daemon_0_9942e8053af54a40845f977d215885fd",
+        "/_web_video_server",
+        "/aurora/aurora",
+        "/ekf_filter_node",
+        "/explorer3_sensor_observer",
+        "/hand_gesture",
+        "/hand_trajectory",
+        "/imu_calib",
+        "/imu_filter",
+        "/init_pose",
+        "/joint_state_publisher",
+        "/joy_node",
+        "/joystick_control",
+        "/lidar_app",
+        "/line_following",
+        "/object_tracking",
+        "/odom_publisher",
+        "/robot_state_publisher",
+        "/ros_robot_controller",
+        "/rosapi",
+        "/rosapi_params",
+        "/rosbridge_websocket",
+        "/startup_check_node",
+        "/static_transform_publisher_5D1JpGZMUCsPqwVm",
+        "/static_transform_publisher_UCPQJqP4fNIaoTfC",
+        "/static_transform_publisher_YZHcXh9SKdvWQ6iT",
+        "/transform_listener_impl_555661f7dbd0",
+        "/web_video_server"
+      ],
+      "navigate_to_pose_servers": [],
+      "topics": {
+        "/explorer3/tank/scan_raw": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 0,
+          "publisher_nodes": []
+        },
+        "/odom": {
+          "types": [
+            "nav_msgs/msg/Odometry"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/ekf_filter_node"
+          ]
+        },
+        "/odom_raw": {
+          "types": [
+            "nav_msgs/msg/Odometry"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/odom_publisher"
+          ]
+        },
+        "/odom_rf2o": {
+          "types": [
+            "nav_msgs/msg/Odometry"
+          ],
+          "publishers": 0,
+          "publisher_nodes": []
+        },
+        "/scan_raw": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/MS200"
+          ]
+        },
+        "/tf": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 3,
+          "publisher_nodes": [
+            "/ekf_filter_node",
+            "/imu_filter",
+            "/robot_state_publisher"
+          ]
+        },
+        "/tf_static": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 5,
+          "publisher_nodes": [
+            "/aurora/aurora",
+            "/robot_state_publisher",
+            "/static_transform_publisher_5D1JpGZMUCsPqwVm",
+            "/static_transform_publisher_UCPQJqP4fNIaoTfC",
+            "/static_transform_publisher_YZHcXh9SKdvWQ6iT"
+          ]
+        }
+      },
+      "frames_received": {
+        "/odom": {
+          "messages": 149,
+          "frame": "odom",
+          "ros_stamp_s": 1795375549.7271852,
+          "child_frame": "base_footprint",
+          "age_s": 0.027
+        },
+        "/odom_raw": {
+          "messages": 225,
+          "frame": "odom",
+          "ros_stamp_s": 1795375549.7528257,
+          "child_frame": "base_footprint",
+          "age_s": 0.001
+        },
+        "/scan_raw": {
+          "messages": 45,
+          "frame": "lidar_frame",
+          "ros_stamp_s": 1795375549.5774865,
+          "age_s": 0.177
+        }
+      },
+      "tf_edges": [
+        {
+          "parent": "base_footprint",
+          "child": "base_link",
+          "static": true
+        },
+        {
+          "parent": "base_link",
+          "child": "base_chaais",
+          "static": true
+        },
+        {
+          "parent": "base_link",
+          "child": "body_board_link",
+          "static": true
+        },
+        {
+          "parent": "base_link",
+          "child": "depth_cam",
+          "static": true
+        },
+        {
+          "parent": "base_link",
+          "child": "imu_link",
+          "static": true
+        },
+        {
+          "parent": "base_link",
+          "child": "lidar_frame",
+          "static": true
+        },
+        {
+          "parent": "depth_cam",
+          "child": "depth_camera_link",
+          "static": true
+        },
+        {
+          "parent": "depth_cam",
+          "child": "depth_camera_link_1",
+          "static": true
+        },
+        {
+          "parent": "depth_cam",
+          "child": "rgb_camera_link_1",
+          "static": true
+        },
+        {
+          "parent": "depth_camera_link",
+          "child": "rgb_camera_link",
+          "static": true
+        },
+        {
+          "parent": "odom",
+          "child": "base_footprint",
+          "static": false
+        }
+      ],
+      "latest_tf_lookups": [
+        {
+          "world": "map",
+          "odom": "odom",
+          "base": "base_link",
+          "map_to_odom": false,
+          "odom_to_base": true,
+          "base_to_laser": {
+            "lidar_frame": true
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom_raw",
+          "base": "base_link",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "lidar_frame": true
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom",
+          "base": "base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": true,
+          "base_to_laser": {
+            "lidar_frame": true
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom_raw",
+          "base": "base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "lidar_frame": true
+          }
+        }
+      ],
+      "visible_packages": {
+        "app": "/home/ubuntu/ros2_ws/install/app",
+        "bringup": "/home/ubuntu/ros2_ws/install/bringup",
+        "controller": "/home/ubuntu/ros2_ws/install/controller",
+        "mentorpi_description": "/home/ubuntu/ros2_ws/install/mentorpi_description",
+        "nav2_amcl": "/opt/ros/humble",
+        "nav2_behavior_tree": "/opt/ros/humble",
+        "nav2_behaviors": "/opt/ros/humble",
+        "nav2_bringup": "/opt/ros/humble",
+        "nav2_bt_navigator": "/opt/ros/humble",
+        "nav2_collision_monitor": "/opt/ros/humble",
+        "nav2_common": "/opt/ros/humble",
+        "nav2_constrained_smoother": "/opt/ros/humble",
+        "nav2_controller": "/opt/ros/humble",
+        "nav2_core": "/opt/ros/humble",
+        "nav2_costmap_2d": "/opt/ros/humble",
+        "nav2_dwb_controller": "/opt/ros/humble",
+        "nav2_lifecycle_manager": "/opt/ros/humble",
+        "nav2_map_server": "/opt/ros/humble",
+        "nav2_mppi_controller": "/opt/ros/humble",
+        "nav2_msgs": "/opt/ros/humble",
+        "nav2_navfn_planner": "/opt/ros/humble",
+        "nav2_planner": "/opt/ros/humble",
+        "nav2_regulated_pure_pursuit_controller": "/opt/ros/humble",
+        "nav2_rotation_shim_controller": "/opt/ros/humble",
+        "nav2_rviz_plugins": "/opt/ros/humble",
+        "nav2_simple_commander": "/opt/ros/humble",
+        "nav2_smac_planner": "/opt/ros/humble",
+        "nav2_smoother": "/opt/ros/humble",
+        "nav2_theta_star_planner": "/opt/ros/humble",
+        "nav2_util": "/opt/ros/humble",
+        "nav2_velocity_smoother": "/opt/ros/humble",
+        "nav2_voxel_grid": "/opt/ros/humble",
+        "nav2_waypoint_follower": "/opt/ros/humble",
+        "navigation": "/home/ubuntu/ros2_ws/install/navigation",
+        "peripherals": "/home/ubuntu/ros2_ws/install/peripherals",
+        "robot_localization": "/opt/ros/humble",
+        "ros_robot_controller": "/home/ubuntu/ros2_ws/install/ros_robot_controller",
+        "slam": "/home/ubuntu/ros2_ws/install/slam",
+        "slam_toolbox": "/opt/ros/humble",
+        "tf2_ros": "/opt/ros/humble"
+      }
+    },
+    "rosmaster/1": {
+      "available": true,
+      "distro": "jazzy",
+      "installed_file_sha256": {
+        "/home/vlad/Projects/rosmaster_autonomous_collector/scripts/run_nav2_dry_run.sh": "bb50acb6eba45ca0837f23c34c41979da7253a15cb2cc75fcb4e252932e1e16d",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/scripts/nav2_dry_run_client.py": "0c518a5890754e6fe4e2578c5588b2ee4c641d2539fce0eba8b86f5a54f72ff1",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/config/nav2-dry-run.yaml": "fe4a4392f7ffef3391170c716c21d8d969c5745cd8bb78a925d41b07615243dc",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/logs/nav2-dry-run-20261102.json": "a64d2229ad3be8d6b70f5b2dd45413a4e109e860a4fa166456b8cf22eb29a0cb",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/config/explorer-map-20261030.yaml": "bab2052f08c2244f12763eca3c26ef31ecfc4b6af6d22bcc1ddc4a42b0fa97ef",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/config/explorer-map-20261030.pgm": "afde1bffc610fa3304319f32bee1ed93eb856bd9c9e007aeef14e0d256a93b87",
+        "/home/vlad/explorer3/native/cubebot/robot_io.py": "628c6526ca10c86771b29c0e1b92151d5b1d7523f0480cd781360c50f6c369d5",
+        "/home/vlad/explorer3/native/cubebot/base_control.py": "93435ab92769a6b7dee8d05072348dcb8a009adc9c10630ae56a9cf68d8e07e1",
+        "/home/vlad/explorer3/native/cubebot/arm_model.py": "e38e4b56026e9cbe955dc0963a61aa65c4a3c964f9d5c0ecb84a0b8c9c7d8e4f"
+      },
+      "previous_isolated_planning_report": {
+        "status": "PASS",
+        "domain_id": 31,
+        "isolated_from_robot": true,
+        "actuator_commands": 0,
+        "map": "copied provisional Explorer map",
+        "start": [
+          0.0,
+          0.0
+        ],
+        "goal": [
+          0.5,
+          0.0
+        ],
+        "path_points": 16,
+        "path_length_m": 0.5191547295824355,
+        "planning_time_s": 0.006068299000162369
+      },
+      "domain": "30",
+      "localhost_only": "1",
+      "at_unix_s": 1795375547.8520246,
+      "graph_nodes": [
+        "/camera/camera",
+        "/camera/camera_container",
+        "/explorer3_sensor_observer",
+        "/explorer_camera_cache",
+        "/explorer_control",
+        "/explorer_power",
+        "/explorer_watchdog",
+        "/launch_ros_2354",
+        "/robotio"
+      ],
+      "navigate_to_pose_servers": [],
+      "topics": {
+        "/odom_raw": {
+          "types": [
+            "nav_msgs/msg/Odometry"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/robotio"
+          ]
+        },
+        "/scan0": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/robotio"
+          ]
+        },
+        "/scan1": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/robotio"
+          ]
+        },
+        "/tf_static": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/camera/camera"
+          ]
+        },
+        "/tf": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/camera/camera"
+          ]
+        }
+      },
+      "frames_received": {
+        "/odom_raw": {
+          "messages": 163,
+          "frame": "odom_raw",
+          "ros_stamp_s": 1795375547.8448257,
+          "child_frame": "base_footprint",
+          "age_s": 0.002
+        },
+        "/scan0": {
+          "messages": 21,
+          "frame": "laser0_frame",
+          "ros_stamp_s": 1795375547.7216935,
+          "age_s": 0.125
+        },
+        "/scan1": {
+          "messages": 21,
+          "frame": "laser1_frame",
+          "ros_stamp_s": 1795375547.7421665,
+          "age_s": 0.104
+        }
+      },
+      "tf_edges": [
+        {
+          "parent": "camera_color_frame",
+          "child": "camera_color_optical_frame",
+          "static": true
+        },
+        {
+          "parent": "camera_depth_frame",
+          "child": "camera_color_frame",
+          "static": true
+        },
+        {
+          "parent": "camera_depth_frame",
+          "child": "camera_depth_optical_frame",
+          "static": true
+        },
+        {
+          "parent": "camera_link",
+          "child": "camera_depth_frame",
+          "static": true
+        }
+      ],
+      "latest_tf_lookups": [
+        {
+          "world": "map",
+          "odom": "odom_raw",
+          "base": "base_link",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "laser0_frame": false,
+            "laser1_frame": false
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom",
+          "base": "base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "laser0_frame": false,
+            "laser1_frame": false
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom_raw",
+          "base": "base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "laser0_frame": false,
+            "laser1_frame": false
+          }
+        }
+      ],
+      "visible_packages": {
+        "arm_msgs": "/home/vlad/explorer3/vendor/ros/arm_msgs",
+        "controller_manager": "/home/vlad/explorer3/vendor/ros/moveit",
+        "moveit_ros_move_group": "/home/vlad/explorer3/vendor/ros/moveit",
+        "nav2_amcl": "/opt/ros/jazzy",
+        "nav2_behavior_tree": "/opt/ros/jazzy",
+        "nav2_behaviors": "/opt/ros/jazzy",
+        "nav2_bringup": "/opt/ros/jazzy",
+        "nav2_bt_navigator": "/opt/ros/jazzy",
+        "nav2_collision_monitor": "/opt/ros/jazzy",
+        "nav2_common": "/opt/ros/jazzy",
+        "nav2_constrained_smoother": "/opt/ros/jazzy",
+        "nav2_controller": "/opt/ros/jazzy",
+        "nav2_core": "/opt/ros/jazzy",
+        "nav2_costmap_2d": "/opt/ros/jazzy",
+        "nav2_dwb_controller": "/opt/ros/jazzy",
+        "nav2_graceful_controller": "/opt/ros/jazzy",
+        "nav2_lifecycle_manager": "/opt/ros/jazzy",
+        "nav2_map_server": "/opt/ros/jazzy",
+        "nav2_minimal_tb3_sim": "/opt/ros/jazzy",
+        "nav2_minimal_tb4_description": "/opt/ros/jazzy",
+        "nav2_minimal_tb4_sim": "/opt/ros/jazzy",
+        "nav2_mppi_controller": "/opt/ros/jazzy",
+        "nav2_msgs": "/opt/ros/jazzy",
+        "nav2_navfn_planner": "/opt/ros/jazzy",
+        "nav2_planner": "/opt/ros/jazzy",
+        "nav2_regulated_pure_pursuit_controller": "/opt/ros/jazzy",
+        "nav2_rotation_shim_controller": "/opt/ros/jazzy",
+        "nav2_route": "/opt/ros/jazzy",
+        "nav2_rviz_plugins": "/opt/ros/jazzy",
+        "nav2_simple_commander": "/opt/ros/jazzy",
+        "nav2_smac_planner": "/opt/ros/jazzy",
+        "nav2_smoother": "/opt/ros/jazzy",
+        "nav2_theta_star_planner": "/opt/ros/jazzy",
+        "nav2_util": "/opt/ros/jazzy",
+        "nav2_velocity_smoother": "/opt/ros/jazzy",
+        "nav2_voxel_grid": "/opt/ros/jazzy",
+        "nav2_waypoint_follower": "/opt/ros/jazzy",
+        "orbbec_camera": "/home/vlad/explorer3/vendor/ros/orbbec_camera",
+        "robot_localization": "/opt/ros/jazzy",
+        "slam_toolbox": "/opt/ros/jazzy",
+        "tf2_ros": "/opt/ros/jazzy"
+      }
+    },
+    "rosmaster/0": {
+      "available": true,
+      "distro": "jazzy",
+      "installed_file_sha256": {
+        "/home/vlad/Projects/rosmaster_autonomous_collector/scripts/run_nav2_dry_run.sh": "bb50acb6eba45ca0837f23c34c41979da7253a15cb2cc75fcb4e252932e1e16d",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/scripts/nav2_dry_run_client.py": "0c518a5890754e6fe4e2578c5588b2ee4c641d2539fce0eba8b86f5a54f72ff1",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/config/nav2-dry-run.yaml": "fe4a4392f7ffef3391170c716c21d8d969c5745cd8bb78a925d41b07615243dc",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/logs/nav2-dry-run-20261102.json": "a64d2229ad3be8d6b70f5b2dd45413a4e109e860a4fa166456b8cf22eb29a0cb",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/config/explorer-map-20261030.yaml": "bab2052f08c2244f12763eca3c26ef31ecfc4b6af6d22bcc1ddc4a42b0fa97ef",
+        "/home/vlad/Projects/rosmaster_autonomous_collector/config/explorer-map-20261030.pgm": "afde1bffc610fa3304319f32bee1ed93eb856bd9c9e007aeef14e0d256a93b87",
+        "/home/vlad/explorer3/native/cubebot/robot_io.py": "628c6526ca10c86771b29c0e1b92151d5b1d7523f0480cd781360c50f6c369d5",
+        "/home/vlad/explorer3/native/cubebot/base_control.py": "93435ab92769a6b7dee8d05072348dcb8a009adc9c10630ae56a9cf68d8e07e1",
+        "/home/vlad/explorer3/native/cubebot/arm_model.py": "e38e4b56026e9cbe955dc0963a61aa65c4a3c964f9d5c0ecb84a0b8c9c7d8e4f"
+      },
+      "previous_isolated_planning_report": {
+        "status": "PASS",
+        "domain_id": 31,
+        "isolated_from_robot": true,
+        "actuator_commands": 0,
+        "map": "copied provisional Explorer map",
+        "start": [
+          0.0,
+          0.0
+        ],
+        "goal": [
+          0.5,
+          0.0
+        ],
+        "path_points": 16,
+        "path_length_m": 0.5191547295824355,
+        "planning_time_s": 0.006068299000162369
+      },
+      "domain": "30",
+      "localhost_only": "0",
+      "at_unix_s": 1795375547.8705842,
+      "graph_nodes": [
+        "/camera/camera",
+        "/camera/camera_container",
+        "/explorer3_sensor_observer",
+        "/explorer_camera_cache",
+        "/explorer_control",
+        "/explorer_power",
+        "/explorer_watchdog",
+        "/launch_ros_2354",
+        "/robotio"
+      ],
+      "navigate_to_pose_servers": [],
+      "topics": {
+        "/odom_raw": {
+          "types": [
+            "nav_msgs/msg/Odometry"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/robotio"
+          ]
+        },
+        "/scan0": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/robotio"
+          ]
+        },
+        "/scan1": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/robotio"
+          ]
+        },
+        "/tf_static": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/camera/camera"
+          ]
+        },
+        "/tf": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/camera/camera"
+          ]
+        }
+      },
+      "frames_received": {
+        "/odom_raw": {
+          "messages": 236,
+          "frame": "odom_raw",
+          "ros_stamp_s": 1795375547.8640888,
+          "child_frame": "base_footprint",
+          "age_s": 0.002
+        },
+        "/scan1": {
+          "messages": 30,
+          "frame": "laser1_frame",
+          "ros_stamp_s": 1795375547.7421665,
+          "age_s": 0.123
+        },
+        "/scan0": {
+          "messages": 29,
+          "frame": "laser0_frame",
+          "ros_stamp_s": 1795375547.7216935,
+          "age_s": 0.144
+        }
+      },
+      "tf_edges": [
+        {
+          "parent": "camera_color_frame",
+          "child": "camera_color_optical_frame",
+          "static": true
+        },
+        {
+          "parent": "camera_depth_frame",
+          "child": "camera_color_frame",
+          "static": true
+        },
+        {
+          "parent": "camera_depth_frame",
+          "child": "camera_depth_optical_frame",
+          "static": true
+        },
+        {
+          "parent": "camera_link",
+          "child": "camera_depth_frame",
+          "static": true
+        }
+      ],
+      "latest_tf_lookups": [
+        {
+          "world": "map",
+          "odom": "odom_raw",
+          "base": "base_link",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "laser0_frame": false,
+            "laser1_frame": false
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom",
+          "base": "base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "laser0_frame": false,
+            "laser1_frame": false
+          }
+        },
+        {
+          "world": "map",
+          "odom": "odom_raw",
+          "base": "base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "laser0_frame": false,
+            "laser1_frame": false
+          }
+        }
+      ],
+      "visible_packages": {
+        "arm_msgs": "/home/vlad/explorer3/vendor/ros/arm_msgs",
+        "controller_manager": "/home/vlad/explorer3/vendor/ros/moveit",
+        "moveit_ros_move_group": "/home/vlad/explorer3/vendor/ros/moveit",
+        "nav2_amcl": "/opt/ros/jazzy",
+        "nav2_behavior_tree": "/opt/ros/jazzy",
+        "nav2_behaviors": "/opt/ros/jazzy",
+        "nav2_bringup": "/opt/ros/jazzy",
+        "nav2_bt_navigator": "/opt/ros/jazzy",
+        "nav2_collision_monitor": "/opt/ros/jazzy",
+        "nav2_common": "/opt/ros/jazzy",
+        "nav2_constrained_smoother": "/opt/ros/jazzy",
+        "nav2_controller": "/opt/ros/jazzy",
+        "nav2_core": "/opt/ros/jazzy",
+        "nav2_costmap_2d": "/opt/ros/jazzy",
+        "nav2_dwb_controller": "/opt/ros/jazzy",
+        "nav2_graceful_controller": "/opt/ros/jazzy",
+        "nav2_lifecycle_manager": "/opt/ros/jazzy",
+        "nav2_map_server": "/opt/ros/jazzy",
+        "nav2_minimal_tb3_sim": "/opt/ros/jazzy",
+        "nav2_minimal_tb4_description": "/opt/ros/jazzy",
+        "nav2_minimal_tb4_sim": "/opt/ros/jazzy",
+        "nav2_mppi_controller": "/opt/ros/jazzy",
+        "nav2_msgs": "/opt/ros/jazzy",
+        "nav2_navfn_planner": "/opt/ros/jazzy",
+        "nav2_planner": "/opt/ros/jazzy",
+        "nav2_regulated_pure_pursuit_controller": "/opt/ros/jazzy",
+        "nav2_rotation_shim_controller": "/opt/ros/jazzy",
+        "nav2_route": "/opt/ros/jazzy",
+        "nav2_rviz_plugins": "/opt/ros/jazzy",
+        "nav2_simple_commander": "/opt/ros/jazzy",
+        "nav2_smac_planner": "/opt/ros/jazzy",
+        "nav2_smoother": "/opt/ros/jazzy",
+        "nav2_theta_star_planner": "/opt/ros/jazzy",
+        "nav2_util": "/opt/ros/jazzy",
+        "nav2_velocity_smoother": "/opt/ros/jazzy",
+        "nav2_voxel_grid": "/opt/ros/jazzy",
+        "nav2_waypoint_follower": "/opt/ros/jazzy",
+        "orbbec_camera": "/home/vlad/explorer3/vendor/ros/orbbec_camera",
+        "robot_localization": "/opt/ros/jazzy",
+        "slam_toolbox": "/opt/ros/jazzy",
+        "tf2_ros": "/opt/ros/jazzy"
+      }
+    },
+    "hub/1": {
+      "available": true,
+      "distro": "jazzy",
+      "installed_file_sha256": {},
+      "previous_isolated_planning_report": null,
+      "domain": "73",
+      "localhost_only": "1",
+      "at_unix_s": 1795375547.1987233,
+      "graph_nodes": [
+        "/explorer3_observation_hub"
+      ],
+      "navigate_to_pose_servers": [],
+      "topics": {
+        "/explorer3/robots/rosmaster/odometry": {
+          "types": [
+            "nav_msgs/msg/Odometry"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/explorer3_observation_hub"
+          ]
+        },
+        "/explorer3/robots/rosmaster/scan": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/explorer3_observation_hub"
+          ]
+        },
+        "/explorer3/robots/rosmaster/scan_rear": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/explorer3_observation_hub"
+          ]
+        },
+        "/explorer3/robots/tank/scan": {
+          "types": [
+            "sensor_msgs/msg/LaserScan"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/explorer3_observation_hub"
+          ]
+        },
+        "/tf_static": {
+          "types": [
+            "tf2_msgs/msg/TFMessage"
+          ],
+          "publishers": 1,
+          "publisher_nodes": [
+            "/explorer3_observation_hub"
+          ]
+        }
+      },
+      "frames_received": {
+        "/explorer3/robots/rosmaster/odometry": {
+          "messages": 10,
+          "frame": "rosmaster/odom_raw",
+          "ros_stamp_s": 1795375546.7139883,
+          "child_frame": "rosmaster/base_footprint",
+          "age_s": 0.482
+        },
+        "/explorer3/robots/rosmaster/scan": {
+          "messages": 10,
+          "frame": "rosmaster/laser0_frame",
+          "ros_stamp_s": 1795375546.5576403,
+          "age_s": 0.638
+        },
+        "/explorer3/robots/rosmaster/scan_rear": {
+          "messages": 10,
+          "frame": "rosmaster/laser1_frame",
+          "ros_stamp_s": 1795375546.5754142,
+          "age_s": 0.62
+        },
+        "/explorer3/robots/tank/scan": {
+          "messages": 10,
+          "frame": "tank/lidar_frame",
+          "ros_stamp_s": 1795375546.761193,
+          "age_s": 0.435
+        }
+      },
+      "tf_edges": [
+        {
+          "parent": "rosmaster/camera_color_frame",
+          "child": "rosmaster/camera_color_optical_frame",
+          "static": true
+        },
+        {
+          "parent": "rosmaster/camera_depth_frame",
+          "child": "rosmaster/camera_color_frame",
+          "static": true
+        },
+        {
+          "parent": "rosmaster/camera_depth_frame",
+          "child": "rosmaster/camera_depth_optical_frame",
+          "static": true
+        },
+        {
+          "parent": "rosmaster/camera_link",
+          "child": "rosmaster/camera_depth_frame",
+          "static": true
+        },
+        {
+          "parent": "tank/base_footprint",
+          "child": "tank/base_link",
+          "static": true
+        },
+        {
+          "parent": "tank/base_link",
+          "child": "tank/base_chaais",
+          "static": true
+        },
+        {
+          "parent": "tank/base_link",
+          "child": "tank/body_board_link",
+          "static": true
+        },
+        {
+          "parent": "tank/base_link",
+          "child": "tank/depth_cam",
+          "static": true
+        },
+        {
+          "parent": "tank/base_link",
+          "child": "tank/imu_link",
+          "static": true
+        },
+        {
+          "parent": "tank/base_link",
+          "child": "tank/lidar_frame",
+          "static": true
+        },
+        {
+          "parent": "tank/depth_cam",
+          "child": "tank/depth_camera_link",
+          "static": true
+        },
+        {
+          "parent": "tank/depth_cam",
+          "child": "tank/depth_camera_link_1",
+          "static": true
+        },
+        {
+          "parent": "tank/depth_cam",
+          "child": "tank/rgb_camera_link_1",
+          "static": true
+        },
+        {
+          "parent": "tank/depth_camera_link",
+          "child": "tank/rgb_camera_link",
+          "static": true
+        }
+      ],
+      "latest_tf_lookups": [
+        {
+          "world": "rosmaster/map",
+          "odom": "rosmaster/odom_raw",
+          "base": "rosmaster/base_link",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "rosmaster/laser0_frame": false,
+            "rosmaster/laser1_frame": false
+          }
+        },
+        {
+          "world": "rosmaster/map",
+          "odom": "rosmaster/odom",
+          "base": "rosmaster/base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "rosmaster/laser0_frame": false,
+            "rosmaster/laser1_frame": false
+          }
+        },
+        {
+          "world": "rosmaster/map",
+          "odom": "rosmaster/odom_raw",
+          "base": "rosmaster/base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "rosmaster/laser0_frame": false,
+            "rosmaster/laser1_frame": false
+          }
+        },
+        {
+          "world": "tank/map",
+          "odom": "tank/odom",
+          "base": "tank/base_link",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "tank/lidar_frame": true
+          }
+        },
+        {
+          "world": "tank/map",
+          "odom": "tank/odom_raw",
+          "base": "tank/base_link",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "tank/lidar_frame": true
+          }
+        },
+        {
+          "world": "tank/map",
+          "odom": "tank/odom",
+          "base": "tank/base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "tank/lidar_frame": true
+          }
+        },
+        {
+          "world": "tank/map",
+          "odom": "tank/odom_raw",
+          "base": "tank/base_footprint",
+          "map_to_odom": false,
+          "odom_to_base": false,
+          "base_to_laser": {
+            "tank/lidar_frame": true
+          }
+        }
+      ],
+      "visible_packages": {
+        "tf2_ros": "/opt/ros/jazzy"
+      }
+    }
+  }
+}

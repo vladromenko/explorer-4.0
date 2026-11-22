@@ -1,0 +1,290 @@
+{
+  "analysis": "Post-hoc comparison of the fixed visibility rule against all equally likely calls at its observed budget.",
+  "inputs_sha256": {
+    "paired.csv": "c0c44e5e7095ef0bb901cdee0ecd02c94f47130d53dcd54d2a5be8f0fd533535",
+    "screen-development.json": "e850c66bbf55be8007c0e423b0083f9c7b62e0dcabaaa4f5686fa0e3f558b702"
+  },
+  "cost_per_sim_second": 0.005,
+  "scope": "Conditional finite-scene distribution. Development scenarios were deliberately balanced. No population or conformal guarantee.",
+  "fit_performed": false,
+  "simulator_reruns": 0,
+  "sealed_selector_scenes_read": 0,
+  "blocks": {
+    "open_room_local_only": {
+      "scenes": 24,
+      "calls": 13,
+      "self_successes": 11,
+      "always_successes": 24,
+      "rule_successes": 24,
+      "onboard_only_scenes": 11,
+      "onboard_only_failures": 0,
+      "requested_with_positive_endpoint_gain": 13,
+      "requested_with_zero_endpoint_gain": 0,
+      "requested_with_negative_endpoint_gain": 0,
+      "uniform_expected_successes": 18.041666666666682,
+      "uniform_success_distribution": {
+        "13": 3.124819721939125e-05,
+        "14": 0.0012603439545154458,
+        "15": 0.015754299431443047,
+        "16": 0.08507321692979268,
+        "17": 0.22686191181278026,
+        "18": 0.3176066765378921,
+        "19": 0.23820500740341932,
+        "20": 0.09452579658865841,
+        "21": 0.018905159317731696,
+        "22": 0.0017186508470665176,
+        "23": 5.7288361568883894e-05,
+        "24": 4.0061791306911826e-07
+      },
+      "uniform_fraction_at_least_as_successful": 4.0061791306911826e-07,
+      "local_vs_rule_cost_break_even": 0.9446730769230769,
+      "mean_utility": [
+        {
+          "cost_per_call": 0.0,
+          "self": 0.441125,
+          "always": 0.9459583333333333,
+          "visibility_rule": 0.9528229166666667,
+          "uniform_mean": 0.7145763888888895
+        },
+        {
+          "cost_per_call": 0.1,
+          "self": 0.441125,
+          "always": 0.8459583333333333,
+          "visibility_rule": 0.89865625,
+          "uniform_mean": 0.6604097222222228
+        },
+        {
+          "cost_per_call": 0.25,
+          "self": 0.441125,
+          "always": 0.6959583333333333,
+          "visibility_rule": 0.81740625,
+          "uniform_mean": 0.5791597222222228
+        },
+        {
+          "cost_per_call": 0.5,
+          "self": 0.441125,
+          "always": 0.4459583333333333,
+          "visibility_rule": 0.6819895833333334,
+          "uniform_mean": 0.44374305555555615
+        },
+        {
+          "cost_per_call": 1.0,
+          "self": 0.441125,
+          "always": -0.05404166666666669,
+          "visibility_rule": 0.41115625000000006,
+          "uniform_mean": 0.1729097222222228
+        }
+      ],
+      "by_room": {
+        "inspection": {
+          "n": 8,
+          "local_successes": 4,
+          "peer_successes": 8,
+          "rule_calls": 4,
+          "rule_successes": 8
+        },
+        "storage": {
+          "n": 8,
+          "local_successes": 5,
+          "peer_successes": 8,
+          "rule_calls": 3,
+          "rule_successes": 8
+        },
+        "workshop": {
+          "n": 8,
+          "local_successes": 2,
+          "peer_successes": 8,
+          "rule_calls": 6,
+          "rule_successes": 8
+        }
+      },
+      "by_layout": {
+        "open": {
+          "n": 24,
+          "local_successes": 11,
+          "peer_successes": 24,
+          "rule_calls": 13,
+          "rule_successes": 24
+        }
+      }
+    },
+    "open_room_local_scan": {
+      "scenes": 24,
+      "calls": 13,
+      "self_successes": 24,
+      "always_successes": 24,
+      "rule_successes": 24,
+      "onboard_only_scenes": 11,
+      "onboard_only_failures": 0,
+      "requested_with_positive_endpoint_gain": 0,
+      "requested_with_zero_endpoint_gain": 13,
+      "requested_with_negative_endpoint_gain": 0,
+      "uniform_expected_successes": 24.0,
+      "uniform_success_distribution": {
+        "24": 1.0
+      },
+      "uniform_fraction_at_least_as_successful": 1.0,
+      "local_vs_rule_cost_break_even": -0.012923076923076923,
+      "mean_utility": [
+        {
+          "cost_per_call": 0.0,
+          "self": 0.9598229166666666,
+          "always": 0.9459583333333333,
+          "visibility_rule": 0.9528229166666667,
+          "uniform_mean": 0.9523129340277778
+        },
+        {
+          "cost_per_call": 0.1,
+          "self": 0.9598229166666666,
+          "always": 0.8459583333333333,
+          "visibility_rule": 0.89865625,
+          "uniform_mean": 0.8981462673611111
+        },
+        {
+          "cost_per_call": 0.25,
+          "self": 0.9598229166666666,
+          "always": 0.6959583333333333,
+          "visibility_rule": 0.81740625,
+          "uniform_mean": 0.8168962673611112
+        },
+        {
+          "cost_per_call": 0.5,
+          "self": 0.9598229166666666,
+          "always": 0.4459583333333333,
+          "visibility_rule": 0.6819895833333334,
+          "uniform_mean": 0.6814796006944445
+        },
+        {
+          "cost_per_call": 1.0,
+          "self": 0.9598229166666666,
+          "always": -0.05404166666666669,
+          "visibility_rule": 0.41115625000000006,
+          "uniform_mean": 0.41064626736111115
+        }
+      ],
+      "by_room": {
+        "inspection": {
+          "n": 8,
+          "local_successes": 8,
+          "peer_successes": 8,
+          "rule_calls": 4,
+          "rule_successes": 8
+        },
+        "storage": {
+          "n": 8,
+          "local_successes": 8,
+          "peer_successes": 8,
+          "rule_calls": 3,
+          "rule_successes": 8
+        },
+        "workshop": {
+          "n": 8,
+          "local_successes": 8,
+          "peer_successes": 8,
+          "rule_calls": 6,
+          "rule_successes": 8
+        }
+      },
+      "by_layout": {
+        "open": {
+          "n": 24,
+          "local_successes": 24,
+          "peer_successes": 24,
+          "rule_calls": 13,
+          "rule_successes": 24
+        }
+      }
+    },
+    "screen_development_local_scan": {
+      "scenes": 24,
+      "calls": 20,
+      "self_successes": 12,
+      "always_successes": 24,
+      "rule_successes": 24,
+      "onboard_only_scenes": 4,
+      "onboard_only_failures": 0,
+      "requested_with_positive_endpoint_gain": 12,
+      "requested_with_zero_endpoint_gain": 8,
+      "requested_with_negative_endpoint_gain": 0,
+      "uniform_expected_successes": 21.999999999999986,
+      "uniform_success_distribution": {
+        "20": 0.04658385093167703,
+        "21": 0.24844720496894393,
+        "22": 0.40993788819875754,
+        "23": 0.24844720496894393,
+        "24": 0.04658385093167703
+      },
+      "uniform_fraction_at_least_as_successful": 0.04658385093167703,
+      "local_vs_rule_cost_break_even": 0.5720499999999898,
+      "mean_utility": [
+        {
+          "cost_per_call": 0.0,
+          "self": 0.4717500000000017,
+          "always": 0.945947916666658,
+          "visibility_rule": 0.9484583333333266,
+          "uniform_mean": 0.8669149305555481
+        },
+        {
+          "cost_per_call": 0.1,
+          "self": 0.4717500000000017,
+          "always": 0.8459479166666579,
+          "visibility_rule": 0.8651249999999933,
+          "uniform_mean": 0.7835815972222148
+        },
+        {
+          "cost_per_call": 0.25,
+          "self": 0.4717500000000017,
+          "always": 0.695947916666658,
+          "visibility_rule": 0.7401249999999933,
+          "uniform_mean": 0.6585815972222148
+        },
+        {
+          "cost_per_call": 0.5,
+          "self": 0.4717500000000017,
+          "always": 0.445947916666658,
+          "visibility_rule": 0.5317916666666599,
+          "uniform_mean": 0.45024826388888145
+        },
+        {
+          "cost_per_call": 1.0,
+          "self": 0.4717500000000017,
+          "always": -0.054052083333341994,
+          "visibility_rule": 0.11512499999999326,
+          "uniform_mean": 0.0335815972222148
+        }
+      ],
+      "by_room": {
+        "storage_screen": {
+          "n": 8,
+          "local_successes": 4,
+          "peer_successes": 8,
+          "rule_calls": 7,
+          "rule_successes": 8
+        },
+        "workshop_screen": {
+          "n": 16,
+          "local_successes": 8,
+          "peer_successes": 16,
+          "rule_calls": 13,
+          "rule_successes": 16
+        }
+      },
+      "by_layout": {
+        "parked": {
+          "n": 12,
+          "local_successes": 12,
+          "peer_successes": 12,
+          "rule_calls": 8,
+          "rule_successes": 12
+        },
+        "screened": {
+          "n": 12,
+          "local_successes": 0,
+          "peer_successes": 12,
+          "rule_calls": 12,
+          "rule_successes": 12
+        }
+      }
+    }
+  }
+}
