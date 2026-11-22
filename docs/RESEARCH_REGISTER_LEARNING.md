@@ -14,7 +14,16 @@ The original and repeated ACT fits scored 7/8 and 8/8 on development, and 19/20 
 
 ## What the two arms actually inherited
 
-The recorded-start SmolVLA pilot asks whether 500 updates of the public 450M model change terminal hold on the same eight development scenes used for the conditioned controllers. It uses the original 32 simulated training episodes, one arm-mounted colour camera, joint feedback and six absolute servo targets at 20 Hz. The zero-update control uses the same ROSMASTER input and output statistics and the public weights. Each processor's recorded means and scales must match the pooled statistics of the 32 training episodes. Archived direct-image ACT and Diffusion run from the same resets. Differences in update count and execution horizon limit comparisons between architectures. The separate 200-pair size-instruction experiment supplied the historical 2/20 result. [Upstream model and intended use](https://huggingface.co/lerobot/smolvla_base/tree/5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6) · [LeRobot policy recipe](../explorer4/training.py#L36) · [Matched development experiment](../explorer4/smolvla_development.py)
+**Did a pretrained vision-language-action model learn the recorded-start pickup?** We fine-tuned public SmolVLA for 500 updates on the original 32 simulated episodes, batch 8. Both SmolVLA arms used the same native wrist camera, six servo channels and target-domain processors. Their state and absolute-action means and scales matched all 11,497 training frames. Each of four policies ran on the same eight ordered development resets with identical initial joint-position hashes. [Public model](https://huggingface.co/lerobot/smolvla_base/tree/5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6) · [Study and processor checks](../explorer4/smolvla_development.py) · [Full results and weight identities](http://192.168.0.168:8030/simlab-media/reports/smolvla-recorded-start/61d90616f2574cb68436afa85f894e9b/result.json)
+
+| Direct RGB controller | Actions per inference | Any jaw contact / 8 | Bilateral contact / 8 | Terminal holds / 8 | Median closest tip–cube distance |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| SmolVLA public, zero updates | 50 | 0 | 0 | 0 | 9.57 cm |
+| SmolVLA, 500 updates | 50 | 5 | 0 | 0 | 3.56 cm |
+| Archived ACT | 25 | 8 | 2 | 1 | 2.75 cm |
+| Archived Diffusion | 10 | 4 | 3 | 1 | 2.73 cm |
+
+Adaptation moved the gripper closer and produced contact. Its highest lift was 5.38 mm, and it never achieved a temporary or stable grasp. ACT succeeded on 940104, Diffusion on 940100. Horizon and update budgets differ between architectures. Geometric contacts were independently reconstructed at each archived 20 Hz pose; the two successful trajectories each ended with one continuous second in carry. The conditioned controller experiments used an additional camera look, XY supervision and a trajectory decoder. The separate 200-pair size-instruction SmolVLA study supplied the historical 2/20. [Per-scene contact, height and carry](results/conditioned_grasp_v1/smolvla-contact-replay.json) · [Replay implementation](../scripts/grasp_study/smolvla_contacts.py)
 
 | Source and original action representation | Explorer implementation and evidence |
 | --- | --- |
