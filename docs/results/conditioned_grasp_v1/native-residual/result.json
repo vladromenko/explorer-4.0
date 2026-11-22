@@ -1,0 +1,3563 @@
+{
+  "domain": "MuJoCo",
+  "physical_trials": 0,
+  "fit_sha256": "cf0211aad8b27988788771d0c3330b671ac02df9f0ffc4fbfbe319c5430fc044",
+  "source_sha256": {
+    "scripts/grasp_study/native_residual.py": "d1151189b17c0f9a4f4a3c6401ca69b1403a2c7f2818cfd37c59f98e7b563345",
+    "explorer4/grasp_residual.py": "b526d300c6094853968bc44c93e035b6cbb49cb8bfaecad83757240071634e56",
+    "explorer4/grasp_measured.py": "cc209f2d69cfc492b643bbfd1a0268934c2ce91b7094a99902eab01ed647d6ea",
+    "explorer4/grasp_shadow.py": "5162ec38825d8db3531d14df31df5fdc731a3d226fbb4e15f781e8408bd5ecfe",
+    "explorer4/conditioned_grasp.py": "33e983b4c9dc35d2b0eeebf6dfa109410bb6341de996e6d75ff4e34e95faa52e",
+    "agents/rosmaster/runtime.py": "51057bfbb8ad7b7cfcb98988bbb4c7e64f9d90204be62e1824ff516cb5fd8ce7",
+    "scripts/grasp_study/admission_native.py": "5340e5c6e31768ea551c29055fea30cdd5c3db187b36b76c0f6f8220bb9dc5e1",
+    "scripts/grasp_study/native_execution.py": "e2da69b8481420a3b480cf2bef23adf1cfcc22d776b2607f285a69ccbab78282",
+    "scripts/grasp_study/evaluate.py": "31469393b999c7ffdc3a88f15077a85b365d3776b84c6391963731a023c16935",
+    "explorer4/sim/aligned.py": "58adfc185f26144370b8b5d648dc1f4f31bf4c96d06d318d4743097e660b53bb",
+    "explorer4/sim/environment.py": "892906a3ffc253241c53f79d4cdb0f478f7baacc4a90b54015fbb9adb946906b",
+    "explorer4/sim/models.py": "7424d4e19ee4bec57ad6fd0acf8dd4b8b765bc313158b6c18eaa374d22279657",
+    "explorer4/sim/variation.py": "75aa47ad2f6f41d075113c0d65bc62383bf99112ab99c22b6f70e48fc930656c"
+  },
+  "training": [
+    {
+      "correction": [
+        0,
+        0
+      ],
+      "retained": 16,
+      "strict": 9,
+      "joint_success": 9
+    },
+    {
+      "correction": [
+        0,
+        -1
+      ],
+      "retained": 16,
+      "strict": 7,
+      "joint_success": 7
+    },
+    {
+      "correction": [
+        0,
+        1
+      ],
+      "retained": 16,
+      "strict": 11,
+      "joint_success": 11
+    },
+    {
+      "correction": [
+        -4,
+        0
+      ],
+      "retained": 16,
+      "strict": 10,
+      "joint_success": 10
+    },
+    {
+      "correction": [
+        -4,
+        -1
+      ],
+      "retained": 15,
+      "strict": 9,
+      "joint_success": 9
+    },
+    {
+      "correction": [
+        -4,
+        1
+      ],
+      "retained": 14,
+      "strict": 9,
+      "joint_success": 9
+    },
+    {
+      "correction": [
+        4,
+        0
+      ],
+      "retained": 15,
+      "strict": 7,
+      "joint_success": 7
+    },
+    {
+      "correction": [
+        4,
+        -1
+      ],
+      "retained": 15,
+      "strict": 7,
+      "joint_success": 7
+    },
+    {
+      "correction": [
+        4,
+        1
+      ],
+      "retained": 14,
+      "strict": 9,
+      "joint_success": 9
+    }
+  ],
+  "parameters": [
+    0,
+    1
+  ],
+  "original_20": {
+    "n": 20,
+    "scores": {
+      "retained": {
+        "base": 19,
+        "fitted": 19,
+        "gains": [],
+        "losses": [],
+        "paired_exact_p": 1.0
+      },
+      "strict": {
+        "base": 12,
+        "fitted": 15,
+        "gains": [
+          976120,
+          976160,
+          976168
+        ],
+        "losses": [],
+        "paired_exact_p": 0.25
+      },
+      "joint_success": {
+        "base": 12,
+        "fitted": 15,
+        "gains": [
+          976120,
+          976160,
+          976168
+        ],
+        "losses": [],
+        "paired_exact_p": 0.25
+      }
+    },
+    "stops": {
+      "(0, 0)": 0,
+      "(0, 1)": 0
+    }
+  },
+  "fresh": {
+    "n": 32,
+    "scores": {
+      "retained": {
+        "base": 31,
+        "fitted": 29,
+        "gains": [],
+        "losses": [
+          979258,
+          979314
+        ],
+        "paired_exact_p": 0.5
+      },
+      "strict": {
+        "base": 23,
+        "fitted": 20,
+        "gains": [
+          979265
+        ],
+        "losses": [
+          979258,
+          979276,
+          979293,
+          979314
+        ],
+        "paired_exact_p": 0.375
+      },
+      "joint_success": {
+        "base": 23,
+        "fitted": 20,
+        "gains": [
+          979265
+        ],
+        "losses": [
+          979258,
+          979276,
+          979293,
+          979314
+        ],
+        "paired_exact_p": 0.375
+      }
+    },
+    "stops": {
+      "(0, 0)": 0,
+      "(0, 1)": 0
+    }
+  },
+  "fresh_screen": {
+    "selected": [
+      979213,
+      979218,
+      979223,
+      979225,
+      979229,
+      979231,
+      979235,
+      979238,
+      979240,
+      979243,
+      979253,
+      979257,
+      979258,
+      979259,
+      979261,
+      979264,
+      979265,
+      979271,
+      979276,
+      979284,
+      979293,
+      979299,
+      979306,
+      979314,
+      979316,
+      979324,
+      979326,
+      979329,
+      979334,
+      979338,
+      979341,
+      979344
+    ],
+    "candidates": 160,
+    "eligible": 36,
+    "protocol_sha256": "16c7f6c97f5af1cbfe25d6c04b0caf27cdcae256801d82dbe6408f866d52a84b"
+  },
+  "original_trials": [
+    {
+      "seed": 976106,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "8221d07dd1fccf7e2028d754ffe57b60eda890c6703ec22b7c1e30b8c5742139",
+      "rgb_sha256": "b3e75ee49d7430c8058f935ff5359baba557869b5dc6bdcad11b36f43abedd0a",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.9211701490971,
+          237.45793962792993
+        ],
+        "jaw_deg": [
+          77.19454956054688,
+          77.39617919921875
+        ],
+        "tip_distance_mm": [
+          12.542392496676246,
+          13.608194865033864
+        ]
+      },
+      "command_sha256": "bb4ada86a4f443ebb524d02f2b0957de01e1df515544cb899c9697cc51207698"
+    },
+    {
+      "seed": 976106,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "8221d07dd1fccf7e2028d754ffe57b60eda890c6703ec22b7c1e30b8c5742139",
+      "rgb_sha256": "b3e75ee49d7430c8058f935ff5359baba557869b5dc6bdcad11b36f43abedd0a",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.55,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.80067263329175,
+          237.31334148035648
+        ],
+        "jaw_deg": [
+          77.41439819335938,
+          77.54918670654297
+        ],
+        "tip_distance_mm": [
+          13.487780461618676,
+          14.546589674001753
+        ]
+      },
+      "command_sha256": "05ebaf2938b18d6889e8264f53a6d9128018c4cb4bbdd871a4ef0d94f0adf74a"
+    },
+    {
+      "seed": 976109,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "e99f24b0aef5b86eebe1bb7ad56d049de17fa00644f1091620372cd88e3abc92",
+      "rgb_sha256": "14e2ff651ef9bd561c7b157d0c862f12f0b9fe96b5f988ae1d541a4cfa0c280e",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          238.15942002236346,
+          238.7150843121854
+        ],
+        "jaw_deg": [
+          76.81950378417969,
+          76.82317352294922
+        ],
+        "tip_distance_mm": [
+          11.599049543819476,
+          12.319457561333136
+        ]
+      },
+      "command_sha256": "0e89289f163b1086461d7d037021f076f99c23843d1c2dcdbb7e4f7277242820"
+    },
+    {
+      "seed": 976109,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "e99f24b0aef5b86eebe1bb7ad56d049de17fa00644f1091620372cd88e3abc92",
+      "rgb_sha256": "14e2ff651ef9bd561c7b157d0c862f12f0b9fe96b5f988ae1d541a4cfa0c280e",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.11074075292015,
+          237.92212596898864
+        ],
+        "jaw_deg": [
+          76.7778549194336,
+          76.77940368652344
+        ],
+        "tip_distance_mm": [
+          12.994291502700754,
+          13.85315192787171
+        ]
+      },
+      "command_sha256": "55c97987b31fd59ae0ecd9ba1bd0ef1e0c63de5375d9649fb982bb754bf3cc7c"
+    },
+    {
+      "seed": 976115,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "781261770024b0fb684bcae34110e379774b00a50efff2b463ef848441fbd5ad",
+      "rgb_sha256": "5d4ec4df4fc963d42ca65d49473fbfc4777073428735cc252af896c1c519a9ea",
+      "retained": false,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 0.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          -0.00013316870782834056,
+          -0.00013316870768956268
+        ],
+        "jaw_deg": [
+          149.9995880126953,
+          149.9995880126953
+        ],
+        "tip_distance_mm": [
+          251.31062634378526,
+          251.31062634379109
+        ]
+      },
+      "command_sha256": "e729ca74a52257004ebfd05cbd5703eeaa3e329d35cc202b59dd76e17a96629a"
+    },
+    {
+      "seed": 976115,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "781261770024b0fb684bcae34110e379774b00a50efff2b463ef848441fbd5ad",
+      "rgb_sha256": "5d4ec4df4fc963d42ca65d49473fbfc4777073428735cc252af896c1c519a9ea",
+      "retained": false,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 0.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          -0.00013316870781446277,
+          -0.0001331687076826238
+        ],
+        "jaw_deg": [
+          149.9995880126953,
+          149.9995880126953
+        ],
+        "tip_distance_mm": [
+          250.52651003823527,
+          250.52651003824417
+        ]
+      },
+      "command_sha256": "d92468021af4fcd23e98e7f8a0a1a76c9a2b6765c8dddb9a45bbef000c3f1403"
+    },
+    {
+      "seed": 976116,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1d15857035cc2f55eae29a246d24159ba7e7f8c04600837e8daf98c62e0f1206",
+      "rgb_sha256": "d38eb8540461909f4623cac5be020bc209a80752a1ae424a19c397e34d5abbf9",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.700000000000001,
+      "terminal_strict_carry_s": 1.1500000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.80550125935264,
+          237.3548519635203
+        ],
+        "jaw_deg": [
+          77.51456451416016,
+          77.59113311767578
+        ],
+        "tip_distance_mm": [
+          14.7537084910331,
+          15.785504315476855
+        ]
+      },
+      "command_sha256": "dc1d3253b6d7024e702143bc6a7189726fe0b1e03860ac5572f60ad47c77cb04"
+    },
+    {
+      "seed": 976116,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1d15857035cc2f55eae29a246d24159ba7e7f8c04600837e8daf98c62e0f1206",
+      "rgb_sha256": "d38eb8540461909f4623cac5be020bc209a80752a1ae424a19c397e34d5abbf9",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.700000000000001,
+      "terminal_strict_carry_s": 2.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.26834882083193,
+          236.74362517736998
+        ],
+        "jaw_deg": [
+          77.79816436767578,
+          77.99269104003906
+        ],
+        "tip_distance_mm": [
+          16.332911845179737,
+          17.665251995724837
+        ]
+      },
+      "command_sha256": "6287ff44bdb5491e9fc9d2335a62c453439834382b18ec714f035964d2262d66"
+    },
+    {
+      "seed": 976120,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ce5397ba52fb67e5ff3f720e312d4e238fd6e42e5f6f90d32e12c6519facbdad",
+      "rgb_sha256": "38eef2863827adb851db79d158182f66def3534c42dbf6380369f36c835ad15c",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.6922059466332,
+          232.30727005183678
+        ],
+        "jaw_deg": [
+          77.37710571289062,
+          77.45863342285156
+        ],
+        "tip_distance_mm": [
+          18.045453830961748,
+          18.722233508739215
+        ]
+      },
+      "command_sha256": "b506fe1c4f48493d036768d02bc5f13c03f56c640d352c383c295f6e400123c5"
+    },
+    {
+      "seed": 976120,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ce5397ba52fb67e5ff3f720e312d4e238fd6e42e5f6f90d32e12c6519facbdad",
+      "rgb_sha256": "38eef2863827adb851db79d158182f66def3534c42dbf6380369f36c835ad15c",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 2.2,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.0866195623485,
+          232.71317789131996
+        ],
+        "jaw_deg": [
+          77.68431854248047,
+          77.80204010009766
+        ],
+        "tip_distance_mm": [
+          18.903878809838755,
+          19.680557019913074
+        ]
+      },
+      "command_sha256": "297b0860150e81b7b316294c75c2eba6e40ac6e7e6a88de1e0fae58d083d80d4"
+    },
+    {
+      "seed": 976122,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "48310173cf80e6bfe846be9e3bdc77e3834a288ab86726db64bab3f9c5a4da92",
+      "rgb_sha256": "0f2c962f23cc5ae82377aa580f86774317dce44a5a76da7660612af185fa1c1f",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 5.45,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.63773820961154,
+          232.1993972410958
+        ],
+        "jaw_deg": [
+          78.17133331298828,
+          78.3128662109375
+        ],
+        "tip_distance_mm": [
+          20.16944091545729,
+          21.17672240476434
+        ]
+      },
+      "command_sha256": "2463fd83a98e0382c490db4d25e48a647452a14dd4ca38c010bfd61be3441252"
+    },
+    {
+      "seed": 976122,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "48310173cf80e6bfe846be9e3bdc77e3834a288ab86726db64bab3f9c5a4da92",
+      "rgb_sha256": "0f2c962f23cc5ae82377aa580f86774317dce44a5a76da7660612af185fa1c1f",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 5.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.23861204121349,
+          231.78028960902097
+        ],
+        "jaw_deg": [
+          78.21324920654297,
+          78.35436248779297
+        ],
+        "tip_distance_mm": [
+          20.564120439793957,
+          21.57347629954085
+        ]
+      },
+      "command_sha256": "f0dac373b1979d34267b6c8fcbc44f9af4953b2e4338660d0483aae9e9325402"
+    },
+    {
+      "seed": 976129,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ca6550c0fdafd231494c9a947762a3a051d73cb57688fd7982e793071952dfed",
+      "rgb_sha256": "2a4e9bef50f6cc6bbd4a8b54edff87e3e31908b38854bcaff6825d321e4fb8e4",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 3.5500000000000003,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.74316076189007,
+          237.17189732886985
+        ],
+        "jaw_deg": [
+          77.87064361572266,
+          78.01496124267578
+        ],
+        "tip_distance_mm": [
+          16.49533375847863,
+          17.58833912574211
+        ]
+      },
+      "command_sha256": "0ccd5fe7e18d76f2fc9694f38393d7f4858f6e9c236757bf0db8d489e67e004d"
+    },
+    {
+      "seed": 976129,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ca6550c0fdafd231494c9a947762a3a051d73cb57688fd7982e793071952dfed",
+      "rgb_sha256": "2a4e9bef50f6cc6bbd4a8b54edff87e3e31908b38854bcaff6825d321e4fb8e4",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 3.95,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.53738863573938,
+          236.98768132868707
+        ],
+        "jaw_deg": [
+          77.93277740478516,
+          78.0766372680664
+        ],
+        "tip_distance_mm": [
+          16.96919553774915,
+          18.066032893853574
+        ]
+      },
+      "command_sha256": "bea8ffbfbe71a7812479cb396367dbc996deca694f165748c800c8ec6ff3e2e8"
+    },
+    {
+      "seed": 976132,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "7acca491b05f4130a4e8f5ef1caffdcdc253c6166dd8e849b3c513cafdb7771c",
+      "rgb_sha256": "f0d29bc2c94cec920f7e4d5fd8d9d109fe2765fd8b42c223d53a1dbbb7186073",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.3,
+      "terminal_strict_carry_s": 4.800000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.15429554901414,
+          236.64051036420568
+        ],
+        "jaw_deg": [
+          78.05862426757812,
+          78.20157623291016
+        ],
+        "tip_distance_mm": [
+          17.931259971716756,
+          19.03407351738617
+        ]
+      },
+      "command_sha256": "a77b7aa0962ce05aefa53b183fbd7fa8a226d82b62b3d65f37e82a084f0b0d2d"
+    },
+    {
+      "seed": 976132,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "7acca491b05f4130a4e8f5ef1caffdcdc253c6166dd8e849b3c513cafdb7771c",
+      "rgb_sha256": "f0d29bc2c94cec920f7e4d5fd8d9d109fe2765fd8b42c223d53a1dbbb7186073",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.3,
+      "terminal_strict_carry_s": 6.300000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          233.0294454428602,
+          233.22276909781618
+        ],
+        "jaw_deg": [
+          78.5647201538086,
+          78.69761657714844
+        ],
+        "tip_distance_mm": [
+          21.665307173377332,
+          22.91164570927996
+        ]
+      },
+      "command_sha256": "f3a16690f7548e8521848c9349a86d5853929e8181810f0ea28d47cad0e13a4f"
+    },
+    {
+      "seed": 976136,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "cf4373cc16b43b20d16131721cf4efd3796a96d798f4861f7a10431e009f1362",
+      "rgb_sha256": "42e671d3c96fb718b5fe6ae47a77993ed1de129d43d4c9878126543743bc222c",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 2.7,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          235.3816457102092,
+          235.8313174889417
+        ],
+        "jaw_deg": [
+          77.74557495117188,
+          77.89026641845703
+        ],
+        "tip_distance_mm": [
+          16.058981627031248,
+          17.087009670989264
+        ]
+      },
+      "command_sha256": "af0776c3396a2604f0bce411a84261f8311c07229cbf190ab1dce57b599b1db1"
+    },
+    {
+      "seed": 976136,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "cf4373cc16b43b20d16131721cf4efd3796a96d798f4861f7a10431e009f1362",
+      "rgb_sha256": "42e671d3c96fb718b5fe6ae47a77993ed1de129d43d4c9878126543743bc222c",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 2.95,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          235.36339895152597,
+          235.82420236075907
+        ],
+        "jaw_deg": [
+          77.77825927734375,
+          77.9227294921875
+        ],
+        "tip_distance_mm": [
+          16.26441233825821,
+          17.300683082203058
+        ]
+      },
+      "command_sha256": "d79c567d3c1fd4e03e9ee5659fb902dbbb1b34a1d861e044111f1fb74eaf8110"
+    },
+    {
+      "seed": 976143,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1e65fb4b7434804ea924ae39f213a9bff73db6ef856e3488a48fbf04fcc7e9c2",
+      "rgb_sha256": "bfe13393a921f1245786ce390099c2eb99f09d0b8f2c24dd3655e79c43327292",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.950000000000001,
+      "terminal_strict_carry_s": 1.25,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.89398644802623,
+          233.30872396412633
+        ],
+        "jaw_deg": [
+          77.52613067626953,
+          77.67597198486328
+        ],
+        "tip_distance_mm": [
+          16.71465576892983,
+          17.458728166596373
+        ]
+      },
+      "command_sha256": "d230be15e6b85ce849f12cd5bac93a1a8619d5d2e44c48826f45cb53f0bfc2e2"
+    },
+    {
+      "seed": 976143,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1e65fb4b7434804ea924ae39f213a9bff73db6ef856e3488a48fbf04fcc7e9c2",
+      "rgb_sha256": "bfe13393a921f1245786ce390099c2eb99f09d0b8f2c24dd3655e79c43327292",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.950000000000001,
+      "terminal_strict_carry_s": 3.1,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.41479417611788,
+          231.9572507339358
+        ],
+        "jaw_deg": [
+          77.81732940673828,
+          77.9608154296875
+        ],
+        "tip_distance_mm": [
+          18.717544147686525,
+          19.631539743814407
+        ]
+      },
+      "command_sha256": "ca7b53e4215b3f877284a2ff130320738444f0906ac3c8737d682e924b636ab7"
+    },
+    {
+      "seed": 976145,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "168f9cca7100012972f8a35ea25320b3bfe7815063faaa47ae63268b4af0875f",
+      "rgb_sha256": "522add01fdb5a69dbf94da0744980ff7feb590147a53cb18e802395347993f70",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 4.45,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.37704328866215,
+          231.920618568978
+        ],
+        "jaw_deg": [
+          78.0163345336914,
+          78.15882873535156
+        ],
+        "tip_distance_mm": [
+          19.545081384824584,
+          20.513555133167245
+        ]
+      },
+      "command_sha256": "41c572563a4d8eaf39254e3027cee28146b20707a575a0c64207d992c34df624"
+    },
+    {
+      "seed": 976145,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "168f9cca7100012972f8a35ea25320b3bfe7815063faaa47ae63268b4af0875f",
+      "rgb_sha256": "522add01fdb5a69dbf94da0744980ff7feb590147a53cb18e802395347993f70",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 4.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.52813531569376,
+          232.09554282539446
+        ],
+        "jaw_deg": [
+          78.07064056396484,
+          78.21284484863281
+        ],
+        "tip_distance_mm": [
+          19.741055992822158,
+          20.723282453728867
+        ]
+      },
+      "command_sha256": "b4135b6266a04e13a29478e51ce40512f5eac8d4884d33fd71c6df926d657638"
+    },
+    {
+      "seed": 976156,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "66d6be64bc12fe366fdb69ffe452609723ac1ff987d8e42808e13cba872d612b",
+      "rgb_sha256": "d571d927bc6cd2182d176fc8bed6eee46cc459271136ebcad3667087aa798136",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 2.6,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          235.55504957486795,
+          235.98908101238348
+        ],
+        "jaw_deg": [
+          77.725341796875,
+          77.87025451660156
+        ],
+        "tip_distance_mm": [
+          15.862663408726226,
+          16.890572152683134
+        ]
+      },
+      "command_sha256": "55cd18dd8788307538640c9bb59158f65b2acf0b9f8c3cbf5396332c48ddb324"
+    },
+    {
+      "seed": 976156,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "66d6be64bc12fe366fdb69ffe452609723ac1ff987d8e42808e13cba872d612b",
+      "rgb_sha256": "d571d927bc6cd2182d176fc8bed6eee46cc459271136ebcad3667087aa798136",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 4.25,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          230.80208094256793,
+          231.13143965859894
+        ],
+        "jaw_deg": [
+          78.24322509765625,
+          78.45372772216797
+        ],
+        "tip_distance_mm": [
+          19.571385013615167,
+          20.924004682643993
+        ]
+      },
+      "command_sha256": "849360d77aeb617105bcfbd9a9f9b1c3cd461be828d5788444dc7fc44395a91c"
+    },
+    {
+      "seed": 976160,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "44079088551c48405ff2fc212b32abb6057d8e1449f0d94b8ed1b7666800b939",
+      "rgb_sha256": "f377344ef7584af8f9dec34a5ce4970d62145e3b444de244c730e65401e14462",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.78626484572678,
+          237.23964538860892
+        ],
+        "jaw_deg": [
+          77.07386016845703,
+          77.33805084228516
+        ],
+        "tip_distance_mm": [
+          13.819419295209405,
+          14.75769345108021
+        ]
+      },
+      "command_sha256": "4c9b75a356ea347c4e9cffd729bb54c79f86b6616ef14f5594016e301b830824"
+    },
+    {
+      "seed": 976160,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "44079088551c48405ff2fc212b32abb6057d8e1449f0d94b8ed1b7666800b939",
+      "rgb_sha256": "f377344ef7584af8f9dec34a5ce4970d62145e3b444de244c730e65401e14462",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 1.1500000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          239.41337989322886,
+          240.1359327700762
+        ],
+        "jaw_deg": [
+          77.51651763916016,
+          77.59090423583984
+        ],
+        "tip_distance_mm": [
+          14.725548098784136,
+          15.861927109406517
+        ]
+      },
+      "command_sha256": "c0a17e59afec4ea69c19da131d8abdf216c29631c5c3b05bb63821b0694dd9ac"
+    },
+    {
+      "seed": 976161,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "970a2956f26957e310c81b023754f2485ce7bc8a42bb706962b073f9731efaa4",
+      "rgb_sha256": "234cbc9d088a7d67e19aa92e5a69477218de8fa7712b95588cb7217842b44d23",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.200000000000001,
+      "terminal_strict_carry_s": 2.8000000000000003,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.10909396379725,
+          237.62307426113637
+        ],
+        "jaw_deg": [
+          77.7977066040039,
+          77.98870849609375
+        ],
+        "tip_distance_mm": [
+          16.312212046451155,
+          17.672001356357917
+        ]
+      },
+      "command_sha256": "122c4a4aaf1a2fa31e3e5a52fd5f52cd3fdbf42d34d45da9c1767379a39d7692"
+    },
+    {
+      "seed": 976161,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "970a2956f26957e310c81b023754f2485ce7bc8a42bb706962b073f9731efaa4",
+      "rgb_sha256": "234cbc9d088a7d67e19aa92e5a69477218de8fa7712b95588cb7217842b44d23",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.200000000000001,
+      "terminal_strict_carry_s": 2.9000000000000004,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          239.621743663559,
+          239.91011990019783
+        ],
+        "jaw_deg": [
+          77.7786865234375,
+          77.92471313476562
+        ],
+        "tip_distance_mm": [
+          16.0793684243696,
+          17.203503627877012
+        ]
+      },
+      "command_sha256": "c32455ea87f795f5bd7db3a1565db9866ecedb48727be6282af040fbf6330e46"
+    },
+    {
+      "seed": 976166,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "9621b7d4e66e7f177ae903df4406a5b8977729eeb2625ddb0d99a2e749b317cf",
+      "rgb_sha256": "fb4ea3d4726267b4f7723896f93d4fda796f68ed2ad58af01bf812197cad9319",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          233.03297155936386,
+          233.44857890141773
+        ],
+        "jaw_deg": [
+          77.36732482910156,
+          77.4869384765625
+        ],
+        "tip_distance_mm": [
+          16.13227672206485,
+          16.792046770590765
+        ]
+      },
+      "command_sha256": "7dbe5240383f4910f9e1a43dea1371870682f7ef2dc37b3334e08a9918d7fc24"
+    },
+    {
+      "seed": 976166,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "9621b7d4e66e7f177ae903df4406a5b8977729eeb2625ddb0d99a2e749b317cf",
+      "rgb_sha256": "fb4ea3d4726267b4f7723896f93d4fda796f68ed2ad58af01bf812197cad9319",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.84758020193547,
+          233.276947108914
+        ],
+        "jaw_deg": [
+          77.47942352294922,
+          77.56785583496094
+        ],
+        "tip_distance_mm": [
+          16.527706489506055,
+          17.19911296715874
+        ]
+      },
+      "command_sha256": "03cd5d64f81f0047d62ad16e356ee472e1264ffe5c4c3155f1428658a2545d28"
+    },
+    {
+      "seed": 976167,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "2d496affd3e55122d1884aaa9c72e6ad7720d8b1020b18c704efc718b9487957",
+      "rgb_sha256": "43fed9e1763a2951ea3761e242e4a172852cd300eca0464d8d1606a181b8e27a",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.05,
+      "terminal_strict_carry_s": 2.35,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.3138699394569,
+          238.00344030853805
+        ],
+        "jaw_deg": [
+          77.70825958251953,
+          77.90528106689453
+        ],
+        "tip_distance_mm": [
+          18.08969060299069,
+          19.49238744898517
+        ]
+      },
+      "command_sha256": "ee552fc650ddddcd15d784315fefab2c4e7e70604102552e7b439ebc107fa1ef"
+    },
+    {
+      "seed": 976167,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "2d496affd3e55122d1884aaa9c72e6ad7720d8b1020b18c704efc718b9487957",
+      "rgb_sha256": "43fed9e1763a2951ea3761e242e4a172852cd300eca0464d8d1606a181b8e27a",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.05,
+      "terminal_strict_carry_s": 1.55,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.22254568153843,
+          237.83363089895664
+        ],
+        "jaw_deg": [
+          77.53841400146484,
+          77.76538848876953
+        ],
+        "tip_distance_mm": [
+          17.468109737816253,
+          18.666935610014008
+        ]
+      },
+      "command_sha256": "a7e27f41cd4fed435569e4162b6333c0a6b347e49be68fa8e8a05f421c7130c7"
+    },
+    {
+      "seed": 976168,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "a4135ff475ff489e89a8cd9cbb084c08f299252b18c51fce8d1b1da37546279f",
+      "rgb_sha256": "1f31fd7ba978926c59437353a3724f219ae78bba4f626cda1b31ee5826246287",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          233.23283298201375,
+          233.6441342653529
+        ],
+        "jaw_deg": [
+          77.34247589111328,
+          77.47319793701172
+        ],
+        "tip_distance_mm": [
+          15.891240891140784,
+          16.561544410207542
+        ]
+      },
+      "command_sha256": "b3a9492360b24de297c38d33917f4a286afe9a5e2047fba12cd28c8a63fb7e3d"
+    },
+    {
+      "seed": 976168,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "a4135ff475ff489e89a8cd9cbb084c08f299252b18c51fce8d1b1da37546279f",
+      "rgb_sha256": "1f31fd7ba978926c59437353a3724f219ae78bba4f626cda1b31ee5826246287",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 1.7000000000000002,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          230.66693501472247,
+          231.05832349540955
+        ],
+        "jaw_deg": [
+          77.56078338623047,
+          77.71747589111328
+        ],
+        "tip_distance_mm": [
+          18.880237487505084,
+          19.587883750039566
+        ]
+      },
+      "command_sha256": "2ccc3eee49f19d78aeb3db008f96d6ff5736b4323fe89e4204d85ef1900da676"
+    },
+    {
+      "seed": 976173,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ba8e09af034d7c69c28bab3980ebee8afb747e18e5322f4856c23b411e7e6afb",
+      "rgb_sha256": "3cdd9a88e7ea18af399f9ae86b8f0adab1a33b8c14d2d29012ee0a8c015b67ed",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.1,
+      "terminal_strict_carry_s": 3.2,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.3409698240242,
+          237.9071379798239
+        ],
+        "jaw_deg": [
+          77.82852172851562,
+          77.97274017333984
+        ],
+        "tip_distance_mm": [
+          16.16958550512441,
+          17.26886575641943
+        ]
+      },
+      "command_sha256": "ed15ff91f0d54e5f16862f999a111fc5631690dec75094969cabeabb194468a6"
+    },
+    {
+      "seed": 976173,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ba8e09af034d7c69c28bab3980ebee8afb747e18e5322f4856c23b411e7e6afb",
+      "rgb_sha256": "3cdd9a88e7ea18af399f9ae86b8f0adab1a33b8c14d2d29012ee0a8c015b67ed",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.1,
+      "terminal_strict_carry_s": 3.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.90070767525174,
+          237.4845449466937
+        ],
+        "jaw_deg": [
+          77.91401672363281,
+          78.05776977539062
+        ],
+        "tip_distance_mm": [
+          16.839308808547546,
+          17.938090377494714
+        ]
+      },
+      "command_sha256": "2913bf5743ef398543d0ca81c813b4c009bf524fc29940ed640f528d1356ff29"
+    },
+    {
+      "seed": 976175,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "efcad1374e478fc5dd836b6d5318f618072c957600366a432e9a495e8d504113",
+      "rgb_sha256": "2111e46e31ad71c01e87ef159c0719e34bd384a81ed5db4ea884d399b9cf2c84",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.4,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.00669265498553,
+          236.52086629878855
+        ],
+        "jaw_deg": [
+          77.07294464111328,
+          77.1837158203125
+        ],
+        "tip_distance_mm": [
+          15.38156027866761,
+          16.25082691735127
+        ]
+      },
+      "command_sha256": "cf0b6c192592f881fe60c641275cb69216d804f2adfcb15be4bb9f535aec2854"
+    },
+    {
+      "seed": 976175,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "efcad1374e478fc5dd836b6d5318f618072c957600366a432e9a495e8d504113",
+      "rgb_sha256": "2111e46e31ad71c01e87ef159c0719e34bd384a81ed5db4ea884d399b9cf2c84",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.4,
+      "terminal_strict_carry_s": 0.35000000000000003,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.74143948149805,
+          237.31414785042404
+        ],
+        "jaw_deg": [
+          77.46674346923828,
+          77.51709747314453
+        ],
+        "tip_distance_mm": [
+          16.743646837168995,
+          17.67645689175444
+        ]
+      },
+      "command_sha256": "c0512cd610f955c82e7be8377f4aa34246264c8860087d487da663efcf85a00d"
+    },
+    {
+      "seed": 976178,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "f76acac1bed7eef3e35bcf1bf7cb07b14fe5c4633fe3bc1445cddeb66c655ae3",
+      "rgb_sha256": "7aadd8d7a0bb97ee5576d5079cb5791fc2c5af63ffc839608d2b1b73007f7faf",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.950000000000001,
+      "terminal_strict_carry_s": 4.05,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          233.5056407696453,
+          234.04292362530865
+        ],
+        "jaw_deg": [
+          77.95983123779297,
+          78.10292053222656
+        ],
+        "tip_distance_mm": [
+          18.127590482318713,
+          19.146823596708373
+        ]
+      },
+      "command_sha256": "47cff6e91b1324f5278da34ebf023874db2e74e2cd698d720db5aeb7dca9bd44"
+    },
+    {
+      "seed": 976178,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "f76acac1bed7eef3e35bcf1bf7cb07b14fe5c4633fe3bc1445cddeb66c655ae3",
+      "rgb_sha256": "7aadd8d7a0bb97ee5576d5079cb5791fc2c5af63ffc839608d2b1b73007f7faf",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.950000000000001,
+      "terminal_strict_carry_s": 4.05,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          233.5053519138272,
+          234.0426520029286
+        ],
+        "jaw_deg": [
+          77.95979309082031,
+          78.1028823852539
+        ],
+        "tip_distance_mm": [
+          18.127541424667438,
+          19.146756356934606
+        ]
+      },
+      "command_sha256": "b380e1ed9bcb8e2a6f6590709ebd353753aa299d4e1e47580f93ec58bd1a55e3"
+    }
+  ],
+  "fresh_trials": [
+    {
+      "seed": 979213,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "285ee7a52b64ccd3fd15e2fda749fa4d68212cd5660ab590cfba27acc27a32f3",
+      "rgb_sha256": "b720e3bf611d093cff3f5d9d0418f1daf96fed9a74e768c53ecc95356650be5c",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.69628279752092,
+          237.16327834331963
+        ],
+        "jaw_deg": [
+          77.25094604492188,
+          77.42423248291016
+        ],
+        "tip_distance_mm": [
+          14.40479701353104,
+          15.450055882391313
+        ]
+      },
+      "command_sha256": "a5fffadfd051f7d5e6e1f0d6091780abc2a9ea762b75d9033ee5a3baad16060f"
+    },
+    {
+      "seed": 979213,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "285ee7a52b64ccd3fd15e2fda749fa4d68212cd5660ab590cfba27acc27a32f3",
+      "rgb_sha256": "b720e3bf611d093cff3f5d9d0418f1daf96fed9a74e768c53ecc95356650be5c",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 0.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.01128073451028,
+          237.6002652598249
+        ],
+        "jaw_deg": [
+          77.44200134277344,
+          77.53575134277344
+        ],
+        "tip_distance_mm": [
+          15.156201524544596,
+          16.257794877442727
+        ]
+      },
+      "command_sha256": "5379095291df5e5c2760eec2caf54b7c2620cbd4f756bb280ddb1a3d095a080a"
+    },
+    {
+      "seed": 979218,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "623388e5b5e7ae8362b121171cbb0f5b6d2c1f4a9f465ef8eb94a2a302f20cc8",
+      "rgb_sha256": "b959e6d8a23602fd0964be00e10245b45fc023b7675fca377282b78a95e74c91",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.35,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          235.8150834076852,
+          236.73560215567974
+        ],
+        "jaw_deg": [
+          76.77806091308594,
+          76.7795181274414
+        ],
+        "tip_distance_mm": [
+          14.853020712025723,
+          15.748896874103416
+        ]
+      },
+      "command_sha256": "129f3c5aae7e89f7893f92b5df9b296b77e0ab883a35496ef64ee5048d1efaac"
+    },
+    {
+      "seed": 979218,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "623388e5b5e7ae8362b121171cbb0f5b6d2c1f4a9f465ef8eb94a2a302f20cc8",
+      "rgb_sha256": "b959e6d8a23602fd0964be00e10245b45fc023b7675fca377282b78a95e74c91",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.35,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          227.89046969108617,
+          228.62634525212334
+        ],
+        "jaw_deg": [
+          77.27837371826172,
+          77.42230224609375
+        ],
+        "tip_distance_mm": [
+          20.90500925561197,
+          21.698600652126846
+        ]
+      },
+      "command_sha256": "4287915193b3c5062116fcd8497536a830cae1afe8b0bf95807308c98463e6c7"
+    },
+    {
+      "seed": 979223,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1ea6efecb1bd94bcc2c2b1657f2f1a223b87f00f6c4ee828f9fe5421390211b4",
+      "rgb_sha256": "d812a170d63825c24835271da57461a44a37d6bad924eeff763a2a5f14684773",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.55,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.23560244977165,
+          236.7353958408624
+        ],
+        "jaw_deg": [
+          77.15070343017578,
+          77.38935089111328
+        ],
+        "tip_distance_mm": [
+          15.930875817381992,
+          16.94109123559637
+        ]
+      },
+      "command_sha256": "5c3e42681c23a4357e950af9ef3ee281e1a8b4a00609f573fd228a90cd146ab3"
+    },
+    {
+      "seed": 979223,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1ea6efecb1bd94bcc2c2b1657f2f1a223b87f00f6c4ee828f9fe5421390211b4",
+      "rgb_sha256": "d812a170d63825c24835271da57461a44a37d6bad924eeff763a2a5f14684773",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.55,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.1136799329206,
+          237.67885124991673
+        ],
+        "jaw_deg": [
+          77.4017105102539,
+          77.48480224609375
+        ],
+        "tip_distance_mm": [
+          16.689274286910017,
+          17.67617478557449
+        ]
+      },
+      "command_sha256": "491385f55536626971d4bcb9b9977a653bb64217fc6a2653642558142a75c70f"
+    },
+    {
+      "seed": 979225,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "be43b83fcace438f5d3ea472b7eb5bf01ab1bb4325586dd56d6be3f67a5f6339",
+      "rgb_sha256": "fd28933da7461c1ef4741363e16eb8ff59b9e1f3fb5c154e26496062931cdffe",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 2.15,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          238.16826520000728,
+          238.72438344018659
+        ],
+        "jaw_deg": [
+          77.59979248046875,
+          77.85765075683594
+        ],
+        "tip_distance_mm": [
+          15.644153122537807,
+          16.949689699735366
+        ]
+      },
+      "command_sha256": "fc03cc7b867156c3266e9b3baa4366c6bfb473496455f707ee1b3d0e3a0e613f"
+    },
+    {
+      "seed": 979225,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "be43b83fcace438f5d3ea472b7eb5bf01ab1bb4325586dd56d6be3f67a5f6339",
+      "rgb_sha256": "fd28933da7461c1ef4741363e16eb8ff59b9e1f3fb5c154e26496062931cdffe",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 2.6,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          239.5764522896901,
+          239.73481404056633
+        ],
+        "jaw_deg": [
+          77.74369812011719,
+          77.89092254638672
+        ],
+        "tip_distance_mm": [
+          15.907138502254535,
+          17.026155441508575
+        ]
+      },
+      "command_sha256": "e678e369f204829c6d3b936322712827a6d1df2042bc7eed7d8a4783a8bf1c3d"
+    },
+    {
+      "seed": 979229,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ef9701c6c057c6b0f7ad71f5b309fc3760a66d8553b01d44f843638d60fb09fa",
+      "rgb_sha256": "feb1fca4a1b522016ebe5b7a4519539c7171f4dafd3ff4f96ab4ff5f8d772892",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 7.9,
+      "terminal_strict_carry_s": 5.25,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.24386384402325,
+          237.74609588208213
+        ],
+        "jaw_deg": [
+          78.12491607666016,
+          78.26757049560547
+        ],
+        "tip_distance_mm": [
+          18.427162559134878,
+          19.548933856250816
+        ]
+      },
+      "command_sha256": "3da4d56a4c5d491a77a1bd670d7ef85fd429174ecfdff5b0ec24b578b60856be"
+    },
+    {
+      "seed": 979229,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ef9701c6c057c6b0f7ad71f5b309fc3760a66d8553b01d44f843638d60fb09fa",
+      "rgb_sha256": "feb1fca4a1b522016ebe5b7a4519539c7171f4dafd3ff4f96ab4ff5f8d772892",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 7.9,
+      "terminal_strict_carry_s": 5.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.43797859581284,
+          237.9168306825149
+        ],
+        "jaw_deg": [
+          78.0898208618164,
+          78.23278045654297
+        ],
+        "tip_distance_mm": [
+          18.159510418935508,
+          19.282125450997576
+        ]
+      },
+      "command_sha256": "14642e3fae926374d99250e0f21f68bfd4e029c46ee35d9d4a5d188a42a0ea77"
+    },
+    {
+      "seed": 979231,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "51754ada96eefdb222f028fdf5556ea2674344f7916cd9332b08a95151998036",
+      "rgb_sha256": "0d202c81fe098df8e9c31c8375a3eb8ba37303046efa7904a8eada507ff51faa",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 2.45,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.33490966304737,
+          238.04005435515703
+        ],
+        "jaw_deg": [
+          77.7388916015625,
+          77.92767333984375
+        ],
+        "tip_distance_mm": [
+          18.343474260140766,
+          19.74858766993133
+        ]
+      },
+      "command_sha256": "b05b5cfd6d89c07660c98ddd16f54d450cb666f413c0a8b0223daad60ac678e2"
+    },
+    {
+      "seed": 979231,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "51754ada96eefdb222f028fdf5556ea2674344f7916cd9332b08a95151998036",
+      "rgb_sha256": "0d202c81fe098df8e9c31c8375a3eb8ba37303046efa7904a8eada507ff51faa",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 1.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.19310522185054,
+          237.80417900815414
+        ],
+        "jaw_deg": [
+          77.55331420898438,
+          77.80606079101562
+        ],
+        "tip_distance_mm": [
+          17.84710021779295,
+          19.109224706019734
+        ]
+      },
+      "command_sha256": "876d19c87b44e9496bcc3c6528fcd8b38d8aa168142368de02290b912229bae9"
+    },
+    {
+      "seed": 979235,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "24fb47a1332f02e1607bab82cb434f940b5b9fa024119ec3e9ddc1ff8cd1e3e7",
+      "rgb_sha256": "05b80c11286ff52e2305af9c1a7254ef4d7bf84c69b6c0c0f4cc9e1a282aadf4",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 2.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          234.46721060186172,
+          234.9446021696059
+        ],
+        "jaw_deg": [
+          77.71490478515625,
+          77.85948181152344
+        ],
+        "tip_distance_mm": [
+          16.33482970054314,
+          17.321662815335497
+        ]
+      },
+      "command_sha256": "6c57dc474060e123680505be25c0f7c59cb2352b4016ac2273406f7244e37ae8"
+    },
+    {
+      "seed": 979235,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "24fb47a1332f02e1607bab82cb434f940b5b9fa024119ec3e9ddc1ff8cd1e3e7",
+      "rgb_sha256": "05b80c11286ff52e2305af9c1a7254ef4d7bf84c69b6c0c0f4cc9e1a282aadf4",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 3.1500000000000004,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          234.23673678248426,
+          234.7415901280754
+        ],
+        "jaw_deg": [
+          77.81864166259766,
+          77.96259307861328
+        ],
+        "tip_distance_mm": [
+          17.007367450076224,
+          18.017057746999797
+        ]
+      },
+      "command_sha256": "8042f972cd0826dbd7166cae031127a89499c280290a78dbfa71017fefacb01a"
+    },
+    {
+      "seed": 979238,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "abe891eb08b275096ae2c9843c6a71fa946e79e70f0057a0abdb5b3e4d8f1f64",
+      "rgb_sha256": "ecc03b97b797c8da06e04f64f3125f553ebd81c098651d886376fcefb6f2fe4f",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.1,
+      "terminal_strict_carry_s": 4.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          239.78553429405747,
+          240.38163934704372
+        ],
+        "jaw_deg": [
+          77.9451904296875,
+          78.0892562866211
+        ],
+        "tip_distance_mm": [
+          17.358898581713543,
+          18.492889739147465
+        ]
+      },
+      "command_sha256": "aa02ad1ecf865f849a594cc60c012bd423fb1f3bed97b64523b69ceb669e83e2"
+    },
+    {
+      "seed": 979238,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "abe891eb08b275096ae2c9843c6a71fa946e79e70f0057a0abdb5b3e4d8f1f64",
+      "rgb_sha256": "ecc03b97b797c8da06e04f64f3125f553ebd81c098651d886376fcefb6f2fe4f",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.1,
+      "terminal_strict_carry_s": 4.3500000000000005,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          239.58903111802056,
+          240.16622608857529
+        ],
+        "jaw_deg": [
+          77.9954605102539,
+          78.13927459716797
+        ],
+        "tip_distance_mm": [
+          17.76647181983878,
+          18.89957138763037
+        ]
+      },
+      "command_sha256": "c42f3129c4f7b165a279f4d734ca6af6094ce7e9ea4521fefa745fc5692b2fdc"
+    },
+    {
+      "seed": 979240,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "3b715266fd6a187beea9302950f09a5f5b949d6a2dd9eb146067e9b6890caf26",
+      "rgb_sha256": "3de3bd990c4bc5dff0329476b6a11eb2bf992edee6917de3224ea657307ffe18",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.1,
+      "terminal_strict_carry_s": 2.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.05092552246347,
+          237.47740313880917
+        ],
+        "jaw_deg": [
+          77.59602355957031,
+          77.78132629394531
+        ],
+        "tip_distance_mm": [
+          14.910609187853705,
+          15.946886578605508
+        ]
+      },
+      "command_sha256": "3aa60115ef8ef5e1d61dbc3d3ad5857febab84b05e721d01ce94e44af5d66da8"
+    },
+    {
+      "seed": 979240,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "3b715266fd6a187beea9302950f09a5f5b949d6a2dd9eb146067e9b6890caf26",
+      "rgb_sha256": "3de3bd990c4bc5dff0329476b6a11eb2bf992edee6917de3224ea657307ffe18",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.1,
+      "terminal_strict_carry_s": 2.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.71360628307582,
+          237.22462652838726
+        ],
+        "jaw_deg": [
+          77.75314331054688,
+          77.8977279663086
+        ],
+        "tip_distance_mm": [
+          15.743293377287761,
+          16.81599923758148
+        ]
+      },
+      "command_sha256": "ba982829790c51f99e243115586ff7cbcb09a6d2c1777ff7296dadb9472a3349"
+    },
+    {
+      "seed": 979243,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "765ecfd757595b93a349b2c631ec0cd86235d9f38ccb3b847cad6b973d2959e9",
+      "rgb_sha256": "883c61d33caa364e71fe583779d8d2b16a3c9ff4d1d4999ae8c7d6796216e12b",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.6,
+      "terminal_strict_carry_s": 1.7000000000000002,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.11217541270685,
+          237.6523524296757
+        ],
+        "jaw_deg": [
+          77.55458068847656,
+          77.77685546875
+        ],
+        "tip_distance_mm": [
+          15.764153313547306,
+          16.936474338253614
+        ]
+      },
+      "command_sha256": "309e6d34dbd0ba8916b6a556b948183e75fb27856ac1045af96a6152bad931d2"
+    },
+    {
+      "seed": 979243,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "765ecfd757595b93a349b2c631ec0cd86235d9f38ccb3b847cad6b973d2959e9",
+      "rgb_sha256": "883c61d33caa364e71fe583779d8d2b16a3c9ff4d1d4999ae8c7d6796216e12b",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.6,
+      "terminal_strict_carry_s": 2.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.83315362778674,
+          237.38957785054114
+        ],
+        "jaw_deg": [
+          77.74446868896484,
+          77.94032287597656
+        ],
+        "tip_distance_mm": [
+          16.862731954475837,
+          18.229720739763902
+        ]
+      },
+      "command_sha256": "36a1d5f37d139a37ecd5255a66aa1a5f22a54e994f73fe74761d4ea2b77352c6"
+    },
+    {
+      "seed": 979253,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "fd7de9292fb4e02c7344c5edf460c45f6071fbbed3cdccdbf8e07bfa9b79b6ee",
+      "rgb_sha256": "ad5541cab92e4138d19b166c234a2336ead769f7b17e2a5fdf21d31566effb9d",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.15,
+      "terminal_strict_carry_s": 1.2000000000000002,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.04144006552568,
+          237.62367302063143
+        ],
+        "jaw_deg": [
+          77.51699829101562,
+          77.59239196777344
+        ],
+        "tip_distance_mm": [
+          15.072682997336322,
+          16.131765746964835
+        ]
+      },
+      "command_sha256": "cb3b76123b2b223195fbdc02c162a6b6681e1c85598bc08e78b6351b242f9b0a"
+    },
+    {
+      "seed": 979253,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "fd7de9292fb4e02c7344c5edf460c45f6071fbbed3cdccdbf8e07bfa9b79b6ee",
+      "rgb_sha256": "ad5541cab92e4138d19b166c234a2336ead769f7b17e2a5fdf21d31566effb9d",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.15,
+      "terminal_strict_carry_s": 3.5500000000000003,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.03050499077793,
+          236.49499960308856
+        ],
+        "jaw_deg": [
+          77.96410369873047,
+          78.15569305419922
+        ],
+        "tip_distance_mm": [
+          17.516080002492888,
+          18.874344381154224
+        ]
+      },
+      "command_sha256": "bf88d840390cb4d3373f77bb8570215642742c42c8075694ad53ff373c179db8"
+    },
+    {
+      "seed": 979257,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "7aad14b22157fe4ead30cf37a01446f6799b41a347315fd3261e1a1a5e5db3fd",
+      "rgb_sha256": "683d84be8d0a70a5aeb3f211542f0fece9dc968494af1726f90ccb28af6a209f",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.323152069012,
+          236.63629662895025
+        ],
+        "jaw_deg": [
+          77.43350982666016,
+          77.54393768310547
+        ],
+        "tip_distance_mm": [
+          13.86778377681631,
+          14.685144425950945
+        ]
+      },
+      "command_sha256": "9d37d5dd7944d06e2d13d92e73fe4d8fe644aee0ebf9c823575a96e3d8659125"
+    },
+    {
+      "seed": 979257,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "7aad14b22157fe4ead30cf37a01446f6799b41a347315fd3261e1a1a5e5db3fd",
+      "rgb_sha256": "683d84be8d0a70a5aeb3f211542f0fece9dc968494af1726f90ccb28af6a209f",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 0.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.323152069012,
+          236.63629662895025
+        ],
+        "jaw_deg": [
+          77.43350982666016,
+          77.54393768310547
+        ],
+        "tip_distance_mm": [
+          13.86778377681631,
+          14.685144425950945
+        ]
+      },
+      "command_sha256": "9d37d5dd7944d06e2d13d92e73fe4d8fe644aee0ebf9c823575a96e3d8659125"
+    },
+    {
+      "seed": 979258,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "e69d441e41d6e52945c62de7e3f29ea2ec14f0e5ca56a1f5089e2df65507b26f",
+      "rgb_sha256": "84bcdeec63b023f4aef9f29dc974a89a2a99c35d1d4995bf4109a7f7b15114e9",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.8,
+      "terminal_strict_carry_s": 4.55,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.51306955521534,
+          236.97639906539396
+        ],
+        "jaw_deg": [
+          78.02056884765625,
+          78.16385650634766
+        ],
+        "tip_distance_mm": [
+          17.612804559520633,
+          18.718857482228294
+        ]
+      },
+      "command_sha256": "0d14f2add2ce66b6e3cf5cd70ea2600b77d78cadbd9063490dbe759b168c4e37"
+    },
+    {
+      "seed": 979258,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "e69d441e41d6e52945c62de7e3f29ea2ec14f0e5ca56a1f5089e2df65507b26f",
+      "rgb_sha256": "84bcdeec63b023f4aef9f29dc974a89a2a99c35d1d4995bf4109a7f7b15114e9",
+      "retained": false,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 0.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          -0.00013316870775201273,
+          -0.00013316870775201273
+        ],
+        "jaw_deg": [
+          149.9995880126953,
+          149.9995880126953
+        ],
+        "tip_distance_mm": [
+          258.7871204575728,
+          258.7871204576108
+        ]
+      },
+      "command_sha256": "cdc8c6e979c7e3fa195f8d7803a6e1c6ed6a0ea8bfe71a22fe638d6071fd332b"
+    },
+    {
+      "seed": 979259,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "bcc6701aeeb57975dd5c731b48ffed26f5da6b48eb2098c1500ad3b25c0589e4",
+      "rgb_sha256": "5c0d52f6f060d035764b4bcc28c7f6659d40bc3faa886a8a9215bece8885095b",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.98411637979976,
+          237.52366891674575
+        ],
+        "jaw_deg": [
+          77.26124572753906,
+          77.4596939086914
+        ],
+        "tip_distance_mm": [
+          12.741053908386174,
+          13.865584841111938
+        ]
+      },
+      "command_sha256": "4f549a375f577354bddbc06037ca8d97e0ab95509a900685a24649e5adc35119"
+    },
+    {
+      "seed": 979259,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "bcc6701aeeb57975dd5c731b48ffed26f5da6b48eb2098c1500ad3b25c0589e4",
+      "rgb_sha256": "5c0d52f6f060d035764b4bcc28c7f6659d40bc3faa886a8a9215bece8885095b",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 0.7000000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          238.7919522183892,
+          239.28267033803553
+        ],
+        "jaw_deg": [
+          77.47258758544922,
+          77.56321716308594
+        ],
+        "tip_distance_mm": [
+          13.474592541541396,
+          14.3803636259329
+        ]
+      },
+      "command_sha256": "cd9b13b755f2a6761c421f6aeb52502ad085034f39b8786f1dbce99ad7358276"
+    },
+    {
+      "seed": 979261,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "f3fdbc2745c3e865ab0e799c6eee6ee06a4505c8f201668e814eff7bc743fb1b",
+      "rgb_sha256": "32dc14a3a7905aa2fed84c44bde50a1210336e13dd39ec1e803a6b51d1864d30",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.79523370676887,
+          238.38299023854765
+        ],
+        "jaw_deg": [
+          77.29116821289062,
+          77.48406219482422
+        ],
+        "tip_distance_mm": [
+          14.053080012573698,
+          15.359927684172888
+        ]
+      },
+      "command_sha256": "e7a600b54c545e0aaf704ac67f9ae7b0d2b3c79f2e47f7228636486958dc2cc6"
+    },
+    {
+      "seed": 979261,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "f3fdbc2745c3e865ab0e799c6eee6ee06a4505c8f201668e814eff7bc743fb1b",
+      "rgb_sha256": "32dc14a3a7905aa2fed84c44bde50a1210336e13dd39ec1e803a6b51d1864d30",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 0.2,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.87468528736792,
+          238.48122803002363
+        ],
+        "jaw_deg": [
+          77.36644744873047,
+          77.5138168334961
+        ],
+        "tip_distance_mm": [
+          14.525131518568662,
+          15.760152555990194
+        ]
+      },
+      "command_sha256": "ff60fb5345c5f701d3fd39ca6f60c7e2de9cc87569db1009b967d337bd528a53"
+    },
+    {
+      "seed": 979264,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "3c02d33656b606de89b841f2bc2e4eb0f59773f6aaf12a21cc2163092366360b",
+      "rgb_sha256": "4f521745a87b0bb1b28d5dddb259482f254d01c0afd23975a2028c6ff8ef9cb3",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 2.6,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.39182576456642,
+          238.03094081004937
+        ],
+        "jaw_deg": [
+          77.7587890625,
+          77.94847106933594
+        ],
+        "tip_distance_mm": [
+          17.584894283552163,
+          18.978893986632194
+        ]
+      },
+      "command_sha256": "ac281a701a504248696f2a3ea29ec2f06eaa811febdd16ae302558abbbc78a46"
+    },
+    {
+      "seed": 979264,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "3c02d33656b606de89b841f2bc2e4eb0f59773f6aaf12a21cc2163092366360b",
+      "rgb_sha256": "4f521745a87b0bb1b28d5dddb259482f254d01c0afd23975a2028c6ff8ef9cb3",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.25,
+      "terminal_strict_carry_s": 3.5500000000000003,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          238.70395137648924,
+          239.486551157341
+        ],
+        "jaw_deg": [
+          77.92289733886719,
+          78.10338592529297
+        ],
+        "tip_distance_mm": [
+          18.63293714852318,
+          20.053559554953832
+        ]
+      },
+      "command_sha256": "6b90916a1934f5ab7fd5981c6338cb343d7461ca7b2d344bef10c9d7fd7d4737"
+    },
+    {
+      "seed": 979265,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "be43e0804ca5a29e9a159f9bf2f4ad900b0356c4123088310c0cd982e253db72",
+      "rgb_sha256": "6f0eed40dcc1e931e30edda14431692101eb0f06de94f488e3f761b0b90a7818",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 0.7000000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.28409817115846,
+          232.75226867059035
+        ],
+        "jaw_deg": [
+          77.47499084472656,
+          77.56403350830078
+        ],
+        "tip_distance_mm": [
+          17.045415525796525,
+          17.71717107958358
+        ]
+      },
+      "command_sha256": "290deca30b020df5c45ebd836af1b113a9e51bbfdf3651cbba80b69d2ca371a9"
+    },
+    {
+      "seed": 979265,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "be43e0804ca5a29e9a159f9bf2f4ad900b0356c4123088310c0cd982e253db72",
+      "rgb_sha256": "6f0eed40dcc1e931e30edda14431692101eb0f06de94f488e3f761b0b90a7818",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 1.4000000000000001,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.83724283527374,
+          232.28256215402416
+        ],
+        "jaw_deg": [
+          77.54010009765625,
+          77.70079803466797
+        ],
+        "tip_distance_mm": [
+          17.583721455706826,
+          18.333054356313227
+        ]
+      },
+      "command_sha256": "1d83825ed9e3e1dc7dc0f2f79073df74da88672cf2f1bd66a44ac164da114e09"
+    },
+    {
+      "seed": 979271,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "f26617763145422ada204eb414318f577cbfdab1d8ebc1321f1bfedfd05c0f0c",
+      "rgb_sha256": "177dc94f4e6fc118890ad080e4d6a033a031cfc606f7b14dd511aa2597dd52f2",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 3.1500000000000004,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.32120063616028,
+          231.8601187269096
+        ],
+        "jaw_deg": [
+          77.82662963867188,
+          77.97006225585938
+        ],
+        "tip_distance_mm": [
+          18.808677952887326,
+          19.72240584576407
+        ]
+      },
+      "command_sha256": "dd51d8c444bc9f1d843ed40bc6ae6d6b401cbbdf4b8c8e992355ac574f400158"
+    },
+    {
+      "seed": 979271,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "f26617763145422ada204eb414318f577cbfdab1d8ebc1321f1bfedfd05c0f0c",
+      "rgb_sha256": "177dc94f4e6fc118890ad080e4d6a033a031cfc606f7b14dd511aa2597dd52f2",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 3.6,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          231.0348422984193,
+          231.56245615758127
+        ],
+        "jaw_deg": [
+          77.89036560058594,
+          78.03348541259766
+        ],
+        "tip_distance_mm": [
+          19.21727466769745,
+          20.141769220016908
+        ]
+      },
+      "command_sha256": "64c628287a3ba37cce45f4d35b3873fd0e8b062db9595dd4412aad8e94cbe0c3"
+    },
+    {
+      "seed": 979276,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "90b9d7a0a455c4ecc5ab695fcae0170a5895871cbf2f2d33d8b9a76945261558",
+      "rgb_sha256": "865b044290c2f74b41b0501a67f01362dbdec05a12c4158d1fc8829a0bb20185",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 1.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.0442203182086,
+          237.65962612193613
+        ],
+        "jaw_deg": [
+          77.50318145751953,
+          77.57488250732422
+        ],
+        "tip_distance_mm": [
+          15.613197688847386,
+          16.690948010457994
+        ]
+      },
+      "command_sha256": "a9ca53a1e5e5ad40927fff1d712b5cb45a075c82cf9353dde26b7a988c1833a3"
+    },
+    {
+      "seed": 979276,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "90b9d7a0a455c4ecc5ab695fcae0170a5895871cbf2f2d33d8b9a76945261558",
+      "rgb_sha256": "865b044290c2f74b41b0501a67f01362dbdec05a12c4158d1fc8829a0bb20185",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 0.8,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.0295413656321,
+          237.6357823352722
+        ],
+        "jaw_deg": [
+          77.4866943359375,
+          77.55767059326172
+        ],
+        "tip_distance_mm": [
+          15.47481302950939,
+          16.546821686357557
+        ]
+      },
+      "command_sha256": "89d14482ffe22f602eb7a86314b419fff95416fe33b2ecd91e9157cd2f7bfd87"
+    },
+    {
+      "seed": 979284,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "050793f02271f30a8ee14f9ea60ae271ce7e390b6f807fa06db2cda5018887e7",
+      "rgb_sha256": "3232b78955c0ddd78b248ab92bb807f131714f4572bd05a0f59a6357e6fc3d4b",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.700000000000001,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.54591797835835,
+          237.55720000839008
+        ],
+        "jaw_deg": [
+          76.78355407714844,
+          76.83654022216797
+        ],
+        "tip_distance_mm": [
+          13.267483176599985,
+          14.243452614406674
+        ]
+      },
+      "command_sha256": "867631531255ec0e21f1491dbe6b2618753178339944a62206bc55ea108c0771"
+    },
+    {
+      "seed": 979284,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "050793f02271f30a8ee14f9ea60ae271ce7e390b6f807fa06db2cda5018887e7",
+      "rgb_sha256": "3232b78955c0ddd78b248ab92bb807f131714f4572bd05a0f59a6357e6fc3d4b",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.700000000000001,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.05277161810073,
+          237.86826929536602
+        ],
+        "jaw_deg": [
+          76.77903747558594,
+          76.7821044921875
+        ],
+        "tip_distance_mm": [
+          12.777987877229824,
+          13.638587133833504
+        ]
+      },
+      "command_sha256": "d18c85e8781a13f0b8252f08dd01a22795a6e0980d72355b2c99bb2868e7d3c0"
+    },
+    {
+      "seed": 979293,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "78d5f3ad9c75e13cac646fbba940642643f2ffe2139a3a39d5ebc67df93247c5",
+      "rgb_sha256": "dd8d5e88cc14f4459fffef7b9e3ad7f2a3435a8178bac6b06c2194a99df8c6af",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.3,
+      "terminal_strict_carry_s": 1.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.11620392007003,
+          237.77202355368155
+        ],
+        "jaw_deg": [
+          77.50255584716797,
+          77.63416290283203
+        ],
+        "tip_distance_mm": [
+          16.91093248096635,
+          17.997914201744386
+        ]
+      },
+      "command_sha256": "d9d22fb806e509d7195fb76742654d4edf9613587abebef5130a424c9f0f4b89"
+    },
+    {
+      "seed": 979293,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "78d5f3ad9c75e13cac646fbba940642643f2ffe2139a3a39d5ebc67df93247c5",
+      "rgb_sha256": "dd8d5e88cc14f4459fffef7b9e3ad7f2a3435a8178bac6b06c2194a99df8c6af",
+      "retained": true,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.3,
+      "terminal_strict_carry_s": 0.4,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          234.91428308153579,
+          235.4305563414662
+        ],
+        "jaw_deg": [
+          77.42568969726562,
+          77.62776947021484
+        ],
+        "tip_distance_mm": [
+          18.51084428768606,
+          19.48884465299021
+        ]
+      },
+      "command_sha256": "62fbb983a7d56d500677e32915f9cd1b586b44bf8e4b0360b97e8213ed71a5fd"
+    },
+    {
+      "seed": 979299,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1e17b71a5aec8a50089e89eff5d4c9382e7c7881c9c331ce94bd84c11244213b",
+      "rgb_sha256": "e0dd8b31801eb7a36ceef2c5b3af4b8e7a43e58e02b92d346c157c48d54b8f36",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 4.6000000000000005,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.1271428533699,
+          237.6137188152423
+        ],
+        "jaw_deg": [
+          78.02684020996094,
+          78.17015838623047
+        ],
+        "tip_distance_mm": [
+          17.6439819915777,
+          18.758998517572493
+        ]
+      },
+      "command_sha256": "062a52dc18519c6c47e68044c95ba55445977a019c68ba60e1a144a6b6cb30f7"
+    },
+    {
+      "seed": 979299,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "1e17b71a5aec8a50089e89eff5d4c9382e7c7881c9c331ce94bd84c11244213b",
+      "rgb_sha256": "e0dd8b31801eb7a36ceef2c5b3af4b8e7a43e58e02b92d346c157c48d54b8f36",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 4.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.15602016597958,
+          237.6070817313992
+        ],
+        "jaw_deg": [
+          78.00801849365234,
+          78.15151977539062
+        ],
+        "tip_distance_mm": [
+          17.495130058529842,
+          18.610112451170334
+        ]
+      },
+      "command_sha256": "b1fa29560c4098482068287bb7a8f36e3402948cf463322eee3316a16a461814"
+    },
+    {
+      "seed": 979306,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "660566e4291d5a999f911a3cf58ffaee14a4ad4945d30246dab79ae994690785",
+      "rgb_sha256": "b7863deeb2ac8203c36cebc04fb78ef8953a93ba2ca5953cedc47bd8cd73c424",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 3.0500000000000003,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          237.53596968382107,
+          237.91655820474554
+        ],
+        "jaw_deg": [
+          77.7867660522461,
+          77.9319076538086
+        ],
+        "tip_distance_mm": [
+          15.811757806261904,
+          16.90967999692337
+        ]
+      },
+      "command_sha256": "0396e8259005dd742c965e5e0104b765bdd270e12e4904349535f270f230e140"
+    },
+    {
+      "seed": 979306,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "660566e4291d5a999f911a3cf58ffaee14a4ad4945d30246dab79ae994690785",
+      "rgb_sha256": "b7863deeb2ac8203c36cebc04fb78ef8953a93ba2ca5953cedc47bd8cd73c424",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 4.3,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          234.74295177013528,
+          235.00569090581124
+        ],
+        "jaw_deg": [
+          78.13187408447266,
+          78.31136322021484
+        ],
+        "tip_distance_mm": [
+          18.352270012418792,
+          19.668077876559938
+        ]
+      },
+      "command_sha256": "b488ba9f034078cb798cf3505ccfc168c0ca2645d1df0d6e12487afc70014634"
+    },
+    {
+      "seed": 979314,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "3d3cddf44b173a3cb7cbcbf461611536653c8a3840cfe0c0b089297fca41df08",
+      "rgb_sha256": "bab6ea00ba1144aa3da858dc4b1a6e7403557e251462eeb1c5b5ec78a3701a6c",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.05,
+      "terminal_strict_carry_s": 3.85,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          228.22582332672908,
+          228.83786981679498
+        ],
+        "jaw_deg": [
+          77.9443588256836,
+          78.08631896972656
+        ],
+        "tip_distance_mm": [
+          21.571197553081458,
+          22.414772953853756
+        ]
+      },
+      "command_sha256": "a487c5fbb9c5da09d5f7e064a87e5c2beba65b14342b9f68e2bf44d60f32b37c"
+    },
+    {
+      "seed": 979314,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "3d3cddf44b173a3cb7cbcbf461611536653c8a3840cfe0c0b089297fca41df08",
+      "rgb_sha256": "bab6ea00ba1144aa3da858dc4b1a6e7403557e251462eeb1c5b5ec78a3701a6c",
+      "retained": false,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 0.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          -0.00013316870775895162,
+          -0.0001331687076236432
+        ],
+        "jaw_deg": [
+          149.9995880126953,
+          149.9995880126953
+        ],
+        "tip_distance_mm": [
+          252.7660447078764,
+          252.76604470788217
+        ]
+      },
+      "command_sha256": "6d46c294378abc02bb0c2ba327c9b97195cf7bdcc4d5448419fada5fdb3c4fed"
+    },
+    {
+      "seed": 979316,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "b1321a4f5bf751d0b8bd6dd8597c2f58fe057ac0cc4ee85be1da036b828bf7e5",
+      "rgb_sha256": "99a048297b1cb8bad553d3cecbc2f4086884306883c15f3c1812b6436438c4cd",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.950000000000001,
+      "terminal_strict_carry_s": 1.6,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.04568135585478,
+          232.50933152991243
+        ],
+        "jaw_deg": [
+          77.55823516845703,
+          77.72990417480469
+        ],
+        "tip_distance_mm": [
+          17.484521326613255,
+          18.284315008380798
+        ]
+      },
+      "command_sha256": "87ee2d2c28784f7978fecae3c36e2fe36f4673d66b5b23c44e232e545e201139"
+    },
+    {
+      "seed": 979316,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "b1321a4f5bf751d0b8bd6dd8597c2f58fe057ac0cc4ee85be1da036b828bf7e5",
+      "rgb_sha256": "99a048297b1cb8bad553d3cecbc2f4086884306883c15f3c1812b6436438c4cd",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.950000000000001,
+      "terminal_strict_carry_s": 4.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          224.55608643771592,
+          225.11498006627633
+        ],
+        "jaw_deg": [
+          78.08216857910156,
+          78.21721649169922
+        ],
+        "tip_distance_mm": [
+          24.616984546352384,
+          25.27074763984553
+        ]
+      },
+      "command_sha256": "6663bfe652ddd22d9e010ead95bdd244cbbbea54ce857ab67b9e4eb97a22b554"
+    },
+    {
+      "seed": 979324,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ca7b7a9ec9891531c1223101f223f418b279e8a40f6e0d9d4060979b93d03e82",
+      "rgb_sha256": "5c7aef1b57c08288ac84085ed5849ffbcfbd5e8a310dd756f91a3bd580ec38a4",
+      "retained": false,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 0.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          -0.00013316870780058498,
+          -0.00013316870769303213
+        ],
+        "jaw_deg": [
+          149.9995880126953,
+          149.9995880126953
+        ],
+        "tip_distance_mm": [
+          252.47681373824744,
+          252.47681373825282
+        ]
+      },
+      "command_sha256": "e9ea0d0f7e14e4c4105b6146b3a991daa48fbb3cf515c94e5bd591aa02d3e0af"
+    },
+    {
+      "seed": 979324,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "ca7b7a9ec9891531c1223101f223f418b279e8a40f6e0d9d4060979b93d03e82",
+      "rgb_sha256": "5c7aef1b57c08288ac84085ed5849ffbcfbd5e8a310dd756f91a3bd580ec38a4",
+      "retained": false,
+      "strict": false,
+      "joint_success": false,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 0.0,
+      "terminal_strict_carry_s": 0.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          -0.00013316870773813494,
+          -0.00013316870773813494
+        ],
+        "jaw_deg": [
+          149.9995880126953,
+          149.9995880126953
+        ],
+        "tip_distance_mm": [
+          252.05015680662757,
+          252.05015680663368
+        ]
+      },
+      "command_sha256": "27fcd55923ca1bdde0642ec918401a7d26af74a804e97df3a67f01636d096840"
+    },
+    {
+      "seed": 979326,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "bfb51377c9eb6553dd96239bc40080757d26f7c3a4ed4cf6d1303e4fd769640a",
+      "rgb_sha256": "155e0aefa352264f5e614b5ad5176f8c7bc700cfc03f1518fd7819729870ac67",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.8,
+      "terminal_strict_carry_s": 1.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.9370555042698,
+          237.45844050053046
+        ],
+        "jaw_deg": [
+          77.56050109863281,
+          77.78141021728516
+        ],
+        "tip_distance_mm": [
+          15.26213105270198,
+          16.416843807379326
+        ]
+      },
+      "command_sha256": "fae887098f48b74061e9b7a5039f7c6d2d37626fdac58f6795b03c0980a81e1d"
+    },
+    {
+      "seed": 979326,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "bfb51377c9eb6553dd96239bc40080757d26f7c3a4ed4cf6d1303e4fd769640a",
+      "rgb_sha256": "155e0aefa352264f5e614b5ad5176f8c7bc700cfc03f1518fd7819729870ac67",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.8,
+      "terminal_strict_carry_s": 2.35,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          239.77266839680112,
+          240.01607409045533
+        ],
+        "jaw_deg": [
+          77.63166046142578,
+          77.83980560302734
+        ],
+        "tip_distance_mm": [
+          15.422013568571794,
+          16.555632857381728
+        ]
+      },
+      "command_sha256": "25257bb50b63537e0961bd0e4a11e6585b570fdf269c5bcc453e077896884449"
+    },
+    {
+      "seed": 979329,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "29535596cafbe809a784ae46535ab4cd5dc2b817b61a76e82d3c4f0af494913e",
+      "rgb_sha256": "16c351983af3f37b1691addf5885cabbe90a61dd0a361514fb1c76591f886a55",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 5.15,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.3566879407621,
+          236.8749439747846
+        ],
+        "jaw_deg": [
+          78.119384765625,
+          78.26192474365234
+        ],
+        "tip_distance_mm": [
+          18.37554873434507,
+          19.48534751749936
+        ]
+      },
+      "command_sha256": "18a0931596d5253229626e80767e8b82c6bbce5c42f69995cd69258d9080b3d9"
+    },
+    {
+      "seed": 979329,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "29535596cafbe809a784ae46535ab4cd5dc2b817b61a76e82d3c4f0af494913e",
+      "rgb_sha256": "16c351983af3f37b1691addf5885cabbe90a61dd0a361514fb1c76591f886a55",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.65,
+      "terminal_strict_carry_s": 7.0,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          233.1441639752791,
+          233.34515376072528
+        ],
+        "jaw_deg": [
+          78.6587905883789,
+          78.78662109375
+        ],
+        "tip_distance_mm": [
+          22.52757026839073,
+          23.570518794229013
+        ]
+      },
+      "command_sha256": "1f23931f00bb9ec59c20296f40907f3033cb094ce0fd403855d82fad54691279"
+    },
+    {
+      "seed": 979334,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "76d97f33dd6ac019f38674f4f1f5009fd2912b77acbe385b4eeec389558be878",
+      "rgb_sha256": "2fae40539dcc275d2ba5e8e61ef6a3399483aca16d702d034805a3e922e66262",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 2.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.71004299973598,
+          233.24171647348774
+        ],
+        "jaw_deg": [
+          77.76371002197266,
+          77.90760803222656
+        ],
+        "tip_distance_mm": [
+          17.638469692137114,
+          18.579767625712726
+        ]
+      },
+      "command_sha256": "6d96f85518646b97da2b4c869590aedbbe31e1595a552e386b18d1f01e62a44c"
+    },
+    {
+      "seed": 979334,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "76d97f33dd6ac019f38674f4f1f5009fd2912b77acbe385b4eeec389558be878",
+      "rgb_sha256": "2fae40539dcc275d2ba5e8e61ef6a3399483aca16d702d034805a3e922e66262",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 2.7,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.773117129995,
+          233.3026848561343
+        ],
+        "jaw_deg": [
+          77.7535171508789,
+          77.89747619628906
+        ],
+        "tip_distance_mm": [
+          17.55391459668007,
+          18.49409728446916
+        ]
+      },
+      "command_sha256": "e7ae5acad488972ee835014dec33cafd01699eea930cb0e9313cba38b3b45f9d"
+    },
+    {
+      "seed": 979338,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "20b9c001ef6eb28dc5a3e74c1e67fe681274953c0e491b18afcee1a678a70d97",
+      "rgb_sha256": "42d94d3d3ae12ce2851b99f5b2bb5c4e4d37ca8301b5f1a0567a22a8657c6140",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 1.8,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.78051491243474,
+          237.05175113909726
+        ],
+        "jaw_deg": [
+          77.57514953613281,
+          77.74166107177734
+        ],
+        "tip_distance_mm": [
+          14.73431651828257,
+          15.66689145687175
+        ]
+      },
+      "command_sha256": "7b131af91309978e2e05c9207c97916079f864815ffee6ea7bf21d4040086bd9"
+    },
+    {
+      "seed": 979338,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "20b9c001ef6eb28dc5a3e74c1e67fe681274953c0e491b18afcee1a678a70d97",
+      "rgb_sha256": "42d94d3d3ae12ce2851b99f5b2bb5c4e4d37ca8301b5f1a0567a22a8657c6140",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 9.0,
+      "terminal_strict_carry_s": 1.8,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          236.78051491243474,
+          237.05175113909726
+        ],
+        "jaw_deg": [
+          77.57514953613281,
+          77.74166107177734
+        ],
+        "tip_distance_mm": [
+          14.73431651828257,
+          15.66689145687175
+        ]
+      },
+      "command_sha256": "7b131af91309978e2e05c9207c97916079f864815ffee6ea7bf21d4040086bd9"
+    },
+    {
+      "seed": 979341,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "8e83125d206351a54ecbb62f0af617d4579a824a46cb18745368bd19905fdc04",
+      "rgb_sha256": "054ba916ce63fd7619e9dcd2359e382880959149434fcea8ae57feb549474877",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 4.2,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          234.05086051258493,
+          234.57187597346746
+        ],
+        "jaw_deg": [
+          77.97785949707031,
+          78.12094116210938
+        ],
+        "tip_distance_mm": [
+          17.973309670500633,
+          19.01320023289816
+        ]
+      },
+      "command_sha256": "2073792396527f1988c339154f92f410c387c1193d80e9aa1a1b579676b95b3c"
+    },
+    {
+      "seed": 979341,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "8e83125d206351a54ecbb62f0af617d4579a824a46cb18745368bd19905fdc04",
+      "rgb_sha256": "054ba916ce63fd7619e9dcd2359e382880959149434fcea8ae57feb549474877",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.85,
+      "terminal_strict_carry_s": 4.3500000000000005,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          234.16586145089846,
+          234.69949417387963
+        ],
+        "jaw_deg": [
+          78.00003814697266,
+          78.14300537109375
+        ],
+        "tip_distance_mm": [
+          18.069732642284706,
+          19.116058967170517
+        ]
+      },
+      "command_sha256": "963d4417b8387f3ac27ed98fe4d1855a3d96a8d516b76d7df3f386d9fa478029"
+    },
+    {
+      "seed": 979344,
+      "correction": [
+        0,
+        0
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "c41a92c2c86b139b103cb28810740599682cfe46b756091b5e27d740312731ae",
+      "rgb_sha256": "f052c334f72f46dc006848460ace26cefa90df6ad0d33972863c77b03f85fbeb",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.9,
+      "terminal_strict_carry_s": 2.75,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.63532703070788,
+          233.15507430301452
+        ],
+        "jaw_deg": [
+          77.7577896118164,
+          77.90174102783203
+        ],
+        "tip_distance_mm": [
+          17.640579610869402,
+          18.576572616700872
+        ]
+      },
+      "command_sha256": "c52228b2d28589b63639645e0f18ddca6c25e4bc1212ac4e0941aa067c55cfd7"
+    },
+    {
+      "seed": 979344,
+      "correction": [
+        0,
+        1
+      ],
+      "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+      "initial_sha256": "c41a92c2c86b139b103cb28810740599682cfe46b756091b5e27d740312731ae",
+      "rgb_sha256": "f052c334f72f46dc006848460ace26cefa90df6ad0d33972863c77b03f85fbeb",
+      "retained": true,
+      "strict": true,
+      "joint_success": true,
+      "executed_ticks": 360,
+      "terminal_bilateral_carry_s": 8.9,
+      "terminal_strict_carry_s": 2.5,
+      "reason": "field_sequence_complete",
+      "last_second_ranges": {
+        "height_mm": [
+          232.86908739238777,
+          233.38055391443828
+        ],
+        "jaw_deg": [
+          77.72024536132812,
+          77.86441802978516
+        ],
+        "tip_distance_mm": [
+          17.3275568804292,
+          18.258615811686244
+        ]
+      },
+      "command_sha256": "cd293911ffa60d843ba317329ce8728bb3d4cb6b28a157ff83523fef97ac396d"
+    }
+  ]
+}

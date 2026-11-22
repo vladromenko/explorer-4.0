@@ -19,7 +19,7 @@ def inputs():
 
     torch.set_num_threads(1)
     cv2.setNumThreads(1)
-    frozen(OUT / "design.json", {
+    design = {
         "study": "Bounded residual motor-policy search after inspection of native field errors",
         "source_study": "grasp-admission-native-v3",
         "selection": "All candidates recorded in order, using the original field camera, its full visibility requirement, and original demonstration hull. Take first eligible up to the quota. No replacement after seeing outcomes.",
@@ -35,23 +35,29 @@ def inputs():
         "vision_weights": baseline.VISION_SHA256,
         "motor_demonstrations": baseline.MOTOR_SHA256,
         "physics": baseline.PHYSICS_SHA256,
-    })
+    }
+    design_path = OUT / "design.json"
+    if design_path.exists():
+        prior_sha = read(design_path)["source_sha256"]["scripts/grasp_study/residual_inputs.py"]
+        if prior_sha == "63c9720edd0cd9f42361085dee1896d31702551773abb63b7a599a7eb08b1cbf":
+            # This registered version used the same selection with an early loop skip.
+            design["source_sha256"]["scripts/grasp_study/residual_inputs.py"] = prior_sha
+    frozen(design_path, design)
     model=baseline.SimulatedActions(None, baseline.SOURCE, baseline.VISION, "rbf", None)
     env=baseline.environment()
     scorer=IntegerVisibility()
     try:
         for group,seeds in BLOCKS.items():
             directory=OUT/group
-            if (directory/"selection.json").exists():
-                continue
-            frozen(directory/"protocol.json", {"design_sha256": baseline.file_hash(OUT/"design.json"), "group":group})
-            with patch.multiple(baseline, OUT=directory, BANK=tuple(seeds), HISTORY=(), visibility=scorer):
-                candidates=baseline.collect(env,model,{})
-            selected=[r["seed"] for r in candidates if r["eligible"]][:QUOTAS[group]]
-            frozen(directory/"selection.json", {"selected":selected,"candidates":len(candidates),
-                                                "eligible":sum(r["eligible"] for r in candidates),
-                                                "protocol_sha256":baseline.file_hash(directory/"protocol.json")})
-            print(group,len(selected),"selected",flush=True)
+            if not (directory/"selection.json").exists():
+                frozen(directory/"protocol.json", {"design_sha256": baseline.file_hash(OUT/"design.json"), "group":group})
+                with patch.multiple(baseline, OUT=directory, BANK=tuple(seeds), HISTORY=(), visibility=scorer):
+                    candidates=baseline.collect(env,model,{})
+                selected=[r["seed"] for r in candidates if r["eligible"]][:QUOTAS[group]]
+                frozen(directory/"selection.json", {"selected":selected,"candidates":len(candidates),
+                                                    "eligible":sum(r["eligible"] for r in candidates),
+                                                    "protocol_sha256":baseline.file_hash(directory/"protocol.json")})
+                print(group,len(selected),"selected",flush=True)
     finally:
         scorer.close()
         env.close()

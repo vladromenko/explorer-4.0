@@ -1,0 +1,58 @@
+{
+  "design_sha256": "a3654d95948a951b04ed8941fb7eb3f4177d9881950d852d62944992e0a6e117",
+  "implementation": {
+    "scripts/grasp_study/native_residual.py": "d1151189b17c0f9a4f4a3c6401ca69b1403a2c7f2818cfd37c59f98e7b563345",
+    "explorer4/grasp_residual.py": "b526d300c6094853968bc44c93e035b6cbb49cb8bfaecad83757240071634e56",
+    "explorer4/grasp_measured.py": "cc209f2d69cfc492b643bbfd1a0268934c2ce91b7094a99902eab01ed647d6ea",
+    "explorer4/grasp_shadow.py": "5162ec38825d8db3531d14df31df5fdc731a3d226fbb4e15f781e8408bd5ecfe",
+    "explorer4/conditioned_grasp.py": "33e983b4c9dc35d2b0eeebf6dfa109410bb6341de996e6d75ff4e34e95faa52e",
+    "agents/rosmaster/runtime.py": "51057bfbb8ad7b7cfcb98988bbb4c7e64f9d90204be62e1824ff516cb5fd8ce7",
+    "scripts/grasp_study/admission_native.py": "5340e5c6e31768ea551c29055fea30cdd5c3db187b36b76c0f6f8220bb9dc5e1",
+    "scripts/grasp_study/native_execution.py": "e2da69b8481420a3b480cf2bef23adf1cfcc22d776b2607f285a69ccbab78282",
+    "scripts/grasp_study/evaluate.py": "31469393b999c7ffdc3a88f15077a85b365d3776b84c6391963731a023c16935",
+    "explorer4/sim/aligned.py": "58adfc185f26144370b8b5d648dc1f4f31bf4c96d06d318d4743097e660b53bb",
+    "explorer4/sim/environment.py": "892906a3ffc253241c53f79d4cdb0f478f7baacc4a90b54015fbb9adb946906b",
+    "explorer4/sim/models.py": "7424d4e19ee4bec57ad6fd0acf8dd4b8b765bc313158b6c18eaa374d22279657",
+    "explorer4/sim/variation.py": "75aa47ad2f6f41d075113c0d65bc62383bf99112ab99c22b6f70e48fc930656c"
+  },
+  "independent_contact": "Each final 20 Hz sample needs nonpositive contact distance between cube and each jaw's own link, original carry, and >50 mm height above support. Score retained, original strict and intersection separately.",
+  "rank": "Maximum retained, then intersection, then minimum absolute normalized correction. Exact remaining ties follow registered candidate order.",
+  "candidates": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      -1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      -4,
+      0
+    ],
+    [
+      -4,
+      -1
+    ],
+    [
+      -4,
+      1
+    ],
+    [
+      4,
+      0
+    ],
+    [
+      4,
+      -1
+    ],
+    [
+      4,
+      1
+    ]
+  ]
+}

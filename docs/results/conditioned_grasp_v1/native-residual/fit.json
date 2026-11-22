@@ -1,0 +1,115 @@
+{
+  "parameters": {
+    "correction": [
+      0,
+      1
+    ],
+    "retained": 16,
+    "strict": 11,
+    "joint_success": 11
+  },
+  "candidates": [
+    {
+      "correction": [
+        0,
+        0
+      ],
+      "retained": 16,
+      "strict": 9,
+      "joint_success": 9
+    },
+    {
+      "correction": [
+        0,
+        -1
+      ],
+      "retained": 16,
+      "strict": 7,
+      "joint_success": 7
+    },
+    {
+      "correction": [
+        0,
+        1
+      ],
+      "retained": 16,
+      "strict": 11,
+      "joint_success": 11
+    },
+    {
+      "correction": [
+        -4,
+        0
+      ],
+      "retained": 16,
+      "strict": 10,
+      "joint_success": 10
+    },
+    {
+      "correction": [
+        -4,
+        -1
+      ],
+      "retained": 15,
+      "strict": 9,
+      "joint_success": 9
+    },
+    {
+      "correction": [
+        -4,
+        1
+      ],
+      "retained": 14,
+      "strict": 9,
+      "joint_success": 9
+    },
+    {
+      "correction": [
+        4,
+        0
+      ],
+      "retained": 15,
+      "strict": 7,
+      "joint_success": 7
+    },
+    {
+      "correction": [
+        4,
+        -1
+      ],
+      "retained": 15,
+      "strict": 7,
+      "joint_success": 7
+    },
+    {
+      "correction": [
+        4,
+        1
+      ],
+      "retained": 14,
+      "strict": 9,
+      "joint_success": 9
+    }
+  ],
+  "training_seeds": [
+    979000,
+    979012,
+    979014,
+    979016,
+    979017,
+    979021,
+    979022,
+    979023,
+    979027,
+    979032,
+    979035,
+    979038,
+    979039,
+    979047,
+    979049,
+    979055
+  ],
+  "source_sha256": "97c4cf195173dfc5e2677b02a90060b26a60cff9a0999335812666cb330f15b9",
+  "training_rollout_sha256": "671e992b39eeddb498968b8eb20e7cbe541e220e46395a4937aee028e2bda849",
+  "motor_protocol_sha256": "660186c7545f5e6b0da5da35f9eef1e8182fa59d346ad621ecbbd9de7d519577"
+}
