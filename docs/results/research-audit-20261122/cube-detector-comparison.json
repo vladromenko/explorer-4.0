@@ -1,0 +1,539 @@
+{
+  "protocol_sha256": "38d4419ef20fc46d530a0c95acc9077c82da0b63bfc60ca416264578ea160cbe",
+  "summary": {
+    "sam3": {
+      "cube": {
+        "any_covers_tag": 3,
+        "readable_tag_frames": 9,
+        "returned_any_of_all_12": 12,
+        "top_covers_tag": 0
+      },
+      "cube with a black and white marker on top": {
+        "any_covers_tag": 3,
+        "readable_tag_frames": 9,
+        "returned_any_of_all_12": 4,
+        "top_covers_tag": 3
+      }
+    },
+    "yoloe": {
+      "cube": {
+        "any_covers_tag": 0,
+        "readable_tag_frames": 9,
+        "returned_any_of_all_12": 0,
+        "top_covers_tag": 0
+      },
+      "cube with a black and white marker on top": {
+        "any_covers_tag": 0,
+        "readable_tag_frames": 9,
+        "returned_any_of_all_12": 0,
+        "top_covers_tag": 0
+      }
+    }
+  },
+  "trials": {
+    "sam3": {
+      "cube": [
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [
+            [
+              365.75537109375,
+              293.0474548339844,
+              438.6241149902344,
+              358.9088134765625,
+              0.69921875
+            ]
+          ],
+          "camera_sequence": 2,
+          "jpeg_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [
+            [
+              365.5792236328125,
+              292.95172119140625,
+              438.96246337890625,
+              358.9729919433594,
+              0.77734375
+            ]
+          ],
+          "camera_sequence": 82,
+          "jpeg_sha256": "29a4b2f8f3231c20fccddc0e81d06b2962528d1e7f0dac076af424302c8f7e4c",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [
+            [
+              365.53741455078125,
+              292.9798278808594,
+              439.54339599609375,
+              358.4942626953125,
+              0.76953125
+            ]
+          ],
+          "camera_sequence": 165,
+          "jpeg_sha256": "77aec8f094f9d96e3bb543d8ae8ee8c8c51d64326b2d23e2142f482e38ec6999",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [
+            [
+              365.541015625,
+              292.97552490234375,
+              439.22454833984375,
+              358.9974365234375,
+              0.8359375
+            ]
+          ],
+          "camera_sequence": 240,
+          "jpeg_sha256": "f4bd3984b236d5bdecf1023e8c445c60272ed749663cb6a603e9d8a9672b2d55",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [
+            [
+              365.27423095703125,
+              292.8888244628906,
+              438.6004943847656,
+              358.3686218261719,
+              0.65234375
+            ]
+          ],
+          "camera_sequence": 314,
+          "jpeg_sha256": "29cd8e75418a66a79ea3fb45eeea2b0f66898957a6464ad71cbee55856a75b14",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [
+            [
+              365.3822326660156,
+              292.8099060058594,
+              438.976806640625,
+              358.6811828613281,
+              0.828125
+            ]
+          ],
+          "camera_sequence": 389,
+          "jpeg_sha256": "751e7b9d33c2215b952ed9481a39a95cd73bb43c7a529561590776fdaeb263ec",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [
+            [
+              365.6070556640625,
+              292.6919860839844,
+              437.8170166015625,
+              358.5234375,
+              0.84375
+            ],
+            [
+              673.8829956054688,
+              335.6872253417969,
+              758.302978515625,
+              422.6181640625,
+              0.84375
+            ]
+          ],
+          "camera_sequence": 466,
+          "jpeg_sha256": "bf7a759a1d2763df83b290150caf0c0c2e1011019d5f5ee3f4079d28e0e40107",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": true,
+          "boxes_xyxy_score": [
+            [
+              365.33050537109375,
+              293.0144348144531,
+              438.914794921875,
+              358.97381591796875,
+              0.76171875
+            ],
+            [
+              676.239013671875,
+              345.07275390625,
+              754.252197265625,
+              429.9473876953125,
+              0.72265625
+            ]
+          ],
+          "camera_sequence": 541,
+          "jpeg_sha256": "f41dd4904f9ed23ce57c29215237584674164640d2fbfe7ca7f2f54dc9d5a67a",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": true,
+          "boxes_xyxy_score": [
+            [
+              365.9798583984375,
+              292.8381652832031,
+              439.28131103515625,
+              358.8560485839844,
+              0.8125
+            ],
+            [
+              675.8228759765625,
+              344.6840515136719,
+              754.1180419921875,
+              429.8699645996094,
+              0.75390625
+            ]
+          ],
+          "camera_sequence": 616,
+          "jpeg_sha256": "32970c0b902fc5d06bfa34e25556c871487372fec66ca84e576428a3135088c6",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": true,
+          "boxes_xyxy_score": [
+            [
+              365.9345703125,
+              292.82647705078125,
+              438.3751220703125,
+              358.92193603515625,
+              0.90234375
+            ],
+            [
+              684.042724609375,
+              367.56109619140625,
+              754.9957885742188,
+              451.508544921875,
+              0.89453125
+            ]
+          ],
+          "camera_sequence": 693,
+          "jpeg_sha256": "6b86b7bcb76e44c199ef784992b2e39ea6c84c8407fbf3b66f0c6f6ef3404e02",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [
+            [
+              365.4989013671875,
+              292.8558044433594,
+              438.9222717285156,
+              358.7695007324219,
+              0.72265625
+            ]
+          ],
+          "camera_sequence": 772,
+          "jpeg_sha256": "382f63a56a52dc43f46b05b1fc56dec8a30b8da3922ae442ecbab535f1cf7010",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [
+            [
+              365.6181640625,
+              292.72808837890625,
+              439.2846374511719,
+              358.5780334472656,
+              0.7421875
+            ]
+          ],
+          "camera_sequence": 855,
+          "jpeg_sha256": "420c36b249f3f3835f51c1ba36544296553a8831e7710897082c9d1b8e0531e3",
+          "top_covers_tag": false
+        }
+      ],
+      "cube with a black and white marker on top": [
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 2,
+          "jpeg_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 82,
+          "jpeg_sha256": "29a4b2f8f3231c20fccddc0e81d06b2962528d1e7f0dac076af424302c8f7e4c",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 165,
+          "jpeg_sha256": "77aec8f094f9d96e3bb543d8ae8ee8c8c51d64326b2d23e2142f482e38ec6999",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 240,
+          "jpeg_sha256": "f4bd3984b236d5bdecf1023e8c445c60272ed749663cb6a603e9d8a9672b2d55",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 314,
+          "jpeg_sha256": "29cd8e75418a66a79ea3fb45eeea2b0f66898957a6464ad71cbee55856a75b14",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 389,
+          "jpeg_sha256": "751e7b9d33c2215b952ed9481a39a95cd73bb43c7a529561590776fdaeb263ec",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [
+            [
+              673.54931640625,
+              335.5137634277344,
+              758.0146484375,
+              422.8029479980469,
+              0.60546875
+            ]
+          ],
+          "camera_sequence": 466,
+          "jpeg_sha256": "bf7a759a1d2763df83b290150caf0c0c2e1011019d5f5ee3f4079d28e0e40107",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": true,
+          "boxes_xyxy_score": [
+            [
+              676.160888671875,
+              344.8863830566406,
+              753.8528442382812,
+              429.9371337890625,
+              0.578125
+            ]
+          ],
+          "camera_sequence": 541,
+          "jpeg_sha256": "f41dd4904f9ed23ce57c29215237584674164640d2fbfe7ca7f2f54dc9d5a67a",
+          "top_covers_tag": true
+        },
+        {
+          "any_covers_tag": true,
+          "boxes_xyxy_score": [
+            [
+              675.928466796875,
+              344.6202087402344,
+              753.8824462890625,
+              429.78631591796875,
+              0.609375
+            ]
+          ],
+          "camera_sequence": 616,
+          "jpeg_sha256": "32970c0b902fc5d06bfa34e25556c871487372fec66ca84e576428a3135088c6",
+          "top_covers_tag": true
+        },
+        {
+          "any_covers_tag": true,
+          "boxes_xyxy_score": [
+            [
+              683.6243896484375,
+              367.3160400390625,
+              754.4573974609375,
+              451.3879699707031,
+              0.5390625
+            ]
+          ],
+          "camera_sequence": 693,
+          "jpeg_sha256": "6b86b7bcb76e44c199ef784992b2e39ea6c84c8407fbf3b66f0c6f6ef3404e02",
+          "top_covers_tag": true
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 772,
+          "jpeg_sha256": "382f63a56a52dc43f46b05b1fc56dec8a30b8da3922ae442ecbab535f1cf7010",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 855,
+          "jpeg_sha256": "420c36b249f3f3835f51c1ba36544296553a8831e7710897082c9d1b8e0531e3",
+          "top_covers_tag": false
+        }
+      ]
+    },
+    "yoloe": {
+      "cube": [
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 2,
+          "jpeg_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 82,
+          "jpeg_sha256": "29a4b2f8f3231c20fccddc0e81d06b2962528d1e7f0dac076af424302c8f7e4c",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 165,
+          "jpeg_sha256": "77aec8f094f9d96e3bb543d8ae8ee8c8c51d64326b2d23e2142f482e38ec6999",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 240,
+          "jpeg_sha256": "f4bd3984b236d5bdecf1023e8c445c60272ed749663cb6a603e9d8a9672b2d55",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 314,
+          "jpeg_sha256": "29cd8e75418a66a79ea3fb45eeea2b0f66898957a6464ad71cbee55856a75b14",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 389,
+          "jpeg_sha256": "751e7b9d33c2215b952ed9481a39a95cd73bb43c7a529561590776fdaeb263ec",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 466,
+          "jpeg_sha256": "bf7a759a1d2763df83b290150caf0c0c2e1011019d5f5ee3f4079d28e0e40107",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 541,
+          "jpeg_sha256": "f41dd4904f9ed23ce57c29215237584674164640d2fbfe7ca7f2f54dc9d5a67a",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 616,
+          "jpeg_sha256": "32970c0b902fc5d06bfa34e25556c871487372fec66ca84e576428a3135088c6",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 693,
+          "jpeg_sha256": "6b86b7bcb76e44c199ef784992b2e39ea6c84c8407fbf3b66f0c6f6ef3404e02",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 772,
+          "jpeg_sha256": "382f63a56a52dc43f46b05b1fc56dec8a30b8da3922ae442ecbab535f1cf7010",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 855,
+          "jpeg_sha256": "420c36b249f3f3835f51c1ba36544296553a8831e7710897082c9d1b8e0531e3",
+          "top_covers_tag": false
+        }
+      ],
+      "cube with a black and white marker on top": [
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 2,
+          "jpeg_sha256": "234631e258f60c2fdb7d9310b2851e02a60b4ee2c84c2083a80b01b619e2e8ca",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 82,
+          "jpeg_sha256": "29a4b2f8f3231c20fccddc0e81d06b2962528d1e7f0dac076af424302c8f7e4c",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 165,
+          "jpeg_sha256": "77aec8f094f9d96e3bb543d8ae8ee8c8c51d64326b2d23e2142f482e38ec6999",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 240,
+          "jpeg_sha256": "f4bd3984b236d5bdecf1023e8c445c60272ed749663cb6a603e9d8a9672b2d55",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 314,
+          "jpeg_sha256": "29cd8e75418a66a79ea3fb45eeea2b0f66898957a6464ad71cbee55856a75b14",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 389,
+          "jpeg_sha256": "751e7b9d33c2215b952ed9481a39a95cd73bb43c7a529561590776fdaeb263ec",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": null,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 466,
+          "jpeg_sha256": "bf7a759a1d2763df83b290150caf0c0c2e1011019d5f5ee3f4079d28e0e40107",
+          "top_covers_tag": null
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 541,
+          "jpeg_sha256": "f41dd4904f9ed23ce57c29215237584674164640d2fbfe7ca7f2f54dc9d5a67a",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 616,
+          "jpeg_sha256": "32970c0b902fc5d06bfa34e25556c871487372fec66ca84e576428a3135088c6",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 693,
+          "jpeg_sha256": "6b86b7bcb76e44c199ef784992b2e39ea6c84c8407fbf3b66f0c6f6ef3404e02",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 772,
+          "jpeg_sha256": "382f63a56a52dc43f46b05b1fc56dec8a30b8da3922ae442ecbab535f1cf7010",
+          "top_covers_tag": false
+        },
+        {
+          "any_covers_tag": false,
+          "boxes_xyxy_score": [],
+          "camera_sequence": 855,
+          "jpeg_sha256": "420c36b249f3f3835f51c1ba36544296553a8831e7710897082c9d1b8e0531e3",
+          "top_covers_tag": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "camera_sequences": [
+    2,
+    82,
+    165,
+    240,
+    314,
+    389,
+    466,
+    541,
+    616,
+    693,
+    772,
+    855
+  ],
+  "confidence": 0.4,
+  "endpoint": "Highest-scoring returned box contains all four corners of the independently read ID 1. Also count any qualifying box. Only frames with a readable tag have this label. All boxes remain in the report.",
+  "episode": "d891e94d13014e3abcda7f1a3dce517e",
+  "implementation_sha256": {
+    "compare_cube_detectors.py": "7dd2b761c4bdacae6e03b1be30769aa11aea2c5c15a98bc6a98293d4300392eb",
+    "vision-assets.json": "0a21f6cf3cdb1fe291b480d28ce0dc047a19190b6656bd0aa3cd30ec21fc88ba",
+    "vision_worker.py": "98b3323dc09be9f495eb0c22ca3d64d2ede163a1139f600ee5d3bc8e42e3dc20"
+  },
+  "input": "Identical original full-resolution JPEGs. No boxes, tag ID, coordinates, or reference image supplied to either detector. Prompts were fixed before cross-frame model calls.",
+  "limits": "Bounding-box coverage of the marker is a positional proxy. It can include adjacent objects. Frames from this one recording are correlated. The deployment camera, physical grasp and tracking through occlusion are separate evaluations.",
+  "methods": [
+    "sam3",
+    "yoloe"
+  ],
+  "optimizer_updates": 0,
+  "physical_trials": 0,
+  "prompts": [
+    "cube",
+    "cube with a black and white marker on top"
+  ],
+  "source_sha256": "2750c7813a6b08eb9ba1bd47ecb7c76d85abe53c271b7b8e9b75c75778ad546e",
+  "study": "Retrospective text-prompt comparison on one previously inspected physical SO-101 demonstration"
+}

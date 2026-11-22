@@ -152,7 +152,7 @@ def methods():
                              f"после обучения {trained['task_successes']}/{trained['scenes']}.")
                 evidence_link("Исходы на восьми стартовых сценах", path)
         with ui.element("section").classes("work-box"):
-            ui.label("SAM 3 · зрение по готовым весам").classes("work-name")
+            ui.label("SAM 3 и YOLOE · зрение по готовым весам").classes("work-name")
             report = read(MEDIA / (sam_path + "result.json"))
             if report:
                 control = report["positive_marker_box_control"]
@@ -171,11 +171,23 @@ def methods():
                 ui.label("Зелёный контур — зарегистрированный кубик, жёлтая рамка — ответ на текст. Захват здесь не проверялся.").classes("work-muted")
             else:
                 ui.label("Архив проверки на реальном кадре недоступен.")
+            comparison_path = REPORT + "cube-detector-comparison-v1/result.json"
+            comparison = read(MEDIA / comparison_path).get("summary", {})
+            if comparison:
+                ui.label("Сравнение на 12 реальных кадрах SO-101 из одного показа")
+                for prompt, label in (("cube", "Кубик"),
+                                      ("cube with a black and white marker on top", "Кубик с чёрно-белой меткой сверху")):
+                    counts = []
+                    for method, name in (("sam3", "SAM 3"), ("yoloe", "YOLOE")):
+                        score = comparison[method][prompt]
+                        counts.append(f"{name} {score['top_covers_tag']}/{score['readable_tag_frames']}")
+                    ui.label(f"«{label}» · " + ", ".join(counts))
+                ui.label("Засчитаны кадры, где рамка с наибольшей уверенностью охватила все четыре угла читаемой метки.").classes("work-muted")
             with ui.row().classes("work-links"):
                 evidence_link("Результаты обеих подсказок", sam_path + "result.json")
                 if report:
                     ui.link("Веса Meta SAM 3", "https://huggingface.co/facebook/sam3/tree/" + report["sam_revision"])
-                evidence_link("YOLOE и SAM 3 на 12 кадрах", REPORT + "cube-detector-comparison-v1/result.json")
+                evidence_link("YOLOE и SAM 3 на 12 кадрах", comparison_path)
                 ui.link("Проверка зрения", "/sim/vision")
         with ui.element("section").classes("work-box"):
             ui.label("Обучение с подкреплением · Tank").classes("work-name")
