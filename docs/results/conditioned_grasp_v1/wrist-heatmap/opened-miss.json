@@ -1,0 +1,56 @@
+{
+  "protocol_sha256": "a38a4a493ece1cf6ba0ce7b75c201a64110645e04294261cc952e70364e456b6",
+  "seed": 976115,
+  "original_rgb_sha256": "5d4ec4df4fc963d42ca65d49473fbfc4777073428735cc252af896c1c519a9ea",
+  "methods": {
+    "baseline": {
+      "xy_m": [
+        0.20917482674121857,
+        0.018266946077346802
+      ],
+      "seed": 976115,
+      "executed_ticks": 360,
+      "first_stable_hold_tick": null,
+      "terminal_success": false,
+      "termination": "field_sequence_complete",
+      "terminal_qualified_hold_s": 0.0,
+      "native_action_sha256": "e729ca74a52257004ebfd05cbd5703eeaa3e329d35cc202b59dd76e17a96629a",
+      "projected_ticks": 13,
+      "max_projection_deg": [
+        0.0,
+        0.0,
+        1.1292019671584415,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bilateral_contact": false,
+      "peak_lift_m": 0.004619232704968924
+    },
+    "keypoint": {
+      "xy_m": [
+        0.17076586186885834,
+        0.031063124537467957
+      ],
+      "seed": 976115,
+      "executed_ticks": 0,
+      "first_stable_hold_tick": null,
+      "terminal_success": false,
+      "termination": "native_or_policy_stop: Predicted cube is outside the motor demonstration hull",
+      "terminal_qualified_hold_s": 0.0,
+      "native_action_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "projected_ticks": 0,
+      "max_projection_deg": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bilateral_contact": false,
+      "peak_lift_m": 0.0
+    }
+  },
+  "physical_trials": 0
+}

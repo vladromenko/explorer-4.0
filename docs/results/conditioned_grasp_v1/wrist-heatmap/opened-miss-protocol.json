@@ -1,0 +1,10 @@
+{
+  "purpose": "Post-hoc single-scene diagnosis. Does correcting a previously known large RGB error rescue its terminal hold under the original guarded field contract?",
+  "seed": 976115,
+  "source_sha256": "d3cf3a877e8dbf0bba3b6568c10b2d38b98fb66b740525a19ccbd2532fe7b9cd",
+  "result_sha256": "8d80e7adc52890be2f4467458a9168dc508955c39b071786eefaed7460f38a2c",
+  "opened_source_sha256": "5cb3b402a216de8f74102b99dec6bdda63c26989b07eaa2a706a59bc9188eb40",
+  "fresh_scenes": 0,
+  "physical_trials": 0,
+  "selection": "Already named in the research question for its 39 mm error. This case does not estimate generalization."
+}
