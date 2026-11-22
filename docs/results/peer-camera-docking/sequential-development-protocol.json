@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "label": "post_hoc_open_development_only",
+  "parent_protocol_sha256": "4003c01390320f8e36920cf2be6a286b9d88aa0e7faa9f41471ad3df4f275b87",
+  "source_sha256": {
+    "explorer4/sim/cooperation.py": "287b9c1e1744cfb5451a754dfeff1837f8b5c3ec812e7e99cac87e9230936506",
+    "explorer4/sim/peer_dock.py": "6279225421ebacc75cd8ce0695951bc7e4eaf96171670409ad64c3f2d5dc84d0",
+    "explorer4/sim/fleet.py": "1884e6480f07cf7110f15a80e9706b1d4dfcd529128137fb2cd5659b24823b74",
+    "explorer4/sim/mobile.py": "ba31b40f6f03d35dc48beec685373a0eee94041fe5b7aff0f12b94f040e747c2",
+    "explorer4/simlab/perception.py": "233464ffa16661848bed739d480ab5f513d54db0db8832ea3b4ddf586d616f2b",
+    "explorer4/sim/room.py": "91983b2a5dd0edc72af650e8bd189e0fa88cafeb53d638e564003a7d54315d8c",
+    "explorer4/sim/tank_model.py": "da2de72a50167a78f1a7a66adb924fc9ef988ecb38c6245c3266f5d9738ac57f",
+    "explorer4/sim/state_codec.py": "c2029c5380266fb4391d6f590b2219ae2a27523453569fbc30aab7d06913d7c3",
+    "explorer4/peer_dock_config.py": "afaf0fd2870b32e632e8fecb678dd56d5871817b5a08ac2d10e407ce838d50c2",
+    "explorer4/sim/peer_screens.py": "85d436519b99f4878a76e5ad7241badd7ff4e7b617a3945aa8f68cd879899e7f",
+    "explorer4/peer_request_policy.py": "fef57c27b6df31a00c74cddd10ccbc06e01c1cee1c6098cfccca0b6a090361e5",
+    "scripts/peer_sequential_control.py": "8cbf3891c9b4a33217ddbe17c1d1c3d13ca00f94f65cedfe41c1231f273122c5"
+  },
+  "scenes": [
+    {
+      "seed": 861000,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "e70404c7627fb32d3fb2adfa667901257d9552e92886dfa844568997e5410ad9",
+      "split": "train",
+      "initial_rgb_sha256": "b65f8b6f58a3abc378e429db2297be06a0e48a1b8c4121b183b0e481b1364803"
+    },
+    {
+      "seed": 861001,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "a2136ad2832cc6b45088b03bd78a0a7e0a64bffd0b7c995aa8ae4add3b30ab60",
+      "split": "train",
+      "initial_rgb_sha256": "101785807dbe01dd20f91d6b29e41772b23661f310bf6f658e21c55b0e91b5c7"
+    },
+    {
+      "seed": 861002,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "b8f815597fa01062a0069f0fd5c08f4abca81f577555d9639044f0deb51142f8",
+      "split": "train",
+      "initial_rgb_sha256": "a6628fbfde181629b5c032802f4e5996847feafca44e605b47ea9b546efd6741"
+    },
+    {
+      "seed": 861003,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "bd0765ee5439fa5e973da1e4f3dfb892a12c4854505762dda0fbdafbe84c594f",
+      "split": "train",
+      "initial_rgb_sha256": "e842341983c72fd08741a1b702f4ca9b1aa802b0553b545321329f62ad02d485"
+    },
+    {
+      "seed": 861004,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "0076b3808d4eb30aee50c89d14678fbff30aa0f9da48e3eb31263330ced46f74",
+      "split": "train",
+      "initial_rgb_sha256": "5ab0e3804b9101aac11f1bba346e6ec99726a647ae21886e20dd34f0e8de1c43"
+    },
+    {
+      "seed": 861005,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "523d1323f03ee79d610d148766a54009b18e4c190f35e053531e5e169b18123a",
+      "split": "train",
+      "initial_rgb_sha256": "eaf6f35d29ecdff1d6ec9e9b76ef396ecff9e5bff78d0bdfcb241937118273b0"
+    },
+    {
+      "seed": 861006,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "1e55a2252b3db5685e56b9a7c8ff8a59fd506192c3e70d108ab6e2c9ae54d54c",
+      "split": "train",
+      "initial_rgb_sha256": "e521039a6a02fb53312474efa1078f6631ef7211a22ef898c47a549c9515a05b"
+    },
+    {
+      "seed": 861007,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "49c7b3b9697227513196a807f6ed14f1158ce3549f1d34732c9273f32bbea1bd",
+      "split": "train",
+      "initial_rgb_sha256": "fce353faf2586af5f7d481b173ddae4983b3f928f913f2a2c37ec873ecceedbf"
+    },
+    {
+      "seed": 861008,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "5d237a995d49f12581550720c135527c5c582923e266378002a21bb4809b4dbf",
+      "split": "train",
+      "initial_rgb_sha256": "a3490118ded8afba72271b87806e0302468ad5bbf3f1968de181d4439684182d"
+    },
+    {
+      "seed": 861009,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "9941f304c6fa32b34ea46212ec3db1b596292fb25810471cff5dfdd52add06fa",
+      "split": "train",
+      "initial_rgb_sha256": "03c6bbd57e1ccb4494bdc271a58e47b355a97b4579610e8a9668cafb7ae51763"
+    },
+    {
+      "seed": 861010,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "bc257ad43d1aaf5d0cce17257b5d3cfcb8c11295dea239efc9938a8797e514c6",
+      "split": "train",
+      "initial_rgb_sha256": "9a3fe6f5a9f18e144c683ab6c0b57ba9e7e7e3f30822e813f552601ae11ab812"
+    },
+    {
+      "seed": 861011,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "85b4d34fadbfbdcb171fbc166ffb0a925f588c495306542dcaaaefc7e52ee641",
+      "split": "train",
+      "initial_rgb_sha256": "b81f2c9bcec9120f501e86533d06e15d2bbf9fd08f72a0fc0977e1f10341a1d9"
+    },
+    {
+      "seed": 861012,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "4f064d9a50c2b5262097960de4630d80397e9009ef35e2ac776c627eba4d6d2e",
+      "split": "train",
+      "initial_rgb_sha256": "430015b3a034760f15367bf245fb561c12c438513238a8c6f6b8416e33caa435"
+    },
+    {
+      "seed": 861013,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "d5c760f0c36dcf5993e525ac79f458d4de5fd07c2e2717230b5aa5effc4d37d3",
+      "split": "train",
+      "initial_rgb_sha256": "61aea934a9a836af191cec84e18a9a3021cea6921965b5a23a9fd95a99091f20"
+    },
+    {
+      "seed": 861014,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "0960d3209be038687eb4c6194d8403111766e648e764900cf4ebb203d229f1ae",
+      "split": "train",
+      "initial_rgb_sha256": "025cdc66a6ec4651b8b02faf7976f39ff83e15d087bc43d466ea718e84731d64"
+    },
+    {
+      "seed": 861015,
+      "room": "workshop_screen",
+      "world_model_sha256": "de26f16f72d83b1321d0f36f39f79017167b1e532e6194a5071630f3f7fbcfa9",
+      "initial_state_sha256": "f205ade05e5734228eb2926005617df61da523312654d6ec431be8fa7f43a1e6",
+      "split": "train",
+      "initial_rgb_sha256": "63eccb5477d31993da0c244084c9a7439918f93ba3148d123f9ebcb3894f24a1"
+    },
+    {
+      "seed": 862000,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "846e483eb5938b6cfab69ce72d6dff08b872c42459464b74b6b2eb51f79ffdd2",
+      "split": "calibration",
+      "initial_rgb_sha256": "fe483535975cfe9bfe2da462ebc3a6ef450f8db0dca72b8f2d54155110418444"
+    },
+    {
+      "seed": 862001,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "a60c6cc7c8d6897616de1d4d3f310ec8a23e1c251ccae6a36d102dbe680ace58",
+      "split": "calibration",
+      "initial_rgb_sha256": "a0890f2efb1dbb814647e392423e5912744d7147b2a69d35fc189feb084024b9"
+    },
+    {
+      "seed": 862002,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "993a46c76b5d37215049d666805bebe7cd43c660ab0d2db555ab402efec462a3",
+      "split": "calibration",
+      "initial_rgb_sha256": "79900cd13f7c04fc4bd3003abe078a43068cbfedff240fc403cb67cc8a097aac"
+    },
+    {
+      "seed": 862003,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "0909c6cc2a48eff52565ad8c33cee752adc095f7d3f21d10a60bc7c0fb7382f1",
+      "split": "calibration",
+      "initial_rgb_sha256": "ee4bd1714abcd3405ad354777607950fe731110b5af3b16996247ac2d3239879"
+    },
+    {
+      "seed": 862004,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "09e9711a0645324cbbd7aa6ef3f887ea0ff169d9e8d1e92a25a162201bc3f817",
+      "split": "calibration",
+      "initial_rgb_sha256": "3a70b298aa32cc68def845df42aaf3a9a8b034661b518ae0edb4a39a87bdd515"
+    },
+    {
+      "seed": 862005,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "e691ab56ea58ab6b0dd4dfd9b9f9ae6740eca14b28bd654b336dc7be917502ba",
+      "split": "calibration",
+      "initial_rgb_sha256": "987e1017ed9262625f0069155cd21adc0177b631677f01de5e4e6c7ac4c1ee2c"
+    },
+    {
+      "seed": 862006,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "9b7b92fd14b5006a628d3db910c1bd14c7fa478035da61aed3ad4bf4049583b5",
+      "split": "calibration",
+      "initial_rgb_sha256": "a0ba8fca1889e330ba1de669d42715364301089a47d56ed49860671560a3ea98"
+    },
+    {
+      "seed": 862007,
+      "room": "storage_screen",
+      "world_model_sha256": "c8695c5c7d67027144a08cb79c9965e0e50fb4d40d6064b6a19b694c0b087d77",
+      "initial_state_sha256": "e6e84df90f12eafb25a732dace7d6abdc69a78aa97e12aae5ea8c9ca15c865e9",
+      "split": "calibration",
+      "initial_rgb_sha256": "98736fa5de233e57b59d2f929c5c6bfd8f5dbc506890ed43580cd855f5df5aac"
+    }
+  ],
+  "training_updates": 0,
+  "test_scenes": 0,
+  "decision": "First consume the initial onboard RGB if valid, otherwise use the unchanged v2 active scan (up to 3 s). Only if no packet exists after that scan, hold Tank and call the unchanged 3 s donor observation in the CURRENT world. Dock with the first valid local or fresh donor packet. No retry after a valid but unsuccessful dock.",
+  "time": "Single continuous MuJoCo clock and task horizon from archived reset. Delayed helper can cost 3 s extra relative to either exclusive sensing arm (up to 6 s combined). Twist odometry is integrated while the donor moves, including Tank settling. No branching, rewind or post-donor state replacement.",
+  "primary": "Independent frozen stable-docking verifier. Report success, calls, all simulated seconds and utility = success - 0.10*calls - 0.005*seconds. Compare against opened per-seed v2 active-only and always-donor outcomes after sequential completion.",
+  "operator": "No robot transport, training, learned selector, threshold search or inspection of unopened outcomes."
+}

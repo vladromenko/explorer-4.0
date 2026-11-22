@@ -2,7 +2,7 @@
 
 [Research register](RESEARCH_REGISTER.md)
 
-Code references describe Explorer 4 at `d434e05`. Field counts were checked against the Homebrain episode archive on 22 November 2026.
+The initial inventory describes Explorer 4 at `d434e05`. The dated experiments below link their implementation and measured outcomes. Field counts were checked against the Homebrain episode archive on 22 November 2026.
 
 | Task and platform | Current implementation and evidence | Upstream precedent and proposed change | Acceptance evidence |
 | --- | --- | --- | --- |
@@ -31,6 +31,18 @@ On 22 November at 22:25 Moscow time, five short-lived ROS 2 subscribers inspecte
 | Homebrain, Jazzy domain 73 | The existing read-only gateway republishes stamped ROS sensor messages into robot-specific namespaces. | An independent DDS subscriber received Tank lidar, both ROSMASTER lidars and ROSMASTER odometry. It found no NavigateToPose server. Explorer's custom shared room map is distinct from an upstream ROS map transform. The physical peer handoff checks a common map identity and the donor's camera calibration before offering a goal to the leased Tank controller. [Gateway](../explorer4/ros2_hub.py) · [Nav2 state-estimation contract](https://docs.nav2.org/jazzy/getting_started/navigation_concepts/state_estimation/) · [NavigateToPose API](https://api.nav2.org/actions/jazzy/navigatetopose.html) |
 
 The previous ROSMASTER collector already ran NavFn on a copied occupancy map in isolated domain 31 with static transforms and no actuators. Its report records a 16-point, 0.519 m planned path from (0, 0) to (0.5, 0) m. A new **planner-only replay** matched both map file hashes across machines and passed the same start and goal to Explorer A* with unknown-space travel disabled. Explorer's 10 cm grid and 22 cm inflation placed the requested cell inside the inflated region. Its existing fallback returned a path ending at (0.35, 0.05) m, 15.8 cm from the requested point. That misses the physical docking tolerance of 8 cm. A replay of the old final-approach branch also exposed an actuator-facing error. After three seconds of obstruction it expanded the arrival tolerance to the remaining distance, allowing a later controller tick to report arrival outside the original tolerance. The pose controller now preserves the requested tolerance, reports both endpoints and confirms the requested position and heading from localization before reporting arrival. It returns a blocked outcome when the robot reaches an alternate endpoint and cannot reach the requested pose. Existing path-list consumers retain their interface. The old NavFn report retained path length and point count only, precluding an endpoint-error comparison. Independent floor measurements remain the physical outcome for both methods. [A* implementation](../explorer4/navigation.py) · [Leased pose controller](../explorer4/drive.py) · [Both replay records](results/research-audit-20261122/nav2-readiness.json) · [Physical endpoint scoring](../explorer4/peer_dock_series.py)
+
+## Sequential help after an unsuccessful local scan
+
+A post-hoc control reran the 24 previously opened development starts in the screen-docking simulation. Tank first checked its own RGB image and searched locally for up to 3 seconds. After a miss it commanded a stop, requested ROSMASTER and consumed the fresh measurement from that same evolving world. The delayed donor could add another 3 seconds of sensing before driving. Every clock started at the saved physical reset. All 24 initial camera images matched the earlier study byte for byte. [Registered protocol](results/peer-camera-docking/sequential-development-protocol.json) · [Sequential controller](../scripts/peer_sequential_control.py)
+
+| Rule on the same 24 starts | Stable docks | Help requests | Mean time from reset | Mean registered utility |
+| --- | ---: | ---: | ---: | ---: |
+| Active local scan only | 12/24 | 0 | 5.65 s | 0.4718 |
+| Immediate donor observation | 24/24 | 24 | 10.81 s | 0.8459 |
+| Active local scan, then request on miss | 24/24 | 12 | 10.95 s | 0.8953 |
+
+The sequential rule matched immediate help on every outcome and halved requests at an average cost of 0.14 seconds per scene. It reproduced the 12 successful local action traces exactly. For the 12 misses, ROSMASTER observed the stationary wall from the same donor pose 3 seconds later and produced identical image bytes to its immediate observation. The simulator's elapsed-time and pose traces include that delay. All 24 terminal positions, headings and stationary holds met the original verifier. These development scenes demonstrate that a deterministic help rule suffices here. A learned selector would need an advantage over this rule on unopened conditions to justify a learning claim. [Per-scene results and checks](results/peer-camera-docking/sequential-development.json) · [Full outcomes on Homebrain](http://192.168.0.168:8030/simlab-media/reports/peer-screen-sequential-development/summary.json) · [Example delayed observation](http://192.168.0.168:8030/simlab-media/reports/peer-screen-sequential-development/861000/result.json)
 
 ## What the operator can open today
 

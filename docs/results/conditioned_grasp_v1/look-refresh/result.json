@@ -1,0 +1,1610 @@
+{
+  "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c",
+  "scope": "previously open development",
+  "optimizer_updates": 0,
+  "physical_trials": 0,
+  "n_rollouts": 32,
+  "all_scenes": {
+    "static": {
+      "n": 8,
+      "first_holds": 7,
+      "refresh_holds": 7,
+      "gained": 0,
+      "lost": 0,
+      "both_hold": 7,
+      "neither_holds": 1,
+      "paired_exact_p": 1.0,
+      "native_guard_stops": {
+        "first_xy": 0,
+        "refreshed_xy": 0
+      }
+    },
+    "shifted": {
+      "n": 8,
+      "first_holds": 4,
+      "refresh_holds": 7,
+      "gained": 3,
+      "lost": 0,
+      "both_hold": 4,
+      "neither_holds": 1,
+      "paired_exact_p": 0.25,
+      "native_guard_stops": {
+        "first_xy": 0,
+        "refreshed_xy": 0
+      }
+    }
+  },
+  "both_targets_in_hull": {
+    "seeds": [
+      940100,
+      940103,
+      940105,
+      940106,
+      940107
+    ],
+    "static": {
+      "n": 5,
+      "first_holds": 5,
+      "refresh_holds": 5,
+      "gained": 0,
+      "lost": 0,
+      "both_hold": 5,
+      "neither_holds": 0,
+      "paired_exact_p": 1.0,
+      "native_guard_stops": {
+        "first_xy": 0,
+        "refreshed_xy": 0
+      }
+    },
+    "shifted": {
+      "n": 5,
+      "first_holds": 3,
+      "refresh_holds": 5,
+      "gained": 2,
+      "lost": 0,
+      "both_hold": 3,
+      "neither_holds": 0,
+      "paired_exact_p": 0.5,
+      "native_guard_stops": {
+        "first_xy": 0,
+        "refreshed_xy": 0
+      }
+    }
+  },
+  "timing_ms": {
+    "observations": 16,
+    "capture_to_plan_p50_p95_max": [
+      45.942576,
+      220.30811025,
+      730.82202
+    ],
+    "refresh_compute_p50_p95_max": [
+      41.162916499999994,
+      45.126146500000004,
+      45.251479
+    ],
+    "capture_to_plan_within_40ms": 0
+  },
+  "scenes": [
+    {
+      "seed": 940100,
+      "reset_sha256": "61b14c4006edeaa5069435917774f0613332efd01143fb4c3125e01dd71168b4",
+      "look_physics_sha256": "e2115fe5c5732e882a996d9542a768d8df18c63e29997113132a8fc9a3d5b5c4",
+      "look_full_state_sha256": "322b39f10bc3850b7677e06cb0cbcfc23712c4ddddbec80839c31692fa746125",
+      "first_rgb_sha256": "3adbe2ae694f7dcd8e2a7b5893d15e9dbeea9b3fbdf6a248f6b88f83498daca0",
+      "first_xy": [
+        0.19210946559906006,
+        0.02272716723382473
+      ],
+      "unshifted_truth_xy": [
+        0.1996842451871206,
+        0.024554127218910933
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.19968424518712308,
+            0.0245541272189157
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "3adbe2ae694f7dcd8e2a7b5893d15e9dbeea9b3fbdf6a248f6b88f83498daca0",
+          "second_rgb_file": "frames/940100-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.19210946559906006,
+            0.02272716723382473
+          ],
+          "first_error_mm": 7.791987461159043,
+          "second_error_mm": 7.791987461159043,
+          "time_ms": {
+            "capture_resize": 687.49061,
+            "refresh_compute": 43.321746,
+            "refresh_capture_to_plan": 730.82202,
+            "stale_plan": 0.091747
+          },
+          "branch_full_state_sha256": "322b39f10bc3850b7677e06cb0cbcfc23712c4ddddbec80839c31692fa746125",
+          "branch_physics_sha256": "e2115fe5c5732e882a996d9542a768d8df18c63e29997113132a8fc9a3d5b5c4",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "911e3b3d7eacb26c51ae76744a462c9829b1a243929e2352734a05377bd11614",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 312,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2400983483471722,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 292,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.49056681951442727,
+                1.644491599377111,
+                0.4904630249366164,
+                0.4216072193645175,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "911e3b3d7eacb26c51ae76744a462c9829b1a243929e2352734a05377bd11614",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 312,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2400983483471722,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 292,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.49056681951442727,
+                1.644491599377111,
+                0.4904630249366164,
+                0.4216072193645175,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": 0.01,
+          "target_xy_for_scoring": [
+            0.19968424518712308,
+            0.0345541272189157
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "e766d5a6b0edbc10343aa1b160999958371127ea777a2fe5069ee18b5762513a",
+          "second_rgb_file": "frames/940100-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.19174525141716003,
+            0.03237603232264519
+          ],
+          "first_error_mm": 14.044723859751718,
+          "second_error_mm": 8.232358073885736,
+          "time_ms": {
+            "capture_resize": 4.494913,
+            "refresh_compute": 39.300385,
+            "refresh_capture_to_plan": 43.806595,
+            "stale_plan": 0.089636
+          },
+          "branch_full_state_sha256": "7dad71920befad1c43120f321f006e574ca026000fd85d840b19ffca7ee896a7",
+          "branch_physics_sha256": "e413315b3a45355b2703d086f382ac02cc6a92258033e8a83f59cfacf8f46a5a",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "911e3b3d7eacb26c51ae76744a462c9829b1a243929e2352734a05377bd11614",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": false,
+              "peak_lift_m": 0.0037564979182901533,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.49056681951442727,
+                1.644491599377111,
+                0.4904630249366164,
+                0.4216072193645175,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                6.0,
+                7.0,
+                6.0,
+                10.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "7f734a1a3ee8611f349b7db6912813e8804e307edd139c1580f8770e3c0b2011",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 357,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24375036016485851,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 337,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4965863896981091,
+                1.880602543813398,
+                0.4904630249366164,
+                0.4672794396387445,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                6.0,
+                7.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940101,
+      "reset_sha256": "18e39546976e4c60c8f81a023cdbfb8b7d5626e99d649b8f489d2118b799c364",
+      "look_physics_sha256": "c5219f5c63d093dcd0f1664787f4657c2ee8689a6fb855927c7617485a8856d4",
+      "look_full_state_sha256": "f3093f302a27dab96be5b845dfc7d0f181450efa7032306cea7809d2e54f7b5b",
+      "first_rgb_sha256": "c5f10162b1ae18cf6954614231802e5160258cce2d53184ec054e95806e1e261",
+      "first_xy": [
+        0.17436493933200836,
+        -0.02349988743662834
+      ],
+      "unshifted_truth_xy": [
+        0.17410875508873916,
+        -0.02524985395697998
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.1741087550887406,
+            -0.02524985395698051
+          ],
+          "truth_in_hull": false,
+          "second_rgb_sha256": "c5f10162b1ae18cf6954614231802e5160258cce2d53184ec054e95806e1e261",
+          "second_rgb_file": "frames/940101-static.png",
+          "first_input_in_hull": false,
+          "refreshed_input_in_hull": false,
+          "second_xy": [
+            0.17436493933200836,
+            -0.02349988743662834
+          ],
+          "first_error_mm": 1.7686190061322293,
+          "second_error_mm": 1.7686190061322293,
+          "time_ms": {
+            "capture_resize": 4.826093,
+            "refresh_compute": 40.959069,
+            "refresh_capture_to_plan": 45.792618,
+            "stale_plan": 0.092387
+          },
+          "branch_full_state_sha256": "f3093f302a27dab96be5b845dfc7d0f181450efa7032306cea7809d2e54f7b5b",
+          "branch_physics_sha256": "c5219f5c63d093dcd0f1664787f4657c2ee8689a6fb855927c7617485a8856d4",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "0923073b63798a3240e89c1be4c3a3d5c032d897fbf1167c086b78e9a4d70ab1",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 224,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2375931122137354,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 204,
+              "max_requested_to_native_deg": [
+                0.4946269378022663,
+                0.480371979553297,
+                1.8878407561303483,
+                0.49046544916927814,
+                0.4978466064645488,
+                58.99999999999994
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                8.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "0923073b63798a3240e89c1be4c3a3d5c032d897fbf1167c086b78e9a4d70ab1",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 224,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2375931122137354,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 204,
+              "max_requested_to_native_deg": [
+                0.4946269378022663,
+                0.480371979553297,
+                1.8878407561303483,
+                0.49046544916927814,
+                0.4978466064645488,
+                58.99999999999994
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                8.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": -0.01,
+          "target_xy_for_scoring": [
+            0.1741087550887406,
+            -0.03524985395698051
+          ],
+          "truth_in_hull": false,
+          "second_rgb_sha256": "bf4a332be5f07585ec37894c50f091fc9cce68ddee11562c2abb68c87a984add",
+          "second_rgb_file": "frames/940101-shifted.png",
+          "first_input_in_hull": false,
+          "refreshed_input_in_hull": false,
+          "second_xy": [
+            0.1771610677242279,
+            -0.030646273866295815
+          ],
+          "first_error_mm": 11.75275897803982,
+          "second_error_mm": 5.523546150445743,
+          "time_ms": {
+            "capture_resize": 4.72049,
+            "refresh_compute": 39.649902,
+            "refresh_capture_to_plan": 44.377464,
+            "stale_plan": 0.093507
+          },
+          "branch_full_state_sha256": "ca4410ffde751aa34ba2c812b28c1de1940ba6ca792827fffe83be2b4fc6f652",
+          "branch_physics_sha256": "303e8dc25ba5572104c05eebbe8f2e196dbb247a8c76a1112d1f6e2f1ad0224b",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "0923073b63798a3240e89c1be4c3a3d5c032d897fbf1167c086b78e9a4d70ab1",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": false,
+              "ever_held": false,
+              "peak_lift_m": 0.005955485769618428,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4946269378022663,
+                0.480371979553297,
+                1.8878407561303483,
+                0.49046544916927814,
+                0.4978466064645488,
+                58.99999999999994
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                8.0,
+                6.0,
+                10.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "dac89b6ceb095ea9c21a2a6fc3834c8e401118b54d1b0528def8aaad94ae68e3",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 219,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23563177897204113,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 199,
+              "max_requested_to_native_deg": [
+                0.45654597186745605,
+                0.49883335611480106,
+                2.0181317779938976,
+                0.49046544916927814,
+                0.46411804874813356,
+                58.999999999999915
+              ],
+              "max_native_to_measured_deg": [
+                6.0,
+                6.0,
+                6.0,
+                8.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940102,
+      "reset_sha256": "ee94277b373f351202c1e8a724f35b05ccda43c5d9a5ebabfc09a4ddf772747c",
+      "look_physics_sha256": "6f7fed4df4efd31a761efedda6c0d4d48fa293033014d35d56326da453291251",
+      "look_full_state_sha256": "dba7f7a02b8d0ab3695709548b300a0e3d12952b5888abbf659b5c511d819f91",
+      "first_rgb_sha256": "efffb56b45ca468b3e7573f06c730a83448e86bb29aee3ef8902b71fb9087af1",
+      "first_xy": [
+        0.22813743352890015,
+        0.043007295578718185
+      ],
+      "unshifted_truth_xy": [
+        0.22934389054782733,
+        0.04942725302358468
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.22934389054782686,
+            0.04942725302358568
+          ],
+          "truth_in_hull": false,
+          "second_rgb_sha256": "715530d529c03dbea91ddf6e8283e5db261b48c329ff40d2a97b8f5fde19a96b",
+          "second_rgb_file": "frames/940102-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.22813677787780762,
+            0.043005868792533875
+          ],
+          "first_error_mm": 6.5323343555292,
+          "second_error_mm": 6.5338576997759725,
+          "time_ms": {
+            "capture_resize": 4.370589,
+            "refresh_compute": 40.950525,
+            "refresh_capture_to_plan": 45.33049,
+            "stale_plan": 0.092195
+          },
+          "branch_full_state_sha256": "dba7f7a02b8d0ab3695709548b300a0e3d12952b5888abbf659b5c511d819f91",
+          "branch_physics_sha256": "6f7fed4df4efd31a761efedda6c0d4d48fa293033014d35d56326da453291251",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "c4a60fd88846b84197e473cd576d45a83e476d72e6ac4de8839602039c0e2d31",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": false,
+              "peak_lift_m": 0.007377077836165265,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48892496176677724,
+                1.376764782367775,
+                0.4998254729584195,
+                0.47644191590468665,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                9.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "c560e968cea45b8cf0e2e059e36e14349b488008410d645103fbf7ee4a38d53f",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": false,
+              "peak_lift_m": 0.007377077836165265,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48946611555223996,
+                1.3768267117571598,
+                0.4996732116559848,
+                0.47680559317129223,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                9.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": 0.01,
+          "target_xy_for_scoring": [
+            0.22934389054782686,
+            0.05942725302358568
+          ],
+          "truth_in_hull": false,
+          "second_rgb_sha256": "fd8a6c282d09084a484d22104edaa5fa723d6b717612f5e9d68d9ba8c9d361e8",
+          "second_rgb_file": "frames/940102-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": false,
+          "second_xy": [
+            0.23099642992019653,
+            0.04915323480963707
+          ],
+          "first_error_mm": 16.464220024944304,
+          "second_error_mm": 10.406072104198575,
+          "time_ms": {
+            "capture_resize": 4.765227,
+            "refresh_compute": 45.251479,
+            "refresh_capture_to_plan": 50.026339,
+            "stale_plan": 0.096483
+          },
+          "branch_full_state_sha256": "52a1d892305e9e2ae705e59ebacf4549551bc99306cbda9a2788d58dd3f35dda",
+          "branch_physics_sha256": "3bd97361dff8ec957f40d5877718f2b337344cff684442334af53661e0cd98ac",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "c4a60fd88846b84197e473cd576d45a83e476d72e6ac4de8839602039c0e2d31",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": false,
+              "peak_lift_m": 0.0006444398797070434,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48892496176677724,
+                1.376764782367775,
+                0.4998254729584195,
+                0.47644191590468665,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                8.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "724d1d6da355a75945f5873bf273b9400a0bb413e56a054f3c112599a7c7e0a7",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": false,
+              "peak_lift_m": 0.00734773798498178,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4979308918781271,
+                1.2759080555803899,
+                0.4904673080891371,
+                0.4995269775390625,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                9.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940103,
+      "reset_sha256": "400852bc208e66fadaa409dbe298d13e412f03bbe412bbfb66402271eff53f1c",
+      "look_physics_sha256": "faceec674d64196ea2a024a607952b8296dbe14aa63182a9923ea68fe643ca30",
+      "look_full_state_sha256": "eb1252679d58861f8256b363475309929c75eb8251c399226b28684abe0c80aa",
+      "first_rgb_sha256": "9cf70bab53fdf9e1f9b695b5bd57ecb66ee56facb9dafcd9f8cfb33a665e9b07",
+      "first_xy": [
+        0.19429083168506622,
+        0.027791354805231094
+      ],
+      "unshifted_truth_xy": [
+        0.1924419216868126,
+        0.032276943100223554
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.19244192168681196,
+            0.03227694310022419
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "9cf70bab53fdf9e1f9b695b5bd57ecb66ee56facb9dafcd9f8cfb33a665e9b07",
+          "second_rgb_file": "frames/940103-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.19429083168506622,
+            0.027791354805231094
+          ],
+          "first_error_mm": 4.851697696046579,
+          "second_error_mm": 4.851697696046579,
+          "time_ms": {
+            "capture_resize": 4.768651,
+            "refresh_compute": 41.266312,
+            "refresh_capture_to_plan": 46.042164,
+            "stale_plan": 0.093795
+          },
+          "branch_full_state_sha256": "eb1252679d58861f8256b363475309929c75eb8251c399226b28684abe0c80aa",
+          "branch_physics_sha256": "faceec674d64196ea2a024a607952b8296dbe14aa63182a9923ea68fe643ca30",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "475df3b902bd6bba70509eba75feeefc59a4173e419ecd14e9e443934ab985fc",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 322,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23735516862003841,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 302,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4974463310366559,
+                1.6593155650554015,
+                0.49045548401772976,
+                0.4966101564399992,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                6.0,
+                7.0,
+                6.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "475df3b902bd6bba70509eba75feeefc59a4173e419ecd14e9e443934ab985fc",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 322,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23735516862003841,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 302,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4974463310366559,
+                1.6593155650554015,
+                0.49045548401772976,
+                0.4966101564399992,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                6.0,
+                7.0,
+                6.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": -0.01,
+          "target_xy_for_scoring": [
+            0.19244192168681196,
+            0.02227694310022419
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "ca1f11d51a8c0ca0acfc1de483e9550d1b1f31d426c43592660d02b44d03773b",
+          "second_rgb_file": "frames/940103-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.19235633313655853,
+            0.021103713661432266
+          ],
+          "first_error_mm": 5.816115940553605,
+          "second_error_mm": 1.1763471919388835,
+          "time_ms": {
+            "capture_resize": 4.733482,
+            "refresh_compute": 41.496561,
+            "refresh_capture_to_plan": 46.238139,
+            "stale_plan": 0.091683
+          },
+          "branch_full_state_sha256": "c31dbbc56e1de313c62b45009e3cb54690470a37f377f3077114739a9a2800a1",
+          "branch_physics_sha256": "9adbe4a6276a2191c3198d4036c0931e19afc860fc5e4bdc515286539632ffe9",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "475df3b902bd6bba70509eba75feeefc59a4173e419ecd14e9e443934ab985fc",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 314,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2351132239461068,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 294,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4974463310366559,
+                1.6593155650554015,
+                0.49045548401772976,
+                0.4966101564399992,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                6.0,
+                7.0,
+                6.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "e71748d7b58e181e73df93d4271e7dc362a37db5908da766dfb0c83da640d6f4",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 320,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2355978577850188,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 300,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48449215574083837,
+                1.6879099280668024,
+                0.49045548401772976,
+                0.45406758594241126,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                6.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940104,
+      "reset_sha256": "6550df72f5620ee7a7b15ffe801660f3dc2cce52c1419bb9fca38959c53e24d7",
+      "look_physics_sha256": "becfd51ffe57c5ab33e1e44b82e0989f890c0faecd089a6ea5bf2543a1b053e4",
+      "look_full_state_sha256": "822121466df22c6b99075ddb6558f79f47d22b102d99d65095e78b3da8173342",
+      "first_rgb_sha256": "904b2b1905155dad1117a82529e1c4342f9df65e9d9fcb54a88a38371ed8bcf8",
+      "first_xy": [
+        0.2377959042787552,
+        -0.02704811654984951
+      ],
+      "unshifted_truth_xy": [
+        0.24654812693277953,
+        -0.03377222129576261
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.24654812693277864,
+            -0.0337722212957635
+          ],
+          "truth_in_hull": false,
+          "second_rgb_sha256": "53b8baff9dd012c45ba2881212009e4d6639269858da607091ca9d06ed16c625",
+          "second_rgb_file": "frames/940104-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.2377963662147522,
+            -0.02704816870391369
+          ],
+          "first_error_mm": 11.036982650146024,
+          "second_error_mm": 11.03658456786124,
+          "time_ms": {
+            "capture_resize": 5.043797,
+            "refresh_compute": 45.084369,
+            "refresh_capture_to_plan": 50.136807,
+            "stale_plan": 0.096259
+          },
+          "branch_full_state_sha256": "822121466df22c6b99075ddb6558f79f47d22b102d99d65095e78b3da8173342",
+          "branch_physics_sha256": "becfd51ffe57c5ab33e1e44b82e0989f890c0faecd089a6ea5bf2543a1b053e4",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "d01dd347cd333907d6694cf18aa0a059da494c5431b27a933052e9df59b079ea",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 328,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23351028345554298,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 308,
+              "max_requested_to_native_deg": [
+                0.47190450135670403,
+                0.48339659072770047,
+                1.0061383926503713,
+                1.338517615230056,
+                0.4995269775390625,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                5.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "b254fc3c4b1dacc28db7b20160e880bb53c0681943cd3f6b83e4fd07daeeb178",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 328,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23351028345554298,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 308,
+              "max_requested_to_native_deg": [
+                0.4718847073366135,
+                0.48314037022948497,
+                1.0061392037355668,
+                1.3385862115097367,
+                0.4995269775390625,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                5.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": 0.01,
+          "target_xy_for_scoring": [
+            0.24654812693277864,
+            -0.0237722212957635
+          ],
+          "truth_in_hull": false,
+          "second_rgb_sha256": "40e75dbe2ee4fa1947c0dd20f4a3a5abc538c91f46f68b8d444d9dfe7b6df422",
+          "second_rgb_file": "frames/940104-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.23826299607753754,
+            -0.019011860713362694
+          ],
+          "first_error_mm": 9.34520685171519,
+          "second_error_mm": 9.555334958176166,
+          "time_ms": {
+            "capture_resize": 4.584933,
+            "refresh_compute": 41.566163,
+            "refresh_capture_to_plan": 46.158424,
+            "stale_plan": 0.108772
+          },
+          "branch_full_state_sha256": "f4eeec20808c2bdf16112ae85115dd2a38855f98f6f5f808cfbda5c6dade34ee",
+          "branch_physics_sha256": "263623965f735c9942fa058155b80a1a95b19aef1d37ac85f74511452cd852d9",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "d01dd347cd333907d6694cf18aa0a059da494c5431b27a933052e9df59b079ea",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 345,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23632745968805574,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 325,
+              "max_requested_to_native_deg": [
+                0.47190450135670403,
+                0.48339659072770047,
+                1.0061383926503713,
+                1.338517615230056,
+                0.4995269775390625,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                5.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "771743202e4f168d8552a6621a532385d02a7d4af5ae35ca802cd310e6bb3cd2",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 339,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.23410596359051006,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 319,
+              "max_requested_to_native_deg": [
+                0.46786439509587296,
+                0.4719685327397869,
+                1.0017004935294374,
+                0.9857789685649113,
+                0.3920945462144658,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                4.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940105,
+      "reset_sha256": "8656d85dab80d108360919a78d5e565ffc73d32ba7e772cc1a2c54fdd9541b7f",
+      "look_physics_sha256": "f70198bb5b6e5eadb1447f28b97c09b533914917523d787a07e529562c130b13",
+      "look_full_state_sha256": "288adcff96a890590ffed30b564d9c44f339c335fc6ba1208a5fca9a755bc04c",
+      "first_rgb_sha256": "c0dd85d62a87276c8856868cc074d84b61bd00f05f3b1cd67e62b70e79c4d4be",
+      "first_xy": [
+        0.20624485611915588,
+        0.036236267536878586
+      ],
+      "unshifted_truth_xy": [
+        0.20375428614832092,
+        0.034824005429877
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.2037542861483189,
+            0.034824005429878804
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "c0dd85d62a87276c8856868cc074d84b61bd00f05f3b1cd67e62b70e79c4d4be",
+          "second_rgb_file": "frames/940105-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.20624485611915588,
+            0.036236267536878586
+          ],
+          "first_error_mm": 2.8631142203032067,
+          "second_error_mm": 2.8631142203032067,
+          "time_ms": {
+            "capture_resize": 4.280153,
+            "refresh_compute": 39.539851,
+            "refresh_capture_to_plan": 43.827012,
+            "stale_plan": 0.097795
+          },
+          "branch_full_state_sha256": "288adcff96a890590ffed30b564d9c44f339c335fc6ba1208a5fca9a755bc04c",
+          "branch_physics_sha256": "f70198bb5b6e5eadb1447f28b97c09b533914917523d787a07e529562c130b13",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "ea3afc3ef53459b888b8829a44d5f011c4abd69c1375291242c1a89d1473210f",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 330,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2401781037658875,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 310,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48696394272533894,
+                1.426807011015725,
+                0.4977453894452566,
+                0.41901702393485607,
+                59.0
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "ea3afc3ef53459b888b8829a44d5f011c4abd69c1375291242c1a89d1473210f",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 330,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2401781037658875,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 310,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48696394272533894,
+                1.426807011015725,
+                0.4977453894452566,
+                0.41901702393485607,
+                59.0
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": -0.01,
+          "target_xy_for_scoring": [
+            0.2037542861483189,
+            0.024824005429878802
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "01624c0c23222977cc7aaa799ae9d9a0e12b29debe795f849b6b4e748b861c7c",
+          "second_rgb_file": "frames/940105-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.20641590654850006,
+            0.026262959465384483
+          ],
+          "first_error_mm": 11.680867483988427,
+          "second_error_mm": 3.0256919656433388,
+          "time_ms": {
+            "capture_resize": 4.220087,
+            "refresh_compute": 40.399529,
+            "refresh_capture_to_plan": 44.628673,
+            "stale_plan": 0.096643
+          },
+          "branch_full_state_sha256": "e0d384e3186b6f0bd80aeaedc6afc65544d2fd320100c20ba1ef2cf103d8be82",
+          "branch_physics_sha256": "30ce82e2431ab060ca2220ce525796eee65cb6e260cd3c7e26da7cf050007518",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "ea3afc3ef53459b888b8829a44d5f011c4abd69c1375291242c1a89d1473210f",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 331,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24105287023602284,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 311,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.48696394272533894,
+                1.426807011015725,
+                0.4977453894452566,
+                0.41901702393485607,
+                59.0
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "3726435df38922cce2002518c39264a1bc8d4d8f8eed4da8aecd34c5be605e53",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 389,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24033426872650726,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 369,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4998026229273549,
+                1.7063100052688567,
+                0.4904671013355255,
+                0.4672780788085049,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940106,
+      "reset_sha256": "af5bdf772e309470728372d0424e185b85f0f63416018b8808952056864c6480",
+      "look_physics_sha256": "9cb3b1cae61c372b58268d4fc28b8d3db3f13e4aa2c3c6c200e222c3f1cf8040",
+      "look_full_state_sha256": "6ed8f86c00b5186da85a07ed4df953b057b56acbcd4dd2a5b43e00932ba7bb4c",
+      "first_rgb_sha256": "58a50f80523feaef89bac6ab3daf12fcbba9eb2eaed3613a4ae87bc4fa87ea0e",
+      "first_xy": [
+        0.20045650005340576,
+        -0.02066025510430336
+      ],
+      "unshifted_truth_xy": [
+        0.20231654989495929,
+        -0.02582393449395973
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.20231654989495854,
+            -0.02582393449396049
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "840321a397cbedef5a26dc9550814bc27810a38eab2a756cd41d37960e382acb",
+          "second_rgb_file": "frames/940106-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.200456440448761,
+            -0.02065933682024479
+          ],
+          "first_error_mm": 5.488476132063465,
+          "second_error_mm": 5.489360279958221,
+          "time_ms": {
+            "capture_resize": 4.775723,
+            "refresh_compute": 41.059521,
+            "refresh_capture_to_plan": 45.842988,
+            "stale_plan": 0.090404
+          },
+          "branch_full_state_sha256": "6ed8f86c00b5186da85a07ed4df953b057b56acbcd4dd2a5b43e00932ba7bb4c",
+          "branch_physics_sha256": "9cb3b1cae61c372b58268d4fc28b8d3db3f13e4aa2c3c6c200e222c3f1cf8040",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "1b42066d5bf58191a34f7dea00684f14c8d77308e1f7d20807bda09a8671e22d",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 454,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24523770538189643,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 434,
+              "max_requested_to_native_deg": [
+                0.49555686096580587,
+                0.4987132165714172,
+                2.1201381637504744,
+                0.4906650999208324,
+                0.4802589455176758,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                7.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "9401cb9d943b4398efb0f4db0cf9064292c341f5bdf7640367c170e80b5b6ec0",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 454,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24523770538189643,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 434,
+              "max_requested_to_native_deg": [
+                0.49571464344107596,
+                0.49860432471894,
+                2.119981669638894,
+                0.4909986931324397,
+                0.48030165627652366,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                7.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": 0.01,
+          "target_xy_for_scoring": [
+            0.20231654989495854,
+            -0.01582393449396049
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "718ca5ed6ca47c192a9a67780408ca7064b8eb36dfd7ecb0e48438ede51c24a9",
+          "second_rgb_file": "frames/940106-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.20059017837047577,
+            -0.010954011231660843
+          ],
+          "first_error_mm": 5.18167757189578,
+          "second_error_mm": 5.166866673452314,
+          "time_ms": {
+            "capture_resize": 4.572996,
+            "refresh_compute": 43.028584,
+            "refresh_capture_to_plan": 47.609516,
+            "stale_plan": 0.134917
+          },
+          "branch_full_state_sha256": "6e6122aae4380fbfbf12d0628449295b0ac9dc1417d49541a34244be70360ca2",
+          "branch_physics_sha256": "2160d926b69901d905a759dfbf32b17a9d19944dc1bedaa666b70262c2bf86f7",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "1b42066d5bf58191a34f7dea00684f14c8d77308e1f7d20807bda09a8671e22d",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 451,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2445796557387288,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 431,
+              "max_requested_to_native_deg": [
+                0.49555686096580587,
+                0.4987132165714172,
+                2.1201381637504744,
+                0.4906650999208324,
+                0.4802589455176758,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                7.0,
+                7.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "ea4013c952c73ba34d9f2020d31d39a8e53a8e13953d3599c468f28ebdb830c3",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 287,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.2395824121304173,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 267,
+              "max_requested_to_native_deg": [
+                0.43777167825761865,
+                0.49342655948230174,
+                1.5124533830410236,
+                0.4989430309373972,
+                0.4101749884644619,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                4.0,
+                7.0,
+                7.0,
+                7.0,
+                6.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    },
+    {
+      "seed": 940107,
+      "reset_sha256": "e44e54e62eedea5c1ddefd9394440cc49df2aca5de8527ae30246971dd15ad71",
+      "look_physics_sha256": "90aaa12faae09036a8789c3c2d1c8878da25a55a8d06229ed7f24efe318c9919",
+      "look_full_state_sha256": "10408839968e0c55873500dd06822ee05925d3652f839cef4bd1615d25e72ec4",
+      "first_rgb_sha256": "316c4cb9bb2e3f57e300439ba10eb5cec59e9d475fdf218f0df289e30195ffe8",
+      "first_xy": [
+        0.21991877257823944,
+        -0.011332125402987003
+      ],
+      "unshifted_truth_xy": [
+        0.22023114372548566,
+        -0.01097049173958676
+      ],
+      "conditions": {
+        "static": {
+          "shift_y_m": 0.0,
+          "target_xy_for_scoring": [
+            0.22023114372548405,
+            -0.010970491739585139
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "10be94046b29d1dea3055ca8c8a1c8ecc0e36e8508fb9e0c2298e76547a43ebe",
+          "second_rgb_file": "frames/940107-static.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.21991828083992004,
+            -0.011331967078149319
+          ],
+          "first_error_mm": 0.4778646671771912,
+          "second_error_mm": 0.4780665283760476,
+          "time_ms": {
+            "capture_resize": 4.669767,
+            "refresh_compute": 39.911319,
+            "refresh_capture_to_plan": 44.590271,
+            "stale_plan": 0.088548
+          },
+          "branch_full_state_sha256": "10408839968e0c55873500dd06822ee05925d3652f839cef4bd1615d25e72ec4",
+          "branch_physics_sha256": "90aaa12faae09036a8789c3c2d1c8878da25a55a8d06229ed7f24efe318c9919",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "9a69834ca89ee59cdb62d762085154ce5fd7d66083521ae80c4d62219dfe6e39",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 374,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24387418909854353,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 354,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.495650850441848,
+                3.1247512245144726,
+                0.49719745637122514,
+                0.4995269775390625,
+                58.99999999999994
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                73.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "bc1da2a9fe7eb4bd54b349fbb3e1855754f1e6fe0dbfcf1436efd8fc61ae9fa2",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 374,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24387418909854353,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 354,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4953431607396688,
+                3.1248466009141245,
+                0.4971775050627336,
+                0.4995269775390625,
+                58.99999999999994
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                73.0
+              ]
+            }
+          }
+        },
+        "shifted": {
+          "shift_y_m": -0.01,
+          "target_xy_for_scoring": [
+            0.22023114372548405,
+            -0.020970491739585137
+          ],
+          "truth_in_hull": true,
+          "second_rgb_sha256": "f6aee8c41252ec46da5feb84cb6b89d814175973058e6ce2f390290c4010cf2c",
+          "second_rgb_file": "frames/940107-shifted.png",
+          "first_input_in_hull": true,
+          "refreshed_input_in_hull": true,
+          "second_xy": [
+            0.22091685235500336,
+            -0.020690396428108215
+          ],
+          "first_error_mm": 9.643426847967431,
+          "second_error_mm": 0.74070892266031,
+          "time_ms": {
+            "capture_resize": 4.587684,
+            "refresh_compute": 43.785283,
+            "refresh_capture_to_plan": 48.382119,
+            "stale_plan": 0.086083
+          },
+          "branch_full_state_sha256": "7bc3f291a98e6a259eddccb665857802d96c7e4d79e58dc68fbd7c1eaf93b36d",
+          "branch_physics_sha256": "88fe6793548d0ccd20f0bf426f536585ee12f97fafc6a132d893509f9d776030",
+          "branch_simulated_time_s": 0.9999999999999453,
+          "branch_control_tick": 20,
+          "arms": {
+            "first_xy": {
+              "plan_sha256": "9a69834ca89ee59cdb62d762085154ce5fd7d66083521ae80c4d62219dfe6e39",
+              "outcome": "failure",
+              "reason": "task_deadline",
+              "steps": 500,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": false,
+              "peak_lift_m": 0.004499647215662837,
+              "max_stable_carry_s": 0.0,
+              "executed_control_steps": 480,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.495650850441848,
+                3.1247512245144726,
+                0.49719745637122514,
+                0.4995269775390625,
+                58.99999999999994
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                9.0
+              ]
+            },
+            "refreshed_xy": {
+              "plan_sha256": "b2a446fc689191fb3c3d9bcc45d06d14eaf6aa7634037b7f19f56081dc698185",
+              "outcome": "success",
+              "reason": "held_in_carry_pose",
+              "steps": 386,
+              "contact": true,
+              "bilateral_contact": true,
+              "ever_held": true,
+              "peak_lift_m": 0.24090095950647922,
+              "max_stable_carry_s": 1.0000000000000002,
+              "executed_control_steps": 366,
+              "max_requested_to_native_deg": [
+                0.4999847412109375,
+                0.4966114669736541,
+                1.312897675963077,
+                0.4904673472046852,
+                0.4995269775390625,
+                58.99999999999997
+              ],
+              "max_native_to_measured_deg": [
+                5.0,
+                6.0,
+                6.0,
+                5.0,
+                5.0,
+                73.0
+              ]
+            }
+          }
+        }
+      },
+      "protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Stationary wrist-image refresh before floor pickup",
+  "version": "1.1",
+  "scientific_protocol_sha256": "000cb105879534a6ecb6a6730dcc475964d90e0b6597a44cf9c4c39837202f35",
+  "implementation_correction": "Version 1.0 stopped at seed 940102 on an archive equality check after two completed scenes. Its new caller divided the localizer float32 XY before conversion to the float64 used by the historical build_plans. The maximum trajectory discrepancy was 0.000023935 degrees. This version restores original float64 scaling for both cameras, requires exact equality with all historical first-view trajectories, repeats every scene, and preserves version 1.0 receipts separately. Conditions, thresholds and seeds were fixed before either run.",
+  "partition": "previously open development",
+  "scene_seeds": [
+    940100,
+    940101,
+    940102,
+    940103,
+    940104,
+    940105,
+    940106,
+    940107
+  ],
+  "y_shift_m": [
+    0.01,
+    -0.01,
+    0.01,
+    -0.01,
+    0.01,
+    -0.01,
+    0.01,
+    -0.01
+  ],
+  "conditions": [
+    "static",
+    "shifted"
+  ],
+  "branches": [
+    "first_xy",
+    "refreshed_xy"
+  ],
+  "planned_rollouts": 32,
+  "comparison": "Both branches share the complete post-intervention state, native executor and zero elapsed simulation time for sensing. All target components other than Y and all velocities are preserved. Archive image and contemporaneous new wrist image are taken from the same stationary calibrated look pose. Each branch executes a single unmodified trajectory.",
+  "independent_unit": "One scene. Primary: paired terminal hold differences on all eight shifted seeds. Report the predeclared subgroup where both true centres lie inside the convex hull of the frozen training XY, and the static controls. No swaps or replacement seeds.",
+  "support": "Before rollouts, metadata showed that 940101, 940102 and 940104 start outside the demonstration hull. Report extrapolation explicitly.",
+  "primary": "Guards and simulator reason held_in_carry_pose. Count discordant pairs and two-sided exact binomial conditional on discordance; p=1 when there are no discordant pairs.",
+  "timing": "Monotonic wall time per phase after one warm-up. Report new RGB capture through XY and RBF plan, and compute-only time. Same simulated arm time before both branches. 40 ms is the engineering budget. No real-time guarantee.",
+  "decision": "No confirmation in this run. A positive development difference is a prerequisite for proposing separate confirmation; no physical deployment from this analysis.",
+  "upstream": "https://diffusion-policy.cs.columbia.edu/",
+  "method": "Single pre-motion update inspired by visual feedback in receding-horizon control; fixed RBF trajectory. No diffusion policy or feedback after motion begins.",
+  "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+  "vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+  "physics_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+  "source_sha256": {
+    "runner": "54a5022cf0884e7b4bd025009d7e38864a642d6b981e988a9432b3f4a75e58db",
+    "scene_and_look": "31469393b999c7ffdc3a88f15077a85b365d3776b84c6391963731a023c16935",
+    "planner_and_localizer": "33e983b4c9dc35d2b0eeebf6dfa109410bb6341de996e6d75ff4e34e95faa52e",
+    "executor_adapter": "e2da69b8481420a3b480cf2bef23adf1cfcc22d776b2607f285a69ccbab78282",
+    "runtime": "51057bfbb8ad7b7cfcb98988bbb4c7e64f9d90204be62e1824ff516cb5fd8ce7",
+    "native_io": "628c6526ca10c86771b29c0e1b92151d5b1d7523f0480cd781360c50f6c369d5",
+    "native_arm": "e38e4b56026e9cbe955dc0963a61aa65c4a3c964f9d5c0ecb84a0b8c9c7d8e4f",
+    "native_limits_recording": "384f5a38955d433f3f5c843698e6ab877218a433bb8a3338900c395afdbf7606",
+    "scene": "58adfc185f26144370b8b5d648dc1f4f31bf4c96d06d318d4743097e660b53bb",
+    "snapshot": "892906a3ffc253241c53f79d4cdb0f478f7baacc4a90b54015fbb9adb946906b",
+    "archived_looks": "ed6fd2ae5dd197c9a09efa33af8982da1e6a6bc7a9499379113c67f26095894b",
+    "archived_plans": "27518cdcd77b24c2f6a2c615b5b82014e86454f923ad6b65b9ed50c066530599",
+    "development_protocol": "9a6479df281155e3580b33c44b883f70f23a1997b597b5f3e1ddb29b9a0b899a"
+  },
+  "optimizer_updates": 0,
+  "physical_trials": 0
+}
