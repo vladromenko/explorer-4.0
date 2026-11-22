@@ -1,0 +1,62 @@
+{
+  "source_result_sha256": "74ba35588231a5e55934e283c847bd19b4ef7e19e5b940d8d88cf381eff5cccd",
+  "scope": "Post-hoc engineering replay of decoded archived RGB on one warmed CPU core. Alternating AB/BA order, one call per method per frame. Excludes capture, file decode, transport, inference-process IPC and motor execution. Timing depends on host load.",
+  "planning": {
+    "random": {
+      "calls": 20,
+      "median_ms": 41.672113499999995,
+      "p95_ms": 49.736470000000004,
+      "within_40_ms": 6,
+      "per_call_ms": [
+        39.984805,
+        50.260433,
+        49.267534,
+        40.285809,
+        39.909091,
+        40.283216,
+        39.402097,
+        39.826208,
+        39.400305,
+        48.042499,
+        49.708893,
+        39.82592,
+        40.001766,
+        40.813987,
+        42.5512,
+        42.753767,
+        42.53024,
+        49.102472,
+        49.195628,
+        43.265594
+      ]
+    },
+    "farthest_first": {
+      "calls": 20,
+      "median_ms": 42.3210325,
+      "p95_ms": 48.37328635,
+      "within_40_ms": 2,
+      "per_call_ms": [
+        45.875414,
+        50.186254,
+        44.322911,
+        40.836804,
+        39.941348,
+        40.018855,
+        39.758141,
+        40.222574,
+        40.502552,
+        48.24913,
+        47.47083,
+        44.386849,
+        40.063656,
+        41.678721,
+        42.475262,
+        44.15865,
+        40.771169,
+        42.166803,
+        48.277867,
+        47.301384
+      ]
+    }
+  }
+}

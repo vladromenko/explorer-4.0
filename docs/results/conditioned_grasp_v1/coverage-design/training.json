@@ -1,0 +1,544 @@
+{
+  "protocol_sha256": "3d8c1fc8961b0da1305fb135e3d3dd4a05a8a40231654b20c03462610236dc47",
+  "allocation_sha256": "a65002a64c92c109c485a941e8eea50133e7d157fa83a2b0073a17185f984de6",
+  "methods": {
+    "random": {
+      "bank_sha256": "f485dc7e02b3fbbf01c37a0d8b377fc28ca0810eb39c8db2b73722497fd5ec56",
+      "attempts": [
+        {
+          "seed": 974037,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 398,
+          "elapsed_s": 3.627017088001594
+        },
+        {
+          "seed": 974021,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 346,
+          "elapsed_s": 3.0798758789896965
+        },
+        {
+          "seed": 974005,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 225,
+          "elapsed_s": 2.726545461002388
+        },
+        {
+          "seed": 974027,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 408,
+          "elapsed_s": 3.747427010006504
+        },
+        {
+          "seed": 974122,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 401,
+          "elapsed_s": 3.7056146529939724
+        },
+        {
+          "seed": 974104,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 365,
+          "elapsed_s": 3.2757378079986665
+        },
+        {
+          "seed": 974083,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 345,
+          "elapsed_s": 3.0665231290040538
+        },
+        {
+          "seed": 974108,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 366,
+          "elapsed_s": 3.2688523089891532
+        },
+        {
+          "seed": 974114,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 287,
+          "elapsed_s": 2.8606143729994074
+        },
+        {
+          "seed": 974046,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 362,
+          "elapsed_s": 3.195852514996659
+        },
+        {
+          "seed": 974066,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 366,
+          "elapsed_s": 3.2171094690129394
+        },
+        {
+          "seed": 974017,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 346,
+          "elapsed_s": 3.080665975998272
+        },
+        {
+          "seed": 974019,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 355,
+          "elapsed_s": 3.203292589998455
+        },
+        {
+          "seed": 974035,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 327,
+          "elapsed_s": 3.483610568990116
+        },
+        {
+          "seed": 974048,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 437,
+          "elapsed_s": 3.972286347998306
+        },
+        {
+          "seed": 974112,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 358,
+          "elapsed_s": 3.2300835859932704
+        },
+        {
+          "seed": 974068,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 340,
+          "elapsed_s": 3.0432232950115576
+        },
+        {
+          "seed": 974054,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 344,
+          "elapsed_s": 3.045389217004413
+        },
+        {
+          "seed": 974080,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 372,
+          "elapsed_s": 3.2489849209960084
+        },
+        {
+          "seed": 974091,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 372,
+          "elapsed_s": 3.2636427019897383
+        },
+        {
+          "seed": 974106,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 358,
+          "elapsed_s": 3.1842494059965247
+        },
+        {
+          "seed": 974094,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 361,
+          "elapsed_s": 3.278575397009263
+        },
+        {
+          "seed": 974034,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 309,
+          "elapsed_s": 3.0357881620002445
+        },
+        {
+          "seed": 974028,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 342,
+          "elapsed_s": 3.1614360730018234
+        },
+        {
+          "seed": 974071,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 368,
+          "elapsed_s": 3.3466452910070075
+        },
+        {
+          "seed": 974113,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 358,
+          "elapsed_s": 3.232355385989649
+        },
+        {
+          "seed": 974107,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 349,
+          "elapsed_s": 3.1084813380002743
+        },
+        {
+          "seed": 974116,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 220,
+          "elapsed_s": 2.727521473003435
+        },
+        {
+          "seed": 974010,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 366,
+          "elapsed_s": 3.3078858250082703
+        },
+        {
+          "seed": 974125,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 435,
+          "elapsed_s": 4.020585901991581
+        },
+        {
+          "seed": 974111,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 347,
+          "elapsed_s": 3.0825673390063457
+        },
+        {
+          "seed": 974012,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 198,
+          "elapsed_s": 2.5891581689938903
+        }
+      ],
+      "accepted_seeds": [
+        974037,
+        974021,
+        974005,
+        974027,
+        974122,
+        974104,
+        974083,
+        974108,
+        974114,
+        974046,
+        974066,
+        974017,
+        974019,
+        974035,
+        974048,
+        974112,
+        974068,
+        974054,
+        974080,
+        974091,
+        974106,
+        974094,
+        974034,
+        974028,
+        974071,
+        974113,
+        974107,
+        974116,
+        974010,
+        974125,
+        974111,
+        974012
+      ],
+      "attempts_n": 32,
+      "charged_expert_ticks": 11131,
+      "charged_expert_elapsed_s": 103.41759865898348,
+      "training_hull_area_cm2": 53.916117139488314,
+      "candidate_cover_radius_mm": 23.562095487712774,
+      "candidate_mean_distance_mm": 5.978605898894653
+    },
+    "farthest_first": {
+      "bank_sha256": "360177826f744cc54938ac62fe0d6b22d3fea6ad216df4242fef31f269025a2b",
+      "attempts": [
+        {
+          "seed": 974037,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 398,
+          "elapsed_s": 3.627017088001594
+        },
+        {
+          "seed": 974056,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 257,
+          "elapsed_s": 2.6312561630038545
+        },
+        {
+          "seed": 974093,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 296,
+          "elapsed_s": 2.949426658000448
+        },
+        {
+          "seed": 974052,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 353,
+          "elapsed_s": 3.1372574790002545
+        },
+        {
+          "seed": 974086,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 352,
+          "elapsed_s": 3.2495943440007977
+        },
+        {
+          "seed": 974047,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 377,
+          "elapsed_s": 3.390989345003618
+        },
+        {
+          "seed": 974036,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 314,
+          "elapsed_s": 3.388293274998432
+        },
+        {
+          "seed": 974017,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 346,
+          "elapsed_s": 3.080665975998272
+        },
+        {
+          "seed": 974124,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 362,
+          "elapsed_s": 3.1999422470107675
+        },
+        {
+          "seed": 974002,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 345,
+          "elapsed_s": 3.1390904809959466
+        },
+        {
+          "seed": 974012,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 198,
+          "elapsed_s": 2.5891581689938903
+        },
+        {
+          "seed": 974107,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 349,
+          "elapsed_s": 3.1084813380002743
+        },
+        {
+          "seed": 974034,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 309,
+          "elapsed_s": 3.0357881620002445
+        },
+        {
+          "seed": 974030,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 283,
+          "elapsed_s": 3.3143412890058244
+        },
+        {
+          "seed": 974077,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 396,
+          "elapsed_s": 3.601054550992558
+        },
+        {
+          "seed": 974045,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 348,
+          "elapsed_s": 3.1496527370036347
+        },
+        {
+          "seed": 974118,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 376,
+          "elapsed_s": 3.356194273001165
+        },
+        {
+          "seed": 974038,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 335,
+          "elapsed_s": 3.044641717991908
+        },
+        {
+          "seed": 974000,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 360,
+          "elapsed_s": 3.2046893740043743
+        },
+        {
+          "seed": 974058,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 348,
+          "elapsed_s": 3.2375610059971223
+        },
+        {
+          "seed": 974043,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 396,
+          "elapsed_s": 3.6061128820001613
+        },
+        {
+          "seed": 974065,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 368,
+          "elapsed_s": 3.245970750998822
+        },
+        {
+          "seed": 974082,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 356,
+          "elapsed_s": 3.182327394009917
+        },
+        {
+          "seed": 974020,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 310,
+          "elapsed_s": 3.0509102739888476
+        },
+        {
+          "seed": 974071,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 368,
+          "elapsed_s": 3.3466452910070075
+        },
+        {
+          "seed": 974088,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 355,
+          "elapsed_s": 3.1187099750095513
+        },
+        {
+          "seed": 974019,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 355,
+          "elapsed_s": 3.203292589998455
+        },
+        {
+          "seed": 974029,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 357,
+          "elapsed_s": 3.203912845987361
+        },
+        {
+          "seed": 974027,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 408,
+          "elapsed_s": 3.747427010006504
+        },
+        {
+          "seed": 974041,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 342,
+          "elapsed_s": 3.0863964340096572
+        },
+        {
+          "seed": 974110,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 341,
+          "elapsed_s": 3.078699478006456
+        },
+        {
+          "seed": 974009,
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "ticks": 318,
+          "elapsed_s": 3.5004486209945753
+        }
+      ],
+      "accepted_seeds": [
+        974037,
+        974056,
+        974093,
+        974052,
+        974086,
+        974047,
+        974036,
+        974017,
+        974124,
+        974002,
+        974012,
+        974107,
+        974034,
+        974030,
+        974077,
+        974045,
+        974118,
+        974038,
+        974000,
+        974058,
+        974043,
+        974065,
+        974082,
+        974020,
+        974071,
+        974088,
+        974019,
+        974029,
+        974027,
+        974041,
+        974110,
+        974009
+      ],
+      "attempts_n": 32,
+      "charged_expert_ticks": 10976,
+      "charged_expert_elapsed_s": 102.8059492190223,
+      "training_hull_area_cm2": 67.15448243947661,
+      "candidate_cover_radius_mm": 11.378989279789785,
+      "candidate_mean_distance_mm": 5.146273295568509
+    }
+  }
+}

@@ -1,0 +1,1944 @@
+{
+  "status": "completed",
+  "domain": "simulation",
+  "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+  "test_seeds": [
+    975000,
+    975001,
+    975002,
+    975003,
+    975004,
+    975005,
+    975006,
+    975007,
+    975008,
+    975009,
+    975010,
+    975011,
+    975012,
+    975013,
+    975014,
+    975015,
+    975016,
+    975017,
+    975018,
+    975019
+  ],
+  "methods": {
+    "random": {
+      "holds": 8,
+      "hull_gated_holds": 7,
+      "query_in_hull": 17,
+      "truth_in_hull": 15,
+      "lift_over_50mm_but_no_hold": 10,
+      "native_guard_stops": 1,
+      "mean_nearest_demo_mm": 9.139817691423543
+    },
+    "farthest_first": {
+      "holds": 10,
+      "hull_gated_holds": 9,
+      "query_in_hull": 18,
+      "truth_in_hull": 18,
+      "lift_over_50mm_but_no_hold": 9,
+      "native_guard_stops": 0,
+      "mean_nearest_demo_mm": 7.905493561886286
+    }
+  },
+  "paired_primary": {
+    "random_only": 3,
+    "coverage_only": 5,
+    "both": 5,
+    "neither": 7,
+    "exact_two_sided_p": 0.7265625
+  },
+  "paired_hull_gated": {
+    "random_only": 3,
+    "coverage_only": 5,
+    "both": 4,
+    "neither": 8,
+    "exact_two_sided_p": 0.7265625
+  },
+  "rows": [
+    {
+      "seed": 975000,
+      "initial": {
+        "arm": [
+          81.56942749023438,
+          54.69003677368164,
+          27.16808319091797,
+          21.423320770263672,
+          74.52079010009766,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2101347552693345,
+          0.006219832383745426,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b4d30941b7a83b8d04f06d86be7f72e74e53c041e940c3a9a75e97dd0bb01601"
+      },
+      "branch_sha256": "bc8102d2e3a37932284ec40a65a317473e68441dd3a42ce2fd0c7c367bfa0ff3",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "dc7a5668aaa540999544516aaa28413bb687d51dec8cefcf0a0c5259c5dcdaec",
+      "png_sha256": "8260b830b39eb5fecf40026123e4e306644294231f1c13dd346048851c083497",
+      "predicted_xy": [
+        0.2061823010444641,
+        0.008679079823195934
+      ],
+      "localization_error_mm": 4.655082423345446,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.2452588075455036,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49186672673909015,
+            2.26238154428699,
+            0.4904641769826412,
+            0.40907129384450513,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "5e3fbff49605f638d2c8372871e89e845a22fb8a87f5b45f05e429f96fccd2ec",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 10.935897311993125,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.2435580966927245,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4842282193048675,
+            0.49716223865512177,
+            1.9516707903573725,
+            0.4904641769826412,
+            0.49087374974875786,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "8dc2f915ad737e350b49095ad65cd05687540a4b9743dda3f7bd521bbb3a0141",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 10.935897311993125,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975001,
+      "initial": {
+        "arm": [
+          81.34017181396484,
+          58.617218017578125,
+          21.97438621520996,
+          22.464677810668945,
+          75.71632385253906,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2094703426685185,
+          0.025057947417704868,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6627f974cb1debf43776592fac8235a3f988722946b900fd6d67834f69c4c9d0"
+      },
+      "branch_sha256": "842a3ef43a8da5d2e75d7682d8f736eccbc07c72a53e9724f87bd912b4cc73aa",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "13d0d391d4b4756dd0847cb3a71b5cb8256bc75ea917c19a85ad3a790a5a1f16",
+      "png_sha256": "ed2b76d0ea2c6b9f290e2de1f2658c288d8913ab8d360f2604734bcee80376c9",
+      "predicted_xy": [
+        0.21093694865703583,
+        0.024737155064940453
+      ],
+      "localization_error_mm": 1.5012797404704536,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 357,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24079538783997634,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 337,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.48774070627010246,
+            1.308810772785338,
+            0.49738496298111023,
+            0.37861010321064725,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "147f9c79ae69a293c1edfc06a58ebce7d9a48d0c2968d44b7e8307ca3990ae09",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 8.34578078728574,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 309,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24141442671605434,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 289,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4997689595766346,
+            2.7388145785802473,
+            0.4904672419652343,
+            0.44249689372544765,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "2184a919ade23700ac1b3cc05e19f2df701ae11dce135900ab5b39c745d4c70d",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 8.34578078728574,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975002,
+      "initial": {
+        "arm": [
+          78.84644317626953,
+          58.79755783081055,
+          24.51173210144043,
+          20.25937271118164,
+          72.3037338256836,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1825227386659115,
+          -0.03804963133141669,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4ac5fbe9633ea1661a30959f6740cfa2209380d54256e7e4d0ad50b66a225607"
+      },
+      "branch_sha256": "1a55247c06a70c17e63d20998b3dfaa22b722c52cdbd4ddec87b5c3c1ff48db9",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "c63d2c4f1ac99834c3cd60d875932b2c024355387d5a7709d841b1b5dcfb873c",
+      "png_sha256": "ae2ccdf32e4a0ca5e7e0f293dbccd10d35e046df189f6ea7dfc294701f6077df",
+      "predicted_xy": [
+        0.18311846256256104,
+        -0.03414062038064003
+      ],
+      "localization_error_mm": 3.954143848462163,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 327,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23278811489926016,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 307,
+          "max_requested_to_native_deg": [
+            0.49115704380903935,
+            0.48654823314509343,
+            1.3133778128016163,
+            0.4904673295095563,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "0d88a25070dc9239a77988d7b55eb7eb57efddfb130ba2793d9401ae516bd595",
+          "query_in_hull": true,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 2.8264398206167556,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 344,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2397881943079695,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 324,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49305260134354967,
+            2.526697043389176,
+            0.49626662743923333,
+            0.3964358331125766,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            5.0,
+            4.0,
+            73.0
+          ],
+          "plan_sha256": "0f1d7663db65a2fb77550de529576e0f08407b497be184601ef7ba394a3e7493",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 13.293739322605498,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975003,
+      "initial": {
+        "arm": [
+          82.0245132446289,
+          58.48768997192383,
+          25.838441848754883,
+          20.56709098815918,
+          72.42418670654297,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22611336548081679,
+          0.0187038691973844,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b9428ea68fef3bf9a82660e46c4c85ed9e4b6cd3e28d397544b84dcc81c590a7"
+      },
+      "branch_sha256": "ef46dac3f0160167f870b428e7a204caea732f426c36df590ba7ab217b12a2da",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "cb7d731c7c8b132ea391513ecf0c41e21426b6627dd542af68afb08f039fd5d4",
+      "png_sha256": "816e7324b94b6e6849fbb0a62b01bf657331993fddc99b79a1363441f2cab025",
+      "predicted_xy": [
+        0.22675618529319763,
+        0.01712810806930065
+      ],
+      "localization_error_mm": 1.7018344349463344,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24088931624788906,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49895618480908865,
+            1.0,
+            0.49046087730675936,
+            0.3958934515313217,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "35ba5aed71f144d3dde2d69d4da4f5fd5e9be5125098716144718751f4c0aa35",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 18.45515989743272,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24098917922779867,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4945895258532378,
+            1.2983784050398954,
+            0.49046087730675936,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "e1808b6bf4029cea2444478599d65fde13a12aba89f27a8350416e0b9cdbeeae",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 11.412078523757977,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975004,
+      "initial": {
+        "arm": [
+          84.32860565185547,
+          57.43816375732422,
+          23.139516830444336,
+          19.798871994018555,
+          75.77667236328125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1767348701999853,
+          -0.007201606229095256,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a57c66f60c531829d7e35e1ad8a994fdc76f4f6bb7e3bc629eb3dfcfd5597d12"
+      },
+      "branch_sha256": "61087c2af525e8d4bfdfda815e0e30e57e664321dfe51d1f4bca04629922af49",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "02a72509763b83aa4476c20a211b7fe039f382c37934988f1baa731aa8f85823",
+      "png_sha256": "0a84dceca1ee653d08626cad9eca1f4a70b4dda30c2e5225cf4327b8a367e58a",
+      "predicted_xy": [
+        0.1793784350156784,
+        -0.00243149371817708
+      ],
+      "localization_error_mm": 5.453660083062443,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.23734465040510716,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4829711691899661,
+            1.0007387990332315,
+            0.4923310798121179,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "0cc1cb8471a2012012ebac6030f9a5c626d69741ceb461915f8149e1f6c9249c",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 3.9739749128120065,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.238207369256919,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.3665852589006704,
+            0.4960637697318191,
+            1.9998082283168703,
+            0.49045671336352825,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            6.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "16d6c876e3251146312550442ff6b0c639839e7e3c759508b2d9e8ad7d95888d",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 8.809100316353561,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975005,
+      "initial": {
+        "arm": [
+          82.26253509521484,
+          54.322261810302734,
+          25.540315628051758,
+          20.072097778320312,
+          74.30789947509766,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23139702105048485,
+          0.02755257404973102,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b2ab4bedca17f7582a0c0a0d9702b3166f5cdac3a79969c30df5d1cb9f0a48ba"
+      },
+      "branch_sha256": "e4cc7bf75938e3f895f26a944cb3bec2e18ca68afbf87f08ec09155e6f81808c",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "b06b7952ec5ec4ae15b5f17993f4569dc3787afe6921073a03831afb36e0c325",
+      "png_sha256": "4a1baf83f039b29a5a72944c34a12d604a96a3c29488ad80c13cbe77b90b38f9",
+      "predicted_xy": [
+        0.23057128489017487,
+        0.02749944105744362
+      ],
+      "localization_error_mm": 0.8274438478307057,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.2413860484681788,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49267090303579053,
+            1.0,
+            0.4904659939929843,
+            0.48688646678938596,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "fac4394a6882c814e92ec2265eb75315a49a32549d8251ad328cd56c787c713b",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 10.504338788242338,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24306936760348496,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49496993022672164,
+            1.2951875728056872,
+            0.4904659939929843,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            7.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "de90753c32a07e74bb95094ee4b6e3fab61030ff025f7f9255f9af34c8743c71",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 7.966806519086515,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975006,
+      "initial": {
+        "arm": [
+          80.66032409667969,
+          54.98524475097656,
+          21.568450927734375,
+          20.373306274414062,
+          74.10649108886719,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1971038168721773,
+          -0.004899520234360341,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f890a6b98d66f953cccda602a3f510e451dc1c43235507f1c35805a890b9a0dd"
+      },
+      "branch_sha256": "6fe8b5df23aed5fa3cdb9aacd31f2b2a6de633674320ce147a8280d106b7b2ae",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "c0ed7886ecb2558be7281526c249cc12c34c0a90ccf03119094cc75ae49dfb4e",
+      "png_sha256": "0ff013e42af9140a770fe19c56cd7a99643654683320f7dd1b3f8edddca87c1e",
+      "predicted_xy": [
+        0.19723518192768097,
+        -0.004698748700320721
+      ],
+      "localization_error_mm": 0.23992912846944456,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24508903085479705,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4900975159933125,
+            2.6678053691380974,
+            0.4904671870172024,
+            0.4133365430941609,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "827956a1ed67d197a7e2b3a64846bf059127ebbd4e393dfb44c80e7e133137b5",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 8.974740992789538,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 317,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23768931954233563,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 297,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49630659657714205,
+            1.6944860992808917,
+            0.4904671870172024,
+            0.46532827497323126,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "fca7807a05da1f2c12b27fa62cabd5b331fab5cd5a9c0acbee090b23040902fd",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 5.575691398095925,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975007,
+      "initial": {
+        "arm": [
+          79.91719055175781,
+          54.22468948364258,
+          27.218299865722656,
+          21.949325561523438,
+          73.43797302246094,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24880036413973455,
+          0.039057352391693875,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a63180b6171e6aa8ccc3457badb8640854d2ff6cc41dd781c5cb3266fc9bdb0d"
+      },
+      "branch_sha256": "70a260501455e14f49dc053e0065e3c1cc522b80292c721f032f6115649f0908",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "fbc9208b8719888b54077831afe2938f6627f82e2f0e6bbef586d3fd4edea6ba",
+      "png_sha256": "d12a0e4f855d8373fb97a790722423a84d960de03bd9d5ffab6984b5d4688351",
+      "predicted_xy": [
+        0.24353301525115967,
+        0.043506111949682236
+      ],
+      "localization_error_mm": 6.894666483504759,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 243,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23895199401367256,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 223,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            3.2223845562078917,
+            1.0,
+            3.5940636090306626,
+            0.49311465852295555,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "25775b3891b1291f861cb1a747ec20dfefb65ca5757b0f9a8535df87a230f05f",
+          "query_in_hull": false,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 5.543884399571925,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 356,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2360771999286871,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 336,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.7934554093712107,
+            1.0,
+            2.274173406091608,
+            0.4291406401877822,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "bdc35140322034e5df44c9c3b7defc4bc417d3ecac8702831eaa844e682055c7",
+          "query_in_hull": false,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 5.6177781667430935,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975008,
+      "initial": {
+        "arm": [
+          83.02544403076172,
+          57.78541564941406,
+          26.968379974365234,
+          19.1832218170166,
+          75.99964141845703,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20709990283743152,
+          0.015863018915408325,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9d7ce5d74ed28e6560f643a406e45c6cc74f11f588afbd1f489c5c43ccff3140"
+      },
+      "branch_sha256": "01a70a28dc257ef8c1c5157a117437c9b18755c59a40671e80211278089c53ab",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "b2f5eb28afa514e141fcc84d29e39ce4ceed95b42c8995c4c8bcf2e88f279673",
+      "png_sha256": "a090cdba86dd49eea60a177bbb9f0b1f5e33eb3acbbe6337acb31d63a1fafe83",
+      "predicted_xy": [
+        0.207571879029274,
+        0.014734553173184395
+      ],
+      "localization_error_mm": 1.2231910958795962,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 366,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24079978300499083,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 346,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4997425313114121,
+            1.26871473056859,
+            0.49046688340604305,
+            0.4486269214285983,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "fdbc9b6b23738957c2a195e280f77544664e773c74e30b959fa98548163c614a",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 1.2156981204849067,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.2418527942368714,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4955717135387516,
+            1.4005212815879864,
+            0.4943927142706741,
+            0.40343408404652337,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "2e9024c22d0752c4750724e302316af68516eed566572e497a7ba85d2f0c2235",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 1.2156981204849067,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975009,
+      "initial": {
+        "arm": [
+          82.23079681396484,
+          55.89120864868164,
+          22.398677825927734,
+          21.253759384155273,
+          73.97795867919922,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20496960945424905,
+          0.04078368087669172,
+          0.018000000000000002
+        ],
+        "reset_sha256": "7fdbe718cdb218b12cce3eaccfe4df2022cd1d63fd7c8aab1721b01d9bb672d3"
+      },
+      "branch_sha256": "d0eb1ff697809ba083950c7aecbea0ebd66679f37518211a735e005ea3816142",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "2ef682e31950f803d2962f03c2de422fe44269bec0ca3543f8a1304ad6fce148",
+      "png_sha256": "d88ab47a6740105e26cc5f08114edb0123b1eba3cc7bfcfeb4452be36ffc6363",
+      "predicted_xy": [
+        0.20610299706459045,
+        0.042624253779649734
+      ],
+      "localization_error_mm": 2.161544837929271,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24332098693817988,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49539585987645296,
+            2.047689077203566,
+            0.4943578444919723,
+            0.474286145423676,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "f52f3e7c9b535e7e3238ebbf24609f1bfb747a2b330de0b6fb7f1b056a120b7e",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 5.991500263542081,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 360,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24052092714446055,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 340,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49958824691985626,
+            1.2142874399955628,
+            0.49045360647141933,
+            0.4831110368482996,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "13a1730db052486c66773d439395beaed41752961e8de9d6bffc9663278ba98b",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 2.230134868620624,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975010,
+      "initial": {
+        "arm": [
+          81.01882934570312,
+          57.17327880859375,
+          24.27541160583496,
+          20.91512107849121,
+          77.043701171875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1863773051434942,
+          0.035512141951085416,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1c1be2b17f850014171c5e7f9590bbc4e387d8ecb935cdcf489b7f4b3db44c2c"
+      },
+      "branch_sha256": "1f98cec6fbaf91fb7d524502490c3a502e56ea7f84b76f44f39b998c1113f4c1",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "62e38b03dad08ec0fb1db531cce9172cddd1466dfd698d3cb9f0322d87fecaef",
+      "png_sha256": "6cfbfa60da0f31a6c7539254b38b07a6165d89aca0b6d1198c3c245b0e1755d2",
+      "predicted_xy": [
+        0.18594230711460114,
+        0.0391855388879776
+      ],
+      "localization_error_mm": 3.6990631707379293,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "native_guard: arm path collides with floor or chassis: [88, 55, 22, 2, 77, 33]",
+          "steps": 20,
+          "contact": false,
+          "bilateral_contact": false,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 0,
+          "max_requested_to_native_deg": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max_native_to_measured_deg": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "plan_sha256": "0a22c0278c60e1d3f16c0833c29b2ab14b62634385ba45ccd2babf57af756ea0",
+          "query_in_hull": false,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 11.87215222174158,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 345,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23472438709015997,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 325,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49993870399609364,
+            1.2594728564779087,
+            0.49045716412365437,
+            0.4995269775390625,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            6.0,
+            7.0,
+            6.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "1c268242d804b46056e4171c704f3d5895c4e4f9f99e8c9e85fc5c4c4f3b0586",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 4.48338312966286,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975011,
+      "initial": {
+        "arm": [
+          83.88499450683594,
+          57.96413803100586,
+          22.386184692382812,
+          22.118545532226562,
+          72.52079010009766,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17781794078930116,
+          -0.01796881464495026,
+          0.018000000000000002
+        ],
+        "reset_sha256": "5908545b4f056ff4b74d9a14a1fd4a32d18ee44858fe7a5c42fc9c3bac28953d"
+      },
+      "branch_sha256": "12298d5ba9fc6719bd85480a67bbd51a562a93207a6686b99f21245bd80c4aa0",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "77a4735b5b343fba82d0cf95dc31789b7b1b4e6bcd57daa31fbcc4b3c34bde87",
+      "png_sha256": "00e8c1351d69854ef0a9cf1821a0c34c568a38db65b8e2599e6526934806cefb",
+      "predicted_xy": [
+        0.17749427258968353,
+        -0.016869304701685905
+      ],
+      "localization_error_mm": 1.1461602064200707,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24067417694272458,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4910632373146342,
+            1.480719239742092,
+            0.49046695698052645,
+            0.40288820558313887,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "a95521c4d7e753fa5c7c9f096a70d494d89648a5bd749b92d3f0642fbeaa2c88",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 4.614685902951638,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.23995286741853689,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.494403336968432,
+            2.145426294730485,
+            0.49046695698052645,
+            0.4995269775390625,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            5.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "fda9e5c5a2c8538afdb3810428ace539def08ff9c4804f2cc90b88fea27276db",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 4.614685902951638,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975012,
+      "initial": {
+        "arm": [
+          79.33307647705078,
+          54.045719146728516,
+          23.603137969970703,
+          22.14168357849121,
+          75.96551513671875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18054888503222113,
+          -0.028184869457569806,
+          0.018000000000000002
+        ],
+        "reset_sha256": "d6ad5dc3f861da42301e6a6a337184ba67938eb61d2060a2c9d52f67e20e5834"
+      },
+      "branch_sha256": "3881cadc0c408e7457c941b2862e790a34a743ea05a3c69b7d1399c45f43784b",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "2085f186462641d93750e14471860175b5e730b3925ab7a43840e8ee68074832",
+      "png_sha256": "03bed0ffd9958c87570dea3ffaf2fb82ab9b64a20c734151c71879dc545dfa5a",
+      "predicted_xy": [
+        0.1798388957977295,
+        -0.01907028816640377
+      ],
+      "localization_error_mm": 9.142192123684994,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 366,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2363906420448773,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 346,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4943168578703876,
+            1.2283990921940264,
+            0.49046664498746395,
+            0.4728291346294924,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "922b181f1efe32066b1bc06ec4ddec8165d7aefe44c046c4f03c39ca8f201faf",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 7.27670962620874,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24100177021133345,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49306714775473637,
+            1.599988808546613,
+            0.49046664498746395,
+            0.4995269775390625,
+            58.999999999999915
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "8addb2b476c9845d11a7459b30dc7859f21890dc26aeeeff5d1d4364b531612a",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 7.992257025493973,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975013,
+      "initial": {
+        "arm": [
+          79.99946594238281,
+          57.93906021118164,
+          22.519834518432617,
+          20.271305084228516,
+          74.68051147460938,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19749232519783405,
+          0.025965413308133276,
+          0.018000000000000002
+        ],
+        "reset_sha256": "40af98c59bcf354dbc1dad5deabef30ff7cab5e2f3c3a216a2e5278174578275"
+      },
+      "branch_sha256": "43982ab420af94c0497d0fffd4c3ddf20da4b7a57f1c1f6ab7c53f6ab5e177b6",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "51630661d7e0812b286f875839e9971bc697bc6d1511b3630f614a5e151b314d",
+      "png_sha256": "5d0b2103682acdb037a575eb178d05f463c8bd147291752d649d1a6c18f11a3a",
+      "predicted_xy": [
+        0.2023548185825348,
+        0.028453052043914795
+      ],
+      "localization_error_mm": 5.461885058843615,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 293,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23564463352096748,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 273,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4967261092525064,
+            1.109252334402782,
+            0.498254686118365,
+            0.40772000720998847,
+            58.99999999999994
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "be2be54e7c660fdf238887f224fb100bc3e4dd1bbc115609cd758a29a7c7f05c",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 3.6720733948272426,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 378,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23920695150163834,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 358,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49532347777614305,
+            1.6385098004340843,
+            0.492477361447083,
+            0.4805515723955125,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "3bbb318513b923b293815a710aefe4d5a740855341bedd63ef4d71dd28ab62b8",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 4.133427934322993,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975014,
+      "initial": {
+        "arm": [
+          84.04778289794922,
+          54.8226203918457,
+          21.500032424926758,
+          22.495410919189453,
+          72.7894287109375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24730657168023312,
+          -0.031000799253756185,
+          0.018000000000000002
+        ],
+        "reset_sha256": "073dde1b5688cf8126dc67aadecbe60afa35491bc22296b680fd76fadcb467c7"
+      },
+      "branch_sha256": "dfca3acbc0d844a4a6aedc0b748b8961251f9209eb74a6b953b4902132486247",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "a86c4640f98ced5e5931d3a11c79d156cd278b1aca745b7d5d44b307b8ab56ec",
+      "png_sha256": "32e69c7cc5241de8b40d9418a163f79d3f1cf3dbdb1dd89b10a3c1b5b5e37e90",
+      "predicted_xy": [
+        0.24924366176128387,
+        -0.027902472764253616
+      ],
+      "localization_error_mm": 3.654031337804661,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            9.044841488985272,
+            1.0,
+            7.340633561847495,
+            0.37789275450262494,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            8.0
+          ],
+          "plan_sha256": "c761c2207cb6853c7063add9104858d367f66736afae786ba82c80ded155f86f",
+          "query_in_hull": false,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 5.900851734708414,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.0,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.48856649294947374,
+            8.890890219294468,
+            1.0,
+            7.219948433539477,
+            0.4325708656062659,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            5.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            8.0
+          ],
+          "plan_sha256": "26f1894679c2e32a1fdb14475b5b3baaf7256b4b2c287b307e33c8bb2ad76396",
+          "query_in_hull": false,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 5.900851734708414,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975015,
+      "initial": {
+        "arm": [
+          82.20006561279297,
+          59.59895324707031,
+          25.68330192565918,
+          18.28654670715332,
+          74.1480712890625,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24584012687856777,
+          0.006125101299771396,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9ee874490b232c0b47ccb979f6dbbeb06ca7b501ae7e6ec035ca5083e4ad3e0f"
+      },
+      "branch_sha256": "26a887a954ebd4da917204fe16953e71e90a47f814f80f0dd144d52bb22a50d2",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "0da4de3e49556812ce3519107d658f513fa43b6cb456964d1017da43281a964c",
+      "png_sha256": "d852ad5bf72cfe06895f0acbf01d2d8f9cb5fe82d8a951b2cac2fc67fed819dc",
+      "predicted_xy": [
+        0.2444959133863449,
+        0.007677687797695398
+      ],
+      "localization_error_mm": 2.0536393904991903,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 317,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24038566024349062,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 297,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.48894145021173685,
+            1.0,
+            0.5830623494482503,
+            0.39244868480751904,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "d25016ad7b48840c8ff33bd74a71ef998236556636d81372ef07227c5a035153",
+          "query_in_hull": true,
+          "truth_in_hull": false,
+          "nearest_demo_mm": 21.325724553653956,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.241895398027953,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.42863325354601045,
+            0.48851845716147335,
+            1.0,
+            2.6662525639417938,
+            0.46838588524690294,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            2.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "343c6c419c4bed8d18220e356b0df93d0a6e110fdffae5e7fae0697a7dc97fdb",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 14.914683643490386,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975016,
+      "initial": {
+        "arm": [
+          82.09312438964844,
+          54.72933578491211,
+          22.410804748535156,
+          21.67656898498535,
+          75.78034210205078,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2369704463847965,
+          0.0029973911015928056,
+          0.018000000000000002
+        ],
+        "reset_sha256": "cbdb91eaa667f6cfc3b50ad4767f5f4447d81fa8b460ebc495a235214e2a4e31"
+      },
+      "branch_sha256": "4f2a69a1d81d2b1dd881e6ac47de83e21804462ce641bdd3a7e24faac2eef023",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "bf72c6199612c8b82f773502f06637fb0059092ad3b475f10f8bc3fda244da98",
+      "png_sha256": "ad26d15b3234b332db0b2dc3ff39a0a8aed50478d0e190af154e9a9d43688a49",
+      "predicted_xy": [
+        0.23847411572933197,
+        0.003209498478099704
+      ],
+      "localization_error_mm": 1.5185555758234088,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.2413297306834542,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.48648027632217783,
+            1.0,
+            0.4962772883179767,
+            0.4690140382690515,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "cde8afb037404abad81a4ee8ac9d6b2517ab7b4cc1322d3d41e8f2525a0b6cd5",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 11.946353236458377,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24292913185578124,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4738538046907479,
+            0.43883446740785814,
+            1.218456338556299,
+            1.611259664497014,
+            0.4993617033873221,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            2.0,
+            6.0,
+            5.0,
+            5.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "be52c06fddd6d12cec919b83cacdf4d8d425d2c3e1a9afaa491c9f7cc9f2b591",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 8.930148586742344,
+          "hull_gated_hold": false
+        }
+      }
+    },
+    {
+      "seed": 975017,
+      "initial": {
+        "arm": [
+          80.15778350830078,
+          58.62505340576172,
+          26.561635971069336,
+          20.27439308166504,
+          72.56273651123047,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20572506501702895,
+          -0.00028873197102332465,
+          0.018000000000000002
+        ],
+        "reset_sha256": "57fed2805e62793613ac978f3e3edde6d8f640fb6131aab9f5a92eff5c50cf62"
+      },
+      "branch_sha256": "fdc20d22ee0aab05e51e1ae53807fad42cb7d4bba7c6de665b9de24a27885c25",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "d7d88484122c8697534a45e36e88c287e45134e2ab2ab75256a8ee0b3a860a2b",
+      "png_sha256": "7be1836f94c68808d19ddc0d90aee3d11bce702acd0024a65b54d09edef6a3e2",
+      "predicted_xy": [
+        0.20992040634155273,
+        -0.0016831649700179696
+      ],
+      "localization_error_mm": 4.42101031642567,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24221104491662765,
+          "max_stable_carry_s": 0.9000000000000002,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.4866244435469973,
+            2.560746194848865,
+            0.49535909196010763,
+            0.468732109436516,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "2e1874750a4792c6bd63a10c0b7ae753bed3aee44facde70a1a22b6160a14a31",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 12.294467379233442,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 361,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24111277154699717,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 341,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.48285827808028614,
+            1.9366905384010225,
+            0.49851976712035295,
+            0.3909481794816969,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            3.0,
+            6.0,
+            6.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "5d21e6d0a5d7469829c29ee64bb213bffcc8dda768204db8940d960db17c7bc3",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 10.387454342204926,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975018,
+      "initial": {
+        "arm": [
+          84.22649383544922,
+          56.2981071472168,
+          24.65570831298828,
+          21.646997451782227,
+          75.462646484375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2362088357826031,
+          0.010518701434850675,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6e8c96200575ce659ec28acd492b6ec129aaf3cec19f286d639dcb115d553313"
+      },
+      "branch_sha256": "a225181bde29a18997bafed10f09ad246c96dca93ff9d60a43cf09406d4fba39",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "50c5742080d92f41c4eee474c2363b94bc7ff5a5ab36c055b046d7488e0dbb2c",
+      "png_sha256": "053a23a18d279572b5d77302782794c30d80dd1d5dec81deeb8fb774fa101732",
+      "predicted_xy": [
+        0.24131721258163452,
+        0.01394421886652708
+      ],
+      "localization_error_mm": 6.15058397191693,
+      "methods": {
+        "random": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 373,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.2394369588492326,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 353,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.497453459954464,
+            1.0,
+            0.49045978393405676,
+            0.473551157169922,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "367921f3c1ecf92515b4176253f052c3c807b71abe7c507e2bb73bdea13aea7a",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 14.998863614807771,
+          "hull_gated_hold": true
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 345,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.23806212224020573,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 325,
+          "max_requested_to_native_deg": [
+            0.44281643524099934,
+            0.49191138230887077,
+            1.4216516925051212,
+            0.7922285436847073,
+            0.40656861742711214,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            7.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "a10d3b440beea7eb05752e723aea32fcecead1dea9c7c807af42e068cdcab305",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 13.42711302103408,
+          "hull_gated_hold": true
+        }
+      }
+    },
+    {
+      "seed": 975019,
+      "initial": {
+        "arm": [
+          83.19344329833984,
+          59.42695236206055,
+          21.613574981689453,
+          20.689706802368164,
+          77.2100830078125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21423491674768527,
+          0.006646117702315192,
+          0.018000000000000002
+        ],
+        "reset_sha256": "78099353f6a1d5149b5e5f13fadaf8939c7cbfbf3293c3ca79de1a43bcfa0b1b"
+      },
+      "branch_sha256": "81b1ed411325fef58882edaec88adfe3eac3728fbaeeb67ec56f41b01cd5f88b",
+      "training_sha256": "2e059cf50c54598a96ed43ff9ae024bc661badb6ea01269e27b669ce84e6a476",
+      "rgb_sha256": "448c195ff91324eec7d416cbafa11c8cd8f0f8da33edcd5d03fd6d5b066ce968",
+      "png_sha256": "0789bdc329630122b56ab282d2b21770f6863db39226e633dbc4da8dc9db305e",
+      "predicted_xy": [
+        0.2149486392736435,
+        0.005941262003034353
+      ],
+      "localization_error_mm": 1.003105877197848,
+      "methods": {
+        "random": {
+          "outcome": "failure",
+          "reason": "task_deadline",
+          "steps": 380,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": false,
+          "peak_lift_m": 0.24146906246243288,
+          "max_stable_carry_s": 0.0,
+          "executed_control_steps": 360,
+          "max_requested_to_native_deg": [
+            0.4999847412109375,
+            0.49950654745924083,
+            1.7520794518614393,
+            0.49046172946691513,
+            0.4805216367326608,
+            59.0
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            6.0,
+            5.0,
+            73.0
+          ],
+          "plan_sha256": "6715fd938c9e4fda388f29f9eaf147c15de29234ca73c30a0075b5f4eafce4d0",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 12.12705686910856,
+          "hull_gated_hold": false
+        },
+        "farthest_first": {
+          "outcome": "success",
+          "reason": "held_in_carry_pose",
+          "steps": 349,
+          "contact": true,
+          "bilateral_contact": true,
+          "ever_held": true,
+          "peak_lift_m": 0.24359772476146002,
+          "max_stable_carry_s": 1.0000000000000002,
+          "executed_control_steps": 329,
+          "max_requested_to_native_deg": [
+            0.4931342226577584,
+            0.4900284065528808,
+            2.8348750266659923,
+            0.49046172946691513,
+            0.422643586978964,
+            58.99999999999997
+          ],
+          "max_native_to_measured_deg": [
+            4.0,
+            7.0,
+            7.0,
+            6.0,
+            6.0,
+            73.0
+          ],
+          "plan_sha256": "8fb1be9122a25f034aedd2a61ae1d891814ed7e30e19a2bde716b014e512a66e",
+          "query_in_hull": true,
+          "truth_in_hull": true,
+          "nearest_demo_mm": 7.923160582087131,
+          "hull_gated_hold": true
+        }
+      }
+    }
+  ],
+  "physical_trials": 0
+}
