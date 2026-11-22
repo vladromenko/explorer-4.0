@@ -10,7 +10,7 @@ import shutil
 import tempfile
 import urllib.request
 import zipfile
-from explorer3.paths import DATA
+from explorer4.paths import DATA
 
 SHA256='7f9083d301fef50633445272505e9acb561a4b6abe362dd946d7deaaf4caff0f'
 URL='https://drive.usercontent.google.com/download?id=1WxZbB2ulfWldWYRKiT5zheso-8EtqfdV&export=download&confirm=t'

@@ -17,10 +17,10 @@ import av
 import numpy as np
 import pandas as pd
 
-from explorer3.simlab import contract
-from explorer3.simlab.artifact import Policy
-from explorer3.simlab.perception import MarkerDetector, TargetTracker
-from explorer3.simlab.scenario import load_measurements
+from explorer4.simlab import contract
+from explorer4.simlab.artifact import Policy
+from explorer4.simlab.perception import MarkerDetector, TargetTracker
+from explorer4.simlab.scenario import load_measurements
 
 
 def frames(dataset, key='observation.images.front'):

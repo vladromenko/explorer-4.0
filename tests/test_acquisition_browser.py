@@ -18,7 +18,7 @@ def test_acquisition_pages_without_hardware(tmp_path):
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', 0))
         port = probe.getsockname()[1]
-    env = {**os.environ, 'EXPLORER3_DATA': str(tmp_path), 'EXPLORER3_TEST_PACKET': str(artifact), 'PYTHONPATH': str(root), 'EXPLORER3_TEST_PORT': str(port)}
+    env = {**os.environ, 'EXPLORER4_DATA': str(tmp_path), 'EXPLORER4_TEST_PACKET': str(artifact), 'PYTHONPATH': str(root), 'EXPLORER4_TEST_PORT': str(port)}
     env.pop('PYTEST_CURRENT_TEST', None)
     base = f'http://127.0.0.1:{port}'
     with (tmp_path / 'server.log').open('w') as log:

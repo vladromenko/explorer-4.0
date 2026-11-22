@@ -1,5 +1,5 @@
 import hashlib
-from explorer3.recording_readiness import evaluate,clock_check,ROOT
+from explorer4.recording_readiness import evaluate,clock_check,ROOT
 
 
 def evidence(robot='tank'):

@@ -6,4 +6,4 @@ RUN sed -i 's/^hosts:.*/hosts: files mdns4_minimal [NOTFOUND=return] dns/' /etc/
 ENV PYTHONPATH=/workspace PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 HOME=/tmp/explorer3 ROS_LOG_DIR=/tmp/roslog
 ENV ROS_DOMAIN_ID=73 ROS_LOCALHOST_ONLY=1 EXPLORER3_DATA=/data
 WORKDIR /workspace
-CMD ["python3", "-m", "explorer3.ros2_hub"]
+CMD ["python3", "-m", "explorer4.ros2_hub"]

@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 cv2 = pytest.importorskip('cv2')
-from explorer3 import goto, world_memory
+from explorer4 import goto, world_memory
 
 CAM = dict(goto.CAMERAS['tank'])
 
@@ -47,7 +47,7 @@ def room(monkeypatch, tmp_path):
     monkeypatch.setattr(world_memory, 'beacons', lambda: table)
     monkeypatch.setattr(world_memory, 'MEMORY', tmp_path / 'memory.json')
     monkeypatch.setattr(world_memory, 'SNAPSHOTS', tmp_path / 'snap')
-    from explorer3 import episodes
+    from explorer4 import episodes
     monkeypatch.setattr(episodes, 'ROOT', tmp_path / 'episodes')
     for p in world_memory.POSES.values():
         p.x = p.y = p.theta = None

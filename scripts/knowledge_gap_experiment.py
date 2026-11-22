@@ -39,11 +39,11 @@ GAP_POLICY = {'K5': 'always'}
 # knowledge is present). Rooms cycle object x prior, so every combination is equally represented.
 PRIORS = ['none', 'where', 'how', 'both']
 OBJECTS = {'cookie': 'печенье', 'sock': 'носок', 'cube': 'кубик', 'ball': 'мяч'}
-SOURCES = ['scripts/knowledge_gap_experiment.py', 'explorer3/swarm_sim.py', 'explorer3/swarm.py',
-           'explorer3/so101_station.py', 'explorer3/knowledge.py', 'explorer3/fleet_agents.py',
-           'explorer3/explore.py', 'explorer3/drive.py', 'explorer3/fleet_map.py',
-           'explorer3/navigation.py', 'explorer3/sim2d.py', 'explorer3/world_memory.py',
-           'explorer3/cognitive/gap_advisor.py', 'configs/cognitive-assets.lock.json']
+SOURCES = ['scripts/knowledge_gap_experiment.py', 'explorer4/swarm_sim.py', 'explorer4/swarm.py',
+           'explorer4/so101_station.py', 'explorer4/knowledge.py', 'explorer4/fleet_agents.py',
+           'explorer4/explore.py', 'explorer4/drive.py', 'explorer4/fleet_map.py',
+           'explorer4/navigation.py', 'explorer4/sim2d.py', 'explorer4/world_memory.py',
+           'explorer4/cognitive/gap_advisor.py', 'configs/cognitive-assets.lock.json']
 
 
 def write_json(path, value):
@@ -119,7 +119,7 @@ def summarize(rows):
 
 def seed_prior(prior, prompt):
     """Knowledge left by an earlier task: a fresh map position and/or a verified size measurement."""
-    from explorer3 import swarm_sim, world_memory, knowledge
+    from explorer4 import swarm_sim, world_memory, knowledge
     if prior in ('where', 'both'):
         xy = swarm_sim.truth_overlay()['objects'][prompt]
         items = world_memory._load()
@@ -140,8 +140,8 @@ def episode(seed, condition, prompt, deadline_s=600, prior='none'):
     Retain all evidence under that worker's directory. Even on timeout or an exception the
     parent terminates the entire worker process group before starting the next episode.
     """
-    from explorer3 import catalog, swarm_sim, episodes, knowledge
-    from explorer3.cognitive import store
+    from explorer4 import catalog, swarm_sim, episodes, knowledge
+    from explorer4.cognitive import store
     catalog.initialize()
     store.initialize()
     robots, helpers, advisor = CONDITIONS[condition]
@@ -222,7 +222,7 @@ def isolated_episode(out, seed, condition, prompt, deadline_s, model_data, prior
                'prior': prior, 'result': str(result_path)}
     write_json(directory / 'request.json', request)
     started = time.monotonic()
-    env = {**os.environ, 'EXPLORER3_DATA': str(data), 'PYTHONUNBUFFERED': '1',
+    env = {**os.environ, 'EXPLORER4_DATA': str(data), 'PYTHONUNBUFFERED': '1',
            'OMP_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '1'}
     with (directory / 'worker.log').open('w') as log:
         proc = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), '--worker', str(directory / 'request.json')],
@@ -285,7 +285,7 @@ def main():
     result_file = out / 'results.jsonl'
     rows = [json.loads(line) for line in result_file.read_text().splitlines()] if result_file.exists() else []
     done = {(r['seed'], r['condition']) for r in rows}
-    model_data = Path(os.environ.get('EXPLORER3_DATA', str(Path.home() / '.local/share/explorer3'))).resolve()
+    model_data = Path(os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA', str(Path.home() / '.local/share/explorer3')))).resolve()
     print('Results:', out, flush=True)
     for i in range(a.rooms):
         for c in conditions:

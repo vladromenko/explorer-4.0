@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request, Body
 from fastapi.responses import Response
 
-ROOT = Path(os.environ.get('EXPLORER3_ROOT', '/home/vlad/explorer3'))
+ROOT = Path(os.environ.get('EXPLORER4_ROOT', os.environ.get('EXPLORER3_ROOT', '/home/vlad/explorer3')))
 lock = threading.RLock()
 runtime = None
 observer = None

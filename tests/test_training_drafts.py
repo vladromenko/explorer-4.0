@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 import pytest
-from explorer3 import training_drafts as drafts
+from explorer4 import training_drafts as drafts
 
 
 def episode(ident,session=None,scene=None):
@@ -100,7 +100,7 @@ def test_real_finetune_preserves_holdouts_and_rejects_sim_mixing():
 
 
 def test_dataset_fingerprint_includes_raw_sensor_packets(tmp_path,monkeypatch):
-    from explorer3 import datasets
+    from explorer4 import datasets
     monkeypatch.setattr(datasets,'DATA',tmp_path)
     root=tmp_path/'datasets'/'episode';(root/'sensors').mkdir(parents=True)
     (root/'provenance.json').write_text('{}')
@@ -115,8 +115,8 @@ def test_dataset_fingerprint_includes_raw_sensor_packets(tmp_path,monkeypatch):
 
 def test_double_submission_of_prepared_plan_queues_one_job(tmp_path,monkeypatch):
     from concurrent.futures import ThreadPoolExecutor
-    from explorer3 import catalog
-    from explorer3.jobs import Jobs
+    from explorer4 import catalog
+    from explorer4.jobs import Jobs
     monkeypatch.setattr(catalog,'DATA',tmp_path)
     monkeypatch.setattr(catalog,'prepare',lambda:None)
     catalog.initialize()

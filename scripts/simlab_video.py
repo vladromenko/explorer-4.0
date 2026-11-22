@@ -6,8 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
-from explorer3.simlab import video
-from explorer3.simlab.scenario import load_scenario
+from explorer4.simlab import video
+from explorer4.simlab.scenario import load_scenario
 
 
 def main():

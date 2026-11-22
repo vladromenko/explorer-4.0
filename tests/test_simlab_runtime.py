@@ -6,9 +6,9 @@ import numpy as np
 import pytest
 
 pytest.importorskip('httpx')
-from explorer3.sensors import CHANNELS
-from explorer3.simlab import contract
-from explorer3.simlab.runtime import Fleet, PolicyLoop
+from explorer4.sensors import CHANNELS
+from explorer4.simlab import contract
+from explorer4.simlab.runtime import Fleet, PolicyLoop
 
 
 def make_policy(path, robot, bias):
@@ -17,7 +17,7 @@ def make_policy(path, robot, bias):
     a = len(contract.ROBOTS[robot]['action'])
     np.savez(path / 'policy.npz', norm_mean=np.zeros(dim), norm_var=np.ones(dim), w0=np.zeros((a, dim)), b0=np.full(a, bias))
     (path / 'policy.json').write_text(json.dumps({
-        'format': 'explorer3.simlab.mlp_elu.v1', 'robot': robot, 'contract_version': contract.VERSION,
+        'format': 'explorer4.simlab.mlp_elu.v1', 'robot': robot, 'contract_version': contract.VERSION,
         'contract_hash': contract.contract_hash(robot), 'history': 3, 'layers': 1, 'scenario': 'dock_v1',
         'scenario_fingerprint': 'x', 'weights_sha256': hashlib.sha256((path / 'policy.npz').read_bytes()).hexdigest()}))
     return path

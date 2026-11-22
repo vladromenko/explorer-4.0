@@ -1,12 +1,12 @@
 import json,sqlite3
 from types import SimpleNamespace
 import pytest
-from explorer3 import data_safety as safety,catalog,collection
+from explorer4 import data_safety as safety,catalog,collection
 
 
 @pytest.fixture
 def storage(tmp_path,monkeypatch):
-    from explorer3 import resources
+    from explorer4 import resources
     monkeypatch.setattr(resources,'DATA',tmp_path)
     monkeypatch.setattr(safety,'DATA',tmp_path)
     monkeypatch.setattr(catalog,'DATA',tmp_path)
@@ -65,8 +65,8 @@ def test_restart_aborts_attempt_without_resuming_or_deleting(storage):
 
 
 def test_low_space_aborts_session_and_closes_source_before_finalize(storage,monkeypatch):
-    from explorer3 import session as sessions,resources
-    from explorer3.control import Control
+    from explorer4 import session as sessions,resources
+    from explorer4.control import Control
     monkeypatch.setattr(resources,'DATA',storage)
     monkeypatch.setattr(safety.shutil,'disk_usage',lambda _:SimpleNamespace(free=1024**3))
     events=[]

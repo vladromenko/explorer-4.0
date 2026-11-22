@@ -1,8 +1,8 @@
 import json
 from types import SimpleNamespace
 import pytest
-from explorer3 import fleet_capture as f
-from explorer3 import fleet_live
+from explorer4 import fleet_capture as f
+from explorer4 import fleet_live
 
 
 def test_capture_rejects_bad_duration_stale_hub_and_path(tmp_path,monkeypatch):
@@ -38,7 +38,7 @@ def test_capture_failure_finalizes_report_and_releases_slot(tmp_path,monkeypatch
 
 def test_replay_drops_stale_views_and_retains_source_time(tmp_path):
     import numpy as np
-    from explorer3.fleet_replay import ReplayIndex
+    from explorer4.fleet_replay import ReplayIndex
     r=ReplayIndex(tmp_path);r.start=1_000_000_000
     r.latest['tank','rgb']=(np.zeros((8,8,3),np.uint8),{'received_ns':1_000_000_000,'source_timestamp_ns':900_000_000})
     r.render(1_100_000_000)

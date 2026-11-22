@@ -21,8 +21,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3 import catalog  # noqa: E402
-from explorer3.paths import DATA  # noqa: E402
+from explorer4 import catalog  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 FILES = ['agent.py', 'runtime.py', 'leased_core.py', 'control_adapter.py', 'cartesian_mirror.py',
          'observer.py', 'handoff.py', 'so101_leader_kinematics.json']

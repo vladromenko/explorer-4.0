@@ -2,8 +2,8 @@
 import json
 import numpy as np
 import pytest
-from explorer3.sim import state_codec
-from explorer3.sim.branching import run,validate_config
+from explorer4.sim import state_codec
+from explorer4.sim.branching import run,validate_config
 
 
 def config(**kwargs):
@@ -48,8 +48,8 @@ def test_invalid_budgets_and_wrong_model_rejected(tmp_path):
 
 
 def test_stateful_chunked_fixture_replays_and_control_conditions_match(tmp_path):
-    from explorer3.sim.branching import experiment
-    from explorer3.sim.factory import make
+    from explorer4.sim.branching import experiment
+    from explorer4.sim.factory import make
     class QueueFixture:
         metadata={'kind':'test_fixture','learned':False}
         def __init__(self):self.queue=[];self.rng=np.random.default_rng(42);self.calls=0

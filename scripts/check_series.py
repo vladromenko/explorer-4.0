@@ -19,12 +19,12 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3 import catalog  # noqa: E402
-from explorer3.paths import DATA  # noqa: E402
+from explorer4 import catalog  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 
 def lift(root):
-    from explorer3.sim.vendor_rosmaster.arm_model import ArmModel
+    from explorer4.sim.vendor_rosmaster.arm_model import ArmModel
     rows = [json.loads(line) for line in (root / 'research.jsonl').read_text().splitlines() if line.strip()]
     st = np.array([r['observation.state'] for r in rows], float)
     t = np.array([r['observation_timestamp_ns'] for r in rows]) / 1e9

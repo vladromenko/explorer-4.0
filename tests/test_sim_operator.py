@@ -1,5 +1,5 @@
 import pytest
-from explorer3.sim.ownership import OperatorLease
+from explorer4.sim.ownership import OperatorLease
 
 
 def test_stop_and_expiry_require_explicit_reacquisition():
@@ -15,7 +15,7 @@ def test_stop_and_expiry_require_explicit_reacquisition():
 
 def test_mobile_force_response_and_snapshot():
     import numpy as np
-    from explorer3.sim.mobile import MobileDock
+    from explorer4.sim.mobile import MobileDock
     for robot in ('tank','rosmaster'):
         env=MobileDock(robot);before=env.data.qpos.copy()
         target=[.2,.2] if robot=='tank' else [0,.2,0]

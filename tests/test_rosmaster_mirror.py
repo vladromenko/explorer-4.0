@@ -1,7 +1,7 @@
 import asyncio
 import pytest
 import websockets
-from explorer3.rosmaster_mirror import packet, stream
+from explorer4.rosmaster_mirror import packet, stream
 
 class Reader:
     def sample(self):

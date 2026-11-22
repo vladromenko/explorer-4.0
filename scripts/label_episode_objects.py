@@ -15,9 +15,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from explorer3 import catalog  # noqa: E402
-from explorer3.paths import DATA  # noqa: E402
-from explorer3.perception import analyze  # noqa: E402
+from explorer4 import catalog  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
+from explorer4.perception import analyze  # noqa: E402
 
 # Series descriptions/instructions -> single noun SAM3 recognises (tested 20.11).
 NAMES = {'кубик': 'cube', 'cube': 'cube', 'candy': 'candy', 'конфета': 'candy',

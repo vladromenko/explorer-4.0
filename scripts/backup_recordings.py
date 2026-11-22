@@ -3,8 +3,8 @@
 import argparse,json,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from explorer3 import data_safety
-from explorer3.paths import DATA
+from explorer4 import data_safety
+from explorer4.paths import DATA
 
 parser=argparse.ArgumentParser()
 parser.add_argument('action',choices=['backup','verify','restore'])

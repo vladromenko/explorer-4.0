@@ -3,14 +3,14 @@ import asyncio,json,sqlite3,os
 from pathlib import Path
 from playwright.async_api import async_playwright,expect
 
-DATA=Path(os.environ.get('EXPLORER3_CHECK_DATA','/home/jetsonnx/.local/share/explorer3/validation/browser-sim'))
-BASE=os.environ.get('EXPLORER3_CHECK_URL','http://127.0.0.1:8035')
+DATA=Path(os.environ.get('EXPLORER4_CHECK_DATA', os.environ.get('EXPLORER3_CHECK_DATA','/home/jetsonnx/.local/share/explorer3/validation/browser-sim')))
+BASE=os.environ.get('EXPLORER4_CHECK_URL', os.environ.get('EXPLORER3_CHECK_URL','http://127.0.0.1:8035'))
 
 def jobs():
     with sqlite3.connect(DATA/'catalog.sqlite3') as db:return db.execute('select id,status,config from jobs order by id').fetchall()
 
 async def main():
-    root=Path(os.environ.get('EXPLORER3_CHECK_OUTPUT','/home/jetsonnx/.local/share/explorer3/validation/corrective-a/browser-training-draft'));root.mkdir(parents=True,exist_ok=True)
+    root=Path(os.environ.get('EXPLORER4_CHECK_OUTPUT', os.environ.get('EXPLORER3_CHECK_OUTPUT','/home/jetsonnx/.local/share/explorer3/validation/corrective-a/browser-training-draft')));root.mkdir(parents=True,exist_ok=True)
     before=jobs()
     async with async_playwright() as p:
         browser=await p.chromium.launch(headless=True,args=['--no-sandbox'])

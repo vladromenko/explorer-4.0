@@ -5,7 +5,7 @@ import threading
 import numpy as np
 import pytest
 
-from explorer3 import fleet_map, sim2d, so101_station, swarm_sim, world_memory
+from explorer4 import fleet_map, sim2d, so101_station, swarm_sim, world_memory
 from scripts import knowledge_gap_experiment as experiment
 
 

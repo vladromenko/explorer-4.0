@@ -1,6 +1,6 @@
 """ROSMASTER response identification recovers known parameters from fixture recordings and refuses synthetic data as real."""
 import pytest
-from explorer3.sim import rosmaster_sysid as sysid
+from explorer4.sim import rosmaster_sysid as sysid
 
 BASE = [{'delay_s': .08, 'tau_s': .15, 'gain': .8}, {'delay_s': .08, 'tau_s': .15, 'gain': .8}, {'delay_s': .1, 'tau_s': .25, 'gain': .9}]
 ARM = [{'delay_s': .06, 'tau_s': .1, 'vmax_deg_s': 90.}] * 5

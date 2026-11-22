@@ -8,9 +8,9 @@ import json
 import math
 from pathlib import Path
 
-from explorer3.simlab.artifact import Policy
-from explorer3.simlab.dock_mujoco import evaluate
-from explorer3.simlab.scenario import load_scenario
+from explorer4.simlab.artifact import Policy
+from explorer4.simlab.dock_mujoco import evaluate
+from explorer4.simlab.scenario import load_scenario
 
 
 def wilson(k, n, z=1.96):

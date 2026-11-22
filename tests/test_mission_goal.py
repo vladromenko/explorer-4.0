@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from explorer3 import mission_goal, swarm_sim, world_memory
+from explorer4 import mission_goal, swarm_sim, world_memory
 from test_swarm import isolated, make, wait, Arm
 
 
@@ -66,7 +66,7 @@ def test_real_zone_blocks_before_motion_and_pending_skill_remembers_goal(isolate
     team.command('принеси кубик')
     wait(team)
     assert team.state['stage'] == 'awaiting_skill'
-    from explorer3.cognitive import store
+    from explorer4.cognitive import store
     goal = store.mission(team.agents.mission)['terminal_goal']
     assert goal['kind'] == 'floor_zone' and goal['center_xy_m'] is None
 

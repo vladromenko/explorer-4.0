@@ -1,43 +1,43 @@
-# Tank: сбор причины повторного писка
+# Tank: collection of the reason for the re-pick
 
-Актуально 14 ноября 2026. MentorPi T1 Advanced, собственный Raspberry Pi 5 Model B Rev1.1. Движение и обучение не запускались.
+On November 14, 2026, MentorPi T1 Advanced, Raspberry Pi 5 Model B Rev.1 No movement or training was launched.
 
-## Что наблюдалось
+## What I saw
 
-При кратком включении Wi-Fi/SSH появились на raspberrypi.local / 192.168.0.136. Pi сообщил throttled=0x0; это состояние питания Pi, не измерение батареи моторной платы. /dev/ttyACM0 присутствовал, штатный контейнер MentorPi и start_node.service работали. В ROS были battery и set_buzzer. Измерение напряжения получить до физического выключения не удалось; причина писка не подтверждена. USB-инцидент предыдущей сессии остаётся открытым.
+When the Wi-Fi /SSH was briefly activated, it appeared on the rapberrypi.local / 192.168.036. Pi reported throttled=0x0; this is the state of power supply Pi, not measuring the motor battery. /dev/ttyACM0 was present, the regular MentorPi and start_node.service were working. The ROS had a battery and set_buzzer. The voltage measurement could not be obtained before physical shut-down; the reason for the bead was not confirmed. The USB incident of the previous session remained open.
 
-Штатный startup_check.py публикует один сигнал1900Гц/0.2с/repeat1 через5с и завершает ROS. Это не объясняет бесконечный повтор без проверки повторного запуска процесса или самостоятельной тревоги MCU. Ранее скопированный фактический send_machine_type задаёт6.9В (0x1af4). Общий комментарий SDK «11V (Tank)» противоречит исполняемому коду и не является основанием менять порог.
+The state-owned startup_check.py publishes one signal 1900Hz /0.2 with /repeat1 after 5c and completes ROS. This does not explain the endless repetition without checking the re-start of the process or the MCU self-alert. Previously copied actual send_machine_type sets 6.9B (0x1af4). The general comment SDK "11V (Tank)" contradicts the code and does not justify changing the threshold.
 
-## Автоматический сбор следующего включения
+## Automatic collection of next activation
 
-На Homebrain запущена временная пользовательская служба `explorer3-tank-startup-probe.service`: ждёт SSH, затем выполняет три окна наблюдения и завершает работу. Работает до следующего подключения, пока Homebrain не перезагружен; после завершения/перезагрузки запускается явно заново. Повторный запуск одновременно с активной службой не нужен.
+Homebrain is running a temporary user service `explorer3-tank-startup-probe.service`: waits for SSH, then completes three observation windows. It works until the next connection until Homebrain is rebooted; after completion/rebooting, it is clearly restarted. Restarting with active service is not necessary.
 
-Команда запуска: `systemd-run --user --unit=explorer3-tank-startup-probe --property=Restart=no --property=UMask=0077 /home/jetsonnx/Projects/explorer-4.0/.venv/bin/python /home/jetsonnx/Projects/explorer-4.0/scripts/watch_tank_startup.py`.
+Launch command: `systemd-run --user --unit=explorer3-tank-startup-probe --property=Restart=no --property=UMask=0077 /home/jetsonnx/Projects/explorer-4.0/.venv/bin/python /home/jetsonnx/Projects/explorer-4.0/scripts/watch_tank_startup.py`.
 
-Скрипт `agents/tank/startup_probe.py` передаётся по SSH в память, не устанавливается как служба. После подключения запускается отдельный процесс с пределом120с; разрывSSH его не прерывает. Единственная запись наTank — диагностический журнал в `/home/pi/.local/state/explorer3/diagnostics/` (0600), который можно прочитать после восстановления связи. Homebrain повторяет чтение до180с; повторный запуск использует сохранённый путь и не дублирует сборщик. Только чтение: модель/память/boot-id, питание Pi, ядро/USB, владельцы serial, штатные службы и контейнеры, хеши/пороги установленного SDK, подписки на battery и set_buzzer. Публикаторов ROS, открытия serial, остановки служб, настройки сети и команд моторам/зуммеру нет. Неполученное напряжение сохраняется как unavailable, никогда как здоровая батарея. Части данных до появления SSH недоступны.
+Script `agents/tank/startup_probe.py` The SSH is stored, not installed as a service. Once connected, a separate process with a limit of 120 seconds is started; the breakage of the SSCH does not interrupt it. The only record on Tank is the diagnostic log in the system. `/home/pi/.local/state/explorer3/diagnostics/` (0600) which can be read after re-established. Homebrain repeats reading to 180c; re-launch uses a saved path and does not duplicate the collector. Only reading: model/memorial/boot-id, powering Pi, core/USB, the owners of the serial, the regular services and containers, the heshes/thresholds of the installed SDK, subscriptions to the battery and set_buzzer. The users of the ROS, the opening of the serial, service stops, network settings and engine/toummer commands are not available. The unrecoverable voltage remains unavailable, never as a healthy battery. Parts of the data are not available until SSH is available.
 
-Результаты: `/home/jetsonnx/.local/share/explorer3/validation/corrective-c/startup-watcher.json` и подпапка `startup-<boot-id>/`. Сборщик сам не сообщает в чат: при следующем сообщении пользователя прочитать эти файлы. Признак captured означает полученные измерения, не устранённую причину. Если voltage отсутствует, нельзя снижать порог или делать вывод о заряде.
+Results: `/home/jetsonnx/.local/share/explorer3/validation/corrective-c/startup-watcher.json` and `startup-<boot-id>/` sub-post. The collector does not himself read: at the next user message read these files. The sign of Captured means the measured non-removed cause. If voltage is missing, you cannot lower the threshold or draw a charge.
 
-При низком измеренном напряжении сначала устраняется причина питания. При нормальном напряжении сравниваются реальные пороги платы/ветка SDK и ROS-команды зуммера, проверяется повторный запуск startup_check. Отсутствие ROS-команд не доказывает отсутствие тревоги на MCU. Блокировка движения после USB-инцидента не снимается сборщиком.
+The reason for the power is first removed at low measured voltage. At normal voltage, the real SDK/winds and the ROS Zummer command are compared, and the re-start of the startup_check is checked. The absence of ROS teams does not prove no alarm on MCU. The movement block after the USB-incident is not removed by the assembler.
 
-## Инструкции
+## Instructions
 
-Сохранены все14глав и Appendix из актуального меню английской [инструкции MentorPi T1](https://wiki.hiwonder.com/projects/MentorPi-T1/en/latest/docs/resources_download.html): HTML и текст в `~/.local/share/explorer3/cache/references/mentorpi-t1-complete/`, URL/хеши в `docs/tank-reference-manifest.json`. Нет пропущенных страниц текущего меню. Одна устаревшая перекрёстная ссылка11-.machine_learning.html возвращает404; действующая глава10.machine_learning.html сохранена. Внешние изображения/видео/Drive-архивы остаются ссылками; источники документации не выполнялись.
+All 14 chapters and Appendix from the current English menu are saved.](https://wiki.hiwonder.com/projects/MentorPi-T1/en/latest/docs/resources_download.html): TML and text in `~/.local/share/explorer3/cache/references/mentorpi-t1-complete/`, URL/Hesh in `docs/tank-reference-manifest.json`No missing pages on the current menu. One outdated cross-reference11-.machine_learning.html returns 404; the existing chapter 10.machine_learning.html is retained./Drive-archives remain referenced; the sources of documentation were not maintained.
 
-[Официальное руководство](https://wiki.hiwonder.com/projects/MentorPi-T1/en/latest/docs/1.getting_ready.html) описывает одиночный сигнал запуска, зарядку при выключенном устройстве штатным зарядником и зелёный индикатор по завершении зарядки. Оно не устанавливает, что любой повторный писк — обязательно разряд. Полный образ/исходники производитель предлагает получить через поддержку с номером заказа; письмо не отправлялось, прошивка не менялась.
-
-
-## Последнее включение после зелёного индикатора зарядки
-
-Boot73e0ba5f-1253-48df-bc70-0cd3a9076071: первая запись получена при uptime13.72с; USB1a86:55d4 присутствует, Pi throttled=0x0, MentorPi только2с как запущен. Во время раннего снимка serial ещё без владельца. SSH оборвался до результата подписки наbattery. Через~2мин кратко удалось снова прочитатьboot-id, затем подключения снова завершались timeout. Ни напряжение батареи, ни источник повторного писка не измерены. Отсутствие владельца на14-й секунде не доказывает постоянный отказ драйвера.
-
-Прежний сборщик зависел отSSH; исправлен на отделённый отSSH процесс с сохранением журнала наTank.7локальных тестов прошли, включая реальный запуск отдельного тестового процесса, сохранение результата после завершения запускающей команды и запрет повторного запуска с тем же файлом. Исправление ещё не проверено на включённомTank. `collection_incomplete` явно отличает обрыв сбора от полного наблюдения без напряжения. При следующем включении нужно проверить runtime-статус службы; не обещать устранение писка до получения измерений.
+[The official](https://wiki.hiwonder.com/projects/MentorPi-T1/en/latest/docs/1.getting_ready.html) manual describes a single start signal, a charger with a powered charger and a green indicator after the charge is over. It does not establish that any re-weep is mandatory. The full image/source manufacturer offers support with the order number; the letter was not sent, the embroidery was not changed.
 
 
-## Получены измерения после исправления зарядного провода
+## Last activation after green charge indicator
 
-Оператор сообщил неисправный проводзарядки, отсутствиеписка после исправления и затем выключилTank длязарядки. Наbootd8cb8a25-2653-4e01-a5aa-585d57f71118 получено7.001–7.015В за10с, затем7.012–7.031В за15с. Это измерения приподключённомзаряднике; процентызаряда/напряжениеподдвижением не выводятся.
+Boot73e0ba5f-1253-48df-bc70-0cd3a9076071: The first entry is received at uptime13.72c; USB1a86:55d4 is present, Pi throttled=0x0, MentorPi only2 is run. During the early picture of the serial is still unoccupied. SSH has been torn to the end of the subscription. Through ~2 the mines were able to read the BOOT-id again, then the connections were completed again timeout. Neither battery voltage nor the source of the re-pick is measured. The absence of the owner for the 14th second does not prove the constant failure of the driver.
 
-Найдены двеошибки сбора: каталог `/home/pi/explorer3` принадлежитroot (новый путь — собственный `.local/state/explorer3` пользователяpi); ROS-подписчик отroot виделпубликатора, но не получалданные. Тот же подписчик отubuntu получилбатарею/IMU/камеру. Вызовисправлен на `docker exec -u ubuntu` без измененияштатногоROS. Старыйcaptured_without_voltage остаётсяисторией; исправленный результат — `validation/corrective-c/power-correct-user.jsonl` и `factory-telemetry.json`.
+The previous assembler was dependent on SSH; the process was corrected for a separate from SSCH with the log on Tank 7loc test, including a real start-up of a separate test process, a retention of the result after the start-up command and a prohibition of re-starting with the same file. The correction has not yet been checked on the checked. The `collection_incomplete` clearly distinguishes the collection break from full observation without voltage. When the next application is checked, the ringtime status of the service should be checked; the clearance of the pen is not promised until measurements are made.
 
-`agents/tank/telemetry_probe.py` — ограниченный15с subscriber-onlyснимок камеры, intrinsics, IMU, батареи и лидара. Колёсная скорость не подставляется командой; odomинтеграл исключён. При выключенииTank оператором новыхпроб не выполнять; следующийstartupcollector ожидаетновойзагрузки.
+
+## Measured after correction of charge wire
+
+The operator reported a malfunctioning charge, a non-notice after correction and then turned off Tank for charging.
+
+The collection was found to be double-twinkled: the `/home/pi/explorer3` catalogue belongs to the zoot (new route: the user's own `.local/state/explorer3`); the ROS subscriber from the viewer but has not received the data. The same subscriber received the subuntu battery /IMU/ camera. The call was made to `docker exec -u ubuntu` without a change of name. ROS. Oldcaptured_without_voltage remains a story; the corrected result is `validation/corrective-c/power-correct-user.jsonl` and `factory-telemetry.json`.
+
+`agents/tank/telemetry_probe.py` is a limited 15c subscriber-only image of the camera, internistics, IMU, batteries and lidar. Wheel speed is not being matched by the command; odomintegrated is excluded. When the operator turns off the tank, the next one is not going to perform the new test; the next one is waiting to be rebogged.

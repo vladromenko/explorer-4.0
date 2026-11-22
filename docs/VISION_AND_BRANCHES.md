@@ -1,44 +1,44 @@
-# Зрение и сравнение решений на Homebrain
+# Homebrain vision and comparison of solutions
 
-## Анализ изображения без обучения
+## Image analysis without training
 
-`/sim/vision`: кадр отдельной/общей сцены либо загруженное изображение → текстовое описание → YOLOE или SAM 3 → маска/рамки/отчёт. Вычисление идёт через общую очередь, SAM 3 ждёт GPU. Источник и результат сохраняются; никаких моторных команд и автоматического добавления масок в обучение.
+`/sim/vision`: The frame of a single/total scene or a loaded image \\\\\YOLOE or SAM 3 \\ mask/frame/account. The calculation is going through a total line, SAM 3 awaits GPU. The source and result is saved; no engine commands and automatic addition of masks to the learning.
 
-- YOLOE-26s-seg: Ultralytics 8.4.14, MobileCLIP2. Установленные веса официального assets release v8.4.0; CLIP fork revision указан в `configs/vision-assets.json`. [Документация YOLOE](https://docs.ultralytics.com/models/yoloe/).
-- SAM 3: официальный `facebook/sam3`, revision `3c879f39826c281e95690f02c7821c4de09afae7`, локальный Transformers 5.5.4. [Официальная интеграция](https://huggingface.co/docs/transformers/model_doc/sam3), [репозиторий и лицензия](https://github.com/facebookresearch/sam3).
-- Каждый использованный файл сверяется по SHA-256 перед анализом. Сеть при inference не нужна. В Git только manifest и код, не веса. `python -m scripts.cache_vision yoloe|sam3` проверяет кэш; `--download` явно заполняет его. SAM требует разрешённого upstream доступа и соблюдения его лицензии; автоматического обхода доступа нет.
-- Браузерная проверка на одном сохранённом wrist-кадре: YOLOE пропустил orange cube (0); SAM 3 выделил 1. Это результат конкретного кадра, не accuracy benchmark. SAM на GPU около 1.76 с после загрузки, YOLOE CPU около 0.68 с; загрузка отдельно около 12.56/3.06 с в этом прогоне. Не считать это частотой готового управляющего цикла.
+- YOLOE-26s-seg: Ultralytics 8.4.14, MobileCLIP2. Established weights for official accessories releasing v8.4.0; CLP fork revision is specified in `configs/vision-assets.json`. [Documentation YOLOE](https://docs.ultralytics.com/models/yoloe/).
+- SAM 3: Official `facebook/sam3`, revision `3c879f39826c281e95690f02c7821c4de09afae7`, local Transformers 5.5.4. [Official integration](https://huggingface.co/docs/transformers/model_doc/sam3), [Repository and license](https://github.com/facebookresearch/sam3).
+- Each file used checks on SHA-256 before analysis. The network is not needed for inference. In Git only manifest and code, not weight. `python -m scripts.cache_vision yoloe|sam3` checks cache; `--download` clearly fills it. SAM requires permission to access and comply with its license; there is no automatic bypass.
+- The browser check on one wrist frame: YOLOE missed the Orange cube (0); SAM 3 selected 1. This is a result of a particular frame, not accuracy benchmark. SAM on GPU about 1.76 s after loading, YOLOE CPU about 0.68 s; loading about 12.56 /3.06 separately with this run. Not to consider this as a frequency of the complete control cycle.
 
-## Сопоставимые ветви R5
+## Comparable branches R5
 
-`/sim/branches`: выбрать Tank/SO-101, диагностическое удержание или существующий checkpoint совместимой модели; задать warmup, задержку, бюджет исправления и общий горизонт → сравнить → открыть сохранённый отчёт. Обучение не запускается.
+`/sim/branches`: Select Tank /SO-101, diagnostic retention or existing kheckpoint compatible model; set the warmup, delay, budget correction and overall horizon: compare: open the saved report. The training is not started.
 
-Это `R5_protocol_adaptation_v1` по разделу 7 корректирующего задания. Не воспроизведение авторского кода RESCUE/Kintsugi-VLA. Основные условия:
+This is `R5_protocol_adaptation_v1` on Section 7 of the correction assignment. Do not reproduce the RESCUE /Kintsugi-VLA. Author code.
 
-1. Снимок содержит штатный MuJoCo INTEGRATION state, параметры рандомизации, task state, задержку/фильтр контроллера, sensor queue, RNG и внешнее состояние frozen policy. У политики — checkpoint fingerprint, очереди наблюдений/действий, temporal ensemble при наличии, Torch/CUDA RNG. Нормировка фиксирована файлами checkpoint. Сериализация типизированная JSON, без pickle.
-2. Перед КАЖДОЙ ветвью снимок читается с диска и восстанавливается. Его повторный полный хеш должен совпасть. Затем сравниваются продолжение, ожидание без помощи и такое же ожидание + ограниченный геометрический эксперт.
-3. Контроль ожидания держит позицию весь интервал задержки и коррекции. Оба intervention-варианта сбрасывают policy queues на одной границе delay+correction; продолжение сохраняет исходную очередь.
-4. Каждая ветвь повторяется дважды. Трассы action/qpos/qvel и исход должны воспроизводиться с абсолютной погрешностью ≤1e-9. Все повторы/ветви имеют одну lineage/session/split group. Это одна независимая точка, не шесть независимых наблюдений.
-5. Inference останавливает симуляционные часы одинаково во всех ветвях; его wall time записан отдельно. Лимит помощи — simulation seconds, реальная стоимость человека неизвестна. При достижении общего горизонта незавершённая задача — censored; её не превращают в failure и не вычисляют разность бинарных успехов через неё.
-6. Эксперт имеет simulator truth. Его успех не оценивает пользу человека. Бюджет руки может быть недостаточен для завершения её полной траектории; это честный исход, не повод продлить помощь незаметно.
+1. The image contains the regular MuJoCo INTEGRATION state, the redomization parameters, the task state, the controller's delay/filtration, sensor que, RNG and external frozen policy. The policy has checkpoint fingerprint, observation/action sequences, time line if available, Torch /CUDA RNG. The regulation is fixed by the sheckpoint files. The serialization is typed by JSON, without a piccle.
+2. Before every branch, the images are read from the disk and recovered. Its full hash must be repeated. Then a comparison is made between the continuation, waiting without help and waiting for the same + limited geometric expert.
+3. The waiting control holds the position at the entire delay and correction interval. Both intervenation options drop policy quoes at one line of delay+control; the continuation retains the initial line.
+4. Each branch is repeated twice. The /qpos/qvel and the output must be reproduced with absolute error ≤ 1e-9. All retorts/tweets have one lineage /session/split group. This is one independent point, not six independent observations.
+5. Inference stops simulation clocks in all branches in the same way; its wall time is recorded separately. Aid constraints are simulation seconds, the real cost of the human being is unknown. When reaching the common horizon, the unfinished task is encapsulated; it is not turned into a reale or calculated the difference in the binary success through it.
+6. The expert has a simulator truth. His success does not value the benefit of a person. The hand budget may not be sufficient to complete her full trajectory; this is an honest outcome, not an excuse to extend the assistance without being noticed.
 
-Проверено на native Tank: одно состояние, 6 ветвей, exact replay PASS. При диагностическом удержании две ветви не завершились за 15 с; 5 с коррекции с задержкой 0.5 с привели к успеху за 6.4 с. Политика в этом опыте не обученная. Отдельный тест проверяет восстановление стохастической очереди действий, не только неподвижный контроллер.
+Tested for nytive Tank: one state, six branches, exact replay PASS. When the two branches were diagnosed, the two branches did not complete in 15 s; 5 with a delay of 0.5 c resulted in success in 6.4 s. The policy in this experience was untrained. A separate test checks the re-establishment of the stochastic line of action, not just a fixed controller.
 
-Для существующего ACT/SmolVLA/Diffusion предусмотрен настоящий PolicyClient, но обученных на новой физике checkpoint сейчас нет. Старые версии отклоняются; механическая приёмка не выдаётся за результат learned-policy эксперимента. Общий многороботный scheduler/R3 ещё не включён в этот индивидуальный протокол.
+For the existing ACT /SmolVLA/Diffusion, there is a real PolicyClient, but no new physicist chesspoint is available. Old versions are not being used; mechanical acceptance is not given for the result of a lightned-policy experiment. The overall multi-bot scheduler /R3 is not yet included in this individual protocol.
 
-## Проверенное исправление → официальный датасет
+## Checked correction
 
-Только ограниченный сегмент correction сохраняется отдельно: без ожидания и действий политики. Если итог ветви успешен, UI показывает начало/середину/конец и требует явной отметки просмотра. После неё исходные файлы и lineage сверяются, сегмент записывается штатным LeRobot writer, проверяется official readback. Это category=correction, domain=sim, source=scripted_expert, не human. Неудачный/censored сегмент не допускается этим маршрутом. Повторное сохранение идемпотентно.
+Only a limited segment of control is kept separate: without waiting and acting policy. If the result of the branch is successful, UI shows the beginning/mid/end and requires a clear view. After this, the source files and lineage are checked, the segment is recorded by the regular LeRobot writer, checked by the official readback. This is the source=control, domain=sim, source=scripted_ext, not human./censored segment not allowed by this route. Re-maintainment is impotent.
 
-Браузерная приёмка в отдельном DATA: 100 кадров при 20 Hz, readback PASS, episode `84ceebb30d5b48e38c4d1a4c2074ec2c`. Это программная проверка вне основного каталога данных; обучение не выполнялось.
+Browser intake in a separate DATA: 100 frames at 20 Hz, readback PASS, episode `84ceebb30d5b48e38c4d1a4c2074ec2c`. This is a software test outside the main data catalogue; the training was not performed.
 
-## Diffusion без оптимизации
+## Diffusion without optimization
 
-Установлен официальный diffusers 0.38.0, соответствующий dependency range LeRobot 0.6.1. `python -m scripts.check_diffusion_inference` создаёт уменьшенный upstream Diffusion со случайными весами, сохраняет модель и preprocessors, загружает в отдельном процессе, восстанавливает очереди/RNG и повторяет 10 действий через границу генерации нового chunk. PASS, CPU cold action около 0.123 с. Ни backward, ни optimizer нет. Это проверка контракта, не качества/скорости полного рецепта; fixture не зарегистрирован как обученная модель.
+The official diffuses 0.38.0 corresponding to the dependency ring LeRobot 0.6.1. `python -m scripts.check_diffusion_inference` Creates reduced upstream Diffusion with random weights, stores model and preprocessors, downloads in a separate process, restores turns/RNG And repeats 10 actions across the new chunk. PASS, CPU Cold Action about 0.123 s. No backward or optimizer. This is a test of a contract, not the quality/speed of a full recipe; the facts are not registered as a trained model.
 
-## Воспроизведение проверок
+## Reproduction of checks
 
-- `.venv-sim/bin/python -m pytest -q tests/test_sim_branching.py tests/test_branch_corrections.py` с `OPENBLAS_NUM_THREADS=1 MUJOCO_GL=egl`: 5 PASS.
+- `.venv-sim/bin/python -m pytest -q tests/test_sim_branching.py tests/test_branch_corrections.py` with `OPENBLAS_NUM_THREADS=1 MUJOCO_GL=egl`: 5 PASS.
 - `.venv/bin/python -m pytest -q tests/test_policy_recipes.py tests/test_sim_dataset_revision.py tests/test_branch_corrections.py tests/test_local_workflows.py tests/test_contracts.py`: 12 PASS.
-- `scripts/check_vision_browser.py`, `scripts/check_branches_browser.py`: изолированный UI 8035, настоящий Chromium; внешних запросов и ошибок страницы нет.
-- Оба окружения: `pip check` PASS. Все тесты этой доработки без подключения физических роботов и без обучения.
+- `scripts/check_vision_browser.py`, `scripts/check_branches_browser.py`: isolated UI 8035, real Chromium; external queries and errors no page.
+- Both environments are `pip check` PASS. All tests of this re-engineering without the physical robots and without training.

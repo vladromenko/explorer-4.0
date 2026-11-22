@@ -4,7 +4,7 @@ import json
 import time
 import numpy as np
 from agents.tank.sensors import SensorStore
-from explorer3.sensors import SensorFeed,decode_packet
+from explorer4.sensors import SensorFeed,decode_packet
 
 
 class FixtureFeed(SensorFeed):
@@ -34,7 +34,7 @@ if __name__=='__main__':
     import uvicorn
     from fastapi import FastAPI,Request
     from fastapi.responses import Response
-    cfg=json.loads((Path(os.environ['EXPLORER3_DATA'])/'configs/rosmaster-agent.json').read_text())
+    cfg=json.loads((Path(os.environ['EXPLORER4_DATA' if 'EXPLORER4_DATA' in os.environ else 'EXPLORER3_DATA'])/'configs/rosmaster-agent.json').read_text())
     feed=FixtureFeed(retain_history=True);feed.start();app=FastAPI()
     @app.get('/snapshot.npz')
     def snapshot(request:Request):

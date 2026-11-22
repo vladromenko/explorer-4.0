@@ -14,9 +14,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from explorer3 import training_drafts  # noqa: E402
-from explorer3.jobs import Jobs  # noqa: E402
-from explorer3.paths import DATA  # noqa: E402
+from explorer4 import training_drafts  # noqa: E402
+from explorer4.jobs import Jobs  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 V4 = DATA / 'runs/knowledge-policy-v3-20261116/full-v4-lookpose'
 OUT = Path(os.environ.get('ACT_OUT', str(V4.parent / 'act-v4')))

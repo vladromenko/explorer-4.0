@@ -3,9 +3,9 @@ import time
 
 import pytest
 
-from explorer3 import catalog, knowledge, world_memory
-from explorer3.cognitive import registry, store
-from explorer3.cognitive.gap_advisor import validate as validate_advice
+from explorer4 import catalog, knowledge, world_memory
+from explorer4.cognitive import registry, store
+from explorer4.cognitive.gap_advisor import validate as validate_advice
 
 
 @pytest.fixture
@@ -47,7 +47,7 @@ def test_llm_cannot_remove_a_required_gap_or_invent_a_helper():
 
 
 def test_verified_skill_is_pinned_reused_and_rejects_changed_conditions(isolated, monkeypatch):
-    from explorer3 import training_drafts
+    from explorer4 import training_drafts
     monkeypatch.setattr(training_drafts, 'checkpoint_hash', lambda path: 'a' * 64)
     monkeypatch.setattr(knowledge, 'load_packet', lambda sha: {'fixture': True})
     config = {'donor_packet_shas': ['b' * 64]}
@@ -88,7 +88,7 @@ def test_verified_skill_is_pinned_reused_and_rejects_changed_conditions(isolated
 
 
 def test_pending_acquisition_survives_restart_and_is_not_duplicate_training(isolated):
-    from explorer3.cognitive.broker import prepare_acquisition, acquisition_requests, cancel_acquisition
+    from explorer4.cognitive.broker import prepare_acquisition, acquisition_requests, cancel_acquisition
     assessed = knowledge.assess('rosmaster', 'cube')
     first = prepare_acquisition('mission-1', 'принеси кубик', 'rosmaster', 'cube', assessed, domain='real')
     second = prepare_acquisition('mission-2', 'принеси кубик', 'rosmaster', 'cube', assessed, domain='real',
@@ -107,7 +107,7 @@ def test_pending_acquisition_survives_restart_and_is_not_duplicate_training(isol
 
 
 def test_infeasibility_cannot_be_overridden_by_a_stored_skill(isolated):
-    from explorer3.cognitive.broker import prepare_acquisition
+    from explorer4.cognitive.broker import prepare_acquisition
     assessed = {'registered_skill': {'state': 'available', 'skill_id': 'fixture'},
                 'readiness': {'physically_infeasible': True},
                 'reasons': {'physically_infeasible': 'Новая сцена недостижима'}}
@@ -116,9 +116,9 @@ def test_infeasibility_cannot_be_overridden_by_a_stored_skill(isolated):
 
 
 def test_transfer_draft_uses_existing_queue_and_cancel_blocks_late_start(isolated, monkeypatch):
-    from explorer3 import datasets, training_drafts
-    from explorer3.jobs import Jobs
-    from explorer3.cognitive import broker
+    from explorer4 import datasets, training_drafts
+    from explorer4.jobs import Jobs
+    from explorer4.cognitive import broker
     from test_skill_packets import packet_fixture
     packet = packet_fixture()
     packet['donor']['usage']['allowed'].append('training')

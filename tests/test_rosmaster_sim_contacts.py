@@ -1,7 +1,7 @@
 """Actual original geometry: contacts measured at every physics substep."""
 import pytest
-from explorer3.sim.factory import make,EXPERTS
-from explorer3.sim.contact_audit import ContactAudit
+from explorer4.sim.factory import make,EXPERTS
+from explorer4.sim.contact_audit import ContactAudit
 
 
 @pytest.mark.parametrize('profile',['so101_pick_place_sim','rosmaster_pick_place_sim'])

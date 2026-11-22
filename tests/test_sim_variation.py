@@ -1,6 +1,6 @@
 import numpy as np
-from explorer3.sim.factory import make,EXPERTS
-from explorer3.sim.contact_audit import ContactAudit
+from explorer4.sim.factory import make,EXPERTS
+from explorer4.sim.contact_audit import ContactAudit
 
 
 def test_variations_repeat_and_restore_model_parameters_and_physics():

@@ -1,53 +1,53 @@
-# Explorer 4.0 — состояние на 16 ноября 2026
+# Explorer 4.0 (born 16 November 2026)
 
-Работа выполняется на Homebrain. Текущий рабочий код и завершённые результаты объединены с main; интерфейс :8030 обновлён до 01b3ada. Дальнейшие небольшие изменения публикуются из codex/complete-research-20261116. Предыдущая хронология доступна в Git. Конкретные следующие действия: [TODO_NEXT_RU.md](docs/TODO_NEXT_RU.md).
+The work is done on Homebrain. The current work code and the completed results are combined with Main; the interface:8030 is updated to 01b3ada. Further minor changes are published from the codex /complete-research-20261116. Previous timeline is available in Git. Specific actions are: [TODO_NEXT.md](docs/TODO_NEXT.md).
 
-## Что подтверждено
+## Confirmed
 
-| Результат | Доказательство и предел |
+| Result| Evidence and limit|
 |---|---|
-| K0–K4 завершены, 50 прогонов | 3/10, 2/10, 9/10, 10/10, 8/10; [summary](docs/results/knowledge_gap_sim/20261116-v2/summary.json). 2D-модель восприятия и захвата, не роботы и не обученная моторная политика |
-| K4 с Qwen | Один тайм-аут, одна неудача, технических ошибок/подмены советчика нет. Преимущества перед правилами K3 на этих десяти комнатах не показано |
-| MuJoCo K, геометрия v2 | 60 парных сцен × 3 условия: полная информация 44/60, без размера 34/60, размер помощника 35/60. [Результаты](docs/results/knowledge_transfer_mujoco_v2/summary.json). 80% по всем шести формам не достигнуты |
-| Парные обучающие данные K v3 | Размер меняется внутри класса ±20%; один физический rollout даёт две записи с одинаковыми кадрами/действиями и разным текстом. Первая фактическая пара seed 50000: 217 кадров, обе readback PASS; [артефакт](docs/results/knowledge_paired_v3_preflight_20261116.json) |
-| Прототип переноса SO-101 → ROSMASTER | Объектно-относительные фазы, собственная IK/суставы ROSMASTER, независимый MuJoCo-проверяющий. Источник пока симуляционный. Разработочный seed 42000 прошёл; новый 42002 отвергнут по слежению. [Все попытки](docs/results/skill_transfer_preflight_20261116/summary.json) |
-| Реальные источники SO-101 | Из пяти старых записей три успешные полные задачи, ноль пригодных пакетов. [Аудит](docs/results/so101_donor_audit_20261116.json). Нет необходимых синхронных поз, метрических губок и подтверждённой геометрии |
-| Реально обученный перенос | Пока не выполнен. Нет принятого реального SkillPacket, новой политики T или физической приёмки |
+| K0-K4 complete, 50 runs| 3 /10, 2 /10, 9 /10, 10 /10, 8 /10; [summary](docs/results/knowledge_gap_sim/20261116-v2/summary.json). 2D perception and capture model, not robots and untrained motor policy|
+| K4 with Qwen| One time out, one failure, no technical errors/swimming of the counselor. The advantages of K3 rules are not shown on these ten rooms.|
+| MuJoCo K, geometry v2| 60 pair scenes x 3 conditions: complete information 44 /60, without size 34 /60, size of assistant 35 /60. [](docs/results/knowledge_transfer_mujoco_v2/summary.json) results. 80% not achieved for all six forms|
+| Summarized learning data K v3| Size changes within class ± 20%; one physical rollout gives two records with the same personnel/acts and different text. First actual pair seed 50000: 217 frames, both readback PASS; [article](docs/results/knowledge_paired_v3_preflight_20261116.json)|
+| Prototype of transport SO-101 ♪ ROSMASTER| The object-related phases, the IK/ROSMASTER, the independent MuJoCo-checker, are still simulational. Development phase 42000 has passed; the new 4.0 is rejected by surveillance. [All attempts](docs/results/skill_transfer_preflight_20261116/summary.json) are ongoing.]|
+| Real SO-101 sources| Of the five old records, three successful complete tasks, zero suitable packages. [Audit]](docs/results/so101_donor_audit_20261116.json)No synchronous positions, metric sponges and confirmed geometry required |
+| Real-trained transport| No actual SkillPacket, new T policy or physical adoption|
 
-Полные K-результаты опубликованы коммитами 7306ea5 и a36b991. Неудачи и тайм-ауты сохранены; настройки этих законченных сравнений не менялись.
+The complete K-outputs are published by the 7306ea5 and a36b991. The failures and time-out are maintained; the settings of these completed comparisons have not changed.
 
-## Что реализовано
+## What's been realized
 
-- SkillPacket хранит источник, хеши, разрешённое использование, метрические позы/губки, погрешности и четыре фазы с фиксированными опорами. Пакет не становится навыком получателя автоматически.
-- Существующий cognitive.registry принимает только точные веса ROSMASTER, область размеров/камеры/калибровки и минимум три независимые успешные сцены без онлайн-донора и геометрической подмены. Реальная регистрация дополнительно требует реального источника и действующего deploy_gate.
-- Существующие FleetAgents, cognitive_missions/requests, knowledge, Jobs и training_drafts связаны: ожидание примера → выбор пакета → сохранение всех попыток → данные → бюджет → обучение → проверка → ожидание испытания → принятие. Второй диспетчер/тренер не создан.
-- Обновление сцены или конечной зоны не создаёт повторное обучение того же навыка. Цель хранится у конкретной миссии. Окончание обучения и перезапуск не запускают движение.
-- Новая миссия завершается в отдельном квадрате 40×40 см на полу; SO-101 остаётся учителем. В 2D проверяется отпускание и нахождение всего предмета внутри зоны. Реальные координаты/выкладка/наблюдатель ещё не допущены. Простой подъём не считается доставкой.
-- Геометрический baseline выбирается явно. 2D-комната отказывает при выборе обученной политики; она не заменяет её своим геометрическим захватом.
-- Ручная запись SO-101 умеет по отдельной настройке сохранять верхнюю C920, измеренные суставы, исходные кадры, времена и кинематический фиксированный кончик. Это ещё не откалиброванный контактный TCP.
-- Сборщик реального пакета проверяет оригинал записи, кадры, контрольную геометрию, метрическую кривую губок, задержку камеры, фазы и непрерывный видимый подъём ≥5 см/удержание ≥1 с. Неизвестные погрешности не подменяются нулём.
-- Минимальные статические начала суставов SO-101 перенесены из so101ik 3456805b под Apache-2.0 с лицензией/NOTICE. Старый backend не вызывается. Адаптер MimicGen-adapted реализован самостоятельно; код NVlabs не скопирован.
+- SkillPacket stores the source, hash, authorized use, metric positions/coppers, errors, and four phases with fixed supports. The package does not automatically become the recipient's skill.
+- The current cognitive.registry only takes precise weights ROSMASTER, size/cams/calibration area and at least three independent success scenes without an online donor and geometric replacement. Actual registration further requires a real source and active deploy_gate.
+- The existing FleetAgents, cognative_missions /requests, knowledge, Jobs and training_drafts are related: waiting for an example  \ \ choice of package \ \ \ data \ training \ \ check \ waiting for test \ acceptance. Second dispatcher/trainer not created.
+- The re-engineering of the stage or the final zone does not create a re-training of the same skill. The target is stored at the mission. The end of the training and the restart do not start the movement.
+- The new mission ends in a square of 40 x 40 cm on the floor; SO-101 remains a teacher. 2D checks the release and location of the entire object within the zone. The actual coordinates/outputs/observator are not yet allowed. A simple lift is not considered delivery.
+- The geometry baseline is clearly chosen. The 2D room refuses to choose a trained policy; it does not replace it with its geometric capture.
+- The manual SO-101 record can separate the top C920, measured joints, reference frames, time and the kinematic fixed tip. This is not yet calibrated contact TCP.
+- The real package collector checks the original record, the frame, the reference geometry, the metric sponge curve, the camera delay, the phase and the continuous visible rise ≥ 5 cm/containment ≥1 s. Unknown errors are not replaced by zero.
+- The minimum static beginnings of SO-101 joints are moved from so101ik 3456805b to Apache 2.0 with the /NOTICE. license the Old Backend is not called. The AmicGen-adapted adapter is self-realized; the NVlabs code is not copied.
 
-## Проверки и вычисления
+## Verification and calculation
 
-Целевые Python-проверки покрывают происхождение, границы фаз, неопределённость, группировку донорских производных, готовность, очередь/отмену, конечную зону и отказ от скрытого baseline. Конечные Playwright-сценарии проверяют запрос/отмену, неподходящий пакет, реальные сохранённые артефакты, план обучения, ожидание допуска, повторное использование и подготовку ручной записи. Они работают изолированно и не являются физической приёмкой.
+Target Python tests cover the origin, the limits of the phase, uncertainty, grouping of donor derivatives, readiness, turn/end, end zone and rejection of hidden baseline. Final Playwright scenarios check request/end, inappropriate package, actual artifacts, learning plan, waiting for clearance, reuse and manual writing. They operate in isolation and are not physical adoption.
 
-Фактический trainer и дочерние процессы ограничены cgroup, STOP останавливает группу. Исходный предел 6 GiB RAM + 2 GiB swap; короткий SmolVLA batch 8 завершён: 50 обновлений, сохранение/перезагрузка и validation прошли. Измеренный cgroup peak достиг предела 6 GiB, swap peak 0,45 GiB, минимум доступной системной памяти 7,05 GiB; OOM/kill не было. Это рабочий предел короткого прогона, не гарантия всех будущих наборов. Оптимизатор сохраняется каждые 1000 обновлений. Внешний SSD используется для весов и новых больших исходных кадров; записи LeRobot остаются в DATA/datasets. Отсутствие внешнего монтирования запрещает сбор с --external-spool.
+The actual trainer and the subsidiaries are limited to the cgroup, STOP stops the group. The baseline of 6 GiB RAM + 2 GiB swap; the short SmolVLA batch 8 is complete: 50 updates, storage/reloading and validation have been completed. The measured cgroup peak has reached the limit of 6 GiB, swap peak 0.45 GiB, minimum available system memory 7.05 GiB; OOM /kill was not. This is a short run working limit, not a guarantee for all future sets. The optimization is maintained every 1,000 updates. The external SSD is used for weights and new large reference frames; LeRobot records remain in DATA /datasets. The absence of external mounting prohibits collection from --external-spin.
 
-Малый K-набор: шесть успешных пар, одинаковые разбиения 4/1/1; [проверка памяти](docs/results/knowledge_paired_v3_memory_20261116.json). Полный отдельный набор: seeds 50006–50305, не более 300 попыток до первых 200 успешных пар; технические шесть пар и веса исключены. Состояние: DATA/runs/knowledge-policy-v3-20261116/full/state.json. Полное K-обучение: ранее согласованы 200 показов на вариант, SmolVLA, 12000 обновлений, batch 8, seed 1000. Новое тяжёлое T-обучение требует конкретного бюджета после первого реального переноса.
+Small K Set: Six successful pairs, equal to 4 /1/1; [](docs/results/knowledge_paired_v3_memory_20261116.json) memory check. Full separate set: seeds 50006-50305, not more than 300 attempts to the first 200 successful pairs; technical six pairs and weights excluded. Status: DATA /runs/knowledge-policy-v3-20261116/full/state.json. Full K-learning: previously agreed 200 demonstrations per option, SmolVLA, 12000 updates, Batch 8, sed 1000. New T-learning requires a specific budget after the first real transfer.
 
-## Что ещё требуется
+## What else is needed
 
-1. Три диагностических ручных показа SO-101 и независимые измерения геометрии/TCP, губок и задержки камеры; затем первый реальный пакет → собственный показ ROSMASTER в MuJoCo.
-2. Завершить отдельный парный сбор K, оба обучения и независимую оценку. Проверка памяти завершена.
-3. Подготовить точный малый бюджет T1/T2, учёт всех целевых/донорских/проверочных данных и времени; затем обучение/сравнение по согласованию.
-4. Независимое наблюдение подъёма/удержания реального ROSMASTER, shadow и ограниченные испытания с владельцем. Недоход сервопривода не доказывает успех.
-5. Измерить реальную конечную зону, проверить выкладку и реализовать явное продолжение сохранённой миссии после свежей сцены, заряда и разрешения.
+1. Three diagnostic hand-held SO-101 and independent measurements of the geometry of /TCP, sponges and camera delays; then the first real package \ \ own display of ROSMASTER in MuJoCo.
+2. Complete separate steam collection K, both studies and independent evaluation. Memory check complete.
+3. Prepare a precise small budget T1 /T2, account for all target/donor/verification data and time; then training/comparison by agreement.
+4. Independent monitoring of the rise/retention of the real ROSMASTER, Shadow and limited testing with the owner. Failure of the servo unit does not prove success.
+5. Measure the real end zone, check the tab and implement the clear continuation of the mission after the fresh stage, charge and resolution.
 
-## Оборудование и существующие возможности
+## Equipment and existing capacities
 
-В этом продолжении команд движения не отправлялось. ROSMASTER и Tank остаются на зарядке; SO-101 не нужно переставлять. При последней проверке Leader/Follower, камера запястья и C920 подключены и свободны.
+The motion commands were not sent in this run. ROSMASTER and Tank remain on charge; SO-101 need not be reset. The last test is the Leader /Follower, wrist chamber and C920 are connected and free.
 
-Существующие общий лидарный план, поиск, эксперименты помощи, управление/STOP, теневой runtime, deploy_gate и журналы сохранены. Прежний бенчмарк роя v4 (180 прогонов, ноль столкновений) — отдельная симуляция, не приёмка новой политики.
+The current common lidar plan, search, experiment, /STOP, shadow runtime, deploy_gate and magazines are still in place. The former piano bookmark v4 (180 runs, zero collisions) is a separate simulation, not adopting new policy.
 
-Независимая остановка Tank при обрыве USB остаётся аппаратным ограничением. Опасный отказ на движущемся роботе не воспроизводился. Wristlab :8020, so101_autonomous_pick_place :8010, Console8090 и CubeBot не изменялись и не вызывались; прошивки и моторные калибровки не менялись.
+An independent stopover of Tank at USB break remains a hardware restriction. The dangerous failure on a moving robot has not been repeated. Wristlab:8020, so101_autonomus_pick_place:8010, Console8090 and CubeBot have not changed or been called; the embroidery and motor calibrations have not changed.

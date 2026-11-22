@@ -1,7 +1,7 @@
 import json
 import urllib.request
 from html.parser import HTMLParser
-from explorer3.paths import DATA
+from explorer4.paths import DATA
 class Assets(HTMLParser):
     def __init__(self):
         super().__init__();self.urls=[]

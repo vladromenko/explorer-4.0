@@ -2,8 +2,8 @@
 import threading
 from types import SimpleNamespace
 import pytest
-from explorer3 import catalog, research, tank_pilot, session as sessions, resources, trials
-from explorer3.control import Control
+from explorer4 import catalog, research, tank_pilot, session as sessions, resources, trials
+from explorer4.control import Control
 
 
 @pytest.fixture
@@ -62,7 +62,7 @@ def test_no_help_and_early_finish_do_not_fabricate_human_motion(study,monkeypatc
 
 def test_session_segments_are_separate_and_stop_result_is_immutable(study,tmp_path,monkeypatch):
     monkeypatch.setattr(resources,'DATA',tmp_path)
-    from explorer3 import tank_handoff
+    from explorer4 import tank_handoff
     monkeypatch.setattr(tank_handoff,'invoke',lambda _:None)
     monkeypatch.setattr(trials,'require_physical',lambda _:None)
     writers=[];commands=[];phases=iter(['policy','hold','correction','resumed'])

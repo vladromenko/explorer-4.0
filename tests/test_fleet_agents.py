@@ -2,8 +2,8 @@
 chosen with recipient-compatible memory, outcomes only from the verifier."""
 import pytest
 
-from explorer3 import catalog, fleet_agents
-from explorer3.cognitive import store
+from explorer4 import catalog, fleet_agents
+from explorer4.cognitive import store
 
 
 @pytest.fixture

@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3.paths import DATA  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 PAIRS = DATA / 'runs/knowledge-policy-v3-20261116/full-v4-lookpose'
 PROFILE = 'rosmaster_floor_pick_noknowledge_sim'
@@ -28,7 +28,7 @@ def save(state):
 
 
 def prepare():
-    from explorer3 import training_drafts, datasets
+    from explorer4 import training_drafts, datasets
     good = [json.loads(p.read_text()) for p in sorted(PAIRS.glob('[0-9]' * 5 + '.json'))]
     good = [r for r in good if r['outcome'] == 'success'][:8]
     ids = [r['imports'][PROFILE]['episode_id'] for r in good]
@@ -42,7 +42,7 @@ def prepare():
 
 
 def train():
-    from explorer3.jobs import Jobs
+    from explorer4.jobs import Jobs
     state = json.loads(STATE.read_text())
     state['job'] = Jobs(None).start_prepared_training(state['draft'])
     save(state)
@@ -50,8 +50,8 @@ def train():
 
 
 def evaluate():
-    from explorer3.jobs import Jobs
-    from explorer3.sim.evaluate import evaluate as run
+    from explorer4.jobs import Jobs
+    from explorer4.sim.evaluate import evaluate as run
     state = json.loads(STATE.read_text())
     row = Jobs(None).get(state['job'])
     if row['status'] != 'completed':

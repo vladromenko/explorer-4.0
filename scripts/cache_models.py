@@ -1,7 +1,7 @@
 """Copy only public upstream caches (never old robot checkpoints)."""
 from pathlib import Path
 import hashlib,json,shutil
-from explorer3.paths import DATA
+from explorer4.paths import DATA
 source=Path.home()/'.cache/huggingface/hub'
 destination=DATA/'cache/huggingface/hub'
 destination.mkdir(parents=True,exist_ok=True)

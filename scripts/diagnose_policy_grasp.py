@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT))
 
 
 def teacher_actions(profile, seed):
-    from explorer3.sim.factory import make, EXPERTS
+    from explorer4.sim.factory import make, EXPERTS
     env = make(profile)
     env.reset(seed=seed)
     ex = EXPERTS[profile](env)
@@ -37,8 +37,8 @@ def teacher_actions(profile, seed):
 
 
 def run(checkpoint, profile, seed, client):
-    from explorer3.sim.factory import make
-    from explorer3.profiles import profile as profile_config
+    from explorer4.sim.factory import make
+    from explorer4.profiles import profile as profile_config
     env = make(profile, images=True)
     cfg = profile_config(profile)
     obs, _ = env.reset(seed=seed)
@@ -81,7 +81,7 @@ def main():
     ap.add_argument('--device', default='cuda')
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
-    from explorer3.act_client import ACTClient
+    from explorer4.act_client import ACTClient
     client = ACTClient(a.checkpoint, a.out / 'inference.log', device=a.device)
     summary = []
     try:

@@ -1,5 +1,5 @@
 {
- "source": "explorer3/so101_vendor/kinematic_data.json + configs/so101_station/overview_calibration.json robot_offsets_deg (follower calibration, used for the Leader as an approximation)",
+ "source": "explorer4/so101_vendor/kinematic_data.json + configs/so101_station/overview_calibration.json robot_offsets_deg (follower calibration, used for the Leader as an approximation)",
  "joints": [
   {
    "name": "shoulder_pan",

@@ -1,7 +1,7 @@
 """Training command preparation only; never execute optimizer steps."""
 import json
-from explorer3.training import train_command
-from explorer3 import policy_catalog
+from explorer4.training import train_command
+from explorer4 import policy_catalog
 
 
 def test_smolvla_uses_pinned_base_and_finetune_does_not_duplicate_path(tmp_path,monkeypatch):

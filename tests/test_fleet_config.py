@@ -2,7 +2,7 @@ import json
 import fcntl
 from pathlib import Path
 import pytest
-from explorer3 import fleet_config as fleet, permission_migration as migration
+from explorer4 import fleet_config as fleet, permission_migration as migration
 
 
 def install(root,owner='explorer'):
@@ -80,7 +80,7 @@ def test_interrupted_migration_can_restore_before_removing_legacy(tmp_path,monke
 
 def test_disabling_robot_never_blocks_emergency_stop(tmp_path,monkeypatch):
     import httpx
-    from explorer3 import rosmaster_control as rc, local_work
+    from explorer4 import rosmaster_control as rc, local_work
     install(tmp_path)
     fleet.update_robot('rosmaster',enabled=False,root=tmp_path)
     monkeypatch.setattr(local_work,'DATA',tmp_path)

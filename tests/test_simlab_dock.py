@@ -7,9 +7,9 @@ import pytest
 torch = pytest.importorskip('torch')
 pytest.importorskip('mujoco')
 
-from explorer3.simlab import contract
-from explorer3.simlab.dock_gpu import DockBatch, wrap
-from explorer3.simlab.dock_mujoco import DockMujoco
+from explorer4.simlab import contract
+from explorer4.simlab.dock_gpu import DockBatch, wrap
+from explorer4.simlab.dock_mujoco import DockMujoco
 
 
 def scripted(env):
@@ -77,8 +77,8 @@ def test_mujoco_lidar_agrees_with_analytic_casting():
 
 
 def test_policy_artifact_roundtrip(tmp_path):
-    from explorer3.simlab.ppo import ActorCritic
-    from explorer3.simlab import artifact
+    from explorer4.simlab.ppo import ActorCritic
+    from explorer4.simlab import artifact
     model = ActorCritic(contract.size('tank') * 3, 53, 2)
     x = torch.randn(4, contract.size('tank') * 3)
     model.actor_norm.update(x)

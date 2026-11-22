@@ -8,7 +8,7 @@ import uuid
 
 import pytest
 
-from explorer3 import compute_process
+from explorer4 import compute_process
 
 
 def test_limits_are_required_and_cannot_be_injected(monkeypatch):

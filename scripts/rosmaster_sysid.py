@@ -7,7 +7,7 @@ Writes DATA/sysid/rosmaster-<profile>-<stamp>.json and prints held-out errors: n
 import argparse, json, sys, tempfile, time
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from explorer3.sim import rosmaster_sysid as sysid
+from explorer4.sim import rosmaster_sysid as sysid
 
 
 def main():
@@ -24,8 +24,8 @@ def main():
         report['fixture_truth'] = params
         out = tmp / 'candidate.json'
     else:
-        from explorer3 import catalog
-        from explorer3.paths import DATA
+        from explorer4 import catalog
+        from explorer4.paths import DATA
         entries = sorted((e for e in catalog.rows('episodes') if e['profile'] == args.profile), key=lambda e: e.get('created') or 0)
         report = sysid.identify(entries, args.profile)
         report['simulator_values'] = sysid.simulator_values(report)

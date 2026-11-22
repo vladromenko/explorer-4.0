@@ -4,13 +4,13 @@ import os
 from pathlib import Path
 from types import SimpleNamespace
 
-if not os.environ.get('EXPLORER3_DATA'):
+if not os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA')):
     raise RuntimeError('An isolated EXPLORER3_DATA directory is mandatory')
 from nicegui import app, ui
-from explorer3 import catalog, knowledge, swarm, swarm_pages, today_pages, training_pages
-from explorer3.paths import DATA, prepare
-from explorer3.jobs import Jobs
-from explorer3.cognitive import broker, store
+from explorer4 import catalog, knowledge, swarm, swarm_pages, today_pages, training_pages
+from explorer4.paths import DATA, prepare
+from explorer4.jobs import Jobs
+from explorer4.cognitive import broker, store
 
 prepare()
 catalog.initialize()
@@ -33,7 +33,7 @@ swarm_pages.install(app, ui, control, lambda exc: ui.notify(str(exc), type='nega
 today_pages.install(app, ui)
 training_pages.install('', Jobs(None))
 
-packet_path = os.environ.get('EXPLORER3_TEST_PACKET')
+packet_path = os.environ.get('EXPLORER4_TEST_PACKET', os.environ.get('EXPLORER3_TEST_PACKET'))
 packet = json.loads(Path(packet_path).read_text()) if packet_path else None
 if packet:
     sha = store.digest(packet)
@@ -62,5 +62,5 @@ def fixture(scenario: str):
                 broker._save_acquisition(db, request, 'browser_fixture')
     return request
 
-ui.run(host='127.0.0.1', port=int(os.environ['EXPLORER3_TEST_PORT']), reload=False, show=False, tailwind=False,
+ui.run(host='127.0.0.1', port=int(os.environ['EXPLORER4_TEST_PORT' if 'EXPLORER4_TEST_PORT' in os.environ else 'EXPLORER3_TEST_PORT']), reload=False, show=False, tailwind=False,
        language='ru', title='Explorer isolated acquisition checks')

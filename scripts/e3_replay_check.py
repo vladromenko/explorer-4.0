@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3.paths import DATA  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 
 def extract(folder):
@@ -38,7 +38,7 @@ def extract(folder):
 
 def replay(item):
     import numpy as np
-    from explorer3.sim.factory import make
+    from explorer4.sim.factory import make
     env = make(item['profile'], images=True)
     obs, _ = env.reset(seed=item['seed'])
     first = np.asarray(obs['rgb'])

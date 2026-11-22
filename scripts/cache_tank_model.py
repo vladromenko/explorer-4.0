@@ -7,7 +7,7 @@ identity and the incomplete license declaration remain explicitly unverified.
 import hashlib,json
 from pathlib import Path
 import requests
-from explorer3.paths import DATA
+from explorer4.paths import DATA
 REPO='gongyizhi0425/Shipcleaning-Robot'
 REV='e63726dcd51620fd1778672a1296c6ca3d7c29af'
 PREFIX='robot_code/src/simulations/mentorpi_description/'

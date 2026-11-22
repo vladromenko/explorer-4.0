@@ -4,7 +4,7 @@ import types
 
 import pytest
 
-from explorer3 import deploy_gate
+from explorer4 import deploy_gate
 
 
 class _F:
@@ -32,7 +32,7 @@ def test_sim_profile_is_checked_against_its_robot_task():
 
 def test_trial_needs_a_passed_gate_for_the_same_weights(tmp_path, monkeypatch):
     monkeypatch.setattr(deploy_gate, 'GATES', tmp_path)
-    import explorer3.training_drafts as td
+    import explorer4.training_drafts as td
     monkeypatch.setattr(td, 'checkpoint_hash', lambda path: 'h-' + path)
     plan = {'source_id': 'job1', 'checkpoint': 'ck'}
     with pytest.raises(PermissionError, match='не проверена'):
@@ -51,7 +51,7 @@ def test_holdout_excludes_training_episodes(monkeypatch):
     rows = [{'id': i, 'profile': 'so101_pick_place', 'outcome': 'success', 'excluded': 0, 'category': 'demonstration',
              'session': 'old' if i == 'd' else 's'} for i in 'abcde']
     monkeypatch.setattr(deploy_gate.catalog, 'rows', lambda table: rows)
-    from explorer3 import datasets
+    from explorer4 import datasets
     monkeypatch.setattr(datasets, 'series_text', lambda: {'s': 'передача: кубик hand over the cube', 'old': 'кубик в коробку'})
     monkeypatch.setattr(deploy_gate, 'training_ids', lambda job: {'a', 'b'})
     # training episodes and the old «into the box» task are not the hand-over test set
@@ -59,7 +59,7 @@ def test_holdout_excludes_training_episodes(monkeypatch):
 
 
 def test_cotraining_adds_sim_only_to_train_and_caps_frames(monkeypatch, tmp_path):
-    from explorer3 import datasets
+    from explorer4 import datasets
     sims = []
     for i in range(5):
         d = tmp_path / f's{i}'

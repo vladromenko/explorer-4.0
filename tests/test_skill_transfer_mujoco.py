@@ -4,9 +4,9 @@ import numpy as np
 import pytest
 
 pytest.importorskip('mujoco')
-from explorer3.sim.factory import make
-from explorer3.sim.skill_transfer import RetargetedGrasp, RosmasterTransferInterface
-from explorer3.skill_packets import relative_pose
+from explorer4.sim.factory import make
+from explorer4.sim.skill_transfer import RetargetedGrasp, RosmasterTransferInterface
+from explorer4.skill_packets import relative_pose
 from test_skill_packets import packet_fixture
 
 
@@ -51,7 +51,7 @@ def test_incompatible_object_and_floor_target_are_rejected_before_motion():
 
 
 def test_stalled_variant_is_rejected_without_object_chasing(monkeypatch):
-    from explorer3.sim.skill_transfer import TransferRejected
+    from explorer4.sim.skill_transfer import TransferRejected
     env = make('rosmaster_floor_pick_sim')
     try:
         packet = packet_fixture()

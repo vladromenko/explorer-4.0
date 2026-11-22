@@ -10,11 +10,11 @@ from agents.tank.serial_guard import CheckedSerial
 
 class TankGateTests(unittest.TestCase):
     def test_control_uses_the_single_fleet_admission(self):
-        from explorer3.control import Control
+        from explorer4.control import Control
         control=Control();control.robot='tank'
-        with patch('explorer3.control.local_work.hardware_allowed',return_value=False):
+        with patch('explorer4.control.local_work.hardware_allowed',return_value=False):
             self.assertFalse(control.authorized())
-        with patch('explorer3.control.local_work.hardware_allowed',return_value=True):
+        with patch('explorer4.control.local_work.hardware_allowed',return_value=True):
             self.assertTrue(control.authorized())
 
 
@@ -36,8 +36,8 @@ class TankGateTests(unittest.TestCase):
 
     def test_key_release_switch_and_expiration_clear_motion(self):
         from unittest.mock import patch
-        from explorer3.control import Control
-        with patch('explorer3.control.catalog.event'),patch.object(Control,'authorized',return_value=True):
+        from explorer4.control import Control
+        with patch('explorer4.control.catalog.event'),patch.object(Control,'authorized',return_value=True):
             control=Control();control.select('tank');control.acquire('operator')
             control.base_key('other','up',True)
             self.assertEqual(control.base_action(),[0.,0.])
@@ -54,8 +54,8 @@ class TankGateTests(unittest.TestCase):
             self.assertEqual(control.base_action(),[0.,0.])
 
     def test_diagonals_and_keyboard_use_same_arcs_and_release_independently(self):
-        from explorer3.control import Control
-        with patch('explorer3.control.catalog.event'),patch.object(Control,'authorized',return_value=True):
+        from explorer4.control import Control
+        with patch('explorer4.control.catalog.event'),patch.object(Control,'authorized',return_value=True):
             c=Control();c.select('tank');c.acquire('browser')
             for key,expected in [('up_left',[.3,1.]),('up_right',[.3,-1.]),
                                  ('down_left',[-.3,-1.]),('down_right',[-.3,1.])]:

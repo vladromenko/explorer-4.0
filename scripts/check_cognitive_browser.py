@@ -59,7 +59,7 @@ with sync_playwright() as p:
         if (mode=='M1' and len(sys.argv)>1) or (mode=='M3' and len(sys.argv)>2):
             ident=sys.argv[1 if mode=='M1' else 2];job=next(j for j in jobs(page) if j['id']==ident)
             saved=json.loads((DATA/'jobs'/ident/'experiment.json').read_text())
-            source=Path(__file__).resolve().parents[1]/'explorer3/sim/cooperation.py'
+            source=Path(__file__).resolve().parents[1]/'explorer4/sim/cooperation.py'
             assert saved['evaluator_version']==hashlib.sha256(source.read_bytes()).hexdigest()
         else:
             choose(page,label);ident=launch(page);job=wait(page,ident)

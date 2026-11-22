@@ -1,5 +1,5 @@
 {
- "_note": "Thresholds of the «Допуск к роботу» check (explorer3/deploy_gate.py). Engineering starting values, changed only with a recorded reason, never tuned on the test split.",
+ "_note": "Thresholds of the «Допуск к роботу» check (explorer4/deploy_gate.py). Engineering starting values, changed only with a recorded reason, never tuned on the test split.",
  "min_real_holdout_episodes": 3,
  "frames_per_episode": 40,
  "joint_mae_deg": 8.0,

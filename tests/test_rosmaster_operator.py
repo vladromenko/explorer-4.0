@@ -2,7 +2,7 @@
 import time
 import httpx
 import pytest
-from explorer3 import rosmaster_control as rc
+from explorer4 import rosmaster_control as rc
 
 
 class Agent:
@@ -21,7 +21,7 @@ class Agent:
 def op(monkeypatch,tmp_path):
     agent=Agent()
     monkeypatch.setattr(rc,'DATA',tmp_path)
-    monkeypatch.setattr('explorer3.local_work.hardware_allowed',lambda *_:True)
+    monkeypatch.setattr('explorer4.local_work.hardware_allowed',lambda *_:True)
     monkeypatch.setattr(rc,'connection',lambda timeout=2:agent)
     def request(path,value=None,timeout=2):
         if path=='/stop':agent.stops+=1
@@ -73,14 +73,14 @@ def test_agent_reason_is_shown_not_masked(op):
 
 def test_closed_scope_stops_using_cached_command_connection(op,monkeypatch):
     start(op);feed(op,.15);before=len(op.agent.packets)
-    monkeypatch.setattr('explorer3.local_work.hardware_allowed',lambda *_:False)
+    monkeypatch.setattr('explorer4.local_work.hardware_allowed',lambda *_:False)
     time.sleep(.15)
     assert op.lease is None and len(op.agent.packets)<=before+1
     count=len(op.agent.packets);time.sleep(.1);assert len(op.agent.packets)==count
 
 
 def test_compute_gate_precedes_robot_session_and_stop_releases_it(op,monkeypatch,tmp_path):
-    from explorer3 import resources
+    from explorer4 import resources
     monkeypatch.setattr(resources,'DATA',tmp_path)
     monkeypatch.setattr(rc,'enabled',lambda:True)
     calls=[]

@@ -5,9 +5,9 @@ from pathlib import Path
 import cv2
 import mujoco
 import numpy as np
-from explorer3.paths import DATA
-from explorer3.sim.room import PRESETS,ASSETS
-from explorer3.sim.cooperation import CooperationWorld
+from explorer4.paths import DATA
+from explorer4.sim.room import PRESETS,ASSETS
+from explorer4.sim.cooperation import CooperationWorld
 
 out=DATA/'validation/cognitive/rooms';out.mkdir(parents=True,exist_ok=True)
 lock=json.loads((ASSETS/'manifest.json').read_text())

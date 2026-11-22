@@ -1,6 +1,6 @@
 """Run with .venv-sim; actual dynamics and branch determinism, no fake simulator."""
 import numpy as np
-from explorer3.sim.environment import SO101PickPlace
+from explorer4.sim.environment import SO101PickPlace
 
 
 def test_delayed_physics_and_complete_restore():

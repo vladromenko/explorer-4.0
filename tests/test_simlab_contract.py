@@ -3,11 +3,11 @@ import numpy as np
 import pytest
 
 pytest.importorskip('httpx')
-from explorer3.simlab import contract
+from explorer4.simlab import contract
 
 
 def test_real_feature_vector_mapping():
-    from explorer3.sensors import CHANNELS
+    from explorer4.sensors import CHANNELS
     f = np.zeros(len(CHANNELS), np.float32)
     f[0] = 1.5                                   # lidar bin 0
     f[CHANNELS.index('gyro_z')] = 0.4
@@ -23,7 +23,7 @@ def test_real_feature_vector_mapping():
 
 
 def test_contract_indices_match_sensor_channels():
-    from explorer3.sensors import CHANNELS
+    from explorer4.sensors import CHANNELS
     assert CHANNELS[contract.REAL_LIDAR][0] == 'lidar_min_m_00'
     assert CHANNELS[contract.REAL_IMU] == ['gyro_x', 'gyro_y', 'gyro_z', 'accel_x', 'accel_y', 'accel_z']
     assert CHANNELS[contract.REAL_IMU_VALID] == 'imu_valid'

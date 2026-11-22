@@ -1,190 +1,190 @@
-# Агентный слой Explorer 4.0
+# Explorer Agent 4.0
 
-Руководящая цель от 14.11.2026: довести существующий проект до проверяемой
-команды роботов, включая ранее начатые компоненты. Основание:
-[дополнение оператора](AGENTIC_ADDENDUM_RU.md). Порядок: AG0–AG2 Homebrain,
-затем ROSMASTER, Tank, SO-101 и разрешённые совместные испытания.
+Guideline 14.11.2026: To bring the existing project to the tested
+The robotic teams, including previously initiated components.
+[Supplied to](AGENTIC_ADDENDUM.md) operator. Order: AG0–AG2 Homebrain,
+Then ROSMASTER, Tank, SO-101 and permitted joint tests.
 
-## AG0 — сохранённая точка интеграции
+## AG0 is a stored integration point
 
-Текущий блок датчиков, мультимодальных записей и общей ROS 2 записи сохранён
-в `14bf910` и отправлен в origin/main. Это новая согласованная точка;
-`e429703` из дополнения — историческая ссылка, отката нет.
-UI :8030 использует те же изменения; текущая версия запущенного процесса
-проверяется через /api/health. Физические сессии не активны, обучение запрещено.
+Current sensor, multimodal and common ROS 2 records are stored
+in `14bf910` and sent to origin /main. This is a new agreed point;
+`e429703` of the supplement is a historical reference, no backsliding.
+UI:8030 uses the same changes; current version of the process launched
+is checked through /api/health. Physical sessions are not active, education is prohibited.
 
-Используем `explorer3/cognitive/`, существующую catalog.sqlite3 с отдельными
-миграциями и тот же NiceGUI/FastAPI. Низкоуровневые `agents/` не переименовываем.
-Пакет не получает serial/SSH/shell/SQL-инструментов, права обучения или токены
-роботов. Разрешённые вызовы проходят схемы, provenance и broker. read-only
-ROS 2 hub остаётся read-only. Старые :8020/:8090 не меняются.
+Using `explorer4/cognitive/`, existing catalog.sqlite3 with separate
+The same NiceGUI /FastAPI. low-level `agents/` is not renamed.
+Package does not receive Serial /SSH/shell/SQL- tools, learning rights or currents
+The authorized calls go through the circuits, the design and the broker.
+ROS 2 Hub remains dead-only. The old:8020:8090 is not changed.
 
-## Переиспользуемые компоненты
+## Reusable components
 
-| Уже существует | Использование в дополнении |
+| Already exists| Use in Supplement|
 |---|---|
-| catalog.connect, events, episode/job IDs | Миграции памяти и ссылки на неизменяемые исходные эпизоды |
-| resources.ResourceLease / ExistingTrainingLease | Владение ресурсами и отказ при конфликте; не второй менеджер моторных портов |
-| sim.FleetWorld, factory, DockExpert, arm experts | Реальная MuJoCo, существующие модели, scripted contracts с честным происхождением |
-| sim.fleet_execution, snapshots, frozen policies | Исполнение, сброс очередей, версия моделей и дальнейшее подключение learned skills |
-| fleet_allocation, autointervene, gain_model | Ограниченные кандидаты помощи; G unavailable без обученного артефакта |
-| perception YOLOE/OpenCV; sensor evidence | Источники наблюдений; 2D не становится мировой 3D-позой |
-| training_drafts, gain_preparation, datasets | Подготовка неизменяемых планов; trainer не запускается |
-| fleet_live и MCAP/replay | Наблюдения и просмотр записей; не исполнитель реального движения |
+| catalog.connect, events, episode/job IDs | Memory migration and references to unchangeable source episodes|
+| resources.ResourceLease / ExistingTrainingLease | Resource ownership and conflict refusal; not second manager of motor ports|
+| sim.FleetWorld, factory, DockExpert, arm experts | Real MuJoCo, existing models, scripted contracts with an honest origin|
+| sim.fleet_execution, snapshots, frozen policies | Performance, release of releases, model version and further connection of the lightned scills|
+| fleet_allocation, autointervene, gain_model | Limited candidates for assistance; G unavailable without trained artifact|
+| perception YOLOE/OpenCV; sensor evidence | Observation sources; 2D does not become world 3D pose|
+| training_drafts, gain_preparation, datasets | Preparation of unalterable plans; no roll-out|
+| Fleet_live and MCAP /replay| Observations and viewing of records; not a real-time performer|
 
-Универсального TaskGraph с зависимостями и межэпизодной памятью помощи в
-существующем коде не найдено. Добавляется ограниченный слой над перечисленным,
-без второго physics engine, очереди обучения или нового сайта.
+Universal TskGraph with addictions and interepisode memory of help in
+No existing code found. Added to limited layer above listed
+No second phicissics engine, training line or new site.
 
-## Действующие границы
+## Existing borders
 
-- Последнее разрешение 14.11: короткие программные проверки и браузер на
-  Homebrain, без inference, новых симуляционных прогонов, обучения и движения.
-  Последующий запрос требует полного аудита и завершения программных пробелов.
-  Прежние физические разрешения не заменяют новый допуск движения.
-- AG0–AG2 исполняются только на Homebrain. Real-вызовы нового broker отклоняются,
-  даже если прежний workflow разрешает диагностику одной машины.
-- Tank: USB/EIO и недоставленный STOP остаются аппаратным блокером. Новая
-  память или уверенный текст модели не снимают incident-block.
-- Сырые servo angles не считаются URDF joint positions; общей world TF нет.
-- Запись сенсоров не является action demonstration, scripted не learned,
-  fixture не physical, один успех не доказательство причинной пользы.
-- Один модельный worker, один запрос одновременно, максимум 4 шага решения,
-  одна попытка исправить формат и 2 перепланирования одной причины. В runtime
-  нет CodeAgent и произвольного выполнения сгенерированного кода.
+- Last resolution 14.11: short program checks and browser for
+  Homebrain, no inference, new simulation runs, learning and movement.
+  The follow-up request requires full audit and completion of the programmatic gaps.
+  The old physical permits do not replace the new traffic tolerance.
+- AG0-AG2 is only being implemented on Homebrain. The real calls of the new broker are being rejected,
+  Even if the old workflow allows one machine to be diagnosed.
+- Tank: USB /EIO and unedged STOP remain the hardware block.
+  The memory or the sure text of the model does not remove the incedent-lock.
+- Raw servo angles are not considered to be the UrDF jint positions; there is no total world TF.
+- Sensor recording is not an action demonstration, scripted not lyrined,
+  Fixture is not a phisical, one success is not proof of causal benefit.
+- One modeler, one request at a time, a maximum of four steps to a solution,
+  One attempt to correct the format and two re-plannings of one reason.
+  No codeAgent and arbitrary execution of the code generated.
 
-## Сохранённые незавершённые зависимости
+## Saved Uncomplete Dependences
 
-1. Tank: аппаратный STOP/USB допуск и настоящие мультимодальные показы.
-2. ROSMASTER: настоящие показы новых профилей, проверка свечения RGB и звука.
-3. OLED: в текущем MCU-протоколе команды нет; не заявлять поддержку дисплея.
-4. Общая карта: внешняя калибровка и независимое измерение исходов.
-5. SO-101: отдельная приёмка обновлённого тракта, сохранение пригодных 50 показов.
-6. Научные серии и обученные навыки: только после отдельного разрешения,
-   неизменяемых splits/budgets и независимой проверки.
+1. Tank: STOP /USB hardware tolerance and real multi-model displays.
+2. ROSMASTER: Real new profile shows, RGB light and sound check.
+3. OLED: There is no command in the current MCU protocol; do not declare support for the display.
+4. Common map: External calibration and independent measurement of the results.
+5. SO-101: Separate application of the updated tract, maintaining a suitable 50 display.
+6. Academic series and trained skills: only after separate authorization,
+   Non-replaceable splits /budgets and independent verification.
 
-Эти зависимости не блокируют AG1/AG2. Физические блоки не считаются закрытыми
-программными тестами; отсутствие ответа оператора не означает разрешения.
+These relationships do not block AG1 /AG2. Physical blocks are not considered closed
+The lack of response from the operator does not mean permission.
 
-## AG1 — реализованные контракты и проверка
+## AG1 — Contracts implemented and audit
 
-`cognitive.schemas/store/registry/broker/tool_args/evidence` используют Pydantic,
-SQLite FTS5 и прежние ResourceLease. Свежесть, точный domain, версия навыка,
-неизменяемые evidence/artifact hashes, роль, DAG, бюджет и request_id проверяются
-до исполнения. Отмена меняет generation; поздний ответ отвергается. После
-перезапуска planning/planned/running переходят в unknown, команды не повторяются.
-Противоречивые условия не разрешаются правилом «последний ответ победил».
+`cognitive.schemas/store/registry/broker/tool_args/evidence` uses Pydantic,
+SQLite FTS5 and old ResourceLease.
+Unchanged/artifact Hashes, role, DAG, budget and request_id are checked
+Cancellation changes the energy; late response is rejected.
+Restarting /planned/running is going to unknown, and commands are not repeated.
+The last-ever answer is not allowed.
 
-Память фиксируется на начало миссии. Candidate поддерживается только после двух
-независимых episode IDs; повторное чтение не добавляет подтверждения. Отрицательные
-результаты сохраняются и дают contradicted. Изменение camera/policy/calibration/
-skill/domain/goal отклоняет перенос M3. M2 отключает лишь фильтр памяти, сохраняя
-все проверки допуска исполнения. Инструмента обучения/моторов/произвольного кода нет.
+The memory is recorded at the beginning of the mission.
+independent erisode IDs; rereading does not add confirmation.
+The results are stored and are subject to change./policy/calibration/
+skill /domain/goal rejects the transfer of M3. M2 only shuts down the memory filter by saving
+No training/motors/arbitrary code.
 
-Проверки: `tests/test_cognitive_contracts.py`; настоящий архив ROSMASTER с 12
-потоками импортирован с исходной давностью и отклонён как свежий вход
-(`validation/cognitive/archive-proof.json`). Общее FleetWorld в настоящей MuJoCo:
-Tank сначала не видит цель; камера ROSMASTER обнаруживает оранжевый маркер по RGB;
-после этого тот же DockExpert заканчивает подъезд, stationary=true, stable_s=.55.
-Исходные изображения и числовой независимый verifier: `validation/cognitive/s1-probe/`.
-Это проверка оркестрации с privileged scripted teacher, не обученная моторная политика.
+Checks: `tests/test_cognitive_contracts.py`; ROSMASTER's real archive with 12
+Imported with original time limit and rejected as fresh entry
+(`validation/cognitive/archive-proof.json`) The total FleetWorld in the present MuJoCo:
+Tank first sees no target; ROSMASTER camera detects an orange marker on RGB;
+After that, the same Doc Expert ends its approach, stationary=tree, stable_s=.55.
+Base images and numerical independent verifier: `validation/cognitive/s1-probe/`.
+This is an orchestra test with previleged scripted teacher, an untrained motor policy.
 
-Фиксированные camera poses получены существующим ArmModel.look_at_ik; новые
-контракты scan/observe и observed-dock не принимают произвольную цель. Онлайн
-координатор видит только пиксельные измерения и условия, не distance/yaw/outcome
-из симулятора. Эти величины доступны отдельному оценщику результата.
+Fixed camera positions received by existing ArmModel.look_at_ik; new
+The contracts skan /observe and observed-dock do not accept an arbitrary purpose.
+The coordinator sees only pixel measurements and conditions, not the story /yaw/outcome
+These values are available to a separate valuer.
 
-## AG2 — ограниченная сквозная цепочка
+## AG2 is a limited circuit
 
-В `/team` добавлены четыре раздела, общий вид и роботные камеры, один локальный
-Qwen worker через настоящий ToolCallingAgent, общий бюджет model+broker ≤4,
-фиксированный граф, исполнение прежних навыков, независимый verifier и память.
-Исходы помощника/получателя/задачи раздельны; отрицательное наблюдение не запускает
-получателя и остаётся contradicted. После completion освобождаются claims: ранняя
-проверка обнаружила и исправила задержанное освобождение между двумя миссиями.
+B `/team` Four sections, general view and robotic cameras, one local
+Qwen working through the real ToolCallingAgent, total model+broker budget ≤4,
+a fixed graph, performance of previous skills, independent verifier and memory.
+The output of the assistant/recipient/tasks is separated; negative observation does not start
+The recipient is still subject. After the selection, the cryims: early
+The inspection found and corrected the detention between the two missions.
 
-Браузерные задания `0333f92cc612449395854b7f1465d019` и
-`efdc95f2f25841f99fa71cd6c11df2b8` завершили полный S1 в общей MuJoCo: M1 выбрал scan,
-следующий M3 использовал случай и выбрал direct observation, затем снова проверил
-камеру и завершил dock. Первый случай получил supported_in_scope после двух
-отдельных исполнений. `validation/cognitive/team-browser.json` содержит результаты,
-реальные model timings/RSS, STOP, отмену visibilitychange и отсутствие browser errors.
-Visibilitychange в headless проверялся браузерным событием; отдельно реальный разрыв
-браузера отменил `9a49a00f113049a88b040d921d02a394` без возобновления.
+`0333f92cc612449395854b7f1465d019` and
+`efdc95f2f25841f99fa71cd6c11df2b8` completed the full S1 in the joint MuJoCo: M1 chose scan,
+The next M3 used the incident and chose direction observation, then checked again.
+The first case was supported_in_scope after two
+Individual execution. `validation/cognitive/team-browser.json` contains results,
+The real model times /RSS, STOP, cancellation of the visibiliabilitychange and absence of browser errors.
+Visualitychange in hedless was checked by a browser event; separately, a real break
+The browser cancelled `9a49a00f113049a88b040d921d02a394` without reopening.
 
-Модель: один шаг, inference с проверкой файлов/загрузкой 42.31/44.41 s после импорта
-библиотек; peak process RSS 8.27/8.31 GiB, GPU memory записана отдельно. Полная
-wall_time_s задачи включает остальное. TCP-подключения в model worker запрещены;
-network_attempts=[], параметры не менялись. Это диагностическая цепочка с фиксированным
-маркером и scripted teacher, не честная сравнительная серия M0–M3 и не эффект VLA.
-Режимы/протокол исследования требуют заранее одинакового набора вариантов помощи,
-замороженных источников и независимых последовательностей; диагностические файлы
-не включаются автоматически в научную выборку.
+Model: One step, file check/load file verification 42.31 /44.41 s after import
+libraries; peak process RSS 8.27/8.31 GiB, GPU memory is recorded separately.
+Wall_time_s tasks include the rest. TCP connections in the model worker are prohibited;
+Network_attempts=[], the parameters have not changed. This is a diagnostic chain with fixed circuits.
+The M0–M3 series is not fair and the VLA effect.
+The regimes/protocol of the study require a similar set of assistance options in advance,
+frozen sources and independent sequences; diagnostic files
+is not automatically included in the scientific sample.
 
-### Подготовленные изменения после запрета запусков
+### Changes prepared after the ban on launches
 
-`shared-helper-choices-v2` задаёт одинаковые варианты помощника и инструкцию
-для M0–M3. M0 по-прежнему выбирает фиксированное правило, M1 не получает память,
-M2/M3 различаются фильтрацией извлечённых случаев. Память меняет контекст,
-не доступность `observe_then_dock`; новое наблюдение требуется всегда.
-Версия и SHA протокола входят в ExperimentManifest. Старые файлы имеют
-`legacy-diagnostic-v1` и не смешиваются с новым протоколом. Эти изменения
-написаны, но ещё не выполнялись. Сам diagnostic runner не стал научным
-benchmark: frozen test memory, независимые серии и статистика остаются отдельным блоком.
+`shared-helper-choices-v2` sets the same options for assistant and instruction
+M0-M3. M0 still chooses a fixed rule, M1 doesn't get memory,
+M2 /M3 differ in filtering of recovered cases. Memory changes context,
+not accessible to `observe_then_dock`; new observation is always required.
+The version and SHA protocol are part of the ExperimentManifest.
+`legacy-diagnostic-v1` and not mixed with a new protocol.
+written but not yet executed.
+Branchmark: frozen test memory, independent series and statistics remain a separate block.
 
-Для AG3 подготовлен `/team/rosmaster`: разбор уже импортированных исходных
-архивов через существующие evidence store, SHA-проверку и журнал. Давность
-каждого потока относится к моменту записи, не к текущему состоянию машины.
-Отсутствующие/некорректные метаданные показываются отдельно. Результат можно
-скачать; model/network/motor calls отсутствуют. Это подготовка наблюдательной
-части AG3, а не закрытая физическая приёмка и не модельный shadow-планировщик.
-При отсутствии импортированных архивов страница честно сообщает об этом.
-Код и новые regression cases пока не запускались; текущая служба не перезапускалась.
+`/team/rosmaster`: review of the source items already imported
+The data are available from the current experience store, the SHA check and the journal.
+Each flow refers to the time of writing, not the current state of the machine.
+Missing/uncorrect metadata are shown separately.
+download; model /network/motor calls not available.
+The AG3 parts are not a closed-circuitive physical device or a model Shadow planner.
+In the absence of imported archives, the page is honest about this.
+The code and new regression cases have not yet been launched; the current service has not been restarted.
 
-## Сводный аудит трёх заданий · 14 ноября, текущая доработка
+## Consolidated audit of three assignments · 14 November, ongoing finalization
 
-Основания: исходное главное задание (SHA `563b5a04…`), корректирующее
-sim/real (SHA `3663684b…`), AG-дополнение в этом репозитории; полные хеши и
-заголовки находятся в `validation/dataset-release-20261114/audit-sources.json`.
-Последующие прямые указания оператора имеют приоритет: сохранять текущий проект,
-использовать копию Console8090, MentorPi T1 с фактическим Pi, ROSMASTER с его
-рукой; разрешены MuJoCo/VLA/YOLO/SAM/LLM, но новые запуски обучения и моделей
-пока запрещены. Старая :8020 остаётся неприкосновенной. Новых Python `continue`
-не добавлять. Объём ограничен сценариями ниже, без нового универсального framework.
+Bases: Initial Main Task (SHA `563b5a04…`)
+sim /real (SHA `3663684b…`), AG-addition in this repository; full hashs and
+The headings are in `validation/dataset-release-20261114/audit-sources.json`.
+The following direct instructions from the operator have priority: maintain the current project,
+use a copy of Console8090, MentorPi T1 with actual Pi, ROSMASTER with its
+By hand; MuJoCo /VLA/YOLO/SAM/LLM, but new training and models
+The old :8020 remains untouchable. `continue`
+The list is limited to the scenarios below, without a new universal framework.
 
-| Требование / основание | Существующий тракт и решение аудита | Что необходимо до приёмки |
+| Requirement / Ground| Current audit approach and decision| What is needed before we receive|
 |---|---|---|
-| Изоляция, provenance, offline, Git; master §3–5,12 | Собственные repo/venv/data/agents; SDK manifests, pinned assets, LocalNetworkOnly | Холодный запуск и process_build фиксируются при поставке; прежние системы не менялись |
-| 4 реальные задачи и исходные команды; master §6–7 | profiles, Session/RosmasterSession, EpisodeWriter, validation; отдельные schemas/units и action provenance | Новые пробные показы RGB/depth/lidar; не выдумывать feedback |
-| Данные/разбиение/подготовка; master §8–10 | datasets/training_drafts/training_pages; группы session ИЛИ scene, SHA сырых NPZ, подтверждение точного плана | Браузер и 5 старых реальных записей проверены. Реальных 50 показов пока нет |
-| ACT/VLA/PPO/fine-tune; corrective §2.1,3,5 | Официальные LeRobot ACT/SmolVLA/Diffusion, RSL/SB3, checkpoint/reload, transfer_preparation | Код и старые ограниченные прогоны; новые веса/качество запрещены к проверке сейчас |
-| Модели/физика/общий мир; corrective §4,6 | Menagerie, оригинальные CAD, контактная физика, native MuJoCo, table/floor layout | Последнюю геометрию не объявлять принятой без разрешённого прогона; измеренная калибровка отсутствует |
-| R2 Fleet-DAgger; corrective §2.1 | Авторские Random/TD/assignment, один слот оператора, ROHE, очередь/стоимость | Настоящие серии после обучения и допуска, не приписывать fixture физический успех |
-| R3 AutoIntervene; corrective §2.1 | Память features/actions, локальные/общие пороги, snapshot/chunk reset | Новая calibration/held-out серия требует обученного checkpoint |
-| R5 ветвление; corrective §2.1 | Полный снимок physics/RNG/policy, три ветви, бюджеты и импорт коррекции | Историческая программная приёмка; научная серия не выполнена |
-| R4 DART; corrective §2.1 | Ограниченная дополнительная абляция, по заданию после основных цепочек | noise_demonstrations/noise_pages: validation RMSE → paired clean/noisy → отдельные expert targets → просмотр/импорт. Контракты проверены; выполнение отложено. Это DART-inspired без covariance optimization |
-| История → G → стоимость; master §2,9 | research.features, gain_model, prioritize, research_value; новый cognitive.assistance использует тот же контракт | G unavailable без пригодного артефакта. Текст LLM не становится числом G |
-| AG0–1 типы/память/инструменты | schemas/store/registry/broker, FTS5, поколения, дубликаты, bounded calls | 26, затем 30 контрактных проверок PASS; отдельные результаты не суммировать как непересекающиеся |
-| AG2 локальная модель/роли | Qwen3-VL-2B 11/11 SHA, smolagents, 6 логических ролей; настоящий прежний text-plan | Прямой VLM тракт добавлен; processor-only проверка PASS, генерация запрещена |
-| SceneObserver: кадры/YOLO/SAM | observer/observation_job + прежний perception, исходные архивы и реальные видео; hypotheses с evidence/age/frame | YOLOE/SAM3 все SHA PASS. Новый вызов модели не выполнялся. ByteTrack подключён к очереди/UI и проверен числовой фикстурой; IDs только локальные |
-| S1 и OutcomeVerifier | run/cooperation: helper → NEW observation → recipient, независимые исходы; не HTTP 200 | Исторический S1 PASS, свежий физический S1 пока не допущен |
-| S2 recovery, S3 обратный перенос | S2 переиспользует sim.branching/геометрических экспертов четырёх сред; S3 cognitive.transfer + real TaskGraph: новый scope, original episode, отрицательный исход, без обновления весов | Контракты проверены. Новые симуляционные/физические серии запрещены; reverse benefit не измерен. Передача со стола на пол не поддержана геометрией |
-| M0–M3 и воспроизводимость; AG §9–10 | Новый experiments: общий frozen source prefix, одинаковые choices/budgets/seed, неизменяемые cells; память не обновляется | Код и Chromium preparation PASS, общий frozen snapshot/initial digest. Полная сравнительная серия отложена |
-| Ресурсы/STOP; AG §5–6 | Shared physical-activity lease позволяет ручное управление разными роботами, исключает тяжёлые jobs | В итоговом наборе 92 tests + 2 subtests PASS; версия Homebrain применяется без активного управления |
-| ROSMASTER AG3 и corrective B | Собственные файлы на устройстве совпадают с Git; read-only RGB/depth/2 lidar/IMU/odom/arm работают. Новая real_preparation ссылается на существующие trials | Agent запускается явным входом в управление. Новые мультимодальные реальные показы и допуск агентной миссии не приняты |
-| Tank AG4 и corrective C | Собственные agent/native_driver/sensors/permission SHA совпали. Датчики доступны, incident-block сохранён | Независимая остановка при потере USB — аппаратная зависимость. Pi-watchdog не решает разрыв USB |
-| SO AG5 и corrective D | 3 реальные успешные записи/teleop-копия/калибровки сохранены; новый observer читает wrist-кадры | Отдельная приёмка обновлённого тракта; не требовать всех роботов сразу |
-| ROS2/датчики/принадлежности; поправки оператора | Изолированные domains 0/30/73, read-only hub, MCAP/replay, RGB/depth/IR/cloud/scan/IMU, mic/RGB API | Общая world TF требует измерений. OLED не поддержан документированным MCU API; не прошивать и не симулировать поддержку |
-| AG6 физическая совместная задача | Existing ownership/trials/recorders переиспользуются; новое shadow не выдаёт разрешения | real_execution/physical_adapter/real_pages реализованы для конечной последовательности существующих trials: STOP generation, browser lease, saved episode, explicit advance. Физический допуск и обученные навыки не заменяются fixture |
+| Isolation, protection, offline, Git; Master §3-5.12| Own repo /venv/data/agents; SDK manifests, penned essays, LocalNetworkOnly| Cold start and process_byld are recorded at delivery; previous systems remain unchanged|
+| 4 real tasks and initial commands; master §6-7| profiles, Session /RosmasterSession, EpisodeWriter, walidat; selected schemas /units and action project| New test displays RGB /depth/lidar; do not make up Feedback|
+| Data/battery/preparation; Master §8-10| Datasets /training_drafts/training_pages; session groups or scene, SHA raw NPZ, confirmation of exact plan| Brouser and 5 old real records checked. 50 actual shows are not yet available.|
+| ACT/VLA/PPO/fine-tune; corrective §2.1,3,5 | Official LeRobot ACT /SmolVLA/Diffusion, RSL /SB3, kheckpoint /reload, transfer_preparation| Code and old limited runs; new weights/quality are not allowed for testing now|
+| Models/physics/General World; Corrective §4.6| Menagerie, original CAD, contact physics, native MuJoCo, table /floor layout| Last geometry not to declare accepted without permission; measured calibration not available|
+| R2 Fleet-DAgger; corrective §2.1 | Random /TD/assignment, one operator slot, ROHE, line/cost| Real series after learning and admission, not impute fixture physical success|
+| R3 AutoIntervene; corrective §2.1 | Memory of Features /actions, local/general thresholds, snapshot /chunk reset| New Calibration /held-out Series requires trained kheckpoint|
+| R5 branch; positive §2.1| Complete photo of phicisics /RNG/policy, three branches, budgets and import of correction| Historical software application; scientific series not implemented|
+| R4 DART; corrective §2.1 | Limited additional absulation, after major chains| noise_demonstrations/noise_pages: validation RMSE → paired clean/noisy ♪ individual exert Targets ♪ View/import. Contracts checked; performance postponed. This is DART-inspired without covariance postimization |
+| History ♪ G ♪ cost; master §2.9| research.features, gain_model, prioritize, research_value; new cognitive.assistance uses the same contract| G unavailable without a suitable artifact. The text of LLM does not become a number G|
+| AG0-1 Types/memorandry/tools| schemas /store/registry/broker, FTS5, generations, duplicates, background call| 26, then 30 PASS contract checks; selected results not to be summarized as non-overlapping|
+| AG2 Local Model/Roll| Qwen3-VL-2B 11 /11 SHA, smolagents, 6 logical roles; actual former text-plan| Direct VLM extension added; PASS processor-only check, generation prohibited|
+| SceneObserver: /YOLO/SAM| observer /observation_job + old operation, original archives and real videos; hypotheses with experience /age/frame| YOLOE /SAM3 all SHA PASS. New model call failed. ByteTrack is connected to /UI and checked by numerical lock; IDs only local|
+| S1 and OutcomVerifier| Run /cooperation: Help   ♪ NEW observation ♪ independent output; not HTTP 200| Historical S1 PASS, fresh physical S1 not yet allowed|
+| S2 recovery, S3 reverse transfer| S2 re-uses sim.branding/geometric experts in four environments; S3 cognitive.transfer + real TuskGraff: new spope, origial episode, negative, no re-updated balance| Contracts checked: New simulations/physical series are prohibited; reverse benefit is not measured.|
+| M0-M3 and reproducibility; AG §9-10| New experiences: common frozen source prefix, identical choices /budgets/seed, unchangeable bells; memory not updated| Code and Chromium repaparation PASS, total frozen snapshot /initial digital series.|
+| Resources /STOP; AG §5-6| Shared phisical-activity lase allows manual control of different robots, excludes heavy jobs| In the final set of 92 testes + 2 subtests PASS; Homebrain is used without active control|
+| ROSMASTER AG3 and Corrective B| The personal files on the device are consistent with Git; read-only RGB /depth/2 lidar /IMU/odom/arm is operational. New real_preparation refers to existing trials| Agent is launched by a clear entry to the control. New multimodal real shows and clearances for the agent mission are not accepted.|
+| Tank AG4 and corrective C| The /native_driver/sensors/permission SHA's own agent is consistent. Sensors are available, incedent-block is saved.| Independent USB loss stop is a hardware addict. Pi-watchdog does not solve the USB breakup.|
+| SO AG5 and Corrective D| 3 actual successful /teleop- copy/calibration saved; new observer reads wrist frame| Separate adoption of the updated tract; not require all robots at once|
+| ROS2/Sensors/Accordings; operator amendments| Isolated domains 0 /30/73, read-only Hub, MCAP /replay, RGB /depth/IR/cloud/scan/IMU, mic /RGB API| The total world TF requires measurements. OLED is not supported by documented MCU API; neither stitch up nor simulate support|
+| AG6 Physically Shared Task| Existing self-hip /trials/recorders is re-used; new shadow does not permit| Real_execution /physical_adapter/real_pages is implemented for the final sequence of existing trials: STOP engineering, browser release, Savad episode, explicit extension. Physical admission and trained skills are not replaced by fixture|
 
-Это аудит, а не объявление всех требований выполненными. Закрывать следующие
-программные пункты по этой таблице; запрещённые прогоны и аппаратные зависимости
-не переименовывать в программный PASS. Инструкция массового сбора остаётся
-`DATASET_GUIDE_RU.md`; не начинать сбор Tank до устранения границы STOP/USB.
+This is an audit, not a declaration of all requirements met.
+Programme points for this table; prohibited runs and hardware relationships
+The mass collection instruction remains
+`DATASET_GUIDE.md`; do not start collecting Tank until the border of STOP /USB. is removed
 
-Итог программного аудита: новые observer/tracker, real TaskGraph, frozen comparisons,
-assistance/G, memory transfer и R4 связаны с прежними компонентами.
-92 software tests + 2 subtests PASS; браузерная подготовка — без jobs/model/sim/motion.
-Физические зависимости и запрещённые прогоны перечислены в CURRENT_STATUS.md;
-их наличие не скрывается формулировкой «всё принято». Последняя инструкция
-приёмки — PHYSICAL_ACCEPTANCE_RU.md.
+Outcome of the software audit: new observer /tracker, real TuskGraph, frozen comparisons,
+assistance/G, memory transfer and R4 are linked to the former components.
+92 software tests + 2 subtests PASS; browser training without jobs /model/sim/motion.
+Physical dependence and prohibited runs are listed in CURRENT_STATUS.md;
+The last instruction is not hidden by the phrase "all is accepted".
+The pickup is PHYSICAL_ACCEPTANCE.md.

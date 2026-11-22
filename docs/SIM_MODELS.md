@@ -1,114 +1,114 @@
-# Модели симуляции
+# Simulation models
 
-Этап A, Homebrain. Реальные профили и данные не заменены симуляционными.
+Stage A, Homebrain. Real profiles and data are not replaced by simulations.
 
-| Среда | Источник и состояние |
+| Wednesday| Source and status|
 |---|---|
-| SO-101 pick-place | Menagerie `robotstudio_so101`, commit `370c43965323c0944b433b202aac5058b5f907a9`, Apache-2.0. Компиляция, контакты, wrist RGB, захват/перенос/отпускание учителем проверены. Геометрия upstream; калибровка под местную руку не подтверждена. |
-| ROSMASTER pick-place | Оригинальные Yahboom M3Pro URDF/STL + SRDF из официального code archive. Пять преобразований и камера совпадают с сохранённой панелью. Native импорт, mimic, контактный захват/удержание/перенос/отпускание проверены на трёх расстановках без обучения. |
-| ROSMASTER dock | Та же исходная геометрия в фиксированной позе руки; плоское движение от сил и моментов. Приближение привода, не измеренная динамика mecanum. Скриптовый подъезд выполнен. |
-| Tank dock | MentorPi T1: исходные URDF/STL пакета, совпадение с установленными файлами проверено. Геометрия больше не размерный макет. Плоский привод остаётся силовой, ещё не откалиброванной моделью; опубликованная масса не заменяет взвешивание сборки. Реальный USB-инцидент открыт. |
-| Fleet lab | Один MjModel/MjData для SO-101, ROSMASTER и Tank, общее время, гравитация и контакты. Три варианта помещения, реальные mesh-объекты, взаимодействие через наблюдение и отдельная проверка робот–предмет. Физическая передача предмета и whole-body ROSMASTER не заявляются. |
+| SO-101 pick-place | Menagerie `robotstudio_so101`, commit `370c43965323c0944b433b202aac5058b5f907a9`Compilation, contacts, wrist RGB, capture/carry-out/dismissal by the teacher are checked. |
+| ROSMASTER pick-place | Original Yahboom M3Pro URDF/STL + SRDF from the official code archive. Five changes and the camera match the saved panel. The Native Import, mimic, contact capture/retention/delay/dismissal are checked at three locations without training. |
+| ROSMASTER dock | Same initial geometry in a fixed arm position, flat movement from forces and moments, drive approach, unmeasured mecanum dynamics, script approach complete.|
+| Tank dock | The MentorPi T1: the original URDF /STL package, the match with the installed files are checked. Geometry is no longer a dimensional model. The flat drive remains a power drive, not yet calibrated model; the published mass does not replace the weighing of the assembly. The real USB incident is open.|
+| Fleet lab | One MjModel /MjData for SO-101, ROSMASTER and Tank, total time, gravity and contact. Three options for space, real mesh objects, interaction through observation and separate verification of robot-related activities. Physical transmission of the object and the live-body ROSMASTER are not declared.|
 
 ## SO-101
 
-Используются все шесть исходных позиционных актуаторов и исходные mesh/contact geometry. Локальное расширение добавляет свободный кубик 32 мм, массу 35 г, открытую коробку, свет и обзорную камеру. Эти размеры — параметры симуляционной задачи, не измерения предметов пользователя. Пять суставов: radians ↔ degrees; захват: диапазон актуатора ↔ 0–100%. Совпадение нулей/направлений с местной калибровкой требует проверки. К реальному роботу эта модель автоматически не применяется.
+All six original positional actors and the original mesh /contact geometry are used. Local expansion adds a free cube of 32 mm, mass of 35 g, open box, light and viewer. These dimensions are the parameters of simulation task, not measuring user items. Five joints: radians ~ degres; capture: range of an agent ~ 0 - 100 per cent. The match between zeros/directions to local calibration requires verification. This model is not automatically applied to a real robot.
 
-Физика 2000 Гц; управляющий интерфейс 30 Гц с чередованием 66/67 подшагов. Команда задерживается на один управляющий такт, затем проходит фильтр 25–60 мс; фактические положения вычисляются MuJoCo, `qpos` не назначается в `step`. Успех — центр отпущенного кубика внутри коробки, малая скорость и отведённый захват в течение 0,5 секунды. Deadline — failure, не technical abort.
+Physical 2000 Hz; interface manager 30 Hz alternate 66/67 The command is delayed by one stroke control, then passed through a 25–60 ms filter; the actual positions are set out by MuJoCo, `qpos` not appointed to `step`Success is the center of the released cube inside the box, a small speed and a 0.5 second capture.
 
-ACT видит только wrist RGB 640×480 и шесть суставов. State-PPO дополнительно получает истинные координаты объекта/цели; такая политика не допускается к физическому управлению. Snapshot сохраняет MuJoCo INTEGRATION state, очередь/фильтр команд, RNG, фазу/время и policy chunk state. Детерминизм восстановления проверен на настоящей физике.
+ACT only sees Wrist RGB 640×480 and six joints. State-PO is additionally provided with true object/target coordinates; this policy is not allowed to be physically managed. Snapshot retains MuJoCo INTERGRATION state, command line/filtration, RNG, phase/time and policy chunk state. The determinism of recovery is verified in real physics.
 
-Оригинальный Playground `SO101PickCube` проверен отдельно: один CPU environment, PPO checkpoint и загрузка в новом процессе. Его критерий подъёма не подменяет pick-place. Это короткая проверка работоспособности upstream, не доказанный навык.
-
-
-## Исходная модель ROSMASTER
-
-[Официальная страница Yahboom](https://www.yahboom.net/study/ROSMASTER-M3PRO) → Code-Firmware → `ROSMASTER M3 PRO-Code.zip`. Закреплён SHA-256 `7f9083d301fef50633445272505e9acb561a4b6abe362dd946d7deaaf4caff0f`. Модель: `orin/M3Pro_ws-0.0.1.zip`, `m3pro_ws/src/M3Pro/urdf/M3Pro.urdf` и 20 STL. Дополнение: `orin/yahboomcar_ws.zip`, `M3Pro_config/config/M3Pro.srdf`. `python -m scripts.cache_m3pro --download` один раз скачивает архив и извлекает только нужные оригинальные файлы; при обычном запуске интернет не используется.
-
-`sim.manufacturer.native_tree` использует настоящий MuJoCo URDF importer. Сохраняются размеры/оси/геометрия/CAD-inertia и пять mimic-ограничений захвата; список исключений столкновений берётся из заводского SRDF. Нулевые пустые visual-теги удаляются; колёса и дополнительный поворот камеры зафиксированы в arm-сцене. Для dock рука фиксирована в опубликованной/сохранённой рабочей позе [90,130,0,25,90,30]. `package.xml` заявляет Apache2.0, но содержит старую атрибуцию TurtleBot: исходные assets остаются локально, в Git только загрузчик и хеши.
-
-Массы/inertia исходного CAD не названы измерением полностью собранного робота. Коэффициенты контроллера, трение, запаздывание, camera FOV и соответствие физического шестого серво CAD-механизму ещё требуют проверки; ничего из них не записывается в реальный агент. Шасси используют реальные силы/моменты MuJoCo, но с ограниченными плоскими DOF: контакт колёс с полом заменён явной моделью отклика/скольжения, столкновения с предметами сохранены. Это честно обозначенное приближение динамики.
-
-Предыдущие ROS/Tank записи и ACT/PPO проверки сделаны на первой упрощённой геометрии и сохранены с её хешем. Они подтверждают программный тракт той версии, а не качество новой исходной модели. При смене геометрии новые данные имеют другой model hash; старые свидетельства не переписаны. Основное обучение по указанию пользователя будет запускаться им самостоятельно после программной готовности.
-
-**Измерено 2026-11-13 (ROSMASTER, без движения):** камера 640×480, fy=480,71 px → вертикальный FOV 53,06° (теперь в обеих ROSMASTER-сценах), частоты датчиков, пределы суставов URDF = пределы контроллера; источник и неизмеренное — `docs/handoffs/rosmaster_measured_params.json`. **Идентификация отклика:** `explorer3/sim/rosmaster_sysid.py` (`scripts/rosmaster_sysid.py <profile>`) подбирает по реальным записям запаздывание, постоянную времени, коэффициент (база) и предел скорости серво (рука) и сравнивает на отложенных эпизодах номинальную sim, форму симулятора (один lag/slip) и полную форму. Результат — файл-кандидат, автоматически не применяется (`apply_to_env` — только явный вызов). Реальных записей с движением пока нет, поэтому статус модели остаётся `assumed_uncalibrated`. На синтетической проверке с запаздыванием и пределом скорости форма симулятора для руки ошибается в 5–9 раз сильнее полной; если реальные данные покажут то же, модель руки нужно дополнить этими двумя параметрами.
-
-## Tank и фактическая плата
-
-Комплектация и ссылки на девять сохранённых глав инструкции: [TANK.md](TANK.md). Машина пользователя — MentorPi T1 Advanced со своим Pi5 ModelB Rev1.1, класс RAM8GB/4CPU по историческому kernel. Текущие свободная память/температура неизвестны до следующей аппаратной проверки. Никаких параметров M1/A1 вместо гусеничного T1 не использовано; недостающий исходный `mentorpi_description` предполагается скопировать с установленного Tank на этапе C, без изменения его штатных файлов.
-
-## Исправление контактов — без обучения
-
-Обе руки используют исходную контактную геометрию. У SO-101 сохранены Menagerie collision primitives/meshes и трение; у ROSMASTER — заводские STL, mimic и SRDF. Исправлены численная мягкость контактов и связанных звеньев: timestep 0,5 мс, solref [0,001,1], solimp [0,95,0,99,0,001,0,5,2], 100 итераций; для mimic solimp [0,99,0,999,0,001,0,5,2]. Эти настройки ограничивают численную погрешность, **не являются измерением упругости деталей**. См. [MuJoCo solver parameters](https://mujoco.readthedocs.io/en/stable/modeling.html#solver-parameters).
-
-Исправлен также scripted teacher SO-101: целевая поза интерполируется с ограничением скорости, чтобы резкий переход к коробке не выбрасывал объект. Кубик остаётся свободным телом: без attachment/weld, назначения qpos или выключения контактов с пальцами. Проверяются подъём выше 100 мм, удержание до команды раскрытия, отпускание и устойчивое положение в коробке.
-
-`scripts/check_grasp_physics.py` измеряет контакты на КАЖДОМ физическом подшаге, сохраняет кадры захвата/переноса/отпускания и JSON с исходными хешами. Seeds 1/2/3: SO-101 3/3, проникновение максимум 0,403 мм; ROSMASTER 3/3, максимум 0,221 мм, mimic error <0,000038 rad. Это проверки заданной геометрической траекторией, не обучение и не качество автономной политики. Regression `test_rosmaster_sim_contacts.py` охватывает обе руки.
-
-После изменения физики старые эпизоды сохранены; обучение из UI выбирает только версию открытой сцены. `datasets.select_simulation_revision` запрещает неявное смешение версий. Оценка ACT и возобновление PPO проверяют версию модели. Старые checkpoint не объявляются проверенными на новой геометрии. Основное обучение по указанию пользователя не запускалось.
-
-## Уточнение T1: исходная геометрия найдена
-
-`sim.tank_model` импортирует original package CAD через MuJoCo URDF loader. Источник — public mirror `gongyizhi0425/Shipcleaning-Robot` e63726dcd51620fd1778672a1296c6ca3d7c29af; загрузка `scripts/cache_tank_model.py`, локальный manifest SHA каждого файла. Официальный открытый T1 repository по-прежнему не содержит этих файлов. Геометрия/преобразование шасси сверены с официальной главой 6.2.3; 14 ноября2026 все10используемых файлов совпали поSHA256 с установленным пакетом пользовательскогоTank (docs/tank-stage-c-readonly.json). Это не проверка массы, динамики или оптического крепления. Не объявлять mirror официальным release. TODO-license сохранена; assets не распространяются в Git.
-
-STL шасси имеет больше 200000 граней; точное преобразование в OBJ сохраняет все исходные треугольники. Camera mount из depth_cam.xacro; optical center/FOV не измерены. Track mesh — единая неподвижная геометрия внутри planar model, не симуляция звеньев гусеницы. Масса полного комплекта и инерция корпуса, response/slip — отдельные предположения, не результат одометрической калибровки.
-
-`fleet_lab_sim` — один мир, отдельные namespace и рабочие зоны, ROSMASTER только arm profile. Common solver 2000 Hz/elliptic/impratio10; это новая versioned модель. Механические scripted проверки не заменяют оценку trained policies. Общая сцена пока nominal; индивидуальные вариации сохранены в отдельных средах.
+The original Playground `SO101PickCube` is checked separately: one CPU environment, PPO checkpoint and download in a new process. Its rise criterion does not replace the pick-place. This is a short test of the ability of the substream, not proven skill.
 
 
-### Tank: измеренная камера, 14 ноября2026
+## ROSMASTER Reference Model
 
-Скопирован реальный CameraInfo RGB640×400: fx415.28833, fy416.09375, cx318.07541, cy188.47833. Вместо предположенияfovy65° используются MuJoCo resolution/focalpixel/principalpixel. Общий произвольный масштаб пикселя нужен только для отношенияfocal/sensorsize; физический размер матрицы не заявляется измеренным. Знакиoffset проверены отрисовкой трёхточек поROS K (погрешность<0.8px). Базовый вертикальныйFOV≈51.35°. Lens distortionD сохранена, но в рендере не применяется; extrinsics относительно CAD и динамика пока не идентифицированы.
+[Official page of Yahboom](https://www.yahboom.net/study/ROSMASTER-M3PRO) → Code-Firmware → `ROSMASTER M3 PRO-Code.zip`B. Fixed SHA-256 `7f9083d301fef50633445272505e9acb561a4b6abe362dd946d7deaaf4caff0f`II. Model: `orin/M3Pro_ws-0.0.1.zip`, `m3pro_ws/src/M3Pro/urdf/M3Pro.urdf` and 20 STL. Supplement: `orin/yahboomcar_ws.zip`, `M3Pro_config/config/M3Pro.srdf`. `python -m scripts.cache_m3pro --download` Once downloads the archive and only removes the original files that are needed; the Internet is not used when it is normally launched.
 
-РандомизацияFOV изменяет такжеcam_intrinsic, snapshot/restoreсохраняет их.11проверок projection/variation/mobile/fleet/branching прошли безобучения. Изменение камеры меняетmodelhash; старые checkpoints не являются проверенными политиками для обновлённой модели.
+`sim.manufacturer.native_tree` uses this MuJoCo URDF importer. The dimensions/axies/geometrics of /CAD-inertia and five mini-limits of capture are retained; the list of exceptions to collisions is taken from the SRDF factory. Zero empty visual tags are removed; wheels and additional chamber rotation are fixed in the arm scene. For dock the hand is fixed in the published/saved working position [90.130.0.25.90.30]. `package.xml` states Apache 2.0, but contains the old TurtleBot attribulation: the original Assets remain local, only the loader and hash are in Git.
+
+Masses/inertia The original CAD is not a measurement of a fully assembled robot. Control coefficients, friction, lateness, camera FOV and the physical sixth CAD servo still require verification; none of them are recorded in the real agent. The chassis uses the real force/moJoco time, but with limited flat DOF: the wheel-to-ground contact is replaced by a clear response/slip model, impact with objects is saved. This is an honest-marked approach to the dynamics.
+
+Previous ROS /Tank records and ACT /PPO checks are done on the first simplified geometry and stored with its hash. They confirm the software version of that version rather than the quality of the new original model. When geometry changes, new data have another model has been added; old certificates are not rewritten. The main training will be started by the user on its own after the program is ready.
+
+**Measured 2026-11-13 (ROSMASTER, uninitiated):** chamber 640×480, fy=480.711 px \ vertical FOV 53.06° (now in both ROSMASTER scenes), sensor frequencies, joint limits of the URDF = controller limits; source and unmeasured - `docs/handoffs/rosmaster_measured_params.json`**Response identification:** `explorer4/sim/rosmaster_sysid.py` (`scripts/rosmaster_sysid.py <profile>`) selects the time lag, constant time, ratio (base) and speed limit (hand) from real records and compares the nominal sim, the shape of the simulation (one lag) on the postponed sequences/slipThe result is a candidate file, not automatically applied (`apply_to_env` There are no real traffic records yet, so the status of the model remains `assumed_uncalibrated`At the synthetic test with a late and speed limit, the hand simulation is wrong 5 to 9 times more complete; if the real data shows the same, the arm model needs to be supplemented by these two parameters.
+
+## Tank and actual charges
+
+Complica and references to nine saved chapters of the instruction: [TANK.md](TANK.md). The user machine is MentorPi T1 Advanced with its Pi5 ModelB Rev1.1 class RAM8GB /4CPU in historical kernel. The current free memory/temperature is unknown until the next hardware check. No M1 /A1 parameters are used instead of caterpillar T1; the missing source `mentorpi_description` is intended to be copied from the installed Tank at stage C without changing its current files.
+
+## Correcting Contacts — Without Training
+
+Both hands use the original contact geometry. SO-101 retains the Maintenance collition /meshes and friction; ROSMASTER has the SL, mimic and SRDF. The numerical softness of the contacts and the connected links are corrected: timestep 0.5 ms, solref [0.001.1], solip [0.95.099,0.001,0.5.2], 100 iterations; for the minic solim [0.99.0999,0.001,0.5.2]. These settings limit the numerical error, **are not measurements of the tibia of the parts.** See [MuJoCo solver parasmeters](https://mujoco.readthedocs.io/en/stable/modeling.html#solver-parameters)].
+
+The scripted teacher SO-101 is also corrected: the target position is interpolated with speed limits so that the sharp transition to the box does not throw out the object. The cube remains free: without attachment /weld, the purpose of qpos or the removal of the finger contacts. The rise above 100 mm, retention to the box's opening command, release and steady position in the box are checked.
+
+`scripts/check_grasp_physics.py` measures contact on the physical lift, retains capture/carry-over/dismissal and JSON with the original hashs./2/3: SO-101 3/3, penetration of a maximum of 0.403 mm; ROSMASTER 3/3, maximum 0.221 mm, mimic error < 0.00038 rad. These are tests of a given geometric trajectory, not training or the quality of an autonomous policy. `test_rosmaster_sim_contacts.py` it covers both hands.
+
+After the physic change, the old episodes are saved; the UI study only selects the version of the open stage. `datasets.select_simulation_revision` prohibits implicit mixing of versions. The ACT evaluation and the PPO renewal test the model version. The old kheckpoint is not declared tested on the new geometry. The main instruction was not launched on the instructions of the user.
+
+## Clarification T1: Reference geometry found
+
+`sim.tank_model` imports original package CAD via MuJoCo URDF loader. Source: public mirror `gongyizhi0425/Shipcleaning-Robot` e637226dcd51620fd1778672a1296c6d7c3d29a; downloading `scripts/cache_tank_model.py`, local manifest SHA of each file. Official open T1 repository still does not contain these files. Chassis herometry/conversion is checked with the official chapter 6.2.3. All 10 used files coincided with the installed user Tank package (docs /tank-stage-c-readonly.json). This is not a verification of mass, dynamics or optical fixation. Do not declare mirror official release. TODO-license is retained; the Assets are not included in Git.
+
+The STL chassis has more than 2,000 dimensions; the exact conversion to OBJ preserves all the original triangles./FOV Trick mesh is a single fixed geometry inside the planar model, not a simulation of the caterpillar./slip - individual assumptions, not the result of odometric calibration.
+
+`fleet_lab_sim` is a world, separate namespace and working areas, ROSMASTER only an arm profile. Common solver 2000 Hz /elliptic/impratio10; this is a new version of the model. Mechanically controlled tests do not replace the assessment of the Trained policies. The overall scene is not yet minimal; individual variations are retained in individual media.
 
 
-## Общий мир и предметы · 14.11.2026
+### Tank: measuring chamber, 14 November 2026
 
-`sim.room` добавляет мастерскую, зону хранения и сборочный участок. Это конечные
-воспроизводимые варианты, выбранные в `/sim/fleet` и `/team`: меняются расположения
-предметов, освещение и материалы. Клетчатые калибровочные коврики ограничены рабочими
-зонами; вокруг есть пол, стены, рабочий стол, открытая тара и стеллаж. Оранжевая цель
-остаётся фиксированным физическим маркером в рамке. Сцена не объявляется копией
-комнаты пользователя и не означает, что существующий dock умеет произвольные цели.
+===Reception===The actual CameraInfo RGB640×400: fx415.28833, fy416.6935, cx318.07541, cy188.47833. Instead of the assumption of fovy65°, MuJoCo resolution /focalpixel/principalpixel. is used. The total arbitrary scale of the pixel is required only for the ratioofocal /sensorsize; the physical size of the matrix is not declared measured. The signoffset is checked by the figure of three ROS K (acceleration <0.8px). The basic vertical FOVE51.35o. Lens distributionD is retained but not applied in the range; extrinsics relative to CAD and the dynamics are not yet identified.
 
-Бутылка, банка и лимон используют исходные меши/текстуры [robosuite](https://github.com/ARISE-Initiative/robosuite),
-revision `5ce6643f3092639d08f7b0f90ed1c6a84f50552c`; MIT и все SHA сохранены рядом
-в `sim/vendor_props`. Runtime работает offline и проверяет хеши. Не устанавливается
-ещё один симулятор. Visual geoms имеют нулевую массу/нет столкновений; отдельные
-collision geoms задают контакт и явную массу. Закрытые формы используют выпуклую
-оболочку. Полость тары составлена из пяти стенок, не заполнена общей выпуклой оболочкой.
-Полая бутылка, жидкость и деформация предметов не моделируются.
+The Randomization FOV also changes the camera_inrinsic, snapshot /restore retains their 11 test /variation/mobile/fleet/branching projection without learning. The change of camera changes the modulehash; the old checkpoints are not proven politicians for the updated model.
 
-Массы 80/150/70 г, трение поверхностей и сопротивление качению — явно заданные
-параметры тестовой сцены, не измерения реальных объектов. Свободные предметы падают,
-опираются на стол/пол и передают силы. У контактов есть скольжение, кручение и качение
-(condim=6); solref=.003 s при общем шаге .0005 s. Параметры следуют ограничениям
-[моделирования MuJoCo](https://mujoco.readthedocs.io/en/stable/modeling.html), но требуют
-идентификации для переноса на реальные материалы.
 
-`check_shared_room.py` проверяет в настоящем MuJoCo опору/силы, проникновение <2 мм,
-затухание скорости, точный snapshot/restore, три полных сценария помощи и контакт
-Tank с предметом. Для контакта сравниваются одинаковые команды из одного снимка:
-препятствие перед корпусом против препятствия вне пути. Это привилегированный
-диагностический тест физики; модель планирования не получает его скрытые координаты.
-Мяч может зажиматься, поэтому успешным взаимодействием не считается обязательно
-«красиво оттолкнул»: измеряется реальное ограничение перемещения и контактная сила.
+## World and World Affairs. 14.11.2026
 
-Динамика гусениц и mecanum пока плоская: силы/моменты воздействуют на корпус, сами
-ленты/колёса не разрешены динамически. Внешний вид, контакты с предметами и остановка
-в симуляции не доказывают точность одометрии или аппаратного STOP.
+`sim.room` adds workshop, storage area and assembly area.
+Reproducible options selected in `/sim/fleet` and `/team`: Change of location
+The calibration mats are limited to the working units.
+Zones; there are floors, walls, desks, open packagings and shelving.
+remains a fixed physical marker in the frame.
+The user room does not mean that existing dock can be arbitrary.
 
-### Исправление размещения по уточнению оператора (пока не проверено запуском)
+Bottle, can and lemon use original mixes/textures [robosuite](https://github.com/ARISE-Initiative/robosuite),
+`5ce6643f3092639d08f7b0f90ed1c6a84f50552c`; MIT and all SHA are stored in a row
+in `sim/vendor_props`Runtime works offline and checks the hashs.
+Another simulation. Visual geoms have zero mass/no impact; separate
+collison geoms are the contact and the apparent mass. Closed forms use convex.
+The packaging is made of five walls and is not filled with a common bulge.
+The full bottle, liquid and deformation of objects are not modelled.
 
-SO-101 и её задача подняты на отдельную физическую столешницу; ROSMASTER и Tank
-остаются на полу. `configs/physical-layout.json` содержит `measured_height_m=null`
-и номинальную высоту для симуляции 0,75 м. Это предположение, не замер стола.
-Одна копия параметров на процесс определяет стол, смещение модели и TaskView;
-изменение файла применяется следующим worker. Геометрия, размещение и контракты
-навыков имеют новые хеши. Измеренная высота с источником всё равно не создаёт
-общую world TF. Межплатформенная передача предметов не допускается.
+Mass 80 /150/70 g, surface friction and rolling resistance - clearly defined
+The parameters of the test stage, not the measurements of real objects.
+The contact has slip, twist and rock.
+(condim=6); solref=003 s with a total step.0005 s. Parameters follow the limits
+[MuJoCo models](https://mujoco.readthedocs.io/en/stable/modeling.html), but require
+Identification for real-life material transfer.
 
-После указания «ничего запускать» этот код не рендерился и физически не прогонялся.
-Предыдущие contact/browser PASS не подтверждают новую геометрию; они сохранены
-как исторические свидетельства, повторная приёмка ожидает разрешения.
+`check_shared_room.py` checks the support/force, penetration < 2 mm in this MuJoCo,
+Speed blackout, exact snapshot /restore, three full-scale help scenarios and contact
+Tank to object. The same commands from the same image are compared for contact:
+An obstacle to the building against the barrier outside the way.
+A diagnostic physics test; the planning model does not receive its hidden coordinates.
+The ball can be clamped, so successful interaction is not necessarily considered
+"Greatly pushed away": real displacement restriction and contact force are measured.
+
+The dynamics of caterpillars and mecanum are flat so far: forces/times affect the hull, themselves
+Ribbon/wheels are not allowed dynamically.
+The simulations do not demonstrate the accuracy of the odometer or the STOP hardware.
+
+### Correct the operator's position to specify (until the startup has been checked)
+
+SO-101 and its task is raised to a separate physical table; ROSMASTER and Tank
+The `configs/physical-layout.json` contains `measured_height_m=null`.
+And the nominal height for the 0.75 m simulation. That's a guess, not a freeze on the table.
+One copy of the process parameters defines the table, the model shift and the TuskView;
+The file change is applied by the following worker. Geometry, location and contracts
+The measured height with the source doesn't create any
+Total world TF. Interplatform transfer of items is not permitted.
+
+After the "nothing to run" was ordered, the code did not re-run or physically run.
+Previous /browser PASS does not confirm new geometry; it is retained
+As historical evidence, re-entry is pending.

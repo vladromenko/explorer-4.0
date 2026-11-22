@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--group', choices=['all', 'main', 'sim', 'browser'], default='all')
 args = parser.parse_args()
 stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-parent = Path(os.environ.get('EXPLORER3_DATA', Path.home()/'.local/share/explorer3'))/'validation'
+parent = Path(os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA', Path.home()/'.local/share/explorer3')))/'validation'
 out = parent/f'tests-{stamp}'
 out.mkdir(parents=True, exist_ok=False)
 inventory = {g: sorted(str(p.relative_to(ROOT)) for p in (ROOT/'tests').glob('test_*.py') if groups.test_group(p)==g) for g in ('main','sim','browser')}
@@ -29,14 +29,14 @@ for group, files in inventory.items():
     if args.group in ('all',group) and files:
         interpreter = ROOT/('.venv-sim' if group=='sim' else '.venv')/'bin/python'
         if group=='browser':
-            interpreter = Path(os.environ.get('EXPLORER3_BROWSER_PYTHON',str(ROOT/'.venv-browser/bin/python')))
+            interpreter = Path(os.environ.get('EXPLORER4_BROWSER_PYTHON', os.environ.get('EXPLORER3_BROWSER_PYTHON',str(ROOT/'.venv-browser/bin/python'))))
         xml = out/f'{group}.xml'
         with tempfile.TemporaryDirectory(prefix='isolated-',dir=out) as isolated:
             if group=='sim':
                 for asset in ('mujoco_menagerie/robotstudio_so101','mentorpi-t1-cad','yahboom-downloads/m3pro-orin/m3pro_ws/src/M3Pro','yahboom-downloads/m3pro-orin/yahboomcar_ws/src/M3Pro_config/config'):
                     source = parent.parent/'cache/source'/asset
                     shutil.copytree(source,Path(isolated)/'cache/source'/asset)
-            env = {**os.environ, 'EXPLORER3_DATA':isolated, 'PYTHONPATH':str(ROOT),
+            env = {**os.environ, 'EXPLORER4_DATA':isolated, 'PYTHONPATH':str(ROOT),
                    'MUJOCO_GL':'egl', 'HF_HUB_OFFLINE':'1', 'HF_DATASETS_OFFLINE':'1',
                    'OMP_NUM_THREADS':'2', 'OPENBLAS_NUM_THREADS':'1'}
             start = time.monotonic()

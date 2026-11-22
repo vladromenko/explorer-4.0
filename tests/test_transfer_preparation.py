@@ -1,8 +1,8 @@
 """Fixture contracts only: no datasets written as demonstrations and no training."""
 import copy,json
 import pytest
-from explorer3 import transfer_preparation as transfer,training_drafts as drafts,datasets
-from explorer3.profiles import profile
+from explorer4 import transfer_preparation as transfer,training_drafts as drafts,datasets
+from explorer4.profiles import profile
 
 
 def source(tmp_path):

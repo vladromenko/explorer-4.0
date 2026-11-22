@@ -5,15 +5,15 @@ import numpy as np
 import pytest
 
 pytest.importorskip('cv2')
-from explorer3 import goto
+from explorer4 import goto
 
 
 @pytest.fixture(autouse=True)
 def isolated_memory(monkeypatch, tmp_path):
-    from explorer3 import world_memory
+    from explorer4 import world_memory
     monkeypatch.setattr(world_memory, 'MEMORY', tmp_path / 'memory.json')
     monkeypatch.setattr(world_memory, 'SNAPSHOTS', tmp_path / 'snap')
-    from explorer3 import episodes
+    from explorer4 import episodes
     monkeypatch.setattr(episodes, 'ROOT', tmp_path / 'episodes')
     monkeypatch.setattr(world_memory, 'beacons', lambda: {})
     for p in world_memory.POSES.values():

@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import pytest
 
-from explorer3 import so101_geometry as geometry
+from explorer4 import so101_geometry as geometry
 
 
 def test_known_marker_geometry_and_missing_detection_are_distinct():
@@ -42,7 +42,7 @@ def test_fixed_tip_uses_measured_angles_offsets_and_distinct_jaw_frame():
 
 
 def test_raw_recorder_keeps_causality_images_and_unknown_calibration(tmp_path, monkeypatch):
-    from explorer3 import hardware, resources
+    from explorer4 import hardware, resources
     monkeypatch.setattr(resources, 'DATA', tmp_path)
     class Camera:
         info = {'device': 'fixture', 'camera_geometry_valid': False}
@@ -81,8 +81,8 @@ def test_configuration_is_only_preparation(tmp_path, monkeypatch):
 
 
 def test_stale_optional_geometry_stops_existing_session_before_finalize(tmp_path, monkeypatch):
-    from explorer3 import catalog, resources, session as sessions
-    from explorer3.control import Control
+    from explorer4 import catalog, resources, session as sessions
+    from explorer4.control import Control
     monkeypatch.setattr(resources, 'DATA', tmp_path)
     monkeypatch.setattr(catalog, 'DATA', tmp_path)
     catalog.initialize()

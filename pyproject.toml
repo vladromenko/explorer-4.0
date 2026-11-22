@@ -10,7 +10,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = ["nicegui==3.19.0", "lerobot[training,smolvla,feetech]==0.6.1", "scikit-learn==1.9.1"]
 
 [tool.setuptools.packages.find]
-include = ["explorer3*"]
+include = ["explorer4*", "explorer3"]
 
 [tool.setuptools.package-data]
-explorer3 = ["static/*.html"]
+explorer4 = ["static/*.html"]

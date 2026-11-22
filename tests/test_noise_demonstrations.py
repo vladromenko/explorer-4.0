@@ -4,7 +4,7 @@ import json
 from types import SimpleNamespace
 import numpy as np
 import pytest
-from explorer3 import noise_demonstrations as noise
+from explorer4 import noise_demonstrations as noise
 
 
 def test_noise_scale_is_measured_bounded_reproducible_and_intention_unchanged():
@@ -27,7 +27,7 @@ def test_expert_target_never_relabels_real_commands():
 
 
 def test_writer_keeps_actual_command_sidecar_and_separate_training_target():
-    from explorer3.recording import EpisodeWriter
+    from explorer4.recording import EpisodeWriter
     writer=EpisodeWriter.__new__(EpisodeWriter);frames=[]
     writer.collection_context=None
     writer.camera='front';writer.domain='sim';writer.category='correction';writer.command_source=None

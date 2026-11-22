@@ -1,8 +1,8 @@
 """Run a ROSMASTER recording against an in-process fake agent; prints the episode validation (synthetic)."""
 import json, sys, time, threading
 import cv2, httpx, numpy as np
-from explorer3 import rosmaster_session as rs, catalog
-from explorer3.paths import DATA, prepare
+from explorer4 import rosmaster_session as rs, catalog
+from explorer4.paths import DATA, prepare
 
 NAME = sys.argv[1]
 PILOT = len(sys.argv) > 2 and sys.argv[2] == 'pilot'
@@ -51,8 +51,8 @@ OP = Operator()
 prepare(); catalog.initialize()
 ENVIRONMENT=NAME.endswith('_rgbd_lidar')
 if ENVIRONMENT or MANAGED:
-    from explorer3 import sensors,profiles
-    from explorer3.recording import EpisodeWriter
+    from explorer4 import sensors,profiles
+    from explorer4.recording import EpisodeWriter
     from rosmaster_sensor_fixture import FixtureFeed
     if ENVIRONMENT:sensors.SensorFeed=FixtureFeed
     profiles.PROFILES[NAME]['domain']='sim'  # fixture-only schema, confined to this child process
@@ -60,7 +60,7 @@ if ENVIRONMENT or MANAGED:
 rs.agent_client = lambda timeout=.4: httpx.Client(transport=httpx.MockTransport(handler), base_url='http://agent')
 session = rs.RosmasterSession(OP)
 if PILOT:
-    from explorer3 import trials, research
+    from explorer4 import trials, research
     class Policy:
         decision_info = {}
         def __init__(self, plan): pass
@@ -77,7 +77,7 @@ if PILOT:
     plan = {'id': 'p' * 32, 'kind': 'policy', 'profile': NAME, 'checkpoint_sha256': 'a' * 64, 'max_duration_s': 30.}
     session.start('test-owner', NAME, 'scene-test', check=True, plan=plan, study=study)
 elif MANAGED:
-    from explorer3 import collection
+    from explorer4 import collection
     managed=collection.create_series('rosmaster_pick_place',NAME,'fixture-operator','Synthetic scene')
     session.start('test-owner',NAME,managed['layout'],collection=managed['id'],check=True)
 else:
@@ -88,7 +88,7 @@ while time.monotonic() < end and session.status()['frames'] < (80 if MANAGED els
 session.finish('success'); session.thread.join(30)
 status = session.status()
 assert status['error'] is None, status
-from explorer3.validation import validate
+from explorer4.validation import validate
 rows = catalog.rows('episodes')
 assert all(r['excluded'] == 1 for r in rows)
 if not PILOT and not MANAGED:assert all(r['session']=='r3-series-01' and r['scene']=='scene-test' for r in rows)
@@ -102,7 +102,7 @@ if MANAGED:
     extra={'collection_report':report}
 
 if PILOT:
-    from explorer3 import research
+    from explorer4 import research
     record = research.records()[0]
     extra = {'events': [e['kind'] for e in record['events']], 'assigned': record['assigned'], 'outcome': record['outcome'],
              'categories': [r['category'] for r in sorted(rows, key=lambda r: r['created'])], 'features': record['features']}

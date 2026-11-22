@@ -7,7 +7,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 parser=argparse.ArgumentParser();parser.add_argument('--profile',default='so101');args=parser.parse_args()
-ARTIFACTS=Path(os.environ.get('EXPLORER3_BROWSER_ARTIFACTS','/home/jetsonnx/.local/share/explorer3/validation/corrective-a/browser'))
+ARTIFACTS=Path(os.environ.get('EXPLORER4_BROWSER_ARTIFACTS', os.environ.get('EXPLORER3_BROWSER_ARTIFACTS','/home/jetsonnx/.local/share/explorer3/validation/corrective-a/browser')))
 
 async def main():
     ARTIFACTS.mkdir(parents=True,exist_ok=True)

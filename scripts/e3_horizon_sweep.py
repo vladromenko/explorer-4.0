@@ -30,7 +30,7 @@ def main():
     ap.add_argument('--seeds', type=seeds, default=seeds('10000-10019'))
     ap.add_argument('--out', type=Path, required=True)
     a = ap.parse_args()
-    from explorer3.sim.evaluate import evaluate
+    from explorer4.sim.evaluate import evaluate
     a.out.mkdir(parents=True, exist_ok=True)
     table = {}
     for n in a.steps:

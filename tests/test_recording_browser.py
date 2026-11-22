@@ -13,7 +13,7 @@ def test_preparation_and_guides_without_execution(tmp_path):
     root = Path(__file__).resolve().parents[1]
     with socket.socket() as probe:
         probe.bind(('127.0.0.1',8037))
-    env = {**os.environ,'EXPLORER3_DATA':str(tmp_path),'PYTHONPATH':str(root)}
+    env = {**os.environ,'EXPLORER4_DATA':str(tmp_path),'PYTHONPATH':str(root)}
     env.pop('PYTEST_CURRENT_TEST',None)
     with (tmp_path/'server.log').open('w') as log:
         process = subprocess.Popen([str(root/'.venv/bin/python'),'scripts/readiness_test_server.py'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)

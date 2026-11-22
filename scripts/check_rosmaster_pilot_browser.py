@@ -15,9 +15,9 @@ UI = f'http://127.0.0.1:{UI_PORT}'
 DEFAULT_CKPT = Path.home() / '.local/share/explorer3/pipeline-check/20261112-190255/checkpoints/f50a3792648d463895dbaf4609763605-b8/checkpoints/last/pretrained_model'
 SETUP = r'''
 import hashlib, json, sys, time, uuid
-from explorer3 import catalog, research
-from explorer3.paths import DATA
-from explorer3.profiles import profile
+from explorer4 import catalog, research
+from explorer4.paths import DATA
+from explorer4.profiles import profile
 catalog.initialize(); research.initialize()
 root = DATA / 'checkpoints' / 'fixture' / 'pretrained_model'
 sha = hashlib.sha256((root / 'model.safetensors').read_bytes()).hexdigest()
@@ -104,12 +104,12 @@ def main():
     (data / 'configs/rosmaster-hardware-enabled.json').write_text(json.dumps({'enabled': True, 'scope': 'browser fixture'}))
     (data / 'configs/rosmaster-agent.json').write_text(json.dumps({'host': '127.0.0.1', 'port': AGENT_PORT, 'token': secrets.token_hex(8), 'manual_control_enabled': True}))
     shutil.copytree(ckpt, data / 'checkpoints/fixture/pretrained_model')
-    env = {**os.environ, 'EXPLORER3_DATA': str(data), 'PYTHONPATH': str(ROOT)}
+    env = {**os.environ, 'EXPLORER4_DATA': str(data), 'PYTHONPATH': str(ROOT)}
     py = str(ROOT / '.venv/bin/python')
     ids = json.loads(subprocess.check_output([py, '-c', SETUP], cwd=ROOT, env=env).decode().strip().splitlines()[-1]); ids['data'] = str(data)
     report = {'domain': 'fixture', 'robot_touched': False, 'training_started': False, 'data': str(data), 'checkpoint_source': str(ckpt)}
     agent = subprocess.Popen([py, str(ROOT / 'scripts/fake_rosmaster_agent.py'), str(AGENT_PORT)], cwd=ROOT)
-    ui = subprocess.Popen([py, '-m', 'explorer3.app'], cwd=ROOT, env={**env, 'EXPLORER3_PORT': str(UI_PORT), 'EXPLORER3_HOST': '127.0.0.1'},
+    ui = subprocess.Popen([py, '-m', 'explorer4.app'], cwd=ROOT, env={**env, 'EXPLORER4_PORT': str(UI_PORT), 'EXPLORER4_HOST': '127.0.0.1'},
                           stdout=open(data / 'ui.log', 'w'), stderr=subprocess.STDOUT)
     try:
         wait_http(f'http://127.0.0.1:{AGENT_PORT}/health'); wait_http(UI + '/rosmaster/control')

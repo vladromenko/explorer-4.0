@@ -1,8 +1,8 @@
 import copy
 import numpy as np
 import pytest
-from explorer3.fleet_live import ClockAlignment,frame_id,readiness,match_observations
-from explorer3.sensors import environment_features,ROSMASTER_CHANNELS,SensorArchive
+from explorer4.fleet_live import ClockAlignment,frame_id,readiness,match_observations
+from explorer4.sensors import environment_features,ROSMASTER_CHANNELS,SensorArchive
 from test_sensor_pipeline import packet
 
 
@@ -74,7 +74,7 @@ def test_pairing_includes_uncertainty_and_rejects_stale_samples():
 
 def test_status_file_ages_continue_to_grow_after_hub_stops(tmp_path,monkeypatch):
     import json
-    from explorer3 import fleet_live
+    from explorer4 import fleet_live
     monkeypatch.setattr(fleet_live,'DATA',tmp_path)
     monkeypatch.setattr(fleet_live.time,'time',lambda:110.)
     (tmp_path/'ros2-hub').mkdir()

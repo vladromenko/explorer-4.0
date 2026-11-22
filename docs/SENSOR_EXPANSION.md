@@ -1,98 +1,98 @@
-# Расширение данных Explorer 4.0
+# Extension of Data Explorer 4.0
 
-Статус на 14 ноября 2026: реализация продолжается. Обучение не запускается.
-Сначала завершается доступная без движения часть Tank, затем ROSMASTER.
+Status as at 14 November 2026: implementation ongoing; training not started.
+First, the unrolled part of Tank is completed, then ROSMASTER.
 
-## Что уже получено на Tank
+## What's already been received on Tank
 
-Из фактически установленной системы через подписки ROS 2 получены:
+The actual system is obtained from the following ROS 2 subscriptions:
 
-- RGB, исходная глубина и инфракрасное изображение Aurora930, 640×400;
-- CameraInfo: параметры проекции, искажения и размеры изображений;
-- облако точек производителя в метрах;
-- лазерный скан: расстояния, углы, допустимый диапазон и временные параметры;
-- IMU: угловая скорость в рад/с и ускорение в м/с²;
-- напряжение батареи, метки времени и статические преобразования координат.
+- RGB, reference depth and infrared image of Aurora930, 640×400;
+- CameraInfo: the projection, distortion and size of the images;
+- Cloud of producer points in metres;
+- Laser scan: distances, angles, tolerance range and time parameters;
+- IMU: angle speed in rad/s and acceleration in m/s2;
+- Battery voltage, time marks and static coordinate transformation.
 
-Фактически используется драйвер лидара MS200. Название COIN-D6 на странице
-магазина не принимается за подтверждённую модель установленного устройства.
-Наблюдатель датчиков имеет только чтение: он не открывает моторный порт,
-не публикует команды ROS и не запускает движение гусениц.
+The actual Lidar driver MS200 is used.
+The store is not considered to be a confirmed model of the device installed.
+Sensor monitor only reads: it does not open the engine port,
+does not publish the ROS commands or initiate the movement of caterpillars.
 
-## Что дополняется
+## What's Additional
 
-1. Экран окружения: RGB, карта глубины, ИК, лазерный обзор сверху, интерактивное
-   облако точек, свежесть каждого потока и питание.
-2. Запись исходных измерений без потери глубины, с параметрами камер,
-   системами координат, временем источника и временем получения на Homebrain.
-   Диагностические записи без действий хранятся отдельно от демонстраций.
-3. Дополнение показов движения данными лидара, глубины и IMU. Новый контракт
-   данных должен быть явным; существующие RGB-датасеты и checkpoints не меняются
-   задним числом. Асинхронные потоки сопоставляются по времени, а пропуски и
-   устаревшие данные имеют отдельные маски.
-4. Признаки окружения для политик: 36 секторов лидара, сетка глубины 8×6,
-   IMU, доли действительных измерений и возраст данных. Исходные измерения
-   сохраняются для последующего применения других представлений/моделей.
-   Поддержку дополнительного входа нужно проверять у каждой архитектуры:
-   наличие RGB-входа у VLA само по себе не означает использование глубины/лидара.
-5. Общий обзор нескольких роботов после проверки преобразований координат и
-   временного согласования. Отдельные облака пока не объявляются единой картой.
-   Командная одометрия Tank не выдаётся за измеренное перемещение колёс.
+1. Environment screen: RGB, depth map, IC, laser view from above, interactive
+   a cloud of dots, freshness of each flow, and food.
+2. Recording of the background measurements without loss of depth, with enclosure parameters,
+   The reference systems, the source time and the time of receipt on Homebrain.
+   The diagnostic records of no action are kept separately from the demonstrations.
+3. Supplementing lidar, depth and IMU data display.
+   The data should be clear; existing RGB-dates and sheckpoints remain unchanged
+   Asynchronous flows are compared by time and omissions and omissions are compared with the time flow.
+   The outdated data have separate masks.
+4. Signs of an environment for a politician: 36 sectors of lidar, 8×6 depth grid,
+   IMU, shares of valid measurements and age of data.
+   retained for subsequent application of other submissions/models.
+   Support for the additional entry should be checked at each architecture:
+   The presence of a VLA RGB input does not in itself mean the use of depth/lidar.
+5. Overview of several robots after checking the conversion of coordinates and
+   Individual clouds are not yet declared as a single map.
+   Tank command odometer is not released for measured wheel movements.
 
-## Следом — ROSMASTER
+## Following is ROSMASTER
 
-Пользователь включил ROSMASTER и запросил проверку всех фактически доступных
-возможностей: лидар, камера глубины, возможный микрофон, нижняя подсветка и
-мини-экран. Сначала инвентаризация установленного оборудования и готовых
-драйверов; затем подключение подтверждённых потоков и функций к Explorer.
-Наличие и работоспособность микрофона, дисплея и подсветки пока не подтверждены
-этим этапом. Их поддержка не объявляется реализованной заранее.
+User turned on ROSMASTER and requested testing of all actually available
+capability: lidar, depth chamber, possible microphone, lower lighting and
+First, an inventory of installed equipment and finished equipment
+The main driver is the driver; then the confirmed stream and function are connected to the Explorer.
+Availability and performance of microphone, display and lighting are not yet confirmed
+Their support is not announced in advance.
 
-Обновление: наблюдатели ROSMASTER установлены как отдельные службы 8053/8054.
-Получены RGB/depth 640×480 Orbbec DaBai DCW2, оба скана по 666 измерений,
-IMU, магнитометр, измеренная одометрия, 6 углов сервоприводов и батарея.
-Проверен экран `/rosmaster/sensors`, 6-пакетная диагностическая запись и её
-повторное чтение в Chromium, включая узкий экран. 3D-поверхность восстанавливается
-на Homebrain из depth и реальных CameraInfo: штатная публикация cloud не включена.
-Схема окружения из 265 признаков подключена к новым профилям
-`rosmaster_dock_rgbd_lidar` и `rosmaster_pick_place_rgbd_lidar`. Записываются
-действия, RGB и исходные пакеты обоих лидаров/depth/IMU/odom/mag; выбирается
-последний пакет, уже полученный к моменту наблюдения, без данных из будущего.
-Fixture LeRobot readback и четыре профиля записи в настоящем браузере прошли.
-Настоящие показы с новыми профилями ещё не приняты; обучение не запускалось.
+Update: ROSMASTER observers are installed as separate services 8053 /8054.
+RGB /depth 640×480 Orbbec DaBai DCW2, both scans of 666 measurements,
+IMU, magnetometer, measured odometer, six angles of servo drive and battery.
+`/rosmaster/sensors` screen checked, 6-pack diagnostic record checked and her
+Rereading in Chromium, including a narrow screen. 3D surface is re-established
+Homebrain from dept and real CameraInfo: not included in the regular publication.
+The 265 features are connected to new profiles
+`rosmaster_dock_rgbd_lidar` and `rosmaster_pick_place_rgbd_lidar`. Recording
+Actions, RGB and basic packages of both lidars /depth/IMU/odom/mag; selected
+The last package already received by the time of observation, without data from the future.
+The Fixture LeRobot readback and four details of the current browser have passed.
+Real shows with new profiles have not yet been accepted; the training has not been started.
 
-USB C-Media audio capture обнаружен, ручная 5-секундная проверка доступна,
-но слышимость не подтверждена. Подсветка поддерживается RGB opcode текущего
-MCU-протокола. В прежний скопированный интерфейс Explorer добавлен блок
-подсветки; он отправляет только RGB opcode через уже открытый собственный
-контроллер и не включает управление/моторы. Тесты и браузерный сценарий прошли,
-физическое свечение ещё не проверялось. OLED по руководству производителя подключён
-к STM32 PB10/PB11; в текущем скопированном протоколе нет OLED-команды.
-Прошивку ради экрана не меняли; наличие `/dev/i2c-*` на Jetson не подтверждает
-подключение OLED к Jetson. Оба лидара уже приходят через MCU: неопознанный
-USB 1a86:7522 не объявляется лидаром и драйвер к нему принудительно не привязывался.
+USB C-Media audio frame detected, manual 5-second test available,
+The light is supported by RGB opcode of current
+MCU-protocol. An explorer unit has been added to the previous copied interface
+Lights; it only sends RGB opcode through its own open
+The controller and does not include the control/motors.
+Physical light has not yet been checked. OLED is controlled by manufacturer
+to STM32 PB10/PB11; there is no OLED team in the current copied protocol.
+The display was not changed for the screen; the presence of `/dev/i2c-*` on Jetson does not confirm
+OLED connection to Jetson. Both lidars are already coming through MCU: unidentified
+USB 186:7522 is not declared lidar and the driver was not forced to be attached to it.
 
-Общая шина наблюдений ROS 2, измерение разницы часов и сопоставление кадров
-реализованы на Homebrain: [подробности](ROS2_COMMON_SYSTEM.md). Общая карта,
-аппаратная синхронизация камер и координированные физические движения пока
-не объявлены готовыми.
+Total tyre of observations ROS 2, time difference measurement and human resources comparison
+implemented on Homebrain: [](ROS2_COMMON_SYSTEM.md). Common map,
+Camera hardware sync and coordinated physical movements so far
+Not declared ready.
 
-Старые панели и системы сохраняются. Обучение начнёт пользователь после
-завершения программной подготовки. Проверка датчиков без движения не закрывает
-инцидент Tank с потерей USB и недоставленным STOP; физический допуск остаётся
-отдельной проверкой.
+Old panels and systems are stored. The training will start after the user has
+The test of the unrolled sensors does not close
+Tank incident with USB loss and missing STOP; physical clearance remains
+A separate check.
 
-## Реализовано в текущем обновлении Tank
+## Implemented in current update of Tank
 
-- Экран `/tank/sensors`: живые RGB/depth/IR, лидар, облако точек, свежесть и питание; проверен Chromium на компьютере и узком экране.
-- Короткие записи датчиков до 60 секунд, список записей и повторный просмотр без подключённого робота. Диагностика не попадает в датасеты демонстраций.
-- Собственные службы наблюдения на портах 8043/8044 для штатного и изолированного ROS. После перезапуска датчики возвращаются, моторный агент остаётся `armed=false`, `hardware_open=false`.
-- Профиль `tank_dock_rgbd_lidar`: RGB + 178 признаков окружения; исходные depth/IR/scan/IMU и временные метки сохраняются рядом с действиями, повторные пакеты не дублируются. Пропуски и устаревание имеют маски. Разрыв потока более 2 секунд прерывает этот профиль.
-- Настоящий LeRobotDataset прошёл запись и чтение нового контракта на явно синтетической fixture. ACT прошёл прямой расчёт: изменение входа окружения меняет выход. Оптимизатора, обучения, скачивания весов и отправки результатов в моторы не было.
-- SmolVLA в существующем рецепте не поддерживает этот дополнительный вход: такой выбор явно отклоняется, вместо молчаливой потери лидара/глубины. Предыдущие RGB-профили сохранены.
-- Для будущей передачи управления переиспользован установленный бинарник `oradar_scan` с параметрами штатного MS200 launch. Второй владелец лидара запрещён. Проверка на настоящем устройстве во время моторной сессии остаётся частью физического блока.
-- Обнаружен USB PnP Audio Device с ALSA capture. Добавлена отдельная кнопка записи 5 секунд; автоматической записи или воспроизведения на Tank нет. Слышимость микрофона ещё не проверена.
+- `/tank/sensors` screen: live RGB /depth/IR, lidar, cloud of points, freshness and power; checked by Chromium on computer and narrow screen.
+- Short recordings of sensors up to 60 seconds, a record list and a re-view without a robot on it, diagnostics are not on the display dataset.
+- Ports own surveillance services 8043/8044 The sensors return after restart, the engine agent remains `armed=false`, `hardware_open=false`.
+- The profile of `tank_dock_rgbd_lidar`: RGB + 178 environmental features; the original dept /IR/scan/IMU and time tags are stored close to the actions, the re-packs are not duplicated. The missing and obsolete have masks. The flow gap of more than 2 seconds interrupts this profile.
+- The real LeRobotDataset recorded and read a new contract for obviously synthetic nuxture. The ACT was straight-lined: changing the input environment changes output. The optimumizer, learning, downloading weights and sending results to the engines was not available.
+- SmolVLA does not support this additional entry in the existing recipe: this choice is clearly rejected instead of silent loss of lidar/deep. Previous RGB profiles are retained.
+- The installed `oradar_scan` with the regular MS200 launch parameters is overused for future control transfer. The second lidar owner is prohibited. The test on this device during the motor session remains part of the physical block.
+- U.S.B.P. Audio Development with ALSA Capture. Added a separate 5-second record button; no automatic record or playback on Tank. The microphone's audition is not yet checked.
 
-RGB передаётся JPEG quality 85 ради Wi-Fi; глубина, ИК, скан и IMU сохраняются без потери числовых значений. Облако для просмотра прорежено до 6000 точек; полная карта глубины хранится отдельно. Пакеты асинхронны, сохранены реальные source stamps, время получения и консервативный возраст. Общая карта и точная внешняя калибровка датчиков не объявлены готовыми.
+RGB is transferred to JPEG qualiity 85 for Wi-Fi; depth, IC, scan and IMU are preserved without loss of numerical values. The cloud for viewing is cut to 6,000 points; the full depth map is stored separately. Asynchronous packages, real source stamps, time of receipt and conservative age are saved. The common map and accurate external calibration of sensors are not declared ready.
 
-В пяти последних чтениях HTTP-пакет занимал примерно 0,10–0,34 с; это наблюдение в покое, не гарантия задержек во время движения. Обязательная физическая проверка STOP/потери USB не заменена этими результатами. Incident-block не снят, гусеницы не запускались.
+In the last five readings, HTTP took about 0.10 to 0.34 seconds; this observation was not a guarantee of delay during traffic. Mandatory physical verification of STOP/USB loss was not replaced by these results. The Incident-block was not removed, the caterpillars were not launched.

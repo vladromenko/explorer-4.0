@@ -18,8 +18,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3 import catalog  # noqa: E402
-from explorer3.paths import DATA  # noqa: E402
+from explorer4 import catalog  # noqa: E402
+from explorer4.paths import DATA  # noqa: E402
 
 JOINTS = ['base', 'shoulder', 'elbow', 'wrist_pitch', 'wrist_roll', 'gripper']
 

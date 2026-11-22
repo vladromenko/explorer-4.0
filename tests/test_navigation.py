@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 pytest.importorskip('cv2')
-from explorer3 import episodes, explore, fleet_map as fm, navigation, world_memory
+from explorer4 import episodes, explore, fleet_map as fm, navigation, world_memory
 
 SEGMENTS = np.array([((-2, -1.5), (3, -1.5)), ((3, -1.5), (3, 2.5)), ((3, 2.5), (-2, 2.5)), ((-2, 2.5), (-2, -1.5)),
                      ((-1.6, 1.6), (-0.2, 1.6)), ((-0.2, 1.6), (-0.2, 2.5)),
@@ -111,7 +111,7 @@ def test_robot_explores_the_room_by_itself(fleet, robot):
 
 
 def test_goto_drives_around_furniture_to_a_reported_place(fleet, monkeypatch):
-    from explorer3 import goto
+    from explorer4 import goto
     for pose in [(0., 0., 0.), (-1., -.5, 0.), (-1., .8, 0.), (1., 1.2, 0.), (2.2, -1., 0.)]:
         fleet.update('rosmaster', packet('rosmaster', pose), pose)
     world_memory.POSES['tank'].fix(2.2, -1., math.pi)

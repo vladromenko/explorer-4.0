@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 import numpy as np
 import psutil
-from explorer3.sim.factory import make
+from explorer4.sim.factory import make
 
 
 def run(profile,output):

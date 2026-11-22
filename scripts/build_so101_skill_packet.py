@@ -6,7 +6,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from explorer3.so101_packet_builder import build_real_packet
+from explorer4.so101_packet_builder import build_real_packet
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

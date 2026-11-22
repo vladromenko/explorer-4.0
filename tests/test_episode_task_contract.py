@@ -4,9 +4,9 @@ import json
 
 import pytest
 
-from explorer3 import datasets
-from explorer3.profiles import profile
-from explorer3.training_drafts import semantic_contract
+from explorer4 import datasets
+from explorer4.profiles import profile
+from explorer4.training_drafts import semantic_contract
 
 
 @pytest.mark.parametrize('name', ['rosmaster_floor_pick_knowledge_sim', 'rosmaster_floor_pick_noknowledge_sim'])

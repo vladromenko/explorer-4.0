@@ -6,7 +6,7 @@ After=network-online.target
 Type=simple
 WorkingDirectory=%h/Projects/explorer-4.0
 Environment=PYTHONUNBUFFERED=1
-ExecStart=%h/Projects/explorer-4.0/.venv/bin/python -m explorer3.rosmaster_mirror --serve
+ExecStart=%h/Projects/explorer-4.0/.venv/bin/python -m explorer4.rosmaster_mirror --serve
 Restart=on-failure
 RestartSec=5
 

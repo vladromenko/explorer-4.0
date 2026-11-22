@@ -11,7 +11,7 @@ from runtime import Runtime
 
 
 def calibration():
-    return json.loads(Path(os.environ['EXPLORER3_TEST_CALIBRATION']).read_text())
+    return json.loads(Path(os.environ['EXPLORER4_TEST_CALIBRATION' if 'EXPLORER4_TEST_CALIBRATION' in os.environ else 'EXPLORER3_TEST_CALIBRATION']).read_text())
 
 
 def test_lighting_reuses_rgb_opcode_without_motor_enable_or_heartbeat():

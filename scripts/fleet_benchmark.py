@@ -1,4 +1,4 @@
-"""Fleet benchmark in simulated rooms with the robots' own code (explorer3.fleet_map / explore /
+"""Fleet benchmark in simulated rooms with the robots' own code (explorer4.fleet_map / explore /
 navigation): how much faster is a team than one robot at mapping a room and at finding an object?
 
 Rooms are random (size, furniture, an internal wall with a doorway); lidars are ray-cast with
@@ -20,7 +20,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-os.environ.setdefault('EXPLORER3_SIM_BENCHMARK', '1')
+os.environ.setdefault('EXPLORER4_SIM_BENCHMARK', '1')
 
 CONDITIONS = {'solo': ['rosmaster'], 'team': ['rosmaster', 'tank'], 'team3': ['rosmaster', 'tank', 'rosmaster2']}
 DT = .25
@@ -53,7 +53,7 @@ class Clock:
         return int(self.t * 1e9)
 
 
-from explorer3.sim2d import make_room, wall_distance, raycast, free_spot  # noqa: E402  (shared with the swarm simulation)
+from explorer4.sim2d import make_room, wall_distance, raycast, free_spot  # noqa: E402  (shared with the swarm simulation)
 
 
 def reachable_area(room, start, res=.05, clearance=.2):
@@ -81,11 +81,11 @@ def reachable_area(room, start, res=.05, clearance=.2):
 
 def run(args):
     room_seed, condition, task = args
-    import explorer3.fleet_map as fm
-    import explorer3.explore as ex
-    import explorer3.navigation as nav
-    import explorer3.world_memory as wm
-    import explorer3.episodes as eps
+    import explorer4.fleet_map as fm
+    import explorer4.explore as ex
+    import explorer4.navigation as nav
+    import explorer4.world_memory as wm
+    import explorer4.episodes as eps
     import tempfile
     tmp = Path(tempfile.mkdtemp())
     eps.ROOT = tmp / 'episodes'
@@ -277,7 +277,7 @@ def main():
     ap.add_argument('--tasks', default='explore,find')
     ap.add_argument('--out', default=None)
     a = ap.parse_args()
-    data = Path(os.environ.get('EXPLORER3_DATA', Path.home() / '.local/share/explorer3'))
+    data = Path(os.environ.get('EXPLORER4_DATA', os.environ.get('EXPLORER3_DATA', Path.home() / '.local/share/explorer3')))
     out = Path(a.out) if a.out else data / 'simlab' / 'fleet_benchmark' / _time.strftime('%Y%m%d-%H%M%S')
     out.mkdir(parents=True, exist_ok=True)
     jobs = [(1000 + i, c, t) for i in range(a.rooms) for c in a.conditions.split(',') for t in a.tasks.split(',')]
