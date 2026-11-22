@@ -32,11 +32,11 @@ from .grasp_calibration import (
     summary,
 )
 from .grasp_localizer import prewarm_field
-from .grasp_shadow import ArchiveGraspActions
+from .grasp_measured import TRIAL_TICKS, MeasuredActions, next_target
+from .grasp_native_evidence import REPORT as NATIVE, verified_native
 from .paths import DATA, ROOT, offline_environment
 
-NATIVE = ROOT / "docs/results/conditioned_grasp_v1/native-execution.json"
-TICKS = 360
+TICKS = TRIAL_TICKS
 TASK = "pick up the cube"
 EVIDENCE = "physical-admission.json"
 
@@ -59,6 +59,8 @@ def identity(path):
     sources = (
         "explorer4/conditioned_grasp.py",
         "explorer4/grasp_shadow.py",
+        "explorer4/grasp_measured.py",
+        "explorer4/grasp_native_evidence.py",
         "explorer4/grasp_admission.py",
         "explorer4/grasp_localizer.py",
         "explorer4/grasp_reference.py",
@@ -164,15 +166,6 @@ class InferenceLocalizer:
 
     def __call__(self, pixels):
         return self.network(pixels.to("cuda")).cpu()
-
-
-class MeasuredActions(ArchiveGraspActions):
-    input_domain = "bound_rosmaster_reference"
-
-    def locate(self, observation, image):
-        # The position was computed from this very image while checking the matched
-        # physical point. The observation is constructed locally, never taken from a client.
-        return np.asarray(observation["predicted_xy_m"], dtype=np.float32)
 
 
 def observation(sample, binding, target):
@@ -332,17 +325,8 @@ def review(path):
             result["reference_episodes"] = rows
             mae = errors.mean(axis=0)
             p95 = np.percentile(jumps, 95, axis=0)
-            native = json.loads(NATIVE.read_text())
-            if native["source_sha256"]["native_executor"] != file_hash(
-                ROOT / "agents/rosmaster/runtime.py"
-            ) or [r["seed"] for r in native["trials"]] != list(range(940200, 940220)):
-                raise ValueError("Штатный исполнитель или исходные сцены отличаются от проверенных")
-            n = len(native["trials"])
-            wins = sum(
-                r["methods"]["rbf"]["outcome"] == "success"
-                and r["methods"]["rbf"]["executed_control_steps"] <= TICKS
-                for r in native["trials"]
-            )
+            native = verified_native(NATIVE)
+            wins, n = native["wins"], native["n"]
             latency = max(r["first_step_latency_s"] for r in rows)
             result.update(
                 channel_mae_deg=mae.tolist(),
@@ -352,7 +336,7 @@ def review(path):
                 native_sim_trials=n,
             )
             checks = {
-                "native_mujoco": n >= lim["mujoco_min_episodes"] and wins / n >= lim["mujoco_min_success"],
+                "native_mujoco": native["pass"] and n >= lim["mujoco_min_episodes"] and wins / n >= lim["mujoco_min_success"],
                 "independent_recordings": len(rows) >= lim["min_real_holdout_episodes"],
                 "joint_and_grip_mae": bool(np.all(mae <= [lim["joint_mae_deg"]] * 5 + [lim["gripper_mae"]])),
                 "p95_command_jump": bool(
@@ -562,8 +546,7 @@ class LiveGrasp:
         if self.obs is None:
             self.obs, target = checked_sample(self.path, sample, self.binding, self.model)
             self.decision_info = {"method": "rbf", "target": target, "command_tick": 0}
-        if self.index < 220:
-            self.last = self.model.next(self.obs)
+        self.last = next_target(self.model, self.obs, self.index, self.last)
         self.index += 1
         self.decision_info["command_tick"] = self.index
         decision_seconds = time.monotonic() - decision_started

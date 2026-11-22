@@ -12,6 +12,7 @@ def install():
     from nicegui import app, run, ui
 
     from .grasp_admission import resume_pending
+    from .grasp_native_evidence import verified_native
     from .sensor_pages import jpeg
 
     app.on_startup(resume_pending)
@@ -82,11 +83,22 @@ def install():
         with ui.card().classes("grasp-card"):
             ui.label("Готовность одной пробы на роботе").classes("text-h6")
             ui.label(
-                "Штатные ограничения руки проверены на тех же 20 сценах в MuJoCo. Для пробы на самом ROSMASTER нужны проверенная камера и три независимые записи с реальными движениями. Исходы захвата, первое движение, задержка решения и погрешность по каждому суставу проверяются отдельно."
+                "Допуск относится к одному пробному захвату в четвёртой измеренной точке. Кубик должен целиком находиться в кадре, а его положение по модели — внутри области показов. Порог MuJoCo — удержание в конце 360 команд минимум в 10 из первых 20 подходящих сцен. Дополнительно нужны проверенная камера и три независимые записи реальных движений."
             )
+            try:
+                native = verified_native()
+                verdict = "пройден" if native["pass"] else "не пройден"
+                ui.label(
+                    f"Порог симулятора {verdict}. Удержаний внутри проверенной области: {native['wins']} из {native['n']}. "
+                    f"Подошли по видимости и положению {native['eligible_candidates']} из {native['candidate_count']} кандидатов. "
+                    f"При учёте всех 20 исторических стартов: {native['historic_holds']} удержаний, "
+                    f"{native['historic_eligible']} разрешённых запусков."
+                )
+            except (OSError, ValueError, KeyError):
+                ui.label("Проверенного результата текущего исполнителя пока нет. Запуск одиночной пробы заблокирован.")
             ui.link(
-                "Исходы со штатным исполнителем в MuJoCo",
-                "/simlab-media/reports/conditioned-grasp-v1/native-execution.json",
+                "Все исходные сцены, причины отказа и результат внутри области",
+                "/simlab-media/reports/grasp-admission-native-v3/result.json",
             )
         if not session:
             with ui.card().classes("grasp-card"):

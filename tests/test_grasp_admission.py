@@ -36,3 +36,28 @@ def test_sample_at_deadline_cannot_issue_another_action(tmp_path):
     session.index = gate.TICKS
     with pytest.raises(StopIteration):
         session.next_sample({})
+
+
+def test_generic_native_successes_do_not_open_the_field_trial():
+    from explorer4.grasp_native_evidence import REPORT, verified_native
+
+    for old in ("native-execution.json", "field-admission-v2.json"):
+        with pytest.raises(ValueError):
+            verified_native(REPORT.with_name(old))
+
+
+def test_eligibility_and_terminal_hold_are_rechecked(tmp_path):
+    from explorer4.grasp_native_evidence import REPORT, verified_native
+
+    original = json.loads(REPORT.read_text())
+    tampered = tmp_path / "report.json"
+    report = json.loads(REPORT.read_text())
+    report["candidates"][0]["predicted_xy_m"][0] += .001
+    tampered.write_text(json.dumps(report))
+    with pytest.raises(ValueError):
+        verified_native(tampered)
+    row = next(trial for trial in original["trials"] if trial["terminal_success"])
+    row["executed_ticks"] -= 1
+    tampered.write_text(json.dumps(original))
+    with pytest.raises(ValueError):
+        verified_native(tampered)

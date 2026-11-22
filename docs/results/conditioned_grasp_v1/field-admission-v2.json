@@ -1,0 +1,5113 @@
+{
+  "schema": "rosmaster.bound-rbf-native.v2",
+  "status": "completed",
+  "profile": "rosmaster_floor_pick_recorded_start_sim",
+  "physics_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+  "vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+  "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+  "protocol_sha256": "d6a96dd50bce73ae6c617d7a1d139217f2118aaaab9a6fcdef8a30f08f76fa26",
+  "selection_sha256": "1c5619658fa3652469ac8c2f18f77f9bf045edc3ad3ad679080b02ffb0c0b363",
+  "field_source_sha256": {
+    "explorer4/grasp_measured.py": "cc209f2d69cfc492b643bbfd1a0268934c2ce91b7094a99902eab01ed647d6ea",
+    "explorer4/grasp_shadow.py": "5162ec38825d8db3531d14df31df5fdc731a3d226fbb4e15f781e8408bd5ecfe",
+    "explorer4/conditioned_grasp.py": "33e983b4c9dc35d2b0eeebf6dfa109410bb6341de996e6d75ff4e34e95faa52e",
+    "agents/rosmaster/runtime.py": "51057bfbb8ad7b7cfcb98988bbb4c7e64f9d90204be62e1824ff516cb5fd8ce7"
+  },
+  "command_budget": 360,
+  "physical_trials": 0,
+  "optimizer_updates": 0,
+  "historical": {
+    "evaluated_seeds": [
+      88300,
+      88301,
+      88302,
+      88303,
+      88304,
+      88305,
+      88306,
+      88307,
+      88308,
+      88309,
+      88310,
+      88311,
+      88312,
+      88313,
+      88314,
+      88315,
+      88316,
+      88317,
+      88318,
+      88319
+    ],
+    "eligible": 1,
+    "terminal_holds": 1,
+    "denominator": 20,
+    "references": {
+      "before": 0,
+      "after": 3,
+      "control": 1
+    },
+    "reference_jobs": {
+      "before": "e28f1a5345d044828aa8080a3706b08c",
+      "after": "efca446d4aae427492d9ac4bb48ea7c1",
+      "control": "0058bb08e2e54170b8ef2a78004c3a3f"
+    },
+    "baseline_reset_vectors_recorded": false,
+    "comparison_reset_vectors_verified": [
+      "after",
+      "control"
+    ],
+    "paired": {
+      "before": [
+        {
+          "seed": 88300,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88301,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88302,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88303,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88304,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88305,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88306,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88307,
+          "old": "failure",
+          "native": true
+        },
+        {
+          "seed": 88308,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88309,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88310,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88311,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88312,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88313,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88314,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88315,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88316,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88317,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88318,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88319,
+          "old": "failure",
+          "native": false
+        }
+      ],
+      "after": [
+        {
+          "seed": 88300,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88301,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88302,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88303,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88304,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88305,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88306,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88307,
+          "old": "failure",
+          "native": true
+        },
+        {
+          "seed": 88308,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88309,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88310,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88311,
+          "old": "success",
+          "native": false
+        },
+        {
+          "seed": 88312,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88313,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88314,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88315,
+          "old": "success",
+          "native": false
+        },
+        {
+          "seed": 88316,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88317,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88318,
+          "old": "success",
+          "native": false
+        },
+        {
+          "seed": 88319,
+          "old": "failure",
+          "native": false
+        }
+      ],
+      "control": [
+        {
+          "seed": 88300,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88301,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88302,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88303,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88304,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88305,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88306,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88307,
+          "old": "failure",
+          "native": true
+        },
+        {
+          "seed": 88308,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88309,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88310,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88311,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88312,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88313,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88314,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88315,
+          "old": "success",
+          "native": false
+        },
+        {
+          "seed": 88316,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88317,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88318,
+          "old": "failure",
+          "native": false
+        },
+        {
+          "seed": 88319,
+          "old": "failure",
+          "native": false
+        }
+      ]
+    }
+  },
+  "old_fresh_unrestricted": {
+    "n": 20,
+    "input_inside": 15,
+    "old_budget_holds": 13,
+    "old_within_budget_and_support": 9,
+    "scope": "Retrospective unrestricted raw native trajectories, first hold by 360; includes refusals in the denominator, no end-of-sequence retest."
+  },
+  "conditional": {
+    "source_bank": [
+      973000,
+      973001,
+      973002,
+      973003,
+      973004,
+      973005,
+      973006,
+      973007,
+      973008,
+      973009,
+      973010,
+      973011,
+      973012,
+      973013,
+      973014,
+      973015,
+      973016,
+      973017,
+      973018,
+      973019,
+      973020,
+      973021,
+      973022,
+      973023,
+      973024,
+      973025,
+      973026,
+      973027,
+      973028,
+      973029,
+      973030,
+      973031,
+      973032,
+      973033,
+      973034,
+      973035,
+      973036,
+      973037,
+      973038,
+      973039,
+      973040,
+      973041,
+      973042,
+      973043,
+      973044,
+      973045,
+      973046,
+      973047,
+      973048,
+      973049,
+      973050,
+      973051,
+      973052,
+      973053,
+      973054,
+      973055,
+      973056,
+      973057,
+      973058,
+      973059,
+      973060,
+      973061,
+      973062,
+      973063
+    ],
+    "eligible_all_64": 3,
+    "selected": [
+      973009,
+      973031,
+      973039
+    ],
+    "n": 3,
+    "terminal_holds": 3,
+    "minimum_holds": 10,
+    "pass": false
+  },
+  "candidates": [
+    {
+      "seed": 88300,
+      "initial": {
+        "arm": [
+          79.47882080078125,
+          58.91423416137695,
+          23.279409408569336,
+          19.10609245300293,
+          72.4524154663086,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21389542429923675,
+          -0.033562628108964224,
+          0.018000000000000002
+        ],
+        "reset_sha256": "822a37a2baca8cb3fc00d9fdf929fe0ff06d21b1d1e55aa2d407926fa7fba454"
+      },
+      "look_physics_sha256": "394ca3018a739edc1dd8f6991111670acf35ee7d2ace9ca26a8e5ab7c4e4b0dc",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533075615763664,
+        74.99952697753906,
+        30.00819206237793
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e8e96167937c1468ebf1e9a537e19ca9529dcfabf71ef7130b8f3cd35c860419"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          381,
+          50,
+          489,
+          150
+        ],
+        "visible_pixels": 9814,
+        "unoccluded_pixels": 9980
+      },
+      "rgb_sha256": "8b172f28844ffb7ec70a1bf1bb4aa0c46fad37733e7c69058d997887d36b05cf",
+      "png_sha256": "ecac2eeb37447449b14ba98066e1a7e6e63c4c9f0e721480a149a1a07e5d23d2",
+      "predicted_xy_m": [
+        0.21365396678447723,
+        -0.03598794341087341
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.4373050783824137,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88301,
+      "initial": {
+        "arm": [
+          78.79967498779297,
+          56.373172760009766,
+          21.58138084411621,
+          21.566560745239258,
+          73.09170532226562,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2028529362941214,
+          0.003920708850834856,
+          0.018000000000000002
+        ],
+        "reset_sha256": "995017628eee049e91413e98f7f7659b6f1fad97b50221390d11da336c984669"
+      },
+      "look_physics_sha256": "5839feb5f68a908fd224c4a6e9d08bb952660f6585d7f2c4ff478efb4861e179",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009539124555885792,
+        74.99952697753906,
+        30.008277893066406
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "5ed1791868a1d0c15cc17aaa1cc67a9b7aef2a2c3b85e7ca4478162c860948fd"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          238,
+          62,
+          338,
+          164
+        ],
+        "visible_pixels": 8400,
+        "unoccluded_pixels": 8497
+      },
+      "rgb_sha256": "6b41cabc829509b0e2be15db956c8b0bed731529c918abb1578938d8f02863c9",
+      "png_sha256": "632cf1cda6c84ade0d8116f1f8e4442f685af4c980ac496ffa8c9338bb427b2c",
+      "predicted_xy_m": [
+        0.19998924434185028,
+        0.0008025985443964601
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 4.233596990812866,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88302,
+      "initial": {
+        "arm": [
+          84.02641296386719,
+          54.19398498535156,
+          21.6278018951416,
+          18.613309860229492,
+          74.28001403808594,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20984726643716387,
+          -0.041322052259317066,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a7058e31033597820c558a642c283e2feb79388e350f628a0f750872d9317b2a"
+      },
+      "look_physics_sha256": "0ab5a47e5c260f9fa8ba9f4fc699d32aeffe3c3847c879437f9503e544a0b6f1",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532677941024303,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "03bc1564b3ff60a7597168b9f05e1ec3388e5df3339ad8df966b65dfa492be05"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          390,
+          41,
+          502,
+          140
+        ],
+        "visible_pixels": 10193,
+        "unoccluded_pixels": 10481
+      },
+      "rgb_sha256": "d7f3c569e0023dcee4b69129b4b188fe8cb63a6f1b39aaacfd10393a9283797d",
+      "png_sha256": "07534297804f5751a7b47b6c2e111ad273c7d163c34a5a69f81d186626b0ee82",
+      "predicted_xy_m": [
+        0.21281978487968445,
+        -0.041433390229940414
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 2.9746028364854893,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88303,
+      "initial": {
+        "arm": [
+          79.10835266113281,
+          59.43446731567383,
+          24.8083438873291,
+          20.301883697509766,
+          73.91605377197266,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23485343931392397,
+          -0.0012604847366606484,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b77992a7ce232739663e50081a389867013e5a238fa4de6ee7015f9f755b6dfd"
+      },
+      "look_physics_sha256": "568545bb40df153a376dfff4c1c1c1fdba8df247383195ef77b2dd7b25c39399",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533178061246872,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2ac85b581a763e220547c52fa263b62b0d98d2eac51e48f4e26d43154a0b61b8"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          267,
+          0,
+          376,
+          101
+        ],
+        "visible_pixels": 9477,
+        "unoccluded_pixels": 9506
+      },
+      "rgb_sha256": "af08e99eb2e5f5444253286f9d66b1c57e625433196d3c6594ceb0918ac59e19",
+      "png_sha256": "0cfe8f9f53c6cbca157c06050ea61465299f1aa07b7b01a4c3a1c31de436b39e",
+      "predicted_xy_m": [
+        0.2367190718650818,
+        0.0021175590809434652
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.8589849506823692,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88304,
+      "initial": {
+        "arm": [
+          79.30695343017578,
+          56.675071716308594,
+          22.499338150024414,
+          18.505695343017578,
+          73.02447509765625,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1739546742494489,
+          -0.035823537525600684,
+          0.018000000000000002
+        ],
+        "reset_sha256": "5a7ed121e506804f74ba703a9181d9aeafb6c4dcac0d8c2ef2474dcfb0fc03ea"
+      },
+      "look_physics_sha256": "ee72db384691a79edb3c9dd4d770ef71c1caefe5ca8ddb11c4272cf9bbae7de6",
+      "look_pose_native": [
+        90.00000762939453,
+        56.710838317871094,
+        23.834362030029297,
+        0.009545900858938694,
+        74.99951934814453,
+        30.008371353149414
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "d5b28e67f7acfd3015a18be03bd1ceea700583e7ddb4b3dbade0752a08aab5f3"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          370,
+          183,
+          478,
+          284
+        ],
+        "visible_pixels": 10099,
+        "unoccluded_pixels": 10156
+      },
+      "rgb_sha256": "a79dfbd3c5aed3ac1dc1382756d6c917189b2097218a58a03ef120a46e38d7a0",
+      "png_sha256": "8d89ba2c9c885c993b90d1d76ab410520698aa252972aaba2d801aabe107de5f",
+      "predicted_xy_m": [
+        0.1782466024160385,
+        -0.03592488169670105
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 4.293124506484901,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88305,
+      "initial": {
+        "arm": [
+          80.38971710205078,
+          57.178306579589844,
+          25.56704330444336,
+          19.456636428833008,
+          76.47325134277344,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20477275993180355,
+          0.02007507967853027,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a338f1661175c08599f3f587b35de1054f5b0ac097ddae063059a530534b2a63"
+      },
+      "look_physics_sha256": "3d51ec2c1fb81cbf3135ab3dfef1b3f30f7b2f6c81bfb75574e45f338f5b27c2",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533340111374855,
+        74.99952697753906,
+        30.008197784423828
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e98f12cb5571df236210a551dbcf2f7d46b9ed1d14599dc0b4359aa58ad4683c"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          258,
+          95,
+          355,
+          194
+        ],
+        "visible_pixels": 8837,
+        "unoccluded_pixels": 8893
+      },
+      "rgb_sha256": "844455a2249e21ff7c5f00fb3188bc3aba63e08796022c6b4eaf1ceff6f63d0d",
+      "png_sha256": "660176348bd1069a4efa536e2ec7aff9d278c62ccf0fc1ac963fc6f30a1d8291",
+      "predicted_xy_m": [
+        0.20328488945960999,
+        0.02089378796517849
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.6982466842752748,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88306,
+      "initial": {
+        "arm": [
+          81.88053131103516,
+          55.11095428466797,
+          27.328495025634766,
+          17.650789260864258,
+          77.27468872070312,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18025368576294687,
+          0.020192209962603833,
+          0.018000000000000002
+        ],
+        "reset_sha256": "dde5c94ee0e7bb4d08e11722211976b5edd94d21e80f84f080a8cc4abbd6af7b"
+      },
+      "look_physics_sha256": "2ab2bf80cbbc25a9a9102bda9290eb4f08557e944348162aed71e35e8d3cadf1",
+      "look_pose_native": [
+        90.00001525878906,
+        56.71083450317383,
+        23.834365844726562,
+        0.009545717388391495,
+        74.99952697753906,
+        30.008378982543945
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1581b6488ec7ce8669f843067e6f671c74b79ce028d7040b192c44390cc3cb3e"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          245,
+          112,
+          338,
+          207
+        ],
+        "visible_pixels": 8242,
+        "unoccluded_pixels": 8244
+      },
+      "rgb_sha256": "6478dadb6a8d9d7e57317857392eb54733f9b067b8cec41cfd903bdacab0b11b",
+      "png_sha256": "fd9131b4251635737f7aa277b66e1993ea97286c4063959fd5b0d9509b5d55ed",
+      "predicted_xy_m": [
+        0.18661853671073914,
+        0.019315166398882866
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 6.424992840484454,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88307,
+      "initial": {
+        "arm": [
+          81.25306701660156,
+          54.12897872924805,
+          23.085750579833984,
+          21.08439064025879,
+          72.85748291015625,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19190192816238277,
+          -0.009564410544438705,
+          0.018000000000000002
+        ],
+        "reset_sha256": "215c6ad0cd94f3b98283787dec31fdf962cc9b9b35fcb4bfd6fc1aab6e961958"
+      },
+      "look_physics_sha256": "d9590af546b2e4c759ab1b0cfe8a286da5383f283579db6fc6be45dbe8d55c13",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953284464776516,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "5331c04d6cf8ea127e23f2a20d7a5bcbbe34a3a48232e9f0122949a594470e56"
+      },
+      "visibility": {
+        "full": true,
+        "box": [
+          311,
+          164,
+          399,
+          254
+        ],
+        "visible_pixels": 7383,
+        "unoccluded_pixels": 7383
+      },
+      "rgb_sha256": "262af075112cc3ed144d203705a3e0233583271345014b26e253b297391a1f72",
+      "png_sha256": "6e89388459ed1175eba52fd193a0195369d03cc62aed79f0efdcb7cb76428048",
+      "predicted_xy_m": [
+        0.18872350454330444,
+        -0.011867883615195751
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.9253490150581367,
+      "eligible": true,
+      "reason": "eligible"
+    },
+    {
+      "seed": 88308,
+      "initial": {
+        "arm": [
+          78.66294860839844,
+          56.527347564697266,
+          25.81073570251465,
+          22.635530471801758,
+          74.80677032470703,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20906361947293584,
+          0.008483064115939819,
+          0.018000000000000002
+        ],
+        "reset_sha256": "d36a418c69197ede5302dd972c6bd192f8b73275125932830d271f342977dd6d"
+      },
+      "look_physics_sha256": "767fa52c9be7acd9967155477986d15f1732633586f4186bb976bd9bd8449760",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533774107694626,
+        74.99952697753906,
+        30.008203506469727
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "db16b139d17ebf94ec9da8d99a0678deee99e01837dbd1e0b3f58fbaeed09a2a"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          254,
+          94,
+          352,
+          193
+        ],
+        "visible_pixels": 8892,
+        "unoccluded_pixels": 9417
+      },
+      "rgb_sha256": "e3f6383610fdb9ff251d89eb55f4d04c0a121e17dcd1bdf20d46d8c7458519b3",
+      "png_sha256": "a2b9220219d00774a156f0e402b063b02c68d2581d617d0020fe6009acb34ab6",
+      "predicted_xy_m": [
+        0.20937471091747284,
+        0.006402348168194294
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.103843326406859,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88309,
+      "initial": {
+        "arm": [
+          84.31588745117188,
+          55.003997802734375,
+          24.367597579956055,
+          22.80058479309082,
+          77.02188873291016,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17458604705290717,
+          0.011531788997324613,
+          0.018000000000000002
+        ],
+        "reset_sha256": "46e2891481893be8d6ec5bd6077718f209b9af1482edcc22cda213375c4cadd8"
+      },
+      "look_physics_sha256": "1df731f36f4a13913c25cbf4bf8414724f79ea272bb63e66a467010c9bbe4fcf",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533052332699299,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "91d50c62b0d86b878d357ef4c4017d29e261b72b88ca4236a7dd175feb663cc6"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          229,
+          196,
+          322,
+          290
+        ],
+        "visible_pixels": 8420,
+        "unoccluded_pixels": 8475
+      },
+      "rgb_sha256": "bc097d503ed30f132010f8cf038db003a80c48009b8156691ae4ba1655f20641",
+      "png_sha256": "9c5e857880ed8f236becd6c056ecb9a9f6e37226a5a92dec99bb1500c2a56589",
+      "predicted_xy_m": [
+        0.17577289044857025,
+        0.014058169908821583
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.791271709419441,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88310,
+      "initial": {
+        "arm": [
+          83.71820068359375,
+          59.62216567993164,
+          23.25748062133789,
+          20.111955642700195,
+          76.62504577636719,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2350523207457815,
+          -0.040362571348542056,
+          0.018000000000000002
+        ],
+        "reset_sha256": "411b692feaa94ba0191633768b876ea3a080b06cbc727c5602416f4bd28c408a"
+      },
+      "look_physics_sha256": "6e65174ffc1ee43db8ed3b4abf87fa090add4ec76e86d96824e1c367da42faa4",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532750584185123,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "d1ce1a679139eece4a745434e5036e6ad5cc6a0141b166def412b9f1d54696c2"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          362,
+          0,
+          469,
+          105
+        ],
+        "visible_pixels": 9869,
+        "unoccluded_pixels": 9988
+      },
+      "rgb_sha256": "b1c01bacce456a7c243324e06cf683a72fc6ecd7faeffd15af71c81bfb95cb2a",
+      "png_sha256": "073643ba95577a14d3862b0677c1fefac32f9ef1d503b56165b5f44379d16a21",
+      "predicted_xy_m": [
+        0.23513263463974,
+        -0.03440668433904648
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.956428492934416,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88311,
+      "initial": {
+        "arm": [
+          80.15168762207031,
+          59.45695877075195,
+          22.03279685974121,
+          19.535236358642578,
+          73.03079986572266,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2427434659158799,
+          -0.01883239810830556,
+          0.018000000000000002
+        ],
+        "reset_sha256": "97c026294240425222ac608fc51d21b157feb81733985d38f36e5c0549fa5a86"
+      },
+      "look_physics_sha256": "2e83bdf84d7f42779bf11176652c63da04da98a011a62a8871aaa46ff944cc5a",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532853029668331,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "8739ad3bc3d60e0d5f0387f5236173f26c06f31ca9d60d0164cda77c15b9fffe"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          340,
+          0,
+          441,
+          77
+        ],
+        "visible_pixels": 7361,
+        "unoccluded_pixels": 7427
+      },
+      "rgb_sha256": "c272a28c1ac7ba1ed9f36aff3c8476e6293dbf395f9ecb61b4f46c95fa059e00",
+      "png_sha256": "25aab8a6cf15295cd12d6e1920e4aa06c6c2475a0fb1fe82b5d6fa015446a80c",
+      "predicted_xy_m": [
+        0.23823536932468414,
+        -0.017326166853308678
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 4.753069268281307,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88312,
+      "initial": {
+        "arm": [
+          83.54640197753906,
+          57.02933883666992,
+          23.800643920898438,
+          20.632701873779297,
+          76.06179809570312,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24805906593481883,
+          0.01278703031179182,
+          0.018000000000000002
+        ],
+        "reset_sha256": "64ce33abd08ced89127859287b8624f40bdc9a6ca1222a11976ee40a803561af"
+      },
+      "look_physics_sha256": "c5e6cf8abc00a18ecf03f93fddc57cfc9eecf4aef04675470a9400af5cbe04e4",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533237665891647,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "b02a4fc2a9cc7ace603173ced72d2e293ae10633a827c3f7d5a7696987353201"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          213,
+          0,
+          312,
+          50
+        ],
+        "visible_pixels": 4270,
+        "unoccluded_pixels": 4298
+      },
+      "rgb_sha256": "41291e9e299e281d1c43b6fc6631e631f32a537a9083f1ab6d81c61cc5f15b36",
+      "png_sha256": "4982e00aacb1b55ad2a35672d95944af39e2ce5d24cb568a635d0f1a190d2175",
+      "predicted_xy_m": [
+        0.2436920553445816,
+        0.013751151971518993
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 4.472170845350069,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88313,
+      "initial": {
+        "arm": [
+          83.40769958496094,
+          56.88362121582031,
+          26.102874755859375,
+          19.258365631103516,
+          76.453125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18050566902747905,
+          -0.04536818121461333,
+          0.018000000000000002
+        ],
+        "reset_sha256": "d8784d607b7e3d84224079f546a3c4ed9102ce84fbd7e7481e404e7d5c0a72ea"
+      },
+      "look_physics_sha256": "148b84707134d1063b7cfbec8c3fbebefebc703eb8400b215bde041862c07770",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009537042118608952,
+        74.99952697753906,
+        30.00826072692871
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "88df091898f143d4fd5c651e27a966b8d4141202cfc8ea6d139eaac8e5c67546"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          382,
+          197,
+          485,
+          287
+        ],
+        "visible_pixels": 8970,
+        "unoccluded_pixels": 9002
+      },
+      "rgb_sha256": "81bc2870eaa080fd32c57f4622b57ac8640658e0543b12d037cd487d7eeac241",
+      "png_sha256": "7917576cb6121393b2723d74eb864e3fc2a5e31bf420a86887e6e2d746a74681",
+      "predicted_xy_m": [
+        0.18187721073627472,
+        -0.039837487041950226
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 5.698219431585249,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88314,
+      "initial": {
+        "arm": [
+          79.95867156982422,
+          54.96762466430664,
+          25.01129913330078,
+          17.870914459228516,
+          76.38032531738281,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21944886368817088,
+          -0.04234841845284642,
+          0.018000000000000002
+        ],
+        "reset_sha256": "2ae171ce89819ef3b56a14aa6664f146efa79c8c3ae7f19e9d26af28af89ae08"
+      },
+      "look_physics_sha256": "961a1e26419b2e646e0da5e4ab6ecceab6fca4605df1afc339d79d216d549232",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533919394016266,
+        74.99952697753906,
+        30.00821304321289
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "71027213098cea654f84a63ecd9c2af403c50a7ab2dc1ed989e6f8326e013aee"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          423,
+          36,
+          546,
+          143
+        ],
+        "visible_pixels": 11520,
+        "unoccluded_pixels": 11582
+      },
+      "rgb_sha256": "334dfb5bd114c931eae278f08b2cda4a2df3862fe81dd47d47a8c1f87f9402c8",
+      "png_sha256": "881d3df737847169ca507ae7587be94af32a802c7fd7553b37a2fe1c1f436d10",
+      "predicted_xy_m": [
+        0.22272832691669464,
+        -0.0431329719722271
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.3720028606174295,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88315,
+      "initial": {
+        "arm": [
+          82.80573272705078,
+          54.62910842895508,
+          24.050064086914062,
+          19.29849624633789,
+          71.34130096435547,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2176896847425892,
+          -0.02698825799818603,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f52d0b59652ca6d16c54103f26170139ce8f396ab9ab6735ae1493e0389a8786"
+      },
+      "look_physics_sha256": "4a94d85dd6da22f94ffbbf5d99143c229cdaf224e40ab3880cbdbc0259ac9130",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532674215734005,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1165477b45319e6d1759c7958aefd92944d9baee2907370c99e87b53ad2ce26a"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          309,
+          18,
+          410,
+          124
+        ],
+        "visible_pixels": 9612,
+        "unoccluded_pixels": 9672
+      },
+      "rgb_sha256": "ce121ffbd70cb68c285ce08122546cdc47d0f9bf32bbf3f312b9786efd0d3306",
+      "png_sha256": "4f387d283685053bb31cd4916c79cdf96031dbcaa6971731eddfb9f6ffef8cd1",
+      "predicted_xy_m": [
+        0.21910598874092102,
+        -0.023829743266105652
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.461521678172687,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88316,
+      "initial": {
+        "arm": [
+          83.4234848022461,
+          56.45264434814453,
+          26.077302932739258,
+          21.599109649658203,
+          73.2254638671875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21581967156678825,
+          0.04679455814200183,
+          0.018000000000000002
+        ],
+        "reset_sha256": "35f6cd099f1cf780b418c0db50d9b4803dd0b361216bb6ef4282154ad9592338"
+      },
+      "look_physics_sha256": "e484e67d4125d43f0b7a222b4ef6abdad610681c6fc2ad1496aa850857afd25f",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533227421343327,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "df8b6c55960c135fc5c2ceca0aa118ddff44c46ebb95fe441dbb2269d7fbd977"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          142,
+          56,
+          246,
+          151
+        ],
+        "visible_pixels": 6711,
+        "unoccluded_pixels": 9219
+      },
+      "rgb_sha256": "36d633cb70df5b978e06b87d483b759c2a82edf1e074a4366c3c74c360acc50c",
+      "png_sha256": "1126f249c966a973f78ef0c09831022bf3744da38269d72483c82e733c699527",
+      "predicted_xy_m": [
+        0.21282869577407837,
+        0.04009266570210457
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 7.33902571657359,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88317,
+      "initial": {
+        "arm": [
+          80.81117248535156,
+          57.117549896240234,
+          22.73383140563965,
+          21.381549835205078,
+          73.0471420288086,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18577523472230545,
+          -0.037931405777426444,
+          0.018000000000000002
+        ],
+        "reset_sha256": "922dfe9c64a0385143961b42e8cf237ee3aa3cb4c4138f53e2ae5d4b76afc7be"
+      },
+      "look_physics_sha256": "cd2310867e2ad89757d1329361d28fc4c4dc94d016bdd8063631da12fed33fa4",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532772935926914,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "06aa06ea3b179b433063cf01b6efd3b92f149317d60f4faf846ad08b80b94083"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          350,
+          87,
+          462,
+          194
+        ],
+        "visible_pixels": 10585,
+        "unoccluded_pixels": 10615
+      },
+      "rgb_sha256": "8e29712bbccebe60d0ba9f1cbe9f75f693cc411f1e906e23c86d8f9c789a1428",
+      "png_sha256": "fd2be5b8659e4a70e55ce6d16a34dcc8bda6a695317779162a67562668bb8a42",
+      "predicted_xy_m": [
+        0.1889192909002304,
+        -0.03442930802702904
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 4.706355054953534,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88318,
+      "initial": {
+        "arm": [
+          78.78093719482422,
+          54.6832160949707,
+          21.61024284362793,
+          21.709535598754883,
+          73.68910217285156,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23433111938676252,
+          0.029700463226940893,
+          0.018000000000000002
+        ],
+        "reset_sha256": "2a2d6b7c4fc953be1ead2c9b3d8a862f0f44bfd0350a648899a679d878ce917d"
+      },
+      "look_physics_sha256": "7eef394a00c4687b6a3eceabebfcb80ec9ebf7dae233d6a829dd5d74e2586606",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009537212550640106,
+        74.99952697753906,
+        30.008255004882812
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "fc66dadebb0da18d59aa88a6aa5abc56ba2af75f18e1aacc2b5f059d5e76929d"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          182,
+          0,
+          286,
+          99
+        ],
+        "visible_pixels": 9701,
+        "unoccluded_pixels": 9765
+      },
+      "rgb_sha256": "90c9884423b7ec0292723cf2b5466ac644e3e1111ff2f76228b8099b93d1b3e7",
+      "png_sha256": "0748afe2d764b56013144efbb9cb1d888641b42647bd30a0c60a485abb6d2118",
+      "predicted_xy_m": [
+        0.2340305745601654,
+        0.027254370972514153
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.4644866625650015,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88319,
+      "initial": {
+        "arm": [
+          81.78826141357422,
+          55.423336029052734,
+          24.7673282623291,
+          20.559892654418945,
+          75.8323974609375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19173126387810074,
+          -0.03361676552910994,
+          0.018000000000000002
+        ],
+        "reset_sha256": "ea71d68cdc5508e23e90fb1b999b3c706ce985b955f5f0eda6dc8a64afd410ce"
+      },
+      "look_physics_sha256": "06bd9eb3dbe28f75ec762f273b81785cc0955f8aab9490c0608dc497bfbfd180",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533008560538292,
+        74.99952697753906,
+        30.008190155029297
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "b6917ec0e49b02dc266f8d1e5605903dd97bc23ff0fbe25622d908882a3dd419"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          329,
+          103,
+          432,
+          197
+        ],
+        "visible_pixels": 8957,
+        "unoccluded_pixels": 8986
+      },
+      "rgb_sha256": "87d5f815dd4f0a8f9c4680ffaf7be9bae4ada377e6c3c229bf2cc50a35b07e38",
+      "png_sha256": "12c497a63067d4ce55080aceb0e12866e38fc68aab3482177eb7c327a81d40e0",
+      "predicted_xy_m": [
+        0.19341689348220825,
+        -0.02931654267013073
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 4.618794626212665,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973000,
+      "initial": {
+        "arm": [
+          82.27285766601562,
+          57.13747787475586,
+          25.320743560791016,
+          18.16921043395996,
+          75.9333267211914,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23053504767534785,
+          0.0239701469383716,
+          0.018000000000000002
+        ],
+        "reset_sha256": "90dd2aef3fc38964da0635c42402ff6b5b16ea2726f8e032987fbe6fde72a91e"
+      },
+      "look_physics_sha256": "34232c66a30b5dfccb32cc0af5ae56090740cf28b06174ad0f69d305225a0d8d",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532955475151539,
+        74.99952697753906,
+        30.008190155029297
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "9a3c33fcb9038a4b9c50c22c98d1988189cc5210efbb695c93385b8f845a9a79"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          220,
+          0,
+          316,
+          107
+        ],
+        "visible_pixels": 9574,
+        "unoccluded_pixels": 9810
+      },
+      "rgb_sha256": "afa1fabf6fb7814a21ad55fcfd5d670301d351bcd312e6fc0ea1ce7e069376d7",
+      "png_sha256": "3ba2fbae877b53007a038ecd8174e5c3608f31757c9ff812e77a33695ccd4083",
+      "predicted_xy_m": [
+        0.23286128044128418,
+        0.02160429209470749
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.317925258742985,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973001,
+      "initial": {
+        "arm": [
+          79.09566497802734,
+          59.078948974609375,
+          25.7893123626709,
+          21.710214614868164,
+          73.41802978515625,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2388497892627282,
+          -0.026985390079751682,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b80bbfdf97f17c00218b2395b0444f67c8cabed1efdc3669471323a587abbc5f"
+      },
+      "look_physics_sha256": "389039693ffeea56511a398819b307375d73414ca1ea46232e5096c486040eca",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532645344734192,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2ba9529a8bc6dd655cac637c9620a62048204ab1a215b6d1e31973925d1bcda0"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          299,
+          0,
+          401,
+          69
+        ],
+        "visible_pixels": 6142,
+        "unoccluded_pixels": 6268
+      },
+      "rgb_sha256": "4e93c276424dcd4a9fc4c8201df590182c2e3b8d84d7f727652ea62fac64f0a7",
+      "png_sha256": "ea7076e670b1f81fb90fa115e39eb0ca72f1baaea42f0cbd6275c953b247b1b1",
+      "predicted_xy_m": [
+        0.23947693407535553,
+        -0.024418504908680916
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.6423871967348687,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973002,
+      "initial": {
+        "arm": [
+          82.98866271972656,
+          58.363651275634766,
+          25.267898559570312,
+          19.28803253173828,
+          76.20391082763672,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24707309142416428,
+          0.007121688610817675,
+          0.018000000000000002
+        ],
+        "reset_sha256": "7c9bfaa5c8d1752f449d3239e1e16a5f2d877be766fb534764cc27090b92566b"
+      },
+      "look_physics_sha256": "4ac4e16680161a3204cc3906030ea0fe006a58fb9137b84bdf38f2b5cb900bec",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533003903925419,
+        74.99952697753906,
+        30.008190155029297
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e4bf781fc43a74e881a6af2309755b8e0912785c88262e8a42d4d093a11ead48"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          212,
+          0,
+          308,
+          11
+        ],
+        "visible_pixels": 824,
+        "unoccluded_pixels": 884
+      },
+      "rgb_sha256": "19fe26fe487d52def9df0e221a8c4c4846782993ee7d4bda94d16cad0784b18f",
+      "png_sha256": "a6e70bbb8d1802de86f3b3bddb8f149a7eff10cdb1cb5d4e230b9eb3be995fa5",
+      "predicted_xy_m": [
+        0.2329525649547577,
+        0.004782215226441622
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 14.31301517813127,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973003,
+      "initial": {
+        "arm": [
+          81.39371490478516,
+          57.157554626464844,
+          22.892175674438477,
+          21.262252807617188,
+          76.9588851928711,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17846601577102503,
+          0.04631635258459668,
+          0.018000000000000002
+        ],
+        "reset_sha256": "11c89e8048078414f6d80201d50a01316ba973c6d082b933f9c35836ccafa3ed"
+      },
+      "look_physics_sha256": "29137113cfe8d3bd8b53fb70b0700d807efcd933636aa30df1737b4d144f9e6b",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533019736409187,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "3cd89251c9ec337bb27527e1714b7811e84656d4499f5cf2b306bb03571c5c81"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          131,
+          206,
+          248,
+          308
+        ],
+        "visible_pixels": 10923,
+        "unoccluded_pixels": 10984
+      },
+      "rgb_sha256": "e736bb207ec0fce4b252f282d0a48b6b3d665171634230c769866ff8ad8cde4c",
+      "png_sha256": "78ecfd810229b844531cea7ca9950c027e9849119b5c637e2eeda012997c391b",
+      "predicted_xy_m": [
+        0.18591386079788208,
+        0.044812511652708054
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 7.5981532685582875,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973004,
+      "initial": {
+        "arm": [
+          79.14336395263672,
+          57.3387336730957,
+          26.068666458129883,
+          18.584238052368164,
+          72.25395965576172,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19572759430240017,
+          -0.012086925325417205,
+          0.018000000000000002
+        ],
+        "reset_sha256": "54883e409fb930f6afaab339c60719f78b3f7e1a55cfac24fc9f9ec388de2b91"
+      },
+      "look_physics_sha256": "eda8b41b209a1a4592b316d67c40852cba6c87791ee20c177cd4d6e94e6104a3",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533257223665714,
+        74.99952697753906,
+        30.008197784423828
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "a17309f25aee919fd977361adfdb1b9c76f681d8f623398dc9cb7e99b7a1be71"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          337,
+          125,
+          433,
+          224
+        ],
+        "visible_pixels": 8966,
+        "unoccluded_pixels": 8988
+      },
+      "rgb_sha256": "a82195c87dbe812693ac04953ab6588b4ee2ed83141f8bc1c5543990e826db61",
+      "png_sha256": "b6c281277c574228f013c5d24b97404f7512d37baec583d25ee0cb3bf1fa3dcb",
+      "predicted_xy_m": [
+        0.19593040645122528,
+        -0.013397762551903725
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.3264339418357518,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973005,
+      "initial": {
+        "arm": [
+          83.8806381225586,
+          57.221099853515625,
+          22.597227096557617,
+          19.187257766723633,
+          71.82833099365234,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23342328389402284,
+          -0.04293383566350152,
+          0.018000000000000002
+        ],
+        "reset_sha256": "d5cfa1eb337a488d4969e4fde1b11080c7a69eeec59772df060a41bbfb71ade6"
+      },
+      "look_physics_sha256": "e615a646e4afde21d6a006cc503d40e12c05702e3124625de8f6eeef2dd89f48",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532635100185871,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f781727fceb8c461639a3e415045097effc83300ff49b43ab5b14e3938729b19"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          393,
+          0,
+          508,
+          63
+        ],
+        "visible_pixels": 6422,
+        "unoccluded_pixels": 6472
+      },
+      "rgb_sha256": "c45ffc86cce1611bdd177d8202d9f0ef0499456de69a8f0098d6bcea3afdd2ed",
+      "png_sha256": "90e8e33177629295d72d60b5ecbc8caf847e4e3848b69381ebbbb3ff313b5c84",
+      "predicted_xy_m": [
+        0.2370828241109848,
+        -0.0451778881251812
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 4.292785348737186,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973006,
+      "initial": {
+        "arm": [
+          79.27378845214844,
+          54.595703125,
+          22.908597946166992,
+          18.63007354736328,
+          75.84369659423828,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2460909566430051,
+          0.025077068192286417,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3a39a4f262281615b81c9ff9385f1eebc9236b37193eb94ef1ece2b2421308fa"
+      },
+      "look_physics_sha256": "175aeb151f019a0dbaede25eb03cc4b47512e9d2a792174f5a17044d1844a642",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532639756798744,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1f3cffbe9f38344843818f58a15ebdc66f5a1e9d8f75c77926100bc91c0fcc17"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          228,
+          0,
+          332,
+          67
+        ],
+        "visible_pixels": 6502,
+        "unoccluded_pixels": 6559
+      },
+      "rgb_sha256": "0eb06c758151d2b4f275fb674d03a68d50d1f5856ff1a98c6a711bd59abafb8e",
+      "png_sha256": "ca5f3c027759a011b81c0a050b1cd9f95691a8c2d2abb33e4d480f19a8d16ff9",
+      "predicted_xy_m": [
+        0.24873816967010498,
+        0.023837482556700706
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.923065062361387,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973007,
+      "initial": {
+        "arm": [
+          83.48040771484375,
+          59.64694595336914,
+          22.071674346923828,
+          22.1104679107666,
+          74.65798950195312,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22121036492580007,
+          0.02907777209527604,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b7be64974860f76885ec626151820a797e84b8142be69ad189636e8d960cdfe1"
+      },
+      "look_physics_sha256": "8cdc65618c2254eb1c54a230285910e32ba1e3dc7a842cd63559d28c63400ddc",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009536906145513058,
+        74.99952697753906,
+        30.008249282836914
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "02be3396d351bdc8a9d93b09726973bc6c6090d2d866b29cef438aa96981ff3f"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          226,
+          0,
+          324,
+          101
+        ],
+        "visible_pixels": 9255,
+        "unoccluded_pixels": 9427
+      },
+      "rgb_sha256": "821d92dd66a0933f5a0de2ef42cf4be90ca2517642fdaa09c44b4500596c262c",
+      "png_sha256": "dd2adcf2ea787ee98adb57d8c58d910254aa665a4828e8e8593d4092b72f452a",
+      "predicted_xy_m": [
+        0.22092710435390472,
+        0.027576282620429993
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.5279748671571574,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973008,
+      "initial": {
+        "arm": [
+          80.07038116455078,
+          58.310062408447266,
+          23.33670425415039,
+          20.80143165588379,
+          73.9804916381836,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2251940015294582,
+          -0.04572395937369405,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1acc6f5489c76ec8894bece93c0543fdce917539ba934b6e1dad1dcdd406cd46"
+      },
+      "look_physics_sha256": "61a85b59e4a4990d5f0ed8daf03ecdc59346236687dd42d7b8d2aee2012f4dcb",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.00954011082649231,
+        74.99952697753906,
+        30.00829315185547
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "7a22fdfb121958a4fb4376d91f4c46dc771dd625d9ad1b0c7a501c51c20c2be9"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          436,
+          0,
+          553,
+          86
+        ],
+        "visible_pixels": 9314,
+        "unoccluded_pixels": 9369
+      },
+      "rgb_sha256": "85a723c07b5276c217e6c1877db31d9add03c79db49896183c60bfbede038500",
+      "png_sha256": "d0a01e34e4d355cebff13c8fc029dabe4265bd94a80027b5b421ebed152a2cde",
+      "predicted_xy_m": [
+        0.22299402952194214,
+        -0.0406055822968483
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.571145370086329,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973009,
+      "initial": {
+        "arm": [
+          80.59180450439453,
+          54.336219787597656,
+          24.52632713317871,
+          17.673126220703125,
+          73.75631713867188,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18081294032245074,
+          0.011201261531489148,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f2414d36138d2ba55c64963c1ad96de7f1c1f53a0f8aead95739f8fe04a23f90"
+      },
+      "look_physics_sha256": "4c3024c9ddae0cec91778b553c0b506ca8b5a3a9f471e3e3a885ee667b80a8df",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953306257724762,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f719181aed8955fa62d5d99fb384848f8b7b6c0cf8de1abe8dc25f6fbbb59578"
+      },
+      "visibility": {
+        "full": true,
+        "box": [
+          269,
+          119,
+          371,
+          222
+        ],
+        "visible_pixels": 9671,
+        "unoccluded_pixels": 9671
+      },
+      "rgb_sha256": "a33c5b118e6df739523acb432aea24f44d2f662942e5debab64a3e00ab5c7ce6",
+      "png_sha256": "f274eadb8ea2bde424b02ee4d4eac460f3f1fdfa9a66a3f0bc65122ea1bb306a",
+      "predicted_xy_m": [
+        0.18019554018974304,
+        0.012186880223453045
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.163024991053977,
+      "eligible": true,
+      "reason": "eligible"
+    },
+    {
+      "seed": 973010,
+      "initial": {
+        "arm": [
+          80.1787338256836,
+          56.08106231689453,
+          25.305530548095703,
+          18.219011306762695,
+          75.30726623535156,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2036367672083353,
+          0.04460292681195907,
+          0.018000000000000002
+        ],
+        "reset_sha256": "545a7c3ba2db54b828b2431ab10a7177f46f0555de74d6edb3f68b773766eeec"
+      },
+      "look_physics_sha256": "9c3ecd08c44e7df1e69bc940778d253aeec8effe343e7e98190371b56cd1efe7",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953260250389576,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "8fb08ebf6905ce5349271f9b9fcdf8f2b8f33b3e51810323142a2a4dfe1ca5ed"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          151,
+          82,
+          275,
+          193
+        ],
+        "visible_pixels": 11350,
+        "unoccluded_pixels": 11384
+      },
+      "rgb_sha256": "6dbe5c27164f8c6ac8a361b2d11bf186162f90e1c7807df0199bc910307eb4d3",
+      "png_sha256": "efa0128febb49ae0e312250cb703ec2986d270c3b519c39e63096122490ec928",
+      "predicted_xy_m": [
+        0.2026357650756836,
+        0.044663526117801666
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.0028347548035261,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973011,
+      "initial": {
+        "arm": [
+          83.3381576538086,
+          55.31201934814453,
+          23.803428649902344,
+          21.819374084472656,
+          74.73426818847656,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22161055375351674,
+          0.006331813914764582,
+          0.018000000000000002
+        ],
+        "reset_sha256": "eacf1b349c6f88b06486d549a1c11c028b087b965d57a2e3ac60d2aa4c9c0cae"
+      },
+      "look_physics_sha256": "4801f85dcbc5d68bbda948a48b9da4dad1b2397d6752509034dbc0e698821d71",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532739408314228,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "213dd9ac3b212965f38d16b51bb6dfe32f7dc94890976c5c94cbace9214dd579"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          276,
+          38,
+          373,
+          145
+        ],
+        "visible_pixels": 8633,
+        "unoccluded_pixels": 8797
+      },
+      "rgb_sha256": "756903034c110908ed9d63eb5a6f031d3c8492db42adcc298be5d275b774d387",
+      "png_sha256": "100e9352adccf139398212ebfb5221475f8caa3e3085764aadd7f498d4dd9ad9",
+      "predicted_xy_m": [
+        0.21944381296634674,
+        0.006512118969112635
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.1742298754753393,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973012,
+      "initial": {
+        "arm": [
+          80.38092803955078,
+          59.47319412231445,
+          26.168968200683594,
+          20.766510009765625,
+          77.1553726196289,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18359603054626733,
+          -0.03255022479867052,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f2fac8c246b4453c91ac0061e2246bc4a12586c708ad80df943ca3b6caf55834"
+      },
+      "look_physics_sha256": "e90a69f07e30fddb8726fb87b8341ea018605e3f46b8d923f5a0c01a6a319800",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009537719190120697,
+        74.99952697753906,
+        30.008264541625977
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "97c9b96377056b0b6407a72927f5ed3fc03bbaf1a55373845c427794f327b07c"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          367,
+          159,
+          473,
+          259
+        ],
+        "visible_pixels": 9336,
+        "unoccluded_pixels": 9923
+      },
+      "rgb_sha256": "f42de6f041dcd37ab2f07b339312517877bf118dd9a7885844fd333cf8f1a8f0",
+      "png_sha256": "ef87913d654781ffc6d0429cbe1946f040a18b792a247c875e53341aa345860b",
+      "predicted_xy_m": [
+        0.18382684886455536,
+        -0.038693949580192566
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 6.148059147986901,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973013,
+      "initial": {
+        "arm": [
+          82.07576751708984,
+          59.337337493896484,
+          22.128664016723633,
+          17.931461334228516,
+          72.80748748779297,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2080999589433321,
+          -0.030586125528521135,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4db5e1c58e2946f7067e23df645e898a534ce0c30345030b7521dd7e00180560"
+      },
+      "look_physics_sha256": "56d7d02d9f6a9b9884c12d4d7044924f31890ea236b845a72df5ac1b32523941",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.00953754223883152,
+        74.99952697753906,
+        30.008272171020508
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c9203ec721d0a04d72b63cf1627c614ece81fa91d9f23815a4fd94cec5791e72"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          368,
+          21,
+          481,
+          129
+        ],
+        "visible_pixels": 11452,
+        "unoccluded_pixels": 11528
+      },
+      "rgb_sha256": "308441f05102c569bdde14cb2a04ca376fe4d15d6b96a291a7d7638b69443f18",
+      "png_sha256": "32a384f1845e144a7c62396e74c70851202e008bb9f82dc82dfa4bde528b95f7",
+      "predicted_xy_m": [
+        0.2106136977672577,
+        -0.03369705751538277
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.9995975674797113,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973014,
+      "initial": {
+        "arm": [
+          83.90684509277344,
+          57.08953094482422,
+          25.084388732910156,
+          22.686296463012695,
+          76.14633178710938,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23240241511642312,
+          -0.007955168142042647,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6091f5f30259b13b5406508654bf8d9d1bf3b97bdbc0368ea9ddb60b967112e8"
+      },
+      "look_physics_sha256": "a5833f317e23a60d446ca000b63d6d11d98984033743731e7d6afecf54d83dda",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009535467252135277,
+        74.99952697753906,
+        30.008230209350586
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "ef12def41d3e82b787bfba48ed12026fedcecb8081e48017d2e231dddaebde90"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          254,
+          34,
+          354,
+          145
+        ],
+        "visible_pixels": 9596,
+        "unoccluded_pixels": 10222
+      },
+      "rgb_sha256": "9257d783e5852199efb36f05c0864ce014f22406de7c09bc5097e8344c694926",
+      "png_sha256": "6a727ba1db63fd020d62c2be09258ca177e7f6ca47fea109df47fa3595d2629f",
+      "predicted_xy_m": [
+        0.23226392269134521,
+        -0.0035299223382025957
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 4.427412401867252,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973015,
+      "initial": {
+        "arm": [
+          82.76144409179688,
+          59.5531005859375,
+          25.395235061645508,
+          23.478273391723633,
+          72.97232818603516,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2274420298377549,
+          0.03430330702979327,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a1bed68af4bcf9f5317a76bb4d0cb9f929390c07cd1b92c2e3f7954700e7979a"
+      },
+      "look_physics_sha256": "f10e794dfcbbc84b8ec5a84503466727666dfc9f239a5796a1503581065b4f2e",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533751755952835,
+        74.99952697753906,
+        30.008201599121094
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c504641935233c209c0f4e183a0e9a2b3dc0a85f11772eae2b6db32daf5873f8"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          181,
+          19,
+          301,
+          138
+        ],
+        "visible_pixels": 11323,
+        "unoccluded_pixels": 11445
+      },
+      "rgb_sha256": "4880234b2387c658cc037b2cc64e10b0329185e60596700ab62d66255041fcdd",
+      "png_sha256": "d4963ee30afaf555a775e9793d7eace68e7e3d837ed11269db7ced8f40abf73c",
+      "predicted_xy_m": [
+        0.2285795509815216,
+        0.03585914894938469
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.9273293520501895,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973016,
+      "initial": {
+        "arm": [
+          83.26113891601562,
+          56.95097732543945,
+          23.836841583251953,
+          19.411874771118164,
+          74.5238037109375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1888217199189336,
+          0.030677644178551247,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0fb7276a93aa50d7f68ad10c2c9f1b876c164e48cdf138c8685d1da71eb2f5b8"
+      },
+      "look_physics_sha256": "47f851dd6401df544ea6c6048db7fbd3f635d1c0911d87be594b4c073fcfab90",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532719850540161,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1a4a511ab1f48c89356fe629f0c973bbd83198b4615ad543967a1ab5400de4bc"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          216,
+          149,
+          312,
+          239
+        ],
+        "visible_pixels": 8447,
+        "unoccluded_pixels": 8453
+      },
+      "rgb_sha256": "fc155cc157f3368f6a86db2d507f9ff0fb20fa69163792b036dc46496011f8c3",
+      "png_sha256": "7644f303368d26297259f44256c8b49c7864cc49d0cde53a050ee550233abce2",
+      "predicted_xy_m": [
+        0.18888527154922485,
+        0.03343487158417702
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.757959712549567,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973017,
+      "initial": {
+        "arm": [
+          78.99310302734375,
+          54.51443862915039,
+          26.074665069580078,
+          19.01438331604004,
+          76.13560485839844,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22503459285966765,
+          -0.03632892380520119,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f36e9464144568b4b6b6d102c1749c1b1b8d7b88bc32ac6c96c66711818f4ace"
+      },
+      "look_physics_sha256": "d8ac49d326add38c9d012435010e82033282dc0f9739dd4ea0131b53cf45af3a",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532690979540348,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "aa708799247299c8f20bcd126d4e4cf150dc66d9c0e1261f522a47722e57c704"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          417,
+          49,
+          537,
+          160
+        ],
+        "visible_pixels": 11983,
+        "unoccluded_pixels": 12050
+      },
+      "rgb_sha256": "808a3dfa97dbf75ba0e39d71b7b4d8cd3f9d1fbed12a0c9475ba0c847c160245",
+      "png_sha256": "5dd5f5ad0de31ccc3f585451420b372d48339560df1881f8a7f91c61034bac29",
+      "predicted_xy_m": [
+        0.22686557471752167,
+        -0.038603972643613815
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.9203324778102226,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973018,
+      "initial": {
+        "arm": [
+          84.03359985351562,
+          58.31269836425781,
+          21.552993774414062,
+          23.30349349975586,
+          72.05706787109375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22444511081661617,
+          -0.011497233229774383,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a90273f61927c70ebd9544733d71664811b00213c499ac9dfe7f1887e23c42be"
+      },
+      "look_physics_sha256": "7e7beefe19e7b2111924438a1f2c762e8c106e314a0b040ff8be2b0553f015a6",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532737545669079,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c47082ec852b9ba1c0bd495881e6d1d3670f5008006bff65695d5a33f5014507"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          349,
+          67,
+          446,
+          167
+        ],
+        "visible_pixels": 8909,
+        "unoccluded_pixels": 8963
+      },
+      "rgb_sha256": "22c9a3141d3f6bceca9250c9a5d341f99fcb6e49c18bdebef9ed8af68b7e675a",
+      "png_sha256": "f110314b8b58380408cdf486716c216efc117931671264cd4573c417d2b3b4c7",
+      "predicted_xy_m": [
+        0.2238588035106659,
+        -0.016934992745518684
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.4692764428284635,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973019,
+      "initial": {
+        "arm": [
+          80.73875427246094,
+          56.849830627441406,
+          22.859893798828125,
+          21.783842086791992,
+          74.08185577392578,
+          112.00909423828125
+        ],
+        "cube": [
+          0.191140845226357,
+          -0.021151362057255277,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0abc3f08aa78d52bc8e8f6f0a665a4e1e4666494f939d6525c50bbe858a2a55c"
+      },
+      "look_physics_sha256": "6d4347aeee03bad438e6246521e01fd6cd5a376db2b9682434409629c4df613d",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532991796731949,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "5fb139c96956a554caac060dd940cc7ccc3aa4ba3c7c52e0ea9e4dc4665351af"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          310,
+          122,
+          411,
+          223
+        ],
+        "visible_pixels": 9468,
+        "unoccluded_pixels": 9500
+      },
+      "rgb_sha256": "c339fd6acca5303fe4be2400c017af6113ab0f9a94e8291db090add668a4e105",
+      "png_sha256": "6e88bfd551a9700859f5806a59a7942b9293cac0a6bfe4c7417789573749c509",
+      "predicted_xy_m": [
+        0.19406336545944214,
+        -0.021577736362814903
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.953458914769852,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973020,
+      "initial": {
+        "arm": [
+          84.16887664794922,
+          57.79928207397461,
+          25.5961856842041,
+          19.295185089111328,
+          72.3333511352539,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22284447339246272,
+          0.03677160352543228,
+          0.018000000000000002
+        ],
+        "reset_sha256": "dafbf5378ac0dbd1526ccf93717999b0bd5f02d914e08c358bae783457b6cfaa"
+      },
+      "look_physics_sha256": "532466d79f7250b21906a1a1c9ca0229d7a7abb4a0b72803d75c24d226f38bf7",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533136151731014,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1abd2bf05b158f0a46532d3d381f62ec6085cb9e72c0d21105cbc224ba51413d"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          134,
+          0,
+          250,
+          102
+        ],
+        "visible_pixels": 9589,
+        "unoccluded_pixels": 11170
+      },
+      "rgb_sha256": "e91dab04e08b428f62a4669a30e74f827ee862b6a32eaf9044d37a034e52990b",
+      "png_sha256": "7e4e9eebc1ee42b6096ef031cb9180f0dce2d0e0ab087762f8d834fb73ea13e9",
+      "predicted_xy_m": [
+        0.22768563032150269,
+        0.040705740451812744
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 6.238127424724668,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973021,
+      "initial": {
+        "arm": [
+          83.76342010498047,
+          59.8950309753418,
+          24.083179473876953,
+          22.1009578704834,
+          76.15091705322266,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23685633595898004,
+          0.016312983782825627,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4f95296f31814a8a74fd0f82c8911d13d981c0848fbceb5d084fb699e17a85de"
+      },
+      "look_physics_sha256": "66bde366da316204139033f60818a7a4b16b108a01c96e98239e87e17a7038ab",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.00953339971601963,
+        74.99952697753906,
+        30.008195877075195
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "ec295b275c00dafc1dd8738f6328a8a2507b42ef04fbad1141ec51f533eb6b9e"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          197,
+          0,
+          304,
+          60
+        ],
+        "visible_pixels": 5894,
+        "unoccluded_pixels": 5927
+      },
+      "rgb_sha256": "28676f6ebe52cbeac0eaaa2117b2bc0d504d1e89d1db5619c8c6e6826e7f52af",
+      "png_sha256": "74c66ad9024b300ad3892b743ec3fa10455b9e1b1f6661a5be0b78ab36dfd807",
+      "predicted_xy_m": [
+        0.2380823940038681,
+        0.018829485401511192
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.799285395646864,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973022,
+      "initial": {
+        "arm": [
+          78.77656555175781,
+          56.157649993896484,
+          21.755346298217773,
+          21.02904510498047,
+          76.91690063476562,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23518563510225954,
+          -0.031065298502637062,
+          0.018000000000000002
+        ],
+        "reset_sha256": "da9f569becba268ff69357e62311df80b681df01433e818416a2f19462799017"
+      },
+      "look_physics_sha256": "e2d174800a192b57888f915b32c422ea3c40099bd2886a6bfb8fb380daf681b6",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532772935926914,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "fc49262216bf0990dcda6778cbbef86e5edcbd19071bd9f874a40aae5f7d87f3"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          342,
+          0,
+          444,
+          67
+        ],
+        "visible_pixels": 6117,
+        "unoccluded_pixels": 6165
+      },
+      "rgb_sha256": "e1655367f4a83290e6475aa23ce1018ded18b733e4b6f5e9facf25958cac5a51",
+      "png_sha256": "c908f7323a7d3abe8d8072ea3c933f343ba09fd21c70dde9766cd5437520f01b",
+      "predicted_xy_m": [
+        0.23257525265216827,
+        -0.03203703090548515
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.7853833485697077,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973023,
+      "initial": {
+        "arm": [
+          78.79293060302734,
+          56.33486557006836,
+          25.529386520385742,
+          21.103561401367188,
+          75.15042877197266,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2487311022527811,
+          0.028028318074980116,
+          0.018000000000000002
+        ],
+        "reset_sha256": "04cd1c4589fd6b36f7f443b36b073c1f0a92014c5729853783c0ea8ab3f9d937"
+      },
+      "look_physics_sha256": "4513ae00881b10b39828366d82a9f7d553ab393a69d84a0add551c51e424e408",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533295407891273,
+        74.99952697753906,
+        30.008195877075195
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2a44144a57b15a929dda89da6949d6b722961acf3a3e569f02bbd54aef3e6399"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          208,
+          0,
+          319,
+          80
+        ],
+        "visible_pixels": 8169,
+        "unoccluded_pixels": 8234
+      },
+      "rgb_sha256": "e3466bd7029b77167845bdc6c17a9b4c8c15e64ceb04001950349db345c30bdd",
+      "png_sha256": "94966c815692b50009a7b5f69e0b05d7a175d5221baae26c6d280a9691df0a34",
+      "predicted_xy_m": [
+        0.24690082669258118,
+        0.02813323773443699
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.83328032804744,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973024,
+      "initial": {
+        "arm": [
+          79.77637481689453,
+          54.117401123046875,
+          23.247657775878906,
+          23.461021423339844,
+          76.85211181640625,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2446992830738856,
+          -0.004606313567242823,
+          0.018000000000000002
+        ],
+        "reset_sha256": "850bc13df0254aed6c390e4e0b8027124d79cd75662871ad6c2dad77326759d6"
+      },
+      "look_physics_sha256": "b2725195acb39a2e97740680d0434d553acfa25cc5d5555b4c6e868f60b0cbeb",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533176198601723,
+        74.99952697753906,
+        30.008190155029297
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "44424b5f1456d9ebb4c325603a87abbf7c5fc6a14dcbd7bc105a9bc4b38975f5"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          273,
+          0,
+          377,
+          109
+        ],
+        "visible_pixels": 10942,
+        "unoccluded_pixels": 10978
+      },
+      "rgb_sha256": "9fe58299524c96c63898d3385d28025f947e125918717001384ce6cb3f7de359",
+      "png_sha256": "987f3c97411ea88d8999643cc4820579e07bd5de60f4fa2087e7db811acec908",
+      "predicted_xy_m": [
+        0.24616165459156036,
+        -0.0077722580172121525
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.487367877927129,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973025,
+      "initial": {
+        "arm": [
+          83.5665283203125,
+          59.827606201171875,
+          25.012075424194336,
+          22.077299118041992,
+          74.1124038696289,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2122338041661911,
+          -0.040843836940291804,
+          0.018000000000000002
+        ],
+        "reset_sha256": "ff702c4bda5bdba2cbe3079695a12457a01edf92f79f29a3b4a1b73141691b94"
+      },
+      "look_physics_sha256": "09cfcd7d0a08f12be79eb3c4b0737c7dce152574d6f8b709d2b1eb52ff723b86",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009535475634038448,
+        74.99952697753906,
+        30.008230209350586
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "da47cd9e12ddc78c2f300b561fbdc12dd09e2c291650369fc18be6c6eea1d22a"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          432,
+          22,
+          558,
+          141
+        ],
+        "visible_pixels": 13042,
+        "unoccluded_pixels": 13394
+      },
+      "rgb_sha256": "ecc954b7ca350fd1d5a4797b1d80b910f7eacfe05670f1ac7372cf615086d91a",
+      "png_sha256": "dcbbd4e76323a7707953492a2880b497c8fac10c44f5fcb30b530bc32d7b3705",
+      "predicted_xy_m": [
+        0.2188366800546646,
+        -0.03233500197529793
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 10.770248022217846,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973026,
+      "initial": {
+        "arm": [
+          82.12081909179688,
+          55.6123161315918,
+          22.66529655456543,
+          20.760461807250977,
+          72.68678283691406,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1716459269825593,
+          -0.04983335923024517,
+          0.018000000000000002
+        ],
+        "reset_sha256": "70ba9b6dad0f5791ed87f9c2b401d3aaa221c57a0268e3722a5846afa273ffe8"
+      },
+      "look_physics_sha256": "ab955e32d507d9b2f78d730cfe4c5f8b3e4b27543d9d9e49ccbb361e9c817c36",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009533912874758244,
+        74.99952697753906,
+        30.008207321166992
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "4ad68fe4d636bb0d2d8d7b9f6c7bc2c1ece884c29baa3ee7a6a8f3af592cb019"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          377,
+          155,
+          486,
+          252
+        ],
+        "visible_pixels": 9843,
+        "unoccluded_pixels": 9908
+      },
+      "rgb_sha256": "9f8bba83d3c668e9a010cda8122b2a1ff74762711acd07a52e7bdf7f0915a28c",
+      "png_sha256": "c9821f2a0913b4a15fc07e7c699161237980cab01c40093efaa278f9caabb982",
+      "predicted_xy_m": [
+        0.1761409342288971,
+        -0.04397360980510712
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 7.385238890519057,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973027,
+      "initial": {
+        "arm": [
+          82.24015045166016,
+          59.736900329589844,
+          25.67810821533203,
+          23.303110122680664,
+          73.29342651367188,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21095304365122025,
+          0.008282087776158652,
+          0.018000000000000002
+        ],
+        "reset_sha256": "bcb97c40ab94ebe3f376c6e95c6bff620f261cca2502024d7e55fd8fc2be3d49"
+      },
+      "look_physics_sha256": "84f79c75863d1536ca39865e09a7aa0c3f4ebcb51e5f48efbcb5916b628cfc02",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532802738249302,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "bb98d54b7617e82c558e9174bcb07057052feef525ad10b51237a93a009537ba"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          290,
+          43,
+          394,
+          149
+        ],
+        "visible_pixels": 10128,
+        "unoccluded_pixels": 10134
+      },
+      "rgb_sha256": "1eea0b80bcea6b728691d162f8fd66e909928756f70dd9be6efa6c0302e541a8",
+      "png_sha256": "b008f912c1b046e58ccfcce780cbbfeffbe3dca6ecd3b001c341475ba563781c",
+      "predicted_xy_m": [
+        0.2129521518945694,
+        0.007396064233034849
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.1866576063929544,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973028,
+      "initial": {
+        "arm": [
+          82.296630859375,
+          56.88348388671875,
+          24.892148971557617,
+          21.002498626708984,
+          76.69837188720703,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2060096219127686,
+          0.033036738415160846,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3afa1a91c9c5332d7c7644796d344d58fc98c5d714ec271479f0ba224c412aab"
+      },
+      "look_physics_sha256": "84d90410defda0e6e2ed792a5bb3fb0e981961e73876e83055627052d6c1dcfa",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009544589556753635,
+        74.99952697753906,
+        30.00834083557129
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "89841e9ee1a40aa79487fa030ed49451fe7ab6eb626a89f8072bcefba9cc679c"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          184,
+          85,
+          286,
+          181
+        ],
+        "visible_pixels": 8859,
+        "unoccluded_pixels": 8884
+      },
+      "rgb_sha256": "94a11c708d56ed2cb6955614801dfa413333d6d4ca86e056167dbac643b9826c",
+      "png_sha256": "fc99232f843997298f223339666b0f43e1d6dd3f17636b692c6b4f58701ece1d",
+      "predicted_xy_m": [
+        0.20352846384048462,
+        0.03265198692679405
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.5108124357387505,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973029,
+      "initial": {
+        "arm": [
+          82.94622802734375,
+          58.65883255004883,
+          23.295358657836914,
+          17.761308670043945,
+          73.32976531982422,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18793842634504118,
+          0.02439132170327099,
+          0.018000000000000002
+        ],
+        "reset_sha256": "581fd865f4eaabcc407ee5855283fa3e0dc482d5d4ab324a15ba808d9b929721"
+      },
+      "look_physics_sha256": "0f8a9c78b6032e48fc4ea0f332e864eca4d0fe6b005cc48193dd905d148669b6",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532703086733818,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "ad7715d0f9f50f5f34d3fd34dc35092f378fcc5ffdd7f2d1466c2408dc92bfb9"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          208,
+          131,
+          312,
+          230
+        ],
+        "visible_pixels": 9441,
+        "unoccluded_pixels": 9523
+      },
+      "rgb_sha256": "e7ae221cf12d6f35cf41147faa1409fd19523ae75844df5fe27b16ba67a77b82",
+      "png_sha256": "72b5ab595b4a221208a1471616a5aa3500015db9e1f2e702b0d75dfb92aab1e5",
+      "predicted_xy_m": [
+        0.1849869191646576,
+        0.025355864316225052
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.105114665847323,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973030,
+      "initial": {
+        "arm": [
+          81.14869689941406,
+          57.143375396728516,
+          22.66017723083496,
+          21.651147842407227,
+          74.94612121582031,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18614066541207971,
+          -0.011591319348308406,
+          0.018000000000000002
+        ],
+        "reset_sha256": "227ff9f76787056c81988d1df46ec2035b5119f7f75f060cc4404eebc8aa7514"
+      },
+      "look_physics_sha256": "2c5c6eb1fe38d61aaaf432c1daa240adfa1cd2e31c17b5f1b200a20f7623de07",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532847441732883,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "17fe274809c73fe37b14382a06b33d2e0225b94c6107557cf31d2113550c840f"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          276,
+          155,
+          374,
+          254
+        ],
+        "visible_pixels": 8409,
+        "unoccluded_pixels": 8437
+      },
+      "rgb_sha256": "e3218a05ab199e103dfbb00b3843896c6ecf53e4a5b88b4f9396f851df2973d8",
+      "png_sha256": "aa3fc544de03b3fbdd5a24d27acc32690558a6b770adec8c436c4803616d3f05",
+      "predicted_xy_m": [
+        0.19240404665470123,
+        -0.01166943833231926
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 6.263868386714871,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973031,
+      "initial": {
+        "arm": [
+          82.7777099609375,
+          56.19319534301758,
+          22.916440963745117,
+          18.363250732421875,
+          74.98605346679688,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1775997769434381,
+          0.014563218848284293,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0a1b5a58e0a5129da139c1e6362c1e6d17e342b0e1587b445a7e9fae04317d28"
+      },
+      "look_physics_sha256": "3aec4db33a2f25fef8e01f7930d8358082666e2984c4b20b11b6f5ce2ba1588b",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532621130347252,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "9e5a0b8d60030539baaaa74d7139f831d932e82a8f4957c6cf5a267d94145138"
+      },
+      "visibility": {
+        "full": true,
+        "box": [
+          264,
+          186,
+          354,
+          276
+        ],
+        "visible_pixels": 7862,
+        "unoccluded_pixels": 7862
+      },
+      "rgb_sha256": "bfe70707a7bb7bec7f3004f35aac7451b15ce4d060b9c15ba915a1e53c32fb02",
+      "png_sha256": "25d070e60927a9d306780f1e0e76bd61b6565bb30f676e9c377fead89791290c",
+      "predicted_xy_m": [
+        0.1790875792503357,
+        0.014837405644357204
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.5128562732627815,
+      "eligible": true,
+      "reason": "eligible"
+    },
+    {
+      "seed": 973032,
+      "initial": {
+        "arm": [
+          84.06321716308594,
+          57.29835891723633,
+          21.8483943939209,
+          22.042076110839844,
+          76.21258544921875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2294624432277478,
+          -0.04214027889803639,
+          0.018000000000000002
+        ],
+        "reset_sha256": "88639fbb184f8ea6862c1f78fc9a1f218132cfaf32ebe72ae7d225e6f5c843e1"
+      },
+      "look_physics_sha256": "c9ed17ed13c753f7814bfc3b12648926dbe8d7a26c9a44d29a77957c5b8b1a74",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532729163765907,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "bd2a9c49d62af06f459a7e150180b67441f67185a68bf574ebf9a67d64d014e8"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          416,
+          43,
+          529,
+          148
+        ],
+        "visible_pixels": 10194,
+        "unoccluded_pixels": 10794
+      },
+      "rgb_sha256": "f1c277850f104a0858ba2b3333d9427b68b6a35d4e11ca000b870e1d945a9aad",
+      "png_sha256": "db92f1ade6feb2af6685b59b88ac25b4b48ca44402f952738167d0f90531ae86",
+      "predicted_xy_m": [
+        0.22241926193237305,
+        -0.0435248427093029
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 7.17798159004227,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973033,
+      "initial": {
+        "arm": [
+          80.95741271972656,
+          58.3111457824707,
+          24.73859977722168,
+          20.093948364257812,
+          76.91796875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24175066006774526,
+          0.028755054350373524,
+          0.018000000000000002
+        ],
+        "reset_sha256": "80a654d3d0999fc2c723cf145b3772ca8916889f6a816ec5da157fe673d3e842"
+      },
+      "look_physics_sha256": "45345a9f6f9cfe2333af8c675673d6d67d5abce8236a282db35329e23d30b8ed",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953271146863699,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "cda68bc51f2d4aa237108ba0c3a6261bc573852656d88f2919ff441311b917fe"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          180,
+          15,
+          288,
+          131
+        ],
+        "visible_pixels": 9911,
+        "unoccluded_pixels": 10310
+      },
+      "rgb_sha256": "9732ce6bdc079c4c977696de99f43e7d0ebb93f1483b59e1ddda5314cd6c8ff9",
+      "png_sha256": "916c216a8a703fc0fe8f9f416b9dd8c895942ffe6ad23cd64d60589feacff4a5",
+      "predicted_xy_m": [
+        0.23787358403205872,
+        0.028952328488230705
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.8820916619732437,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973034,
+      "initial": {
+        "arm": [
+          83.29629516601562,
+          58.32527160644531,
+          21.599966049194336,
+          22.844480514526367,
+          74.98790740966797,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22005394086430452,
+          -0.04968947115018549,
+          0.018000000000000002
+        ],
+        "reset_sha256": "13d5d1b311ec9ceec32e12c6a18d012c51b243c63d53e5e0eb6b6412806dc4d7"
+      },
+      "look_physics_sha256": "aa47b52db0716788688790efe63036e6e617ba6516042a77a4852167039c0fa3",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009534578770399094,
+        74.99952697753906,
+        30.008214950561523
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1c58b3ee21ca098afc69cf8ea2e8d3083f87660e4ec74b61dd2c1304af2d274c"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          370,
+          0,
+          486,
+          100
+        ],
+        "visible_pixels": 10361,
+        "unoccluded_pixels": 10840
+      },
+      "rgb_sha256": "94c5c93d0ddc11966f498202ed57c8c4cf0a11d2d30ca4af831dc5abea7aca8f",
+      "png_sha256": "1b9c7e1aefc3972c1bc4d68e852a63a9e2370874f57be096540bdb64b4dd8be7",
+      "predicted_xy_m": [
+        0.2217249721288681,
+        -0.04627634957432747
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 3.8002295165866617,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973035,
+      "initial": {
+        "arm": [
+          81.66078186035156,
+          58.64833068847656,
+          22.86404037475586,
+          22.2641544342041,
+          73.68728637695312,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24119671389566408,
+          -0.04875651284749985,
+          0.018000000000000002
+        ],
+        "reset_sha256": "7a0ab20db2dbe885b87253357bc00d253f5639a18dd44bd8d1c25babe0907311"
+      },
+      "look_physics_sha256": "83940503792b701118d58b61ab11cfe602990575e088c0834fb79fb3018d1413",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009539881721138954,
+        74.99952697753906,
+        30.008283615112305
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f608dbf42feedb6b0bb517fe05dd2a5e10eae6f249a04599e3ee9ac3c017162b"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          402,
+          0,
+          522,
+          66
+        ],
+        "visible_pixels": 7424,
+        "unoccluded_pixels": 7506
+      },
+      "rgb_sha256": "5ac1bc868ec315b8d081fc45af04acb6f4e21456536ab324385c161720a7dadc",
+      "png_sha256": "eddace3c05ff50ce50fadb3e69afcc0039ad06b2cf68d16c01012cae690524e1",
+      "predicted_xy_m": [
+        0.24179132282733917,
+        -0.046832796186208725
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 2.013515724934094,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973036,
+      "initial": {
+        "arm": [
+          83.14944458007812,
+          58.307952880859375,
+          26.026639938354492,
+          21.250513076782227,
+          76.1744155883789,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24595801299120335,
+          -0.02761742593861216,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3822dd68f5da3279bc6b7fa95c0bbc4ec1c3844852943d2bc7d81dc24f84b172"
+      },
+      "look_physics_sha256": "849b3bd0f1be4dfc067576f7c0cc603713d2d63a6c8dcc9af9f618265596e028",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009535085409879684,
+        74.99952697753906,
+        30.00822639465332
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "4367fca50f13bc647ed255c3e06c8d724821869284c0ebf110cc9244c4649620"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          408,
+          0,
+          526,
+          26
+        ],
+        "visible_pixels": 2619,
+        "unoccluded_pixels": 2679
+      },
+      "rgb_sha256": "823820fdeecff0d74e98b2b53ed968c302af0e39ab938c48b76395b8cc427d43",
+      "png_sha256": "70eb0b95daffafa075e0f24b1abd06efa1a4c503e9d03cce78a5dc3cee6407b1",
+      "predicted_xy_m": [
+        0.23637253046035767,
+        -0.02191600576043129
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 11.152921921959091,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973037,
+      "initial": {
+        "arm": [
+          81.318115234375,
+          53.979148864746094,
+          25.693111419677734,
+          20.642353057861328,
+          71.41880798339844,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2457234883522929,
+          -0.016276056850985834,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4e8b892fe28e95b2d3dd03b8aed05aae43d66254a052aae8911358dfd46f39c5"
+      },
+      "look_physics_sha256": "7a26c5f2ab4fa5f16dc1edf9158791defd707f9f81eac1a584903967ccb99e12",
+      "look_pose_native": [
+        90.00001525878906,
+        56.71083450317383,
+        23.83436393737793,
+        0.009543564170598984,
+        74.99951934814453,
+        30.008333206176758
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "20f848d1366034231218395b0d1da96312fef062e736e4b01a25621aec281240"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          318,
+          0,
+          417,
+          89
+        ],
+        "visible_pixels": 4367,
+        "unoccluded_pixels": 8606
+      },
+      "rgb_sha256": "7d89fc0fde3af30108cb8f9d5d3f9b0fb6829b6927e72b05412ea0b574c03340",
+      "png_sha256": "43022a6bc2e3dd1605b3dec661cd96cec8d795fbcde97e9f88413e4dd183f9a8",
+      "predicted_xy_m": [
+        0.23892445862293243,
+        -0.005543829873204231
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 12.704625187834184,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973038,
+      "initial": {
+        "arm": [
+          81.47661590576172,
+          58.07351303100586,
+          25.637582778930664,
+          23.415590286254883,
+          76.16751098632812,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2238119692743766,
+          -0.0484403203169542,
+          0.018000000000000002
+        ],
+        "reset_sha256": "5885da05189748a445a34c0927b177116d9c6dd7fa77945b696336d25ddcace3"
+      },
+      "look_physics_sha256": "4f5f1d2cb18557ca867897b01211f89e1d7c4baae1c4ce901d17995d5deae437",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009538193233311176,
+        74.99952697753906,
+        30.008262634277344
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "775ffb27dd55f36e66adde3d6fba92e23f98c2926b24a3c8e5eaae01c1383a0f"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          363,
+          14,
+          480,
+          131
+        ],
+        "visible_pixels": 11586,
+        "unoccluded_pixels": 11820
+      },
+      "rgb_sha256": "6d8f68be8c16b1d230ec7b025a769086244ac171eb1003ac243717cffe0c3e33",
+      "png_sha256": "d18fe46eab3f0508bc7fa64e0b922690fe7796cd78e9654ad595ecabe7f286db",
+      "predicted_xy_m": [
+        0.22691872715950012,
+        -0.048266779631376266
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 3.111601022998934,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973039,
+      "initial": {
+        "arm": [
+          81.94491577148438,
+          55.2929573059082,
+          26.582077026367188,
+          21.971445083618164,
+          76.0278549194336,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21063855760656358,
+          -0.012622389584955464,
+          0.018000000000000002
+        ],
+        "reset_sha256": "fae19e731052893389dcae7d36e060b01e964712137a00ae1db2f40738ef0714"
+      },
+      "look_physics_sha256": "fcc2778d26435839b7731a5afb8f8587a04e632898aa8533250c46287e521784",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532896801829338,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "8c89c68723315b81654aae786a7678f35a1f31e5ce3e6d23449a05e736fa1f50"
+      },
+      "visibility": {
+        "full": true,
+        "box": [
+          296,
+          53,
+          390,
+          150
+        ],
+        "visible_pixels": 8671,
+        "unoccluded_pixels": 8671
+      },
+      "rgb_sha256": "8ee19adae07def2302a270a7066a1e113edcfc72d613ded1526734227e6ec611",
+      "png_sha256": "f74a27e7a0d5af71e566c2b218c4bb44935e67dc723ded49ad7edd37ee351a23",
+      "predicted_xy_m": [
+        0.21282589435577393,
+        -0.010440416634082794
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.089570846053876,
+      "eligible": true,
+      "reason": "eligible"
+    },
+    {
+      "seed": 973040,
+      "initial": {
+        "arm": [
+          80.80316925048828,
+          57.2878532409668,
+          26.63355255126953,
+          18.9414119720459,
+          75.71928405761719,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17232360658639798,
+          0.04917462905570891,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b455798783bd7665ad13488a9edb317100be64ab808c9e6ea0a8ba02bbf1c697"
+      },
+      "look_physics_sha256": "50b13818b552d47b5ace98387b8d9830773e0ba5484504ebaefc91532751dca9",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953275803476572,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "a988fc3a8a87f55a123f2b920f51712da72df5e17bff052867580cee63b4a036"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          168,
+          195,
+          274,
+          291
+        ],
+        "visible_pixels": 8312,
+        "unoccluded_pixels": 8365
+      },
+      "rgb_sha256": "55b748750d7b17d5564e9cd0c6c490e9a3001269af1b7b8bdd60ac759c6d88b8",
+      "png_sha256": "01ce1db211a0086c9baf44904496dbb47185c0516a0183df7c59bc046c8f59d6",
+      "predicted_xy_m": [
+        0.1769832968711853,
+        0.04302578791975975
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 7.714982881723194,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973041,
+      "initial": {
+        "arm": [
+          83.28716278076172,
+          54.06337356567383,
+          25.45811653137207,
+          22.008922576904297,
+          73.44789123535156,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21636294984467272,
+          -0.011836409218885825,
+          0.018000000000000002
+        ],
+        "reset_sha256": "5f24a9d65549c2ca93bcc77b79136748a461aabed303c5edd2db2bb0fdc5e886"
+      },
+      "look_physics_sha256": "088239cec9128342e861844fcad065ee5e1ac890184fcb3339db5a437acdd4a4",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532758966088295,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "da9460fd1eb1e46b824a2011819bbea4fa81c10bb8bffac84b4b5dffb19af826"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          275,
+          40,
+          374,
+          145
+        ],
+        "visible_pixels": 9400,
+        "unoccluded_pixels": 9517
+      },
+      "rgb_sha256": "46a2df0fb34ff0182b78224cffe1b2f564e95935e6957d031d6bc2b47567d8db",
+      "png_sha256": "a6fdeae6f88619403711a5ccf4534a118d8f0451440535f02efad287f2559c4e",
+      "predicted_xy_m": [
+        0.21623337268829346,
+        -0.017099997028708458
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.265182510717815,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973042,
+      "initial": {
+        "arm": [
+          82.87751770019531,
+          54.59596633911133,
+          25.46466064453125,
+          17.988073348999023,
+          74.44981384277344,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2497111168478718,
+          -0.023766211702095308,
+          0.018000000000000002
+        ],
+        "reset_sha256": "77fc0d2d8b88299177a5b2426e4d56b1d92cedbe21968b1af006c5b349d445ac"
+      },
+      "look_physics_sha256": "dd667d359be9502e1962dd8af69b934a282fb8da477eefeca07a0fae9558c16b",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532598778605461,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e81cbd8e5f6824a49852127b6a53c30a1eb0efc60188aae00b81351e58c72662"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          376,
+          0,
+          485,
+          29
+        ],
+        "visible_pixels": 2738,
+        "unoccluded_pixels": 2773
+      },
+      "rgb_sha256": "18de07591b0d627b0c024e83029d0bbe26e0733c25285521d1431b04379b82e2",
+      "png_sha256": "088c168de627b781b01037148e3e2c5bf6f94baa7814f7777cf33605d0b406a5",
+      "predicted_xy_m": [
+        0.24234741926193237,
+        -0.021776994690299034
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 7.627648815800974,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973043,
+      "initial": {
+        "arm": [
+          82.02381134033203,
+          55.93366622924805,
+          25.958871841430664,
+          19.966373443603516,
+          72.71125030517578,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1783786268507291,
+          -0.04757395390476408,
+          0.018000000000000002
+        ],
+        "reset_sha256": "657b8fce4ed5554c217250550275a280c1bfd12174f85c37d585177f2ad0a40b"
+      },
+      "look_physics_sha256": "8e78fea5f22de88f30afbf2897b047669f416e44a3b62435353dc145946ebb7f",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009540646336972713,
+        74.99952697753906,
+        30.008304595947266
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c512a2cdf60324ac9c2a478bc94a8eaf3a1667cc9d240841eca3e3b0c01a0a70"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          359,
+          139,
+          465,
+          237
+        ],
+        "visible_pixels": 8346,
+        "unoccluded_pixels": 8912
+      },
+      "rgb_sha256": "9215d570d5986b8ef6feb21ad087b77af5dca20bc4df817c4fd04eaadddbed9b",
+      "png_sha256": "4e82e5e65341837d7473997e6d1dc655b0d11133e3bfa55b322aec9bfa0da898",
+      "predicted_xy_m": [
+        0.17638298869132996,
+        -0.04462302848696709
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 3.5623773641559078,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973044,
+      "initial": {
+        "arm": [
+          82.25131225585938,
+          54.27482986450195,
+          26.48621368408203,
+          22.262773513793945,
+          76.0284194946289,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1810139129643584,
+          -0.03341589070812086,
+          0.018000000000000002
+        ],
+        "reset_sha256": "d93392e96e858be3a218aa747f02baa45212b98434c61c2c7a1a9d73bde5e087"
+      },
+      "look_physics_sha256": "b349f690a137f2e42d64d2465cee0c9e88c8d216ae5a5c06f19795b66c63df11",
+      "look_pose_native": [
+        90.00001525878906,
+        56.71083450317383,
+        23.83436393737793,
+        0.009548503905534744,
+        74.99952697753906,
+        30.008371353149414
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f7f7b088329a4cf048b3348799e9a2201828020525dab1bc598902606af967cb"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          348,
+          192,
+          456,
+          291
+        ],
+        "visible_pixels": 9289,
+        "unoccluded_pixels": 9348
+      },
+      "rgb_sha256": "6ef3f26e99ee4e22fe1c8a88013aafb02ccf4eb41e0df1774c128fd7147aa405",
+      "png_sha256": "373a64a2e8cf370a19b8cbe218e0b3633f969d353e905f751de960b010f828a9",
+      "predicted_xy_m": [
+        0.1743776798248291,
+        -0.03972131386399269
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 9.15412210191625,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973045,
+      "initial": {
+        "arm": [
+          80.79595184326172,
+          58.466129302978516,
+          27.138383865356445,
+          19.349369049072266,
+          76.59231567382812,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21037405430691464,
+          0.0292494924755137,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4e2551fdad94f018ebf7cb93b6e26a85be1d4ff72c7dab19f89564f11752799e"
+      },
+      "look_physics_sha256": "a011f54a6e8d3e92c5b98e2d77cf59e2ecf4926da741fe1223bad23407e46048",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532753378152847,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "bcbed247df66a897824de5bad7e5f7b135333809a6d903802dda99bc5e4f5c73"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          222,
+          108,
+          328,
+          210
+        ],
+        "visible_pixels": 10173,
+        "unoccluded_pixels": 10210
+      },
+      "rgb_sha256": "e74ec79ad471c57de35dfb16ef932dd969cd4a88eae400a508f6ea46f5b72249",
+      "png_sha256": "8cb0c61ecdf89bc65b73f8384be2e2133bef4db94b4130f4f1f780ef229996a6",
+      "predicted_xy_m": [
+        0.21196049451828003,
+        0.025076070800423622
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 4.4647778245225975,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973046,
+      "initial": {
+        "arm": [
+          81.04609680175781,
+          57.07735061645508,
+          25.445358276367188,
+          23.0131778717041,
+          75.06913757324219,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23463189338133103,
+          -0.03334351375361405,
+          0.018000000000000002
+        ],
+        "reset_sha256": "2669f62c93d61ccdbbc65c51452ebe668b8b2b88e40bc5cc63283e885df4a200"
+      },
+      "look_physics_sha256": "67206cc0a6d3a8ad4aa868844846eeeeed75adfb3c33eaa4b2e2b3ce12ec994e",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009535927325487137,
+        74.99952697753906,
+        30.008235931396484
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e5d31c24a3f489a8b8fedb9ba3552981b3c84fe5f5433d3453bba48c39c31fbb"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          377,
+          15,
+          480,
+          124
+        ],
+        "visible_pixels": 9720,
+        "unoccluded_pixels": 10341
+      },
+      "rgb_sha256": "fbdb2ed530443542eeb2fc2e966a7db85d2a0841df40a08722ffac99a23504c4",
+      "png_sha256": "30b3c4769caf8fecb9424d1f68fb72e2a2fcfc717466ff31a14307251f4b9d58",
+      "predicted_xy_m": [
+        0.23477762937545776,
+        -0.03609396517276764
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 2.754309711907521,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973047,
+      "initial": {
+        "arm": [
+          81.14344024658203,
+          54.94146728515625,
+          24.13495445251465,
+          21.76595115661621,
+          72.7044906616211,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22161067660511755,
+          0.01646304163176196,
+          0.018000000000000002
+        ],
+        "reset_sha256": "4d3f2e57f9ed992ce9ce7f5ffe88d898e102c8a1672bdd1b0865e9d0ddb10b19"
+      },
+      "look_physics_sha256": "9958d78074545f482199f854809008b6d6d9ef21c22820baf33dd80bb95774ab",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532938711345196,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1451e7e733dbc9b99f8a150c6642b5e0034b4249cd8a0bd788978ac88ead8d7b"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          237,
+          0,
+          340,
+          106
+        ],
+        "visible_pixels": 9335,
+        "unoccluded_pixels": 9802
+      },
+      "rgb_sha256": "1b0b672eae7c6a5aad55c0e6fdecfc05ad93b13ae69351f0c99fc934dcdbc4f3",
+      "png_sha256": "a7e571e7ac47a25571c562d233b3e9d1f8c5ca607b3226155bc11393af091b6a",
+      "predicted_xy_m": [
+        0.22219347953796387,
+        0.013184147886931896
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.330285790802344,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973048,
+      "initial": {
+        "arm": [
+          81.91458892822266,
+          55.37761306762695,
+          22.558147430419922,
+          18.806190490722656,
+          75.42019653320312,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22548376111551421,
+          0.04421876386824604,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0df0c0fc35a49da42a839242bde6ed71996acb92e4642f367d63944b09288e2c"
+      },
+      "look_physics_sha256": "c00edc13de70149e5e3486ea6d4c29b94ac334112263ceac4eeb3b2886bbe36e",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009533575735986233,
+        74.99952697753906,
+        30.008203506469727
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "fc98a277537ab1aea5ce4be5e1f358c5024d95ba6abca837b7856d2a5f462e8e"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          129,
+          46,
+          242,
+          151
+        ],
+        "visible_pixels": 11029,
+        "unoccluded_pixels": 11098
+      },
+      "rgb_sha256": "2f48b0efa10e1ba3433a064c42c0484ddb11608c1a654ddab89da5e766d567a0",
+      "png_sha256": "7ee0123878b8a9aa7ba016470ff090733ade31877ee0a510b9c5259e9c6ef65d",
+      "predicted_xy_m": [
+        0.2262267768383026,
+        0.04379547759890556
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 0.8551278443150727,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973049,
+      "initial": {
+        "arm": [
+          80.80520629882812,
+          55.946048736572266,
+          21.410776138305664,
+          23.333389282226562,
+          75.02088165283203,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17247869733754403,
+          0.014222620610975248,
+          0.018000000000000002
+        ],
+        "reset_sha256": "319d45847008d307c1759a0e08cf00b77c7d46068296c11ef1e31e7d5061fca3"
+      },
+      "look_physics_sha256": "f1ba9fd334d8b23ad3b44f196543e0d1dc03bd73151795df1006e9032d3a97f8",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009533391334116459,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "a18588fb5dc6128a39a14421409610d8df8d6bcddeedc65bbc6d82439a1777ce"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          243,
+          209,
+          331,
+          298
+        ],
+        "visible_pixels": 7214,
+        "unoccluded_pixels": 7245
+      },
+      "rgb_sha256": "e43a7c530c7b56b3b32e6d11b7900c88836de272c709b0d8af946da3b4f2ad2a",
+      "png_sha256": "16a09f91b8ce59d258d8cb59bf6395b92f598df70d85f7ac131f2f2ef3f7c296",
+      "predicted_xy_m": [
+        0.1775723397731781,
+        0.014475250616669655
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.099903448288928,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973050,
+      "initial": {
+        "arm": [
+          83.21240997314453,
+          59.2773551940918,
+          25.24010467529297,
+          22.874897003173828,
+          76.36494445800781,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18890926585399387,
+          0.039634968360607065,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6d93b12741817ee089d63872a112d4eab54536597311a1adac0bb03a09ac498c"
+      },
+      "look_physics_sha256": "87ab176ea65e8889ea3a07fcc2c464b9ea06d941b1bc1249744e950f0a8793d0",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009535628370940685,
+        74.99952697753906,
+        30.00823211669922
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1eecf16e0de1fa52f1660a3b832d1aa5eda36bee6fd08cd6fbe729d49c41dc59"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          190,
+          126,
+          291,
+          221
+        ],
+        "visible_pixels": 9087,
+        "unoccluded_pixels": 9109
+      },
+      "rgb_sha256": "10764662021c6ed897a17f769951384e1b4e852fd1e593f7be9f25c523f7ae57",
+      "png_sha256": "3a24ab48114e96efb51a51b1b1ad671949334382befbb1ca553f461d61b3a979",
+      "predicted_xy_m": [
+        0.18791213631629944,
+        0.04223315790295601
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.782958176637609,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973051,
+      "initial": {
+        "arm": [
+          82.22765350341797,
+          57.90724182128906,
+          23.094724655151367,
+          20.513334274291992,
+          71.98217010498047,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21844269330054908,
+          -0.004098998441378829,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1330d79d37ec637cc1846231562565386d138aae0ad17bf28965d55c58bf26ac"
+      },
+      "look_physics_sha256": "43dd19c8b0485d20f419bf03a20236d0d4bbf3030d1ac78a27f6452f360e6903",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009533977136015892,
+        74.99952697753906,
+        30.008209228515625
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "74719f2f049a1494982cd20cfae9f7760bf4e7fdf520e58d8d653488dcc07599"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          288,
+          22,
+          392,
+          136
+        ],
+        "visible_pixels": 10639,
+        "unoccluded_pixels": 10667
+      },
+      "rgb_sha256": "73a192980f6c731d565220201af02dd12c6a7c43073880f660ca738e978d6f40",
+      "png_sha256": "74e12d86bb988b71c8d34cd92ecb43853478653f8a459115162ff3a5751567fa",
+      "predicted_xy_m": [
+        0.2179519236087799,
+        -0.0023284440394490957
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.8373126518238432,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973052,
+      "initial": {
+        "arm": [
+          78.95951080322266,
+          58.5562858581543,
+          27.30650520324707,
+          18.246301651000977,
+          74.8282470703125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21325082242177987,
+          -0.013732533447510374,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e7f182a54006d481ef77a2ea1271fd2f30c74950560fc9de2c9eb4620cee98f0"
+      },
+      "look_physics_sha256": "cea4dd8f31cff4253d57cbd0fbc2d61cb61e908420a853a80b1e2d18526f61a4",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009536117315292358,
+        74.99952697753906,
+        30.008251190185547
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "cb396963f2ae62b831cc7abfd44cb35973f5d0f2d7c9adfd1ed8ce0c5733c702"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          295,
+          64,
+          395,
+          167
+        ],
+        "visible_pixels": 9456,
+        "unoccluded_pixels": 9519
+      },
+      "rgb_sha256": "afd20efb841ac8064c3bc835bbde062b5eab931b10580dde34271c11e6adef7c",
+      "png_sha256": "fbee075687dc18286897e7120f2b431920322ff1f1c5b106f03c5dab9860c9b2",
+      "predicted_xy_m": [
+        0.2109580785036087,
+        -0.014755673706531525
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.510675340210424,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973053,
+      "initial": {
+        "arm": [
+          79.24486541748047,
+          54.147132873535156,
+          21.55120277404785,
+          21.182872772216797,
+          76.16825103759766,
+          112.00909423828125
+        ],
+        "cube": [
+          0.176484874919227,
+          -0.04706070863859655,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a71e91791ad3fa3c2d36e6a734c98db0d3fd158dbcc30d7f31c2c0cd39466e06"
+      },
+      "look_physics_sha256": "ad6872c27b7d59bc25d8d5c427653429b269af87edf99700e2566047e86cc950",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532873518764973,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c678a63b9b73e89d902088a6e6f8f51c7e6944fd2a9e67393fee14272efe9414"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          428,
+          103,
+          549,
+          213
+        ],
+        "visible_pixels": 11374,
+        "unoccluded_pixels": 11438
+      },
+      "rgb_sha256": "819f1d57df55c39133bd25d374fa6746dcc6bdbeb4efd7a1a56752ef7b08400c",
+      "png_sha256": "74dc4f60ac954f7a3421bd71028f00699cde5b3925743bd527e6a45fa00d0cc0",
+      "predicted_xy_m": [
+        0.18223139643669128,
+        -0.04453807696700096
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 6.275840987566289,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973054,
+      "initial": {
+        "arm": [
+          82.63953399658203,
+          55.64590072631836,
+          22.311342239379883,
+          18.3635196685791,
+          75.9623031616211,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20391231011117072,
+          0.03934454116167954,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3340b594cb1712ff90d6a594c4ace72b9b7ba3c61fd998992c47ad88cd2645c2"
+      },
+      "look_physics_sha256": "a8ecbcf299a171f8865a581584e35a7cdb1caa1da9de92beec28e3799e82e82b",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009533949196338654,
+        74.99952697753906,
+        30.008211135864258
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "75fb050a4848a12864a7161101157071179c1f68c8a4a96f6bd226d360db917f"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          119,
+          39,
+          234,
+          148
+        ],
+        "visible_pixels": 11159,
+        "unoccluded_pixels": 11588
+      },
+      "rgb_sha256": "c51a8737aa07b9ba702cca3d8cda9e7001c2bb3e7c949be878fe36b2e26c533a",
+      "png_sha256": "d25ef295a795370abd2d733d573119969020eef075b443e2aa9f1b170a7dc308",
+      "predicted_xy_m": [
+        0.20660638809204102,
+        0.037505608052015305
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 3.2618600749924154,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973055,
+      "initial": {
+        "arm": [
+          82.4706802368164,
+          54.426212310791016,
+          22.764907836914062,
+          19.84394073486328,
+          76.74057006835938,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24296970717219035,
+          0.04325338953382943,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f240d5a60e2d4868f286f53d5a5705baf6b40dae35420dbde82b6ce127b5a4f5"
+      },
+      "look_physics_sha256": "672e1005ff1b4cfe4319ee3b07b9da80bef0a75e05e5f0842ccba2e976389cb8",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533295407891273,
+        74.99952697753906,
+        30.008195877075195
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "34541f7c6c5562bfa64eb78e1486a1e67700aa90f5c5da5da03fb1aea08a447b"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          129,
+          0,
+          238,
+          65
+        ],
+        "visible_pixels": 6144,
+        "unoccluded_pixels": 6494
+      },
+      "rgb_sha256": "e15e831e3dd925a9467d182896ce0564034578722dd3a22c38b6d4279863d42a",
+      "png_sha256": "b14333e9eea1c058f2f06ae1e3f95b15871b318eab047f5e7ba5c5eb69cab093",
+      "predicted_xy_m": [
+        0.24686084687709808,
+        0.0369194895029068
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 7.43365709491843,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973056,
+      "initial": {
+        "arm": [
+          83.11542510986328,
+          54.36916732788086,
+          21.691280364990234,
+          22.981517791748047,
+          73.08068084716797,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2459435916184305,
+          0.041960084488575564,
+          0.018000000000000002
+        ],
+        "reset_sha256": "021f85d5d92ca920a7b68b85b53a5eccf2c1b895a66d3dce64c94ac9772a3aef"
+      },
+      "look_physics_sha256": "efa7e6537d17d7ca7907a10cb94f964aab26ecc274891d46576dfa888b07209f",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532864205539227,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "b8d6478225fb8b16bb70c1318067ab93e86c8b399cff611fa7841d95a9788236"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          179,
+          0,
+          290,
+          100
+        ],
+        "visible_pixels": 9277,
+        "unoccluded_pixels": 9741
+      },
+      "rgb_sha256": "7eadce637d04abf173cc8c359dcacc5577d932dbeaefe1e9668068241e08b3d5",
+      "png_sha256": "ab46daef380bcdff9ac3fe620f09b5d51edd0cf15e7b3a37bd7b91418f080616",
+      "predicted_xy_m": [
+        0.24027174711227417,
+        0.042368143796920776
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.68650441845804,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973057,
+      "initial": {
+        "arm": [
+          82.07122802734375,
+          58.77683639526367,
+          24.889997482299805,
+          23.156787872314453,
+          76.00242614746094,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2000197496554209,
+          -0.02257881670508013,
+          0.018000000000000002
+        ],
+        "reset_sha256": "5e35f37773e8bc17ff66d4b7e0b16f14eaf3bff33f8b3d471d5720cfebc1b1d0"
+      },
+      "look_physics_sha256": "3c1da62e36261441c2e5b15af6d43a1d237eeacf2fe7a348f172689706243e42",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533558040857315,
+        74.99952697753906,
+        30.008197784423828
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "cf0f46efdfa758ec845bce110fa92661d075b899bd9c26697a286ffa77e5cc62"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          354,
+          106,
+          462,
+          206
+        ],
+        "visible_pixels": 10462,
+        "unoccluded_pixels": 10491
+      },
+      "rgb_sha256": "20548dc2401c625f1ac3f03149084e2b7fad27ef89c86dd48e3a23c310e67ca6",
+      "png_sha256": "38ab68e9f3479b3fe73393c7c7a0a2d91f14b7d71b3a05b0b8928214416aeaca",
+      "predicted_xy_m": [
+        0.20145662128925323,
+        -0.02361869066953659
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.7736792139691924,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973058,
+      "initial": {
+        "arm": [
+          82.91372680664062,
+          58.04751205444336,
+          23.72976303100586,
+          21.37883949279785,
+          75.6265640258789,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17527799017991666,
+          0.03070716657628722,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6d92fcb55b70596818f9c8b50182cefbf968d3786ac2b658d199ada6a7dd29a9"
+      },
+      "look_physics_sha256": "0d09201d0b2db56b662c8d68a25a6c20fc432f96bb1b0d79a6451a77b025f89b",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.00953754410147667,
+        74.99952697753906,
+        30.00826072692871
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "d4ea4a6dc1ab1d5adce0779fdb5c77cbbfa211ba63ba94852bf0fc92c97a29a5"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          220,
+          139,
+          316,
+          230
+        ],
+        "visible_pixels": 8220,
+        "unoccluded_pixels": 8280
+      },
+      "rgb_sha256": "05d2c08f7349089f68636b41edf4ba63056045e20d38e43120c6669ce1f0322c",
+      "png_sha256": "491af39cf53051344488bf989c70dd8de1a4a3d6e7b997ac0892670813543180",
+      "predicted_xy_m": [
+        0.1772792786359787,
+        0.03259238228201866
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 2.7493987963741593,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973059,
+      "initial": {
+        "arm": [
+          80.40184020996094,
+          57.917884826660156,
+          23.728214263916016,
+          22.829715728759766,
+          77.09323120117188,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1725934533689481,
+          -0.048010893799084034,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a24a565ec8329eb027413b01abc6fc507b44bf818e83dec5ced4d74bc80b377f"
+      },
+      "look_physics_sha256": "85936ed7cc9f45b3735e2414193d3d3c3aaddb1171423ecc8b85b4d4834a24e0",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533434174954891,
+        74.99952697753906,
+        30.008195877075195
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "54e871e1eb31e14c3e193a4d23738a8ec47c8192b6ced2ed539c43160ff7dc98"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          434,
+          164,
+          550,
+          260
+        ],
+        "visible_pixels": 10213,
+        "unoccluded_pixels": 10301
+      },
+      "rgb_sha256": "1c09e3b5dfdc28f5b10a72781b0bdc68be38bd878c7a4ee98ea4d3bbb064ca1f",
+      "png_sha256": "2f5af566d67b2cb7a72d53712b08f8b03955ae62c89114921e0774308a662e97",
+      "predicted_xy_m": [
+        0.17651113867759705,
+        -0.03943822905421257
+      ],
+      "inside_motor_hull": false,
+      "localization_error_mm": 9.425435746190512,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973060,
+      "initial": {
+        "arm": [
+          80.41400146484375,
+          58.200321197509766,
+          27.20531463623047,
+          20.845218658447266,
+          73.32392120361328,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2159312117311502,
+          -0.03682429823246593,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9e8908c698c93e34ae31388836de04f9253d57c756ad2f0a4706ba84c7469a28"
+      },
+      "look_physics_sha256": "77946d7a7cf18d16b362a315c94717516e5b10e55a0932ed5c57563e27a8c28e",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532924741506577,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "274a5a75b3c995f571b97227f19c8b4f4377e6ddfa8fae006d2a5172d3e8c359"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          327,
+          87,
+          425,
+          182
+        ],
+        "visible_pixels": 7948,
+        "unoccluded_pixels": 8136
+      },
+      "rgb_sha256": "60417452436086fc9abc762a1a660df8cf0b42b1b85dbede7eb91df17aab2fcf",
+      "png_sha256": "4034b8f1ebabb008dcecf7a1fa4901d29a02d70d3f06934b9853599d7a71d0d4",
+      "predicted_xy_m": [
+        0.21444527804851532,
+        -0.0319940559566021
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 5.053636250535952,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973061,
+      "initial": {
+        "arm": [
+          79.88165283203125,
+          56.716880798339844,
+          24.65140724182129,
+          21.165950775146484,
+          75.32723999023438,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21911105664413247,
+          -0.007366166342116155,
+          0.018000000000000002
+        ],
+        "reset_sha256": "c96f3f96af67d960c73ecae653f0e9f4d8035c6c537fa940cc31ab9f9d6dfe79"
+      },
+      "look_physics_sha256": "dc9374c933b86b352356a250dade0feae0ad317e0c9648e5cc53a8badd449d6d",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009535045363008976,
+        74.99952697753906,
+        30.00822639465332
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "28f2f6c61843ccd2184cd7ad07c9af2059414e8290b3ef1163abfa43046ad5cf"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          279,
+          78,
+          367,
+          172
+        ],
+        "visible_pixels": 7723,
+        "unoccluded_pixels": 7997
+      },
+      "rgb_sha256": "809e52eb7cb3a0a3f1868b5a3f80ad0adfbabf026013dedffd25cb81abf86ed0",
+      "png_sha256": "f4193ca1b74992fb8231a1f498d0d9f906ee30d14af8dfd4982d8ebcb6e6cb0b",
+      "predicted_xy_m": [
+        0.2154814749956131,
+        -0.010495664551854134
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 4.792454693371843,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973062,
+      "initial": {
+        "arm": [
+          80.55309295654297,
+          58.119468688964844,
+          22.261211395263672,
+          20.76180648803711,
+          73.73440551757812,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20516574843220464,
+          -0.010261062130489808,
+          0.018000000000000002
+        ],
+        "reset_sha256": "66932c83861b620c8b886a7203c79ab912179c7f9688962594cd4ee5998d183d"
+      },
+      "look_physics_sha256": "cefef1cb4ba57633139fa155fece56cfde7b25f57c5126484ba5a7dbb0d2208e",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.00954318419098854,
+        74.99952697753906,
+        30.00832748413086
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "220d79f398c945a8000c053a0e2b9436e20221cb292a4924578f441021704070"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          284,
+          39,
+          390,
+          149
+        ],
+        "visible_pixels": 10544,
+        "unoccluded_pixels": 10548
+      },
+      "rgb_sha256": "8e1b60a4b78adadb6f6cf863afcef335925a42c9a7e23fdaf6242cc48f921af3",
+      "png_sha256": "c5388007e6a8adb282013b5a2af1d80bc9aae8c62ee0976d4547317411869e24",
+      "predicted_xy_m": [
+        0.20596235990524292,
+        -0.010982911102473736
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 1.075014314942117,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973063,
+      "initial": {
+        "arm": [
+          83.94293975830078,
+          59.3475227355957,
+          23.800113677978516,
+          17.959692001342773,
+          74.74891662597656,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1948534107791033,
+          -0.025471267832589517,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e29817c04286568c9bff4dd967f6ee322df6657d9e9bf3832d8f7951cfa89597"
+      },
+      "look_physics_sha256": "e85b2d0bf15427eab019f2f17afeec23b3564f79b0a41b0120f2ba9c88da5794",
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533245116472244,
+        74.99952697753906,
+        30.008197784423828
+      ],
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "af014f7eaa49215a1bbac0801c8bc59043139902b1e9ce2738c9715d624b9ba7"
+      },
+      "visibility": {
+        "full": false,
+        "box": [
+          308,
+          89,
+          411,
+          190
+        ],
+        "visible_pixels": 9747,
+        "unoccluded_pixels": 9778
+      },
+      "rgb_sha256": "5025c11ee7c5e8efaad0c85997c53e9580fbc1451a3b0991c7aff3ebd4c940b6",
+      "png_sha256": "aeda9bb71ee307b3fbd41e743b6452009f0388962781aa665ac7ab0e7b558303",
+      "predicted_xy_m": [
+        0.19519886374473572,
+        -0.025813093408942223
+      ],
+      "inside_motor_hull": true,
+      "localization_error_mm": 0.4859860863369455,
+      "eligible": false,
+      "reason": "A full initial target inside the recorded image is required"
+    }
+  ],
+  "trials": [
+    {
+      "seed": 88300,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88301,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88302,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88303,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88304,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88305,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88306,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88307,
+      "executed_ticks": 360,
+      "first_stable_hold_tick": 263,
+      "terminal_success": true,
+      "termination": "field_sequence_complete",
+      "terminal_qualified_hold_s": 5.8500000000000005,
+      "native_action_sha256": "7d5848bc588d4da7fc07c7e3e984a0bb425efceba9705371ce654dcaa3a3de5c",
+      "projected_ticks": 87,
+      "max_projection_deg": [
+        0.0,
+        0.0,
+        2.049573304921901,
+        0.0,
+        0.0,
+        3.552713678800501e-15
+      ],
+      "bilateral_contact": true,
+      "peak_lift_m": 0.2347790165505363
+    },
+    {
+      "seed": 88308,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88309,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88310,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88311,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88312,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88313,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88314,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88315,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88316,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88317,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88318,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 88319,
+      "terminal_success": false,
+      "executed_ticks": 0,
+      "termination": "preflight_refusal: A full initial target inside the recorded image is required"
+    },
+    {
+      "seed": 973009,
+      "executed_ticks": 360,
+      "first_stable_hold_tick": 323,
+      "terminal_success": true,
+      "termination": "field_sequence_complete",
+      "terminal_qualified_hold_s": 2.85,
+      "native_action_sha256": "0f375d46c4c715c6dc26441697daa29473b41891bc654c3690265814f872429e",
+      "projected_ticks": 45,
+      "max_projection_deg": [
+        0.0,
+        0.0,
+        0.3856355683603997,
+        0.0,
+        0.0,
+        3.552713678800501e-15
+      ],
+      "bilateral_contact": true,
+      "peak_lift_m": 0.2401500938497158
+    },
+    {
+      "seed": 973031,
+      "executed_ticks": 360,
+      "first_stable_hold_tick": 341,
+      "terminal_success": true,
+      "termination": "field_sequence_complete",
+      "terminal_qualified_hold_s": 1.9500000000000002,
+      "native_action_sha256": "7a0921e4b5414fa2ac850fb0f63c1c2cd0a7845f54d05f081b5ea569a40f50a2",
+      "projected_ticks": 45,
+      "max_projection_deg": [
+        0.0,
+        0.0,
+        0.29199359270554304,
+        0.0,
+        0.0,
+        3.552713678800501e-15
+      ],
+      "bilateral_contact": true,
+      "peak_lift_m": 0.24060216173777949
+    },
+    {
+      "seed": 973039,
+      "executed_ticks": 360,
+      "first_stable_hold_tick": 355,
+      "terminal_success": true,
+      "termination": "field_sequence_complete",
+      "terminal_qualified_hold_s": 1.25,
+      "native_action_sha256": "26e147d9fbfaa2c0a932bc80f18863ec205d3b815a61801954df6cd3d5b04167",
+      "projected_ticks": 14,
+      "max_projection_deg": [
+        0.0,
+        0.0,
+        1.5659076162294403,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bilateral_contact": true,
+      "peak_lift_m": 0.2433864412016794
+    }
+  ],
+  "original_data": {
+    "plan_sha256": "a0d158614edbc51c066fd6c7ce66c326f78e8fd5aa01e97b51f5ce4ab6589999",
+    "verified_original_split": {
+      "test": 4,
+      "train": 32,
+      "validation": 4
+    },
+    "verified_previous_rgb_frames": 48
+  }
+}
