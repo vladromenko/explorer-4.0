@@ -38,10 +38,31 @@ def inputs():
     }
     design_path = OUT / "design.json"
     if design_path.exists():
-        prior_sha = read(design_path)["source_sha256"]["scripts/grasp_study/residual_inputs.py"]
-        if prior_sha == "63c9720edd0cd9f42361085dee1896d31702551773abb63b7a599a7eb08b1cbf":
-            # This registered version used the same selection with an early loop skip.
-            design["source_sha256"]["scripts/grasp_study/residual_inputs.py"] = prior_sha
+        registered = read(design_path)
+        source = "scripts/grasp_study/residual_inputs.py"
+        former = registered["source_sha256"][source]
+        if former != design["source_sha256"][source]:
+            # An earlier, completed release may be inspected. Never render new inputs under its SHA.
+            expected = {**design, "source_sha256": {**design["source_sha256"], source: former}}
+            if former != "63c9720edd0cd9f42361085dee1896d31702551773abb63b7a599a7eb08b1cbf" or registered != expected:
+                raise ValueError("Registered input recipe differs")
+            for group, seeds in BLOCKS.items():
+                directory = OUT / group
+                records = [read(directory / "candidates" / f"{seed}.json") for seed in seeds]
+                rows = [record["row"] for record in records]
+                protocol_sha = baseline.file_hash(directory / "protocol.json")
+                for seed, record, row in zip(seeds, records, rows, strict=True):
+                    if (row["seed"] != seed or record["row_sha256"] != baseline.digest(row)
+                            or record["protocol_sha256"] != protocol_sha
+                            or baseline.file_hash(directory / "frames" / f"{seed}.png") != row["png_sha256"]):
+                        raise ValueError("Registered scene, RGB or protocol differs")
+                eligible = [row["seed"] for row in rows if row["eligible"]]
+                frozen_selection = read(directory / "selection.json")
+                if (read(directory / "protocol.json")["design_sha256"] != baseline.file_hash(design_path)
+                        or frozen_selection != {"selected": eligible[:QUOTAS[group]], "eligible": len(eligible),
+                                                "candidates": len(rows), "protocol_sha256": baseline.file_hash(directory / "protocol.json")}):
+                    raise ValueError("Registered input selection is incomplete")
+            return
     frozen(design_path, design)
     model=baseline.SimulatedActions(None, baseline.SOURCE, baseline.VISION, "rbf", None)
     env=baseline.environment()
