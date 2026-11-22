@@ -201,6 +201,7 @@ def results():
         with ui.element("section").classes("work-box"):
             ui.label("ROSMASTER · подъём кубика").classes("work-name")
             base = REPORT + "recorded-start-night/"
+            ui.label("Исходная серия · сцены 88300–88319").classes("work-muted")
             for description, key in [
                 ("До обучения", "before"),
                 ("ACT с предобучением", "after"),
@@ -212,12 +213,22 @@ def results():
                         f"{description} · {sum(x['outcome'] == 'success' for x in rows)}/{len(rows)}"
                     )
             improved = read(MEDIA / (REPORT + "conditioned-grasp-v1/summary.json"))
+            comparison = REPORT + "research-register-20261122/evidence/conditioned_grasp_v1/optimizer-seed-1001.json"
+            replica = read(MEDIA / comparison)
             if improved:
-                for key in ("act", "diffusion", "rbf", "ik"):
-                    if key in improved["counts"]:
-                        ui.label(
-                            f"{key.upper()} с оценкой позиции · {improved['counts'][key]}/{improved['total']}"
-                        )
+                ui.label("С оценкой положения из камеры · сцены 940200–940219").classes("work-muted")
+                fresh = replica.get("blocks", {}).get("fresh", {})
+                for key, name in (("act", "ACT"), ("diffusion", "Diffusion"), ("rbf", "Интерполяция"), ("ik", "Обратная кинематика")):
+                    if key not in improved["counts"]:
+                        continue
+                    total = improved["total"]
+                    count = improved["counts"][key]
+                    matched = fresh.get("paired_counts", {}).get(key)
+                    if key in ("act", "diffusion") and matched and fresh["total"] == total:
+                        repeated = matched["both"] + matched["replica_only"]
+                        ui.label(f"{name} · {count}/{total} при первом обучении, {repeated}/{total} при повторном")
+                    else:
+                        ui.label(f"{name} · {count}/{total}")
             refresh_path = REPORT + "grasp-look-refresh-development-v1-1/result.json"
             refresh = read(MEDIA / refresh_path).get("all_scenes", {}).get("shifted")
             if refresh:
@@ -228,7 +239,8 @@ def results():
             with ui.row().classes("work-links"):
                 if refresh:
                     evidence_link("Сравнение двух кадров", refresh_path)
-                evidence_link("Сцены до и после", base + "primary-paired-scenes.csv")
+                evidence_link("Два обучения на одних и тех же 20 сценах", comparison)
+                evidence_link("Исходные 20 сцен до и после обучения", base + "primary-paired-scenes.csv")
                 evidence_link(
                     "Новые исходы", REPORT + "conditioned-grasp-v1/summary.json"
                 )
@@ -237,7 +249,7 @@ def results():
                     REPORT + "conditioned-grasp-v1/diffusion-940200.mp4",
                 )
                 evidence_link(
-                    "Сравнение на тех же сценах",
+                    "Сравнение с прямым управлением по RGB · сцены 88500–88519",
                     REPORT
                     + "conditioned-grasp-v1/historical_confirmation/summary.json",
                 )
@@ -494,6 +506,10 @@ def install(jobs, css):
                                 "Результат",
                                 f"reports/workspace/{key}/{job['track']}/result.json",
                             )
+                            if job["track"] == "grasp_replication":
+                                path = f"reports/workspace/{key}/grasp_replication/"
+                                evidence_link("Повторное обучение · видео первого захвата", path + "diffusion-940200.mp4")
+                                evidence_link("Скачать движения, веса и проверочные кадры", path + "simulation-grasp-bundle.zip")
                         if job["status"] in ("failed", "cancelled", "interrupted"):
                             ui.button(
                                 "Продолжить", on_click=lambda i=job["id"]: retry(i)
