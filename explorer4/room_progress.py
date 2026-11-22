@@ -12,6 +12,7 @@ import statistics
 import subprocess
 import tempfile
 import time
+import zipfile
 from datetime import datetime
 from pathlib import Path
 
@@ -20,6 +21,11 @@ from .paths import DATA, ROOT
 ARCHIVE = DATA/'runs/article-closeout-20261122/e1/20261122-093612'
 PUBLIC = DATA/'simlab/reports/room-study-e1'
 CHECKOUT = ROOT.parent/'explorer-3.0'
+FINAL_REPO = ROOT/'docs/results/knowledge_gap_sim/20261122-e1'
+PROTOCOL_SHA256 = 'f358cc92928a01c9dc2c4b33d6caa8379da768cf3865f478bfb57ad53956417f'
+CELL_FIELDS = ('seed','condition','object','prior','outcome','delivered','seconds','knowledge_requests',
+               'recovery_requests','tank_searched','so101_measured','collisions','artifact_dir')
+PAIR_FIELDS = ('a','b','matched_rooms','b_only','a_only','both','neither','median_paired_seconds_b_minus_a')
 SOURCE_REVISION = '251f1c5721897e0b0f69c1608821aa51d428e983'
 SOURCE_TREE = f'https://github.com/vladromenko/explorer-4.0/tree/{SOURCE_REVISION}'
 UNITS = ('explorer3-article-e1-20261122.service','explorer4-frozen-rooms-20261122.service')
@@ -139,7 +145,7 @@ def prior_strata(cells, conditions):
 
 def trace_agrees(row):
     if row['outcome'] == 'worker_error':
-        return True  # The supervisor cannot supply the missing worker-stage measurements.
+        return row['delivered'] is False  # Supervisor fallback has no verified delivery.
     stages = {stage['stage'] for stage in row['stages']}
     return (
         row['tank_searched'] == ('search' in stages and 'tank' in row['robots'])
@@ -157,6 +163,8 @@ def track(archive=ARCHIVE,checkout=CHECKOUT):
             or protocol['start_seed']!=78600):
         raise ValueError('Unexpected E1 protocol')
     issues=[]
+    if sha((archive/'protocol.json').read_bytes())!=PROTOCOL_SHA256 or len(protocol['sources'])!=14:
+        issues.append('Frozen E1 protocol or source list differs')
     for file,expected in protocol['sources'].items():
         path=checkout/file
         if not path.is_file() or sha(path.read_bytes())!=expected:
@@ -212,6 +220,8 @@ def track(archive=ARCHIVE,checkout=CHECKOUT):
     paused=load(archive.parent.parent/'pause-20261122.json')
     full=sum(all((s,c) in cells for c in conditions) for s in seeds)
     expected=protocol['rooms']*len(conditions)
+    if len(cells)==expected and end!=len(content):
+        issues.append('Uncommitted bytes follow the complete E1 grid')
     status='invalid' if issues else 'complete' if len(cells)==expected else 'running' if service=='active' else 'interrupted'
     snapshot={'status':status,'recorded_at':datetime.now().astimezone().isoformat(timespec='seconds'),
               'archive':archive.name,'protocol_sha256':sha((archive/'protocol.json').read_bytes()),
@@ -244,18 +254,96 @@ def table(headings,rows):
             +''.join('<tr>'+''.join('<td>'+esc(x)+'</td>' for x in row)+'</tr>' for row in rows)+'</tbody></table>')
 
 
+def json_bytes(value):
+    return (json.dumps(value,ensure_ascii=False,indent=2,sort_keys=True,allow_nan=False)+'\n').encode()
+
+
+def export_final(report,rows,protocol_bytes,public,repo):
+    if report['status']!='complete':
+        return None
+    expected={(s,c) for s in range(78600,78696) for c in NAMES}
+    if (report['integrity_issues'] or report['verified_historical_sources']!=14
+            or report['complete_cells']!=480 or report['complete_matched_rooms']!=96
+            or len(rows)!=480 or {(r['seed'],r['condition']) for r in rows}!=expected
+            or sha(protocol_bytes)!=report['protocol_sha256'] or report['protocol_sha256']!=PROTOCOL_SHA256):
+        raise ValueError('Final release requires the verified E1 protocol, 480 cells, 96 rooms and 14 source hashes')
+
+    # Keep scientific contents independent of poll time, active service and the machine's directory names.
+    summary={key:report[key] for key in ('archive','protocol_sha256','rows_sha256','complete_cells',
+        'complete_matched_rooms','seed_first','seed_last','verified_historical_sources','conditions',
+        'historical_source_revision','prior_strata_method','prior_strata_historical_sources')}
+    summary.update(domain='2-D multi-robot simulation',status='complete',
+                   paired_time='pairs.csv includes all recorded capped row times, including supervisor fallback. prior-strata.csv uses valid, paired worker mission clocks.')
+    ordered=sorted(rows,key=lambda r:(r['seed'],r['condition']))
+    files={'protocol.json':protocol_bytes,'summary.json':json_bytes(summary),
+           'cells.csv':csv_text(ordered,CELL_FIELDS[:-1]).encode(),
+           'pairs.csv':csv_text(report['pairs'],PAIR_FIELDS).encode(),
+           'prior-strata.csv':csv_text(report['prior_strata'],STRATA_FIELDS).encode()}
+    # No raw mission log, path to an individual's machine or free-text trace enters the public package.
+    files['manifest.json']=json_bytes({'format_version':1,'sha256':{name:sha(raw) for name,raw in files.items()}})
+    buffer=io.BytesIO()
+    with zipfile.ZipFile(buffer,'w') as archive:
+        for name,data in sorted(files.items()):
+            entry=zipfile.ZipInfo(name,date_time=(1980,1,1,0,0,0))
+            entry.create_system=3
+            entry.external_attr=0o100644<<16
+            archive.writestr(entry,data,compress_type=zipfile.ZIP_STORED)
+    data=buffer.getvalue()
+    digest=sha(data)
+    name='final/e1-'+digest+'.zip'
+    path=public/name
+    path.parent.mkdir(parents=True,exist_ok=True)
+    if not path.exists():
+        with tempfile.NamedTemporaryFile(dir=path.parent) as temp:
+            temp.write(data)
+            temp.flush()
+            os.fsync(temp.fileno())
+            try:
+                os.link(temp.name,path)
+            except FileExistsError:
+                pass  # Verify the concurrently published file below.
+    if sha(path.read_bytes())!=digest:
+        raise ValueError('Published final ZIP differs from its content digest')
+
+    # Expose the checkout directory only after every member is present. An existing
+    # partial or conflicting local copy never replaces the intact public download.
+    repo_status='verified'
+    try:
+        if not repo.exists():
+            with tempfile.TemporaryDirectory(dir=repo.parent,prefix='.e1-release-') as folder:
+                stage=Path(folder)/repo.name
+                stage.mkdir()
+                for member,raw in files.items():
+                    (stage/member).write_bytes(raw)
+                try:
+                    stage.rename(repo)
+                except OSError:
+                    if not repo.is_dir():
+                        raise
+        if not all((repo/member).is_file() and sha((repo/member).read_bytes())==sha(raw)
+                   for member,raw in files.items()):
+            repo_status='conflicting_checkout_files'
+    except OSError:
+        repo_status='checkout_unavailable'
+    return {'zip':name,'sha256':digest,'bytes':len(data),'repository_export':repo_status}
+
+
 def publish():
     report,rows=track()
     slug='snapshots/'+report['rows_sha256'][:16]
     snapshot=PUBLIC/slug
     if not (snapshot/'cells.csv').is_file():
-        atomic(snapshot/'pairs.csv',csv_text(report['pairs'],['a','b','matched_rooms','b_only','a_only','both','neither','median_paired_seconds_b_minus_a']))
-        atomic(snapshot/'cells.csv',csv_text(rows,['seed','condition','object','prior','outcome','delivered','seconds','knowledge_requests',
-                                                 'recovery_requests','tank_searched','so101_measured','collisions','artifact_dir']))
+        atomic(snapshot/'pairs.csv',csv_text(report['pairs'],PAIR_FIELDS))
+        atomic(snapshot/'cells.csv',csv_text(rows,CELL_FIELDS))
     strata_name='strata-v1/'+report['rows_sha256']+'.csv'
     if not (PUBLIC/strata_name).exists():
         atomic(PUBLIC/strata_name,csv_text(report['prior_strata'],STRATA_FIELDS))
     report.update(cells_csv=slug+'/cells.csv',pairs_csv=slug+'/pairs.csv',prior_strata_csv=strata_name)
+    release=export_final(report,rows,(ARCHIVE/'protocol.json').read_bytes(),PUBLIC,FINAL_REPO)
+    download=''
+    if release:
+        report['final_release']=release
+        download=f'<p><a href="{release["zip"]}" download>Скачать окончательные результаты E1 · ZIP</a> · SHA-256 <code>{release["sha256"]}</code></p>'
     atomic(PUBLIC/'progress.json',json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     if not (PUBLIC/'protocol.json').is_file():atomic(PUBLIC/'protocol.json',(ARCHIVE/'protocol.json').read_text())
     names={'complete':'Завершено','running':'Выполняется','interrupted':'Остановлено','invalid':'Ошибка проверки архива'}
@@ -282,7 +370,7 @@ h1,h2{{line-height:1.16}}a{{color:#075f62}}section{{overflow-x:auto}}</style>
 <p><strong>{names[report['status']]} · {report['complete_cells']} из 480 проверок.</strong> Все пять условий готовы для {report['complete_matched_rooms']} из 96 комнат.</p>
 <p>Снимок архива {report['recorded_at']}. Диапазон сцен 78600–78695. Измеряются доставки в двумерной модели с заданной зависимостью захвата от ширины предмета. В финальной передаче участвует SO‑101 при каждом условии.</p>
 <p><a href="{slug}/cells.csv">Результат по каждому запуску, CSV</a> · <a href="{slug}/pairs.csv">Парные сравнения, CSV</a> · <a href="progress.json">Статус, JSON</a> · <a href="protocol.json">Замороженный протокол</a></p>
-<h2>Доставки по методам</h2><section>{summary}</section><h2>Сравнения в одной и той же комнате</h2>
+{download}<h2>Доставки по методам</h2><section>{summary}</section><h2>Сравнения в одной и той же комнате</h2>
 <p>В строку входят только сцены, завершённые обоими методами. Столбцы с исходами показывают число доставок по каждому сочетанию.</p><section>{pairs}</section>
 <h2>Помощь в зависимости от исходных знаний ROSMASTER</h2>
 <p>Послепротокольное описание только комнат со всеми пятью условиями. K3 оценивает нехватку сведений, K5 запрашивает поиск и измерение при любых исходных знаниях. Положение и размер подставлены из состояния симулятора. Тип знаний меняется после каждой группы из четырёх предметов.</p>
