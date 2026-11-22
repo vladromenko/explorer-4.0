@@ -1,0 +1,81 @@
+{
+  "archive": "20261122-093612",
+  "complete_cells": 480,
+  "complete_matched_rooms": 96,
+  "conditions": {
+    "K0": {
+      "delivered": 63,
+      "n": 96,
+      "timeouts": 0,
+      "worker_errors": 0
+    },
+    "K1": {
+      "delivered": 64,
+      "n": 96,
+      "timeouts": 0,
+      "worker_errors": 0
+    },
+    "K2": {
+      "delivered": 91,
+      "n": 96,
+      "timeouts": 0,
+      "worker_errors": 0
+    },
+    "K3": {
+      "delivered": 91,
+      "n": 96,
+      "timeouts": 0,
+      "worker_errors": 0
+    },
+    "K5": {
+      "delivered": 87,
+      "n": 96,
+      "timeouts": 3,
+      "worker_errors": 0
+    }
+  },
+  "domain": "2-D multi-robot simulation",
+  "historical_source_revision": "251f1c5721897e0b0f69c1608821aa51d428e983",
+  "paired_time": "pairs.csv includes all recorded capped row times, including supervisor fallback. prior-strata.csv uses valid, paired worker mission clocks.",
+  "prior_strata_historical_sources": {
+    "explorer3/fleet_agents.py": [
+      257,
+      296
+    ],
+    "explorer3/swarm.py": [
+      439,
+      463,
+      472
+    ],
+    "explorer3/swarm_sim.py": [
+      243,
+      313
+    ],
+    "scripts/knowledge_gap_experiment.py": [
+      32,
+      122,
+      150,
+      171,
+      249,
+      300
+    ]
+  },
+  "prior_strata_method": {
+    "clock": "Elapsed real wall seconds from the worker monotonic clock around the mission command and join; simulator steps, human labour, and successful-delivery-only times are different measures.",
+    "delivery": "Within the 600 s deadline, the mission reports done and truth.delivered contains the requested object after the common virtual SO-101 handoff. The grasp proxy depends on modelled object width.",
+    "denominators": "Delivery uses every complete five-condition room. Each helper count uses pairs with both boolean flags. Seconds use pairs with both mission clocks, including failed missions and timeouts capped at 600 s. Supervisor fallback clocks from worker errors are excluded. Delta episodes and delta seconds are K3 minus K5.",
+    "design": "Post-hoc descriptive K3 minus K5 comparisons within the same seed. Include a room only once all five frozen conditions have reported. Priors cycle deterministically in blocks of the four object types. No tests across the four strata.",
+    "knowledge_requests": "Length of the worker knowledge store at episode end, including any seeded how record. It is not the number of requests.",
+    "policies": "K3 and K5 use the same roster, geometric grasp baseline and rule-based coordinator. K3 uses the assessed gaps; K5 adds both location and grasp-property gaps.",
+    "prior": "none seeds neither store; where inserts a simulator-truth object XY rounded to centimetres with 0.1 m uncertainty into map memory; how inserts simulated size rounded to millimetres and the derived grasp height in the knowledge store; both inserts both records.",
+    "recovery_requests": "Failure broker choices (agents.helps), including local retries and human escalation. It does not count the initial information helpers.",
+    "so101_measured": "Episode indicator: a learn stage was logged after waiting for station practice. It may record a failed measurement; a search failure may exit before this stage is logged. It excludes the common handoff.",
+    "tank_searched": "Episode indicator: a search stage was logged and Tank was on the roster. It does not identify which camera found the object."
+  },
+  "protocol_sha256": "f358cc92928a01c9dc2c4b33d6caa8379da768cf3865f478bfb57ad53956417f",
+  "rows_sha256": "920138860fa89996f20c265cf7970ba520cf23515830685e795cc8e620b9d426",
+  "seed_first": 78600,
+  "seed_last": 78695,
+  "status": "complete",
+  "verified_historical_sources": 14
+}

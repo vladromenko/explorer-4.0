@@ -1,0 +1,5 @@
+prior,pairs,k3_only,k5_only,both_delivered,neither_delivered,tank_pairs,tank_k3,tank_k5,tank_delta_episodes,so101_pairs,so101_k3,so101_k5,so101_delta_episodes,time_pairs,median_paired_wall_s_k3_minus_k5,mean_paired_wall_s_k3_minus_k5
+none,24,1,1,20,2,24,24,24,0,24,24,24,0,24,-1.17,-22.4
+where,24,0,0,22,2,24,2,24,-22,24,24,24,0,24,-14.65,-22.17
+how,24,2,0,22,0,24,24,24,0,24,0,24,-24,24,-3.61,-25.49
+both,24,2,0,22,0,24,0,24,-24,24,0,24,-24,24,-22.07,-47.55

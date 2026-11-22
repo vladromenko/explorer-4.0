@@ -1,0 +1,10 @@
+{
+  "format_version": 1,
+  "sha256": {
+    "cells.csv": "a63c2c4912796fc2ab4ed373f51cec4ac6f768117ad9e2ceda817763b23c202a",
+    "pairs.csv": "163e35e7b0ce426b20e29a3a0bbd16bbbfc71bf0237a3cea285532dafca548fe",
+    "prior-strata.csv": "b21c8b6fdf947f0de22f403cd404892d8336106790f34ef553de337918c68007",
+    "protocol.json": "f358cc92928a01c9dc2c4b33d6caa8379da768cf3865f478bfb57ad53956417f",
+    "summary.json": "60161d80c4c8b0a7f0165159ff5a27a4c162903e57f2b5c08ca3c88881614aca"
+  }
+}
