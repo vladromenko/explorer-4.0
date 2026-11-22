@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "study": "peer-dock-field-sequential-v1",
+  "original_protocol_sha256": "e5dcf939e0e79b743b0e4faaf3ae75cafad8a1708de10909ad5060c03b0ec005",
+  "order": [
+    ["A", "selective"], ["A", "local_scan"], ["A", "sequential"],
+    ["B", "sequential"], ["B", "local_scan"], ["B", "selective"],
+    ["A", "local_scan"], ["A", "sequential"], ["A", "selective"],
+    ["B", "selective"], ["B", "sequential"], ["B", "local_scan"]
+  ],
+  "donor_budget_s": 3.0,
+  "scope": "Four prospectively assigned sequential attempts supplement the original eight. The nth occurrence of each condition is paired within its marked layout. These repeated measurements describe two arrangements.",
+  "sequential": "Use the original three-second local search. After a miss, stop the base before requesting the parked donor camera, with up to three additional seconds for its measurement. Dock on a valid measured target using the existing executor. The total deadline remains 20 seconds from the original start.",
+  "outcome": "Use the original post-STOP physical measurements and intervention rule. Count one logical helper consultation when requested, including unsuccessful attempts. Multiple camera exposures during that consultation count as one call."
+}

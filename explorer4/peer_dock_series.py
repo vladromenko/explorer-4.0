@@ -9,7 +9,7 @@ import uuid
 
 import numpy as np
 
-from . import fleet_config
+from . import fleet_config, peer_field_outcomes
 from .paths import DATA,ROOT
 from . import peer_dock_real as field
 from .peer_dock_config import MAX_AGE_S
@@ -19,28 +19,69 @@ SERIES = DATA/'peer-dock-field/series.json'
 CONFIG = ROOT/'configs/peer-dock-field.json'
 
 
+SUPPLEMENT = ROOT/'configs/peer-dock-field-sequential-v1.json'
+SUPPLEMENT_SHA256 = 'f9dbf5f476baff5f04bfa6e17bd922db7d0121925d4efe7411312e290ab9b7bf'
+
+
+def _supplement_for(series):
+    raw = SUPPLEMENT.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != SUPPLEMENT_SHA256:
+        raise ValueError('Контрольная сумма дополнения к полевой серии не совпадает')
+    spec = json.loads(raw)
+    original = CONFIG.read_bytes()
+    if (hashlib.sha256(original).hexdigest() != spec['original_protocol_sha256']
+            or series['protocol_sha256'] != spec['original_protocol_sha256']
+            or series['protocol'] != json.loads(original)
+            or [slot for slot in spec['order'] if slot[1] != 'sequential'] != series['protocol']['order']):
+        raise ValueError('Дополнение не соответствует исходному физическому протоколу')
+    return spec
+
+
+def checked_order(series):
+    registered = series.get('sequential_supplement')
+    if registered is not None:
+        if (registered.get('sha256') != SUPPLEMENT_SHA256 or registered.get('protocol') != _supplement_for(series)):
+            raise ValueError('Сохранённое дополнение отличается от зарегистрированного порядка серии')
+    return peer_field_outcomes.effective_order(series)
+
+
 def prepare():
     with fleet_config.locked():
-        if SERIES.exists():
-            return json.loads(SERIES.read_text())
-        spec=json.loads(CONFIG.read_text())
-        state={'protocol':spec,'protocol_sha256':hashlib.sha256(CONFIG.read_bytes()).hexdigest(),
-               'created':time.time(),'fixtures':{},'attempts':[]}
-        field.write_json(SERIES,state)
-        return state
+        if SERIES.is_file():
+            series = json.loads(SERIES.read_text())
+            if 'sequential_supplement' in series or series['fixtures'] or series['attempts']:
+                checked_order(series)
+                return series
+        else:
+            raw = CONFIG.read_bytes()
+            series = {'protocol':json.loads(raw), 'protocol_sha256':hashlib.sha256(raw).hexdigest(),
+                      'created':time.time(), 'fixtures':{}, 'attempts':[]}
+        series['sequential_supplement'] = {'protocol':_supplement_for(series),
+                                          'sha256':SUPPLEMENT_SHA256, 'registered_at':time.time()}
+        field.write_json(SERIES,series)
+        return series
 
 
 def state():
-    return json.loads(SERIES.read_text()) if SERIES.exists() else prepare()
+    if SERIES.is_file():
+        series = json.loads(SERIES.read_text())
+        if 'sequential_supplement' in series or series['fixtures'] or series['attempts']:
+            checked_order(series)
+            return series
+    return prepare()
 
 
 def next_slot(s):
-    rows=s['attempts']
+    rows = s['attempts']
     if rows and 'endpoint' not in rows[-1]:
         raise ValueError('Нужна остановка и независимый замер предыдущей попытки')
-    order=s['protocol']['order']
-    if len(rows)>=len(order):
-        raise ValueError('Все восемь попыток уже учтены')
+    order = checked_order(s)
+    if 'sequential_supplement' in s and any(
+            i >= len(order) or r.get('slot') != i or [r.get('layout'),r.get('condition')] != order[i]
+            for i,r in enumerate(rows)):
+        raise ValueError('Журнал попыток не совпадает с утверждённым порядком серии')
+    if len(rows) >= len(order):
+        raise ValueError(f'Все попытки учтены ({len(order)} из {len(order)})')
     return order[len(rows)]
 
 
@@ -158,105 +199,182 @@ def observe_one(robot,run_dir,iteration,fleet):
 
 
 class PairedAttempt:
-    """Returns bounded command requests only to TankSource.sample; the browser lease owns all actuation."""
-    prompt='paired_dock'
+    """Return bounded requests to the Tank operator's leased command loop."""
 
-    def __init__(self,run_id,condition,spec,fixture,fleet):
-        self.id,self.condition,self.spec,self.fleet=run_id,condition,spec,fleet
-        self.start=time.monotonic()
-        self.run_dir=SERIES.parent/run_id
+    prompt = "paired_dock"
+
+    def __init__(self, run_id, condition, spec, fixture, fleet):
+        if condition not in {"selective", "local_scan", "sequential"}:
+            raise ValueError(f"Unknown physical docking condition: {condition}")
+        self.sensing_end_s = spec["sensing_budget_s"]
+        if condition == "sequential":
+            donor_s = spec["donor_budget_s"]
+            if not math.isfinite(donor_s) or not 0 < donor_s <= spec["total_budget_s"] - self.sensing_end_s:
+                raise ValueError("Invalid post-scan donor budget")
+            self.sensing_end_s += donor_s
+
+        self.id, self.condition, self.spec, self.fleet = run_id, condition, spec, fleet
+        self.start = time.monotonic()
+        self.run_dir = SERIES.parent / run_id
         self.run_dir.mkdir()
-        self.pool=concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        self.future=None;self.initial=True;self.driver=None;self.attempts=0;self.pending_capture=None
-        self.lock=threading.RLock()
-        self.done=False;self.active=True;self.events=[];self.samples=[];self.measured_goal=None
-        self.heading=wrap(math.radians(fixture['tank']['outward_deg'])+math.pi)
-        self.frame_id=fixture['tank']['map_frame_id']
-        self.submit('tank')
+        # An already running local read may outlive its deadline. Its late result
+        # has its own evidence folder and cannot hold up or replace the donor read.
+        self.pool = concurrent.futures.ThreadPoolExecutor(max_workers=2 if condition == "sequential" else 1)
+        self.future = None
+        self.driver = None
+        self.attempts = 0
+        self.pending_capture = None
+        self.peer_requests = 0
+        self.lock = threading.RLock()
+        self.done = False
+        self.active = True
+        self.events = []
+        self.samples = []
+        self.phase = "initial"
+        self.phase_events = [{"phase": "initial", "at_s": 0.0}]
+        self.measured_goal = None
+        self.heading = wrap(math.radians(fixture["tank"]["outward_deg"]) + math.pi)
+        self.frame_id = fixture["tank"]["map_frame_id"]
+        try:
+            self.submit("tank")
+        except Exception as exc:
+            # start() still owns the ledger lock here. The first tick or STOP
+            # persists the terminal record after the registration has returned.
+            self.set_phase("capture_error", time.monotonic() - self.start, error=str(exc))
 
-    def submit(self,robot):
-        self.attempts+=1
-        self.pending_capture=f'{self.attempts:03d}-{robot}'
-        self.future=self.pool.submit(observe_one,robot,self.run_dir,self.attempts,self.fleet)
+    def set_phase(self, phase, age, **evidence):
+        self.phase = phase
+        self.phase_events.append({"phase": phase, "at_s": age, **evidence})
 
-    def finish(self,reason):
+    def submit(self, robot):
+        sequence = self.attempts + 1
+        capture = f"{sequence:03d}-{robot}"
+        future = self.pool.submit(observe_one, robot, self.run_dir, sequence, self.fleet)
+        self.attempts, self.pending_capture, self.future = sequence, capture, future
+        if robot == "rosmaster" and not self.peer_requests:
+            self.peer_requests = 1
+            self.set_phase("peer", time.monotonic() - self.start, capture=capture)
+
+    def finish(self, reason, **evidence):
         with self.lock:
-            self._finish(reason)
+            if self.done:
+                return
+            self.done = True
+            self.active = False
+            age = time.monotonic() - self.start
+            self.set_phase("finished", age, reason=reason, **evidence)
+            self.pool.shutdown(wait=False, cancel_futures=True)
+            controller_endpoint = None
+            if self.driver:
+                try:
+                    if self.driver.active:
+                        self.driver.cancel(reason)
+                    controller_endpoint = self.driver.status()
+                except Exception as exc:
+                    # Keep the request and STOP evidence even if the drive trace failed to close.
+                    controller_endpoint = {"error": str(exc)}
+            terminal(self.id, {
+                "reason": reason, "finished": time.time(), "seconds": age,
+                "observations": self.events, "command_requests": self.samples,
+                "consumed_goal": self.measured_goal, "unconsumed_capture": self.pending_capture,
+                "peer_requests": self.peer_requests, "phase_events": self.phase_events,
+                "controller_endpoint": controller_endpoint,
+                "drive_episode_id": self.driver.episode.id if self.driver and self.driver.episode else None,
+                "scope": "Controller requests only. Physical endpoint requires an independent manual measurement.",
+            })
 
-    def _finish(self,reason):
-        if self.done:
-            return
-        self.done=True;self.active=False
-        self.pool.shutdown(wait=False,cancel_futures=True)
-        if self.driver and self.driver.active:
-            self.driver.cancel(reason)
-        terminal(self.id,{'reason':reason,'finished':time.time(),'seconds':time.monotonic()-self.start,
-                 'observations':self.events,'command_requests':self.samples,'consumed_goal':self.measured_goal,
-                 'unconsumed_capture':self.pending_capture,
-                 'controller_endpoint':self.driver.status() if self.driver else None,
-                 'drive_episode_id':self.driver.episode.id if self.driver and self.driver.episode else None,
-                 'scope':'Controller requests only. Physical endpoint requires an independent manual measurement.'})
-
-    def cancel(self,reason='operator_stop'):
+    def cancel(self, reason="operator_stop"):
         self.finish(reason)
 
     def status(self):
-        details=self.driver.status() if self.driver else {'message':'поиск','state':'sensing'}
-        return {**details,'active':self.active,'message':f'{self.condition}: '+details['message'],'prompt':self.prompt}
+        details = self.driver.status() if self.driver else {"message": "поиск", "state": "sensing"}
+        return {**details, "active": self.active, "message": f"{self.condition}: " + details["message"], "prompt": self.prompt}
 
-    def command(self,rgb):
+    def sense(self, age, frame):
+        if age >= self.sensing_end_s:
+            self.finish("no_measurement_before_deadline")
+            return
+        if (self.condition == "sequential" and self.phase in {"initial", "local_scan"}
+                and age >= self.spec["sensing_budget_s"]):
+            self.future.cancel()
+            self.set_phase("hold_for_peer", age, discarded_capture=self.pending_capture)
+            self.future = self.pending_capture = None
+            # TankSource sends this tick's zero before the next tick can submit a donor read.
+            return
+        if self.phase == "hold_for_peer":
+            self.submit("rosmaster")
+            return
+        if not self.future.done():
+            return
+
+        capture = self.pending_capture
+        self.pending_capture = None
+        try:
+            goal, info = self.future.result()
+        except Exception as exc:
+            goal, info = None, {"reason": str(exc)}
+        if goal and (time.monotonic() > info["expires_monotonic_s"] or goal["map_frame_id"] != frame):
+            goal = None
+            info.update(valid=False, reason="pose expired before operator controller consumed it")
+        self.events.append({"at_s": age, "phase": self.phase, "capture": capture, **info})
+        if goal:
+            self.measured_goal = goal
+            self.driver = field.operator_drive(goal, self.fleet)
+            self.set_phase("docking", age, capture=capture)
+        elif self.phase == "peer" or self.condition == "selective":
+            self.submit("rosmaster")
+        else:
+            if self.phase == "initial":
+                self.set_phase("local_scan", age)
+            self.submit("tank")
+
+    def command(self, rgb):
         with self.lock:
-            return self._command(rgb)
+            if self.done:
+                return [0., 0.]
+            if self.phase == "capture_error":
+                self.finish("controller_error")
+                return [0., 0.]
+            try:
+                return self._command(rgb)
+            except Exception as exc:
+                self.finish("controller_error", error=str(exc))
+                return [0., 0.]
 
-    def _command(self,rgb):
-        age=time.monotonic()-self.start
-        pose,_,frame=field.real_pose(self.fleet,'tank')
-        scan=self.fleet.scan('tank')
-        if self.done:
-            return [0.,0.]
-        if pose is None or frame!=self.frame_id or scan is None:
-            self.finish('localization_or_lidar_lost');return [0.,0.]
-        if age>=self.spec['total_budget_s']:
-            self.finish('total_deadline');return [0.,0.]
+    def _command(self, rgb):
+        age = time.monotonic() - self.start
+        pose, _, frame = field.real_pose(self.fleet, "tank")
+        scan = self.fleet.scan("tank")
+        if pose is None or frame != self.frame_id or scan is None:
+            self.finish("localization_or_lidar_lost")
+            return [0., 0.]
+        if age >= self.spec["total_budget_s"]:
+            self.finish("total_deadline")
+            return [0., 0.]
         if self.driver is None:
-            if age>=self.spec['sensing_budget_s']:
-                self.finish('no_measurement_before_deadline');return [0.,0.]
-            if self.future.done():
-                try:
-                    goal,info=self.future.result()
-                except Exception as exc:
-                    goal,info=None,{'reason':str(exc)}
-                if goal and (time.monotonic()>info['expires_monotonic_s'] or goal['map_frame_id']!=frame):
-                    goal=None
-                    info.update(valid=False,reason='pose expired before operator controller consumed it')
-                self.pending_capture=None
-                self.events.append({'at_s':age,**info})
-                self.initial=False
-                if goal:
-                    self.measured_goal=goal
-                    self.driver=field.operator_drive(goal,self.fleet)
-                else:
-                    self.submit('tank' if self.condition=='local_scan' else 'rosmaster')
+            self.sense(age, frame)
         if self.driver:
-            v,w=self.driver.command(rgb)
+            v, w = self.driver.command(rgb)
             if not self.driver.active:
                 self.finish(self.driver.state)
-        elif self.initial or self.condition=='selective':
-            v,w=0.,0.
+        elif self.phase == "local_scan":
+            # Rotate only on a cleared footprint. Translation stays zero throughout the scan.
+            if len(scan) == 0 or np.linalg.norm(scan, axis=1).min() < RADIUS["tank"] + self.spec["scan_clearance_m"]:
+                self.finish("unsafe_local_turn_clearance")
+                return [0., 0.]
+            limit = self.spec["scan_max_turn_rad_s"]
+            turn = np.clip(2 * wrap(self.heading - pose[2]), -limit, limit)
+            v, w, why = guard(scan, "tank", 0., float(turn))
+            if why and abs(turn) > .05 and w == 0.:
+                self.finish("local_turn_blocked_by_lidar")
+                return [0., 0.]
         else:
-            # The local comparison can rotate only with a clear swept footprint. Translation stays zero.
-            if len(scan)==0 or np.linalg.norm(scan,axis=1).min()<RADIUS['tank']+self.spec['scan_clearance_m']:
-                self.finish('unsafe_local_turn_clearance');return [0.,0.]
-            limit=self.spec['scan_max_turn_rad_s']
-            turn=np.clip(2*wrap(self.heading-pose[2]),-limit,limit)
-            v,w,why=guard(scan,'tank',0.,float(turn))
-            if why and abs(turn)>.05 and w==0.:
-                self.finish('local_turn_blocked_by_lidar');return [0.,0.]
-        v=float(np.clip(v,-self.spec['max_drive_m_s'],self.spec['max_drive_m_s']))
-        w=float(np.clip(w,-self.spec['max_drive_turn_rad_s'],self.spec['max_drive_turn_rad_s']))
+            v, w = 0., 0.
+        v = float(np.clip(v, -self.spec["max_drive_m_s"], self.spec["max_drive_m_s"]))
+        w = float(np.clip(w, -self.spec["max_drive_turn_rad_s"], self.spec["max_drive_turn_rad_s"]))
         if self.active:
-            self.samples.append([round(age,3),v,w])
-        return [v,w]
+            self.samples.append([round(age, 3), v, w])
+        return [v, w]
 
 
 def start(control,session,owner,fleet,*,fixture_restored):
@@ -265,6 +383,8 @@ def start(control,session,owner,fleet,*,fixture_restored):
     epoch=field.operator_session(control,session,owner)
     before=state()
     layout,condition=next_slot(before)
+    if condition not in ('selective','local_scan','sequential'):
+        raise ValueError('В назначении неизвестное условие полевой серии')
     poses=check_position(before,layout,fleet)
     with fleet_config.locked(),control.lock:
         s=json.loads(SERIES.read_text())
@@ -278,7 +398,10 @@ def start(control,session,owner,fleet,*,fixture_restored):
         s['attempts'].append({'id':ident,'layout':layout,'condition':condition,'slot':len(s['attempts']),
                               'start':time.time(),'start_poses':poses,'operator_confirmed_marked_fixture':True})
         field.write_json(SERIES,s)
-        control.goal=PairedAttempt(ident,condition,s['protocol'],poses,fleet)
+        spec = s['protocol']
+        if condition == 'sequential':
+            spec = {**spec, 'donor_budget_s':s['sequential_supplement']['protocol']['donor_budget_s']}
+        control.goal=PairedAttempt(ident,condition,spec,poses,fleet)
         return ident
 
 
@@ -319,11 +442,12 @@ def score(control,run_id,dx,dy,yaw_deg,stationary,intervention,note):
 def report():
     s=state()
     outcomes={}
-    for condition in ('selective','local_scan'):
+    for condition in dict.fromkeys(method for _,method in checked_order(s)):
         rows=[r for r in s['attempts'] if r['condition']==condition]
         measured=[r['endpoint'] for r in rows if 'endpoint' in r]
-        outcomes[condition]={'started':len(rows),'measured':len(measured),'independent_successes':sum(e['success'] for e in measured)}
+        outcomes[condition]={'started':len(rows),'measured':len(measured),'independent_successes':sum(e.get('success') is True for e in measured)}
     calibration=json.loads(field.CALIBRATION.read_text()) if field.CALIBRATION.is_file() else {}
     prerequisites={r:{'verified_current':bool(calibration.get(r,{}).get('verified') and
                     calibration[r].get('valid_until',0)>time.time())} for r in field.ROBOTS}
-    return {**s,'outcomes':outcomes,'calibration':prerequisites}
+    return {**s,'outcomes':outcomes,'calibration':prerequisites,
+            'effective_order':checked_order(s),'paired':peer_field_outcomes.paired_outcomes(s)}

@@ -11,6 +11,13 @@ from . import peer_dock_series as series
 from . import peer_field_shadow
 
 
+METHOD_LABELS = {
+    'selective': 'Сразу запросить ROSMASTER при пропуске',
+    'local_scan': 'Поиск только камерой Tank',
+    'sequential': 'Сначала искать камерой Tank, затем запросить ROSMASTER при пропуске',
+}
+
+
 def install_api():
     @app.get('/api/peer-dock/field-shadow')
     def shadow():
@@ -36,9 +43,8 @@ def install_api():
 
 def controls(control):
     with ui.expansion('Парная серия на реальном полу').classes('w-full'):
-        ui.label('Восемь попыток в двух размеченных расстановках A и B. Порядок уже зафиксирован. '
-                 'В одном условии Tank запрашивает неподвижную камеру ROSMASTER, в другом ищет сам поворотом на месте. '
-                 'На получение наблюдения даётся 3 с, общий лимит 20 с.')
+        ui.label('Восстановите расстановку A или B по назначению. Общий лимит каждой попытки — 20 с, '
+                 'критерий — независимый замер после STOP.')
         ui.link('Протокол, порядок, исходы и замеры JSON','/api/peer-dock/field-series',new_tab=True)
         ui.link('Теневые решения по первому кадру Tank · признаки, хеши и контроль цвета',
                 '/api/peer-dock/field-shadow',new_tab=True)
@@ -70,18 +76,39 @@ def controls(control):
             ui.label('Цвет экрана влияет на признаки: в симуляции после удаления цвета 20 кадров стали неразличимы, '
                      'хотя помощь изменила исход в 12 из них. В JSON приведён также ответ модели без цветового признака.')
             r=series.report()
+            if r.get('sequential_supplement'):
+                ui.label('12 назначений. К исходным восьми добавлены четыре попытки с поиском Tank до 3 с '
+                         'и обращением к неподвижному ROSMASTER только после пропуска. На помощника отводится ещё до 3 с.')
+            else:
+                ui.label('Исходный порядок из восьми попыток: поиск Tank или немедленный запрос ROSMASTER '
+                         'при пропуске. На получение наблюдения даётся до 3 с.')
             needed=[r.upper() for r,c in r['calibration'].items() if not c['verified_current']]
             if needed:
                 ui.label('Измерьте камеры на двух положениях мишени в одной общей карте: '+', '.join(needed))
             ui.label('Зарегистрированные расстановки: '+(', '.join(r['fixtures']) or 'пока нет'))
             try:
                 name,mode=series.next_slot(r)
-                ui.label('Следующая: '+name+' · '+('запрос помощнику' if mode=='selective' else 'активный поиск только камерой Tank'))
+                ui.label('Следующая: '+name+' · '+METHOD_LABELS[mode])
             except ValueError as exc:
                 ui.label(str(exc))
-            for c,s in r['outcomes'].items():
-                title='С помощью' if c=='selective' else 'Локальный поиск'
-                ui.label(f"{title}: {s['independent_successes']} успехов, {s['measured']} измеренных, {s['started']} начатых.")
+            for condition, result in r['paired']['methods'].items():
+                requests = result['known_peer_requests'] if result['started'] else 'пока нет попыток'
+                if result['request_unknown_attempts']:
+                    requests = f"{requests} по явной записи; без счётчика {result['request_unknown_attempts']}"
+                seconds = result['mean_seconds']
+                ui.label(f"{METHOD_LABELS[condition]} · успешных {result['independent_successes']}, "
+                         f"неудач {result['measured_failures']}, исход неопределён {result['unknown_outcomes']}; "
+                         f"замеров {result['measured']} из {result['scheduled']}, начато {result['started']}. "
+                         f"Вмешательств {result['interventions']}, попыток с пустой записью наблюдений {result['no_observations']}. "
+                         f"Запросов {requests}. "
+                         + (f"Среднее время {seconds:.1f} с по {result['timed_attempts']} попыткам." if seconds is not None else ''))
+            for other in ('local_scan','selective'):
+                pair = r['paired']['comparisons']['sequential_vs_'+other]
+                if pair['scheduled_pairs']:
+                    ui.label(f"Последовательный режим / {METHOD_LABELS[other].lower()} · "
+                             f"пригодных пар {pair['usable_pairs']} из {pair['scheduled_pairs']}, "
+                             f"с двумя замерами {pair['measured_pairs']}. Только последовательный {pair['sequential_only']}, "
+                             f"только второй {pair['comparison_only']}, оба {pair['both']}, ни один {pair['neither']}.")
         progress()
         ui.button('Обновить состояние серии',on_click=progress.refresh).props('flat')
         ui.link('Начать следующую попытку из ручного пульта Tank','/',new_tab=True)
