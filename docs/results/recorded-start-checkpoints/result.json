@@ -1,0 +1,34 @@
+{
+  "protocol_sha256": "cd5ffcecba9ed0aa4b7744af402f066d2fbf5755393d326d349e01de957566d8",
+  "results": {
+    "1000": {
+      "weight_sha256": "28defaf29f5afad63f48286de3036ba7efc0a71513b4898d1e987b7feb2e5f00",
+      "holds": 0,
+      "ever_held": 1,
+      "lifted_1cm": 2,
+      "n": 8,
+      "details": "1000/evaluation.json"
+    },
+    "3000": {
+      "weight_sha256": "48999799f043271ffe9950240d2da7200dd0c58cbcf99411a0b17a94df563dfb",
+      "holds": 1,
+      "ever_held": 1,
+      "lifted_1cm": 2,
+      "n": 8,
+      "details": "3000/evaluation.json"
+    },
+    "10000": {
+      "weight_sha256": "4beac0dccf9fe091cd093e42226f9d5dea4e2b80e51c88539e3e9185baa74593",
+      "holds": 0,
+      "ever_held": 0,
+      "lifted_1cm": 1,
+      "n": 8,
+      "details": "10000/evaluation.json"
+    }
+  },
+  "would_stop_after_3000": false,
+  "native_draft_would_stop_after_3000": false,
+  "identical_reset_states": true,
+  "optimizer_updates": 0,
+  "physical_trials": 0
+}

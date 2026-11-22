@@ -1,4 +1,5 @@
 """One leased physical grasp and a separately recorded human observation of the held cube."""
+from contextlib import ExitStack
 import json
 import math
 import re
@@ -54,13 +55,15 @@ def start(plan, owner, generation, recorder, operator, scene, confirmed):
 
     if not confirmed or not scene.strip():
         raise ValueError("Подтвердите неподвижную базу, присутствие у STOP и обозначьте расстановку")
-    with LAUNCH:
+    with LAUNCH, ExitStack() as startup:
         require_physical(plan)
         with operator.lock:
             if recorder.active() or operator.lease or operator.generation != generation:
                 raise PermissionError("Для одиночной пробы нужен STOP и свободный пульт")
             check_heartbeat(operator, owner)
-        admission.prewarm()
+        from .grasp_localizer import close_field
+        startup.callback(close_field)
+        admission.prewarm_field()
         rosmaster_control.ensure_agent()
         if not rosmaster_control.request("/health").get("hardware_open"):
             if operator.generation != generation:
@@ -85,6 +88,7 @@ def start(plan, owner, generation, recorder, operator, scene, confirmed):
                 if not same_lease(operator, owner, generation, operator.lease):
                     raise InterruptedError("STOP до запуска записи")
                 recorder.start(owner, "rosmaster_pick_place", scene, plan=plan, conditioned_lease=(generation, operator.lease))
+                startup.pop_all()  # The recording loop now owns shutdown.
         except Exception as exc:
             with operator.lock:
                 ours = same_lease(operator, owner, generation, operator.lease)

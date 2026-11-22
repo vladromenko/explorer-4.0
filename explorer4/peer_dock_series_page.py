@@ -8,9 +8,14 @@ from fastapi.responses import FileResponse
 from nicegui import app,ui
 
 from . import peer_dock_series as series
+from . import peer_field_shadow
 
 
 def install_api():
+    @app.get('/api/peer-dock/field-shadow')
+    def shadow():
+        return peer_field_shadow.report()
+
     @app.get('/api/peer-dock/field-series')
     def result():
         return series.report()
@@ -35,6 +40,9 @@ def controls(control):
                  'В одном условии Tank запрашивает неподвижную камеру ROSMASTER, в другом ищет сам поворотом на месте. '
                  'На получение наблюдения даётся 3 с, общий лимит 20 с.')
         ui.link('Протокол, порядок, исходы и замеры JSON','/api/peer-dock/field-series',new_tab=True)
+        ui.link('Теневые решения по первому кадру Tank · признаки, хеши и контроль цвета',
+                '/api/peer-dock/field-shadow',new_tab=True)
+
         ui.label('Для каждой расстановки нанесите на пол метки исходных поз и курса обеих машин. '
                  'Отметьте крест для центра Tank на расстоянии 277 мм от лицевой стороны мишени и стрелку перпендикулярно к стене. '
                  'Для оценки приготовьте линейку и угломер. Обеспечьте свободный круг поворота вокруг Tank.')
@@ -52,6 +60,15 @@ def controls(control):
         ui.button('Зафиксировать расстановку при STOP',on_click=mark)
         @ui.refreshable
         def progress():
+            shadow=peer_field_shadow.report()
+            available=sum(row['input']['status']=='available' for row in shadow['records'])
+            field_count=sum(row['input']['kind']=='series' for row in shadow['records'])
+            ui.label(f"Теневой выбор помощи · проверенных моделей {len(shadow['models'])}, пригодных начальных кадров {available}, "
+                     f"записей полевой серии {field_count}. "
+                     + ('Модель ожидает обучения и завершённой проверки в симуляции.' if not shadow['models'] else
+                        'Ответы модели сохранены отдельно от команд Tank.'))
+            ui.label('Цвет экрана влияет на признаки: в симуляции после удаления цвета 20 кадров стали неразличимы, '
+                     'хотя помощь изменила исход в 12 из них. В JSON приведён также ответ модели без цветового признака.')
             r=series.report()
             needed=[r.upper() for r,c in r['calibration'].items() if not c['verified_current']]
             if needed:

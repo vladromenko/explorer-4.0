@@ -1,0 +1,8 @@
+{
+  "job_id": "e9b7f351c6144ffbbddc6f41993560c6",
+  "job_status_at_attachment": "queued",
+  "not_before_at_attachment": null,
+  "protocol_sha256": "7c2228938b4ec9d86a161e3f316340a1048ba2d48d5ad6f923562cb691ec714f",
+  "queue_plan_sha256": "6dec9cb950bf1f8f0cb14f123ff86f203572fe9b7271ddb6b8beb237852959e2",
+  "registered_at_utc": "2026-11-22T19:45:34.667366+00:00"
+}

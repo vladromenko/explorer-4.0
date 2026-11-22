@@ -1,0 +1,36 @@
+{
+  "scope": "Six warmed end-to-end RGB-to-plan measurements on each of 16 previously opened synthetic development images. Includes CPU preprocessing, both IPC directions, GPU transfers, synchronous FP32 inference, and the production SciPy calculation of 220 six-servo targets. No physical calibration, image acquisition, ROS transport, hull admission or action dispatch was timed.",
+  "source_sha256": {
+    "explorer4/grasp_localizer.py": "08b8bf95d402a6651c171fd379959f395989b25d7da3fef3b1ccc53e9e6964e2",
+    "explorer4/grasp_admission.py": "fcb8d3abab9d81675ff42c1fbf48700905a218b8cd1729a95401f94a22174680",
+    "explorer4/grasp_shadow.py": "5162ec38825d8db3531d14df31df5fdc731a3d226fbb4e15f781e8408bd5ecfe",
+    "explorer4/grasp_trial.py": "cb1f2706d3c910facb97b9cfe8e261787c36c89d009cbf7ba41653a3dddae259",
+    "explorer4/rosmaster_session.py": "b0bab19dc9929437fb66dea673e877509dae8b1ffcda9f7fa88b5e494e3cb543",
+    "scripts/grasp_study/field_precision.py": "91cf5a2b8842591ac1d1a6530caf9889684fd16b8bb500b386a4baed9ba116c2"
+  },
+  "previous_timing_sha256": "2d2bde08167e2600a068563b2c438e8be1b6771a1103b0502874cba9a402021a",
+  "original_gpu_plans_matched": 16,
+  "prior_cpu_plans_matched_on_identical_xy": 16,
+  "all_repeat_gpu_plan_hashes_matched": 96,
+  "eligible_by_xy_hull": 13,
+  "scope_of_hull": "The numeric planner was compared on all views, including unsupported XY. Field start separately requires an admitted point inside the hull and all physical checks.",
+  "parent_tf32_flags": [
+    true,
+    false
+  ],
+  "parent_flags_preserved": true,
+  "child_exited_after_release": true,
+  "cold_worker_startup_ms": 5177.974266000092,
+  "ready_rgb_plan_ms": {
+    "n": 96,
+    "p50": 5.2041924999999996,
+    "p95": 5.49877025,
+    "maximum": 7.608546,
+    "within_40ms": 96
+  },
+  "largest_cpu_gpu_trajectory_difference_deg": 5.076074297960531e-05,
+  "physical_trials": 0,
+  "optimizer_updates": 0,
+  "raw_samples": "http://192.168.0.168:8030/simlab-media/reports/grasp-look-refresh-development-v1-1/field-precision-v2.json",
+  "raw_sha256": "f8f2ecc6e356f0da75aea912c54c2408760d556f3a62f7dbff43252b949a5c87"
+}

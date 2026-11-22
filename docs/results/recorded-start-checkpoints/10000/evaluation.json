@@ -1,0 +1,335 @@
+{
+  "status": "completed",
+  "domain": "sim",
+  "profile": "rosmaster_floor_pick_recorded_start_sim",
+  "policy": "act",
+  "protocol": {
+    "version": 2,
+    "scene": "rosmaster_floor_pick_recorded_start_sim",
+    "scene_revision": "f4e3077118aaa0ed0035a4c37c2a2d7f62e04acf9f6f80953b4c0ae50f90844c",
+    "task": "pick up the cube",
+    "scene_seeds": [
+      957300,
+      957301,
+      957302,
+      957303,
+      957304,
+      957305,
+      957306,
+      957307
+    ],
+    "xml_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "model_manifest_sha256": "2578c7e6f5c8c8329376244f340d297b4fe560db34373bc6bc761a715b631201",
+    "n_action_steps": 100,
+    "checkpoint_bundle_sha256": "cf39cf33be4e1c1a88c61e31e4c50fab4e44d9e07187b8552c998c2edd685aea",
+    "checkpoint_sha256": "4beac0dccf9fe091cd093e42226f9d5dea4e2b80e51c88539e3e9185baa74593",
+    "processors": {
+      "policy_preprocessor.json": "adc8a12dd079a93b4e6fd4e7f15e93126c9927463593a4de3174643e59fca28a",
+      "policy_preprocessor_step_3_normalizer_processor.safetensors": "750d42ae17f5e5d526538f4ef8188108a72c6ebcf2a7f09c1e1b2c659a18bcca",
+      "policy_postprocessor.json": "648b415125a183dfd6cbc47c1dc04ab3f2d912654ef22a12ca5e8b93d7d85cdd",
+      "policy_postprocessor_step_0_unnormalizer_processor.safetensors": "1e9cfc6f5638a1529fcdbb680512739863c6e948c325f99d27e38d57db757d84"
+    }
+  },
+  "checkpoint": "/home/jetsonnx/.local/share/explorer3/checkpoints/0350a44a477346b8bcf1c12dc9fd2323-b8/checkpoints/010000/pretrained_model",
+  "checkpoint_sha256": "4beac0dccf9fe091cd093e42226f9d5dea4e2b80e51c88539e3e9185baa74593",
+  "n_action_steps": 100,
+  "model": {
+    "source": "Yahboom official ROSMASTER M3 PRO code archive, orin/M3Pro_ws-0.0.1.zip",
+    "source_url": "https://drive.google.com/file/d/1WxZbB2ulfWldWYRKiT5zheso-8EtqfdV/view",
+    "archive_sha256": "7f9083d301fef50633445272505e9acb561a4b6abe362dd946d7deaaf4caff0f",
+    "srdf_sha256": "770c7df6680f2bfb379019223f52f80162423e1e6dc392c35dae46650b853d59",
+    "gripper_closed_rad": -0.8398,
+    "urdf_sha256": "8046676e826b02f7764d1db5cbf24ea3d82202d22837ae824f8b6a8ddd82b6aa",
+    "meshes_sha256": {
+      "base_link.STL": "82897ec12100b78d8f33800edd7be19f86de3ffbc3574ed446f1d2bf04079f4a",
+      "arm1.STL": "d12f701abb74171df8ed3179b3885d10c6af2863f29d13e52bcce2d0d8933643",
+      "arm2.STL": "6ec3d8c7b02106560f61035e03a034637b988d153319d87bb50994e96728271e",
+      "arm3.STL": "74e309203df8ed80e57962a5ccc871909163cb07c1b1f6db0628233684360a98",
+      "arm4.STL": "8f74b107bdaba930ea482c95e6685d5cf5dccb3923a1e6d8b9280b7986811cda",
+      "arm5.STL": "1a52a732e4664ac3b703968416446b76d67067a78632b520d33858a80a26a281",
+      "rlink1.STL": "9e3bb9c0d08d3d177e01a532d275f108f514eb4be13e857c0a596c61c32891a6",
+      "rlink2.STL": "ff22b15d51ff0d96cddcaa74b6056c9e5f88e1abe6886023a2a90ca80ec3230d",
+      "llink1.STL": "0acf2b0ea73e9eb63e3ef9fec5637f0a151dae108ac3eed58ffd98f0062a6c9d",
+      "llink2.STL": "e356dfad82f1468a6c80e20fe127df4b7b40c395398cf5cb85a1522d9691b31c",
+      "rlink3.STL": "bcf76ccbadf426c3e7ec6135f0fd09c0669b54735e7de91bbee92276b5404b25",
+      "llink3.STL": "81f1c9f5ab75d86362d7e227fda6018c87488db713bd9621f6eb761bbec3109d",
+      "Gripping.STL": "e35ed860419dad49687084f9c8493f43c81cfece5b421d7e63944d27d22d63f7",
+      "DCW2.STL": "085efb1ffed33d9440071886bf1c2ce769facda5e45fd7e1ab24d4d55298d1a1",
+      "Camera.STL": "12d7158cdf2fab1072f2bd3989726e854a20d1fe717206cb7edc114afe59fdbe",
+      "lwheel1.STL": "e629352d69aaef698c948505f046fb241b1d9a7e734f0417a06dfe2d383eacfd",
+      "lwheel2.STL": "f07f85985d6c189b71d839a0d44bf3e893eacfd76dccc4f954b63d247a78ae1b",
+      "rwheel1.STL": "7218e9bea1d0862cacd44b0a8a72e207085d367a022843bfd4e6be23f6786fff",
+      "rwheel2.STL": "f8daf44a79b1b3d5bdec95ef3885e8151f3a39f21f93c2bf2e8fcbf09d57c323",
+      "arm_base_Link.STL": "bbd67c0a59cdbb8fd02c567e8ddff62bde72d3cae753ee63da7681f98f29871c"
+    },
+    "geometry": "original URDF link transforms, visual/collision STL, gripper mimic constraints",
+    "inertias": "original manufacturer CAD values, not identified whole-robot mass",
+    "calibration": "manufacturer_geometry_unverified_local_dynamics",
+    "license": "package.xml says Apache 2.0 but retains TurtleBot metadata; assets cached locally, no redistribution",
+    "adaptations": [
+      "empty visual tags removed",
+      "camera pan and wheels fixed for arm task",
+      "MuJoCo native URDF import; balanceinertia enabled; manufacturer SRDF collision exclusions",
+      "duplicate collision geometry invisible, still active"
+    ],
+    "xml_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "presentation": {
+      "renderer": "native MuJoCo/Studio",
+      "style": "laboratory-v1",
+      "checker_cell_m": 0.1,
+      "reference": "Menagerie robotstudio_so101/scene.xml (Apache-2.0)",
+      "policy_camera": "same physical scene, no object coordinates or debug overlays"
+    },
+    "numerical_contact": {
+      "timestep_s": 0.0005,
+      "solref": [
+        0.001,
+        1
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2
+      ],
+      "iterations": 100,
+      "purpose": "bound numerical interpenetration, not fitted material compliance"
+    },
+    "controller_assumptions": [
+      "position servo gains/torque caps",
+      "lag",
+      "friction",
+      "servo-to-gripper alignment pending physical check",
+      "camera FOV pending intrinsics"
+    ],
+    "task_geometry": "simulated 32mm cube and bin; not a measurement of user objects",
+    "task_variant": "rosmaster_floor_pick",
+    "camera_roll_deg": 0.0
+  },
+  "policy_seed_per_scene": true,
+  "new_process_reload": true,
+  "privileged_input": false,
+  "trials": [
+    {
+      "seed": 957300,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "c72d7a5032832127a191537216a35630773e089ad8d383776bf3976a75a741c2",
+      "initial_state": [
+        84.4858627319336,
+        55.410648345947266,
+        26.325531005859375,
+        22.049531936645508,
+        74.76676940917969,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.20153068377533573,
+        0.04786387406423899,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 3.887726830994329,
+      "max_lift_cm": 0.0,
+      "ever_held": false,
+      "actions_sha256": "181de35174b104a0fcb9f699b3bcdaa80fb53b105e71d023131d9f30439ef868",
+      "all_qpos_sha256": "e648292e0a7bf07e76460309da75e05b7a8ea24a77040952f82274e5602a47c4",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957301,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "1bb06798c5272490f5320dc2c9a0ae4d00d6dd627dfc1469d7c0e708c8e9613e",
+      "initial_state": [
+        80.75667572021484,
+        55.81802749633789,
+        21.92491340637207,
+        21.628826141357422,
+        72.03385162353516,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.1890181575038706,
+        0.04913139077424816,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 1.976984827881708,
+      "max_lift_cm": 0.477558223710161,
+      "ever_held": false,
+      "actions_sha256": "725d8d93b615577cb7901588ee0ac7f380464273cc90a64e6c4bd051024876bf",
+      "all_qpos_sha256": "0a49041b0e2a11238cdf57067fdfb6d5255d0ea7add2b5ddc1e209b7dcea26a8",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957302,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "a5e0e00a2a3250d7fbacdc3b7587fafa2bca0de62b8c7aef832da73ae8ea5ba5",
+      "initial_state": [
+        84.04732513427734,
+        56.81372833251953,
+        23.002471923828125,
+        18.150753021240234,
+        72.92178344726562,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.1808418134427962,
+        0.001678937644283042,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 1.115122528216328,
+      "max_lift_cm": 0.0,
+      "ever_held": false,
+      "actions_sha256": "64f2628b5facf63d640dbd0db88883a68103a2ceb766c67b46269c075bc11416",
+      "all_qpos_sha256": "7fdcd8fff25ea1ff7de53db3bc73ea88861dc85c23aea3c61ecb9656201dee68",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957303,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "e2fc2f860d7fe9d73d530ef4e4ba625b7ab0b4f34f943b6ed019f8e5caaa9662",
+      "initial_state": [
+        81.86418914794922,
+        57.62568664550781,
+        23.962051391601562,
+        22.815519332885742,
+        73.22369384765625,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.234160090920325,
+        0.017375937840436187,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.455890434859165,
+      "max_lift_cm": 0.32423739093300485,
+      "ever_held": false,
+      "actions_sha256": "9374845e2ca743069c8670d46ffb7a906d6ad28f31f84a644c9752586e4f9af7",
+      "all_qpos_sha256": "13271830a183d1be4aeae1a467ed1d87f6972490de75f16f05bb37d17b4a2728",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957304,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "eb5afec98cd82665c2fb587be099f5aa392e97efe47e94129188ec0e7068703c",
+      "initial_state": [
+        81.12884521484375,
+        55.225067138671875,
+        21.682584762573242,
+        18.858823776245117,
+        74.1623764038086,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.23416860370767778,
+        0.009508430953659039,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.068137731179992,
+      "max_lift_cm": 0.3329074086821704,
+      "ever_held": false,
+      "actions_sha256": "3d0df9dc838b34450a47455c20017e3d1c6304df4bc4a6733cb9cf499115b791",
+      "all_qpos_sha256": "b031acf8efb45483dbeaf421da103addaf4ff0cc1b74cf9189aa5d13aea9e5a4",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957305,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "1508d128f6811f058f0247440379211062ef5987e4f52e27cead64b500064aa5",
+      "initial_state": [
+        82.52748107910156,
+        54.608707427978516,
+        26.27676010131836,
+        20.801939010620117,
+        71.51429748535156,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.20557654097526262,
+        0.026082773443598148,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.426913728474517,
+      "max_lift_cm": 0.09750580226042943,
+      "ever_held": false,
+      "actions_sha256": "1e9ff6525310709a9ca5ae7329e4014696d59b1ec262c122d0e09cbd2d144ded",
+      "all_qpos_sha256": "2ca54b64e754fa08adb4d0fab596266529864030f829a580f7aa8cfc359253c0",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957306,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "229b3c2af0095a6fffc5cdb8a2cc1363bc9a75d9788460e2d1fbfeec6d9ca234",
+      "initial_state": [
+        79.05338287353516,
+        58.55815124511719,
+        22.252609252929688,
+        18.4451847076416,
+        76.5194091796875,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.17459584965132732,
+        -0.049407158258107056,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 4.319598334654341,
+      "max_lift_cm": 0.46037438835624217,
+      "ever_held": false,
+      "actions_sha256": "d94c4bbcee61a3ed594c51357a87dd7b79d83f9c71be71ab0b61e6901bd19a22",
+      "all_qpos_sha256": "4e5778e6a17e30307a5f694e2976ca995b69265876d8f2b1fdc833bcc0677693",
+      "full_camera_frames": 5
+    },
+    {
+      "seed": 957307,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_qpos_sha256": "5f9aad8dcfa5004cbffbbac040127b73e64999d24f1ac4e4f67aa103c4922dc3",
+      "initial_state": [
+        82.53883361816406,
+        58.58366012573242,
+        22.93589973449707,
+        19.636690139770508,
+        75.3927001953125,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2024568904889852,
+        -0.0005146026203604465,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 0.3384009154770375,
+      "max_lift_cm": 24.757748655468802,
+      "ever_held": false,
+      "actions_sha256": "c013e387ba5668d37ff426d575acb073c04a12157ab36a8e30d11261594e3aea",
+      "all_qpos_sha256": "30696334d19191ed48443f0cb5a2fad83e26a4d4e59a33edd2e05a57d3b1f804",
+      "full_camera_frames": 5
+    }
+  ],
+  "success_fraction": 0.0,
+  "physical_skill_verified": false,
+  "camera_schedule": "Full native RGB on empty queues; queued ticks pass an unused 1x1 RGB to stock ACT.",
+  "latency_scope": "Sensor-to-action latency comparison omitted because transport workload differs."
+}

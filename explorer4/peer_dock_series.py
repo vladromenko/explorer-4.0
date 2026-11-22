@@ -139,6 +139,9 @@ def observe_one(robot,run_dir,iteration,fleet):
         obs={'source_robot':robot,'board_valid':False,'reason':str(exc)}
     result={'id':run_dir.name+'/'+ident,'selected':robot,'observations':{robot:obs}}
     field.write_json(folder/'observation.json',result)
+    if iteration==1 and robot=='tank':
+        from .peer_field_shadow import capture_hook
+        capture_hook(folder)
     base=f'/api/peer-dock/field-series/{run_dir.name}/{ident}/'
     info={'capture':ident,'source_robot':robot,'evidence':base+'observation.json'}
     for key,name in (('packet',robot+'.npz'),('preview',robot+'.jpg')):
@@ -282,8 +285,6 @@ def start(control,session,owner,fleet,*,fixture_restored):
 def score(control,run_id,dx,dy,yaw_deg,stationary,intervention,note):
     if control.owner is not None or not control.stop_event.is_set():
         raise ValueError('Физический STOP обязателен до независимого замера')
-    if not note.strip() or any(v is None or not math.isfinite(v) for v in (dx,dy,yaw_deg)):
-        raise ValueError('Нужны независимые замеры и источник (линейка, угломер или видео)')
     with fleet_config.locked(),control.lock:
         if control.owner is not None or not control.stop_event.is_set():
             raise ValueError('Для независимого замера требуется STOP')
@@ -293,6 +294,10 @@ def score(control,run_id,dx,dy,yaw_deg,stationary,intervention,note):
         row=s['attempts'][-1]
         if 'endpoint' in row:
             raise ValueError('Замер уже сохранён')
+        from .peer_field_shadow import capture_hook
+        capture_hook(SERIES.parent/run_id/'001-tank',before_endpoint=True)
+        if not note.strip() or any(v is None or not math.isfinite(v) for v in (dx,dy,yaw_deg)):
+            raise ValueError('Нужны независимые замеры и источник (линейка, угломер или видео)')
         spec=s['protocol'];runtime=row.get('runtime',{})
         # A controller arrival is insufficient. Intervention or an interrupted/lost run never
         # earns a task success. A successful goal requires actual admitted perception evidence.

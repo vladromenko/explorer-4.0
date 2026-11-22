@@ -123,8 +123,13 @@ class ArchiveGraspActions:
         xy = self.locate(observation, image)
         if self.support.find_simplex(xy) < 0:
             raise ValueError("Predicted cube is outside the motor demonstration hull")
-        self.plan = self.rbf(xy[None] / 0.05)[0] if self.method == "rbf" else self.planner.trajectory(xy)
+        self.plan = self.plan_for_xy(xy)
         self.last = state.copy()
+
+    def plan_for_xy(self, xy):
+        if self.method == "rbf":
+            return self.rbf(np.asarray(xy, dtype=np.float64)[None] / 0.05)[0]
+        return self.planner.trajectory(xy)
 
     def locate(self, observation, image):
         return locate_cube(self.localizer, image)

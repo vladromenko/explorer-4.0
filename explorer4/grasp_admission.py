@@ -31,6 +31,7 @@ from .grasp_calibration import (
     session_rows,
     summary,
 )
+from .grasp_localizer import prewarm_field
 from .grasp_shadow import ArchiveGraspActions
 from .paths import DATA, ROOT, offline_environment
 
@@ -59,6 +60,7 @@ def identity(path):
         "explorer4/conditioned_grasp.py",
         "explorer4/grasp_shadow.py",
         "explorer4/grasp_admission.py",
+        "explorer4/grasp_localizer.py",
         "explorer4/grasp_reference.py",
         "explorer4/grasp_calibration.py",
         "agents/rosmaster/runtime.py",
@@ -192,7 +194,7 @@ def prewarm():
 
 def policy(path):
     proof = json.loads((path / "localization-calibration.json").read_text())
-    return MeasuredActions(None, MOTOR, VISION, "rbf", proof, localizer=prewarm())
+    return MeasuredActions(None, MOTOR, VISION, "rbf", proof, localizer=prewarm_field())
 
 
 def replay(path, link, ep, model):

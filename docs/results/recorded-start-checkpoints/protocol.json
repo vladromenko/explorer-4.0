@@ -1,0 +1,25 @@
+{
+  "source_job": "0350a44a477346b8bcf1c12dc9fd2323",
+  "optimizer_updates_in_audit": 0,
+  "role": "development only",
+  "seeds": [
+    957300,
+    957301,
+    957302,
+    957303,
+    957304,
+    957305,
+    957306,
+    957307
+  ],
+  "checkpoints": {
+    "1000": "28defaf29f5afad63f48286de3036ba7efc0a71513b4898d1e987b7feb2e5f00",
+    "3000": "48999799f043271ffe9950240d2da7200dd0c58cbcf99411a0b17a94df563dfb",
+    "10000": "4beac0dccf9fe091cd093e42226f9d5dea4e2b80e51c88539e3e9185baa74593"
+  },
+  "physics_xml_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+  "score": "stable carry and any cube lift of 1 cm from reset",
+  "render": "Mesa llvmpipe (CPU), native MuJoCo scene",
+  "inference": "CPU",
+  "decision": "Two consecutive checkpoints without a stable hold or a 1 cm lift stop the pilot. The archived final weights provide a retrospective check of a possible missed gain."
+}

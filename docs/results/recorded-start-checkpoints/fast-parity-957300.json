@@ -1,0 +1,57 @@
+{
+  "verified": true,
+  "seed": 957300,
+  "training_step": 1000,
+  "optimizer_updates": 0,
+  "physical_trials": 0,
+  "checkpoint_sha256": "28defaf29f5afad63f48286de3036ba7efc0a71513b4898d1e987b7feb2e5f00",
+  "checkpoint_bundle_sha256": "bcde5f118aeadf6f18bdbfb2d876edf77bb8f76c3f07bf531788206061856f58",
+  "physics_xml_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+  "legacy_trace_sha256": "ee70b710b3c0913fe139efe64bedcb9cd9a0aa57e0bb0ac48b2e2dad131d55ca",
+  "sources_sha256": {
+    "scripts/archived_act/common.py": "1a41c3587cf8201325af9b0fcbf74085235ae70ed248f62038d2206dea77dff4",
+    "scripts/archived_act/run.py": "801a20e7f3c053c0231d4700ba6c3a615088d2ee27d5f752eeeac9b5f42ff18b",
+    "scripts/archived_act/parity.py": "a1cbe07e1b190e04484e2339fb6c023415dc01788e96eb936a3980562955d174",
+    "explorer4/act_client.py": "6127546ed9120b6f9c234fe8db1b50f8262ab70487493b3a0cedf95852211bf9",
+    "explorer4/policy_runtime.py": "c6d71e75eb0d6956ac77851b63b433982758526d7510fdc2277c959bfaf81edd",
+    "explorer4/sim/policy_worker.py": "39ef70c8b4fda564e53d931a767bea0c7845824c50361b988c72539cba95d9fe",
+    "explorer4/sim/evaluate.py": "af569d08333b182d2f29f5c493a262e75addc1cdc6a2a07e5b729544c9079cf4",
+    ".venv/lib/python3.12/site-packages/lerobot/policies/act/modeling_act.py": "a6c1a49c5daafa513b9abee9b986205d327e25c70ed13623ab2e6c0ab6b1f577"
+  },
+  "full_renderer_qpos_sha256": "91643306972bcdc2cb7d849c9e6dade1ed39fb1929f0ee13d051dd0741deb55b",
+  "optimized_qpos_sha256": "91643306972bcdc2cb7d849c9e6dade1ed39fb1929f0ee13d051dd0741deb55b",
+  "native_reference_actions_sha256": "f7b6b5194ace61bbf54e0f693918c23b639b0c67fc149a5b0683b8231b7f912f",
+  "optimized_actions_sha256": "f7b6b5194ace61bbf54e0f693918c23b639b0c67fc149a5b0683b8231b7f912f",
+  "byte_encoding": "Little-endian float64 in time, channel order, including reset qpos.",
+  "native_reference": "Native full-renderer archive supplies every qpos and terminal metrics. The archive does not store actions. Actions are reconstructed with stock CPU LeRobot, true refresh frames, authentic servo states and full-sized previous RGB on queued ticks whose model inputs are ignored. The independent candidate uses 1x1 RGB on those same ticks.",
+  "metrics_comparison": "Exact equality for every legacy field and every qpos byte, no tolerance.",
+  "peak_child_rss_mib": 1562.28125,
+  "sequential_child_wall_seconds": 151.153,
+  "trial": {
+    "seed": 957300,
+    "outcome": "failure",
+    "reason": "task_deadline",
+    "steps": 500,
+    "sim_seconds": 24.999999999987086,
+    "initial_qpos_sha256": "c72d7a5032832127a191537216a35630773e089ad8d383776bf3976a75a741c2",
+    "initial_state": [
+      84.4858627319336,
+      55.410648345947266,
+      26.325531005859375,
+      22.049531936645508,
+      74.76676940917969,
+      112.00909423828125
+    ],
+    "cube_xyz0": [
+      0.20153068377533573,
+      0.04786387406423899,
+      0.018000000000000002
+    ],
+    "min_tip_cube_cm": 5.067743113620042,
+    "max_lift_cm": 0.0,
+    "ever_held": false,
+    "actions_sha256": "f7b6b5194ace61bbf54e0f693918c23b639b0c67fc149a5b0683b8231b7f912f",
+    "all_qpos_sha256": "91643306972bcdc2cb7d849c9e6dade1ed39fb1929f0ee13d051dd0741deb55b",
+    "full_camera_frames": 5
+  }
+}

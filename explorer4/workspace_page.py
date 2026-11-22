@@ -115,7 +115,16 @@ def results():
                         ui.label(
                             f"{key.upper()} с оценкой позиции · {improved['counts'][key]}/{improved['total']}"
                         )
+            refresh_path = REPORT + "grasp-look-refresh-development-v1-1/result.json"
+            refresh = read(MEDIA / refresh_path).get("all_scenes", {}).get("shifted")
+            if refresh:
+                ui.label(
+                    f"Кубик смещён на 10 мм · по первому кадру {refresh['first_holds']}/{refresh['n']}, "
+                    f"по повторному {refresh['refresh_holds']}/{refresh['n']} удержаний в сценах подготовки."
+                )
             with ui.row().classes("work-links"):
+                if refresh:
+                    evidence_link("Сравнение двух кадров", refresh_path)
                 evidence_link("Сцены до и после", base + "primary-paired-scenes.csv")
                 evidence_link(
                     "Новые исходы", REPORT + "conditioned-grasp-v1/summary.json"
@@ -195,6 +204,14 @@ def results():
                 with ui.row().classes("work-links"):
                     evidence_link("Исходы подготовки", screen + "development.json")
                     evidence_link("Видео со ширмой", screen + "replay-861000.mp4")
+            comparison_path = REPORT + "peer-screen-sequential-development/summary.json"
+            sequential = read(MEDIA / comparison_path).get("summary", {}).get("sequential")
+            if sequential:
+                ui.label(
+                    f"Поиск, затем запрос при промахе · {sequential['successes']}/{sequential['n']} стыковки, "
+                    f"запросов {sequential['calls']}."
+                )
+                evidence_link("Время и запросы на тех же сценах", comparison_path)
             ui.link("Общая сцена MuJoCo", "/sim/fleet")
             ui.link("Запуск агента помощи", "/team")
             ui.link("Заказ для трёх роботов", "/team/three")
@@ -358,6 +375,13 @@ def install(jobs, css):
                             + STATES.get(job["status"], job["status"])
                         )
                         ui.link("Журнал", "/jobs/" + job["id"])
+                        if job["track"] == "peer_learning":
+                            confirmation = json.loads(jobs.get(job["id"])["config"]).get("peer_confirmation")
+                            if confirmation:
+                                path = f"reports/peer-sequential-confirmation/{confirmation}/"
+                                evidence_link("Протокол сравнения на 16 сценах", path + "protocol.json")
+                                if (MEDIA / path / "summary.json").is_file():
+                                    evidence_link("Обученный выбор и поиск до вызова", path + "summary.json")
                         if job["status"] == "completed":
                             evidence_link(
                                 "Результат",

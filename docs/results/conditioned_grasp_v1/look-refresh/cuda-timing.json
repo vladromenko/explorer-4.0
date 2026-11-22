@@ -1,0 +1,88 @@
+{
+  "parent_protocol_sha256": "5125b077004851dd954cdb578390946b9187d3a63e1bc29a2f40c6172490807c",
+  "source_results_sha256": "5ffd6c14eae124c2bb495cd08e3f579a29b1b21850f4669d10a0a5c85e366220",
+  "runner_sha256": "97088555f1938d0fab8c009818a381a09273078f7bdc901d9e33b20b52984f59",
+  "vision_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+  "motor_sha256": "3bd820bbea2bdd3cf320dc8f55412efd25c7a6a379a0971d95e2417cbd46f55c",
+  "scope": "Eight existing synthetic development scenes, static and shifted. Six repetitions on every stored frame (96 per backend). For each of six fresh EGL frames per scene condition, the two backends share its bytes; alternating the first backend produces 48 contiguous readback-to-plan measurements per backend. Sixteen views, eight independent scenes.",
+  "cuda_path": "The cached production prewarm() -> InferenceLocalizer with unchanged FP32 weights, including CPU preprocessing, host-device transfer, forward pass, device-host transfer, CPU SciPy trajectory, and explicit CUDA synchronization.",
+  "cpu_path": "Single-thread CPU localization and FP64-input SciPy thin-plate spline. One image per request.",
+  "egl_path": "Warmed MuJoCo EGL render at 640x480, GPU readback, area resize to 160x120, localization and complete six-channel RBF plan. No physics ticks elapse during timing. All non-CUDA branch states match the original. CPU and CUDA consume the exact same captured image within each pair. Compare this warmed capture with the single archived capture using the reported pixel differences.",
+  "field_scope": "Physical camera, exposure and frame age, network transport, calibrations, template checks, servo guards and transmission are outside this benchmark.",
+  "egl_captures_exactly_matching_archive": 32,
+  "egl_largest_changed_channel_count": 6,
+  "egl_largest_uint8_delta": 1,
+  "cold_egl_rgb_sha256": "3adbe2ae694f7dcd8e2a7b5893d15e9dbeea9b3fbdf6a248f6b88f83498daca0",
+  "machine": "NVIDIA Jetson Orin NX Engineering Reference Developer Kit Super",
+  "cuda": "Orin",
+  "libraries": {
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "scipy": "1.18.1",
+    "mujoco": "4.0.1",
+    "opencv": "5.0.0"
+  },
+  "egl": {
+    "vendor": "NVIDIA Corporation",
+    "renderer": "NVIDIA Tegra Orin (nvgpu)/integrated",
+    "version": "4.6.0 NVIDIA 595.78"
+  },
+  "torch_default_tf32": {
+    "cudnn": true,
+    "matmul": false
+  },
+  "tested_tf32": false,
+  "fp16": false,
+  "reps_per_frame": 6,
+  "budget_ms": 40,
+  "cold_egl_first_capture_ms": 669.18378,
+  "warm_timings": {
+    "ready_rgb": {
+      "cpu": {
+        "n": 96,
+        "p50_ms": 40.496673,
+        "p95_ms": 42.34633225,
+        "max_ms": 44.069942,
+        "within_40ms": 39
+      },
+      "cuda": {
+        "n": 96,
+        "p50_ms": 5.0037465,
+        "p95_ms": 5.8218685,
+        "max_ms": 6.523795,
+        "within_40ms": 96
+      }
+    },
+    "egl_render_to_plan": {
+      "cpu": {
+        "n": 48,
+        "p50_ms": 45.232762,
+        "p95_ms": 48.37222545,
+        "max_ms": 49.183419,
+        "within_40ms": 0
+      },
+      "cuda": {
+        "n": 48,
+        "p50_ms": 9.779596999999999,
+        "p95_ms": 10.6703616,
+        "max_ms": 10.896769,
+        "within_40ms": 48
+      }
+    }
+  },
+  "xy_max_delta_mm": 2.533471306550399e-05,
+  "joint_plan_max_abs_delta_deg": 5.076074297960531e-05,
+  "gpu_repeat_max_abs_delta_deg": 0.0,
+  "field_input_scaling_max_abs_delta_deg": 2.718514654276305e-05,
+  "frozen_cpu_plan_shapes": [
+    220,
+    6
+  ],
+  "completed_rollouts": 0,
+  "physical_trials": 0,
+  "optimizer_updates": 0,
+  "recommendation": "Prewarm once before arming. Explicitly select FP32 without TF32 and convert metric XY to float64 before dividing by 0.05, matching the study. For field qualification, time exposure/frame timestamp to the fully validated plan on live passive camera samples; retain refusal on stale frames and the existing actuator gates.",
+  "raw_samples": "http://192.168.0.168:8030/simlab-media/reports/grasp-look-refresh-development-v1-1/cuda-timing.json",
+  "raw_sha256": "2d2bde08167e2600a068563b2c438e8be1b6771a1103b0502874cba9a402021a",
+  "qualification": "The installed PyTorch wheel warns that Orin compute capability 8.7 is outside its declared target list. Every measured CUDA call completed with the recorded FP32 trajectory agreement. Pin and validate the build used for the physical trial."
+}

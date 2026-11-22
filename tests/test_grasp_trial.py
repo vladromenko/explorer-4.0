@@ -65,7 +65,7 @@ def fixture(tmp_path,monkeypatch):
         if p["id"] in claimed:
             raise PermissionError("already claimed")
     monkeypatch.setattr(grasp_admission,"require",gate)
-    monkeypatch.setattr(grasp_admission,"prewarm",lambda:None)
+    monkeypatch.setattr(grasp_admission,"prewarm_field",lambda:None)
     monkeypatch.setattr(grasp_admission,"preflight",lambda p,s:True)
     class Client:
         def __enter__(self):return self

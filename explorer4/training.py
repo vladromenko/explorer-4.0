@@ -91,7 +91,15 @@ def run_job(path: Path):
         return
     if cfg.get('kind') == 'workspace_study':
         from .study_queue import execute
-        execute(cfg, work)
+        if 'peer_confirmation' in cfg:
+            from .peer_confirmation import primary_saved
+            if not primary_saved(cfg, work):
+                execute(cfg, work)
+            subprocess.run([str(ROOT/'.venv-sim/bin/python'), '-m', 'explorer4.peer_confirmation',
+                            'resume', work.name], cwd=ROOT,
+                           env={**offline_environment(), 'MUJOCO_GL':'egl', 'OMP_NUM_THREADS':'1'}, check=True)
+        else:
+            execute(cfg, work)
         return
     if cfg.get('kind')=='noise_demonstrations':
         subprocess.run([str(ROOT/'.venv-sim/bin/python'),'-m','explorer4.noise_demonstrations',str(path),str(work)],

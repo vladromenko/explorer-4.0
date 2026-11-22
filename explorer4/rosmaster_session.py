@@ -420,6 +420,8 @@ class RosmasterSession:
                         self.operator.set_direct(None)
                         self.operator.stop('STOP: одиночная проба руки завершена')
                         acknowledged=self.operator.error=='STOP: одиночная проба руки завершена'
+                from .grasp_localizer import close_field
+                close_field()
                 reason=provenance.get('termination_reason') or self.termination
                 result=grasp_trial.amend(self.plan['id'],phase='awaiting_measurement',
                     finished_at=time.time(),sequence_completed=completed,emergency=self.emergency,stop_acknowledged_by_agent=acknowledged,
