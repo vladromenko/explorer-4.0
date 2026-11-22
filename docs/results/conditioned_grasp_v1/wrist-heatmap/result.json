@@ -1,0 +1,6031 @@
+{
+  "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+  "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+  "weights_sha256": "083a0a594d8347060996f87311a7f1729208177a7af7adfa29c049dbb8b1c4e7",
+  "errors": {
+    "baseline": {
+      "n": 48,
+      "p50_mm": 3.378072210089533,
+      "p90_mm": 6.278129954429355,
+      "mean_mm": 3.7260485139575277,
+      "max_mm": 16.428019224676376,
+      "above_10_mm": 1,
+      "above_20_mm": 0
+    },
+    "keypoint": {
+      "n": 48,
+      "p50_mm": 2.748719960145638,
+      "p90_mm": 5.743173182566775,
+      "mean_mm": 3.022392596390675,
+      "max_mm": 9.09693705973577,
+      "above_10_mm": 0,
+      "above_20_mm": 0
+    }
+  },
+  "keypoint_lower_error": 27,
+  "native_unrestricted_all_starts": {
+    "n": 48,
+    "baseline": 29,
+    "keypoint": 27,
+    "keypoint_only": 8,
+    "baseline_only": 10,
+    "both": 19,
+    "neither": 11,
+    "two_sided_exact_p": 0.8145294189453125
+  },
+  "contract_all_starts": {
+    "n": 48,
+    "baseline": 7,
+    "keypoint": 5,
+    "keypoint_only": 2,
+    "baseline_only": 4,
+    "both": 3,
+    "neither": 39,
+    "two_sided_exact_p": 0.6875
+  },
+  "common_admitted": {
+    "n": 15,
+    "baseline": 7,
+    "keypoint": 5,
+    "keypoint_only": 2,
+    "baseline_only": 4,
+    "both": 3,
+    "neither": 6,
+    "two_sided_exact_p": 0.6875
+  },
+  "individual_admitted": {
+    "baseline": {
+      "n": 15,
+      "holds": 7
+    },
+    "keypoint": {
+      "n": 15,
+      "holds": 5
+    }
+  },
+  "opened_v3": [
+    {
+      "seed": 976106,
+      "rgb_sha256": "b3e75ee49d7430c8058f935ff5359baba557869b5dc6bdcad11b36f43abedd0a",
+      "baseline": {
+        "xy_m": [
+          0.18226358294487,
+          0.014961984939873219
+        ],
+        "error_mm": 2.72710262186667
+      },
+      "keypoint": {
+        "xy_m": [
+          0.18021772801876068,
+          0.015471380203962326
+        ],
+        "uv_160x120": [
+          69.20655822753906,
+          55.84586715698242
+        ],
+        "error_mm": 2.8004484692052105
+      }
+    },
+    {
+      "seed": 976109,
+      "rgb_sha256": "14e2ff651ef9bd561c7b157d0c862f12f0b9fe96b5f988ae1d541a4cfa0c280e",
+      "baseline": {
+        "xy_m": [
+          0.232630655169487,
+          0.03397173807024956
+        ],
+        "error_mm": 4.226612584743345
+      },
+      "keypoint": {
+        "xy_m": [
+          0.2330230474472046,
+          0.037909314036369324
+        ],
+        "uv_160x120": [
+          57.76084518432617,
+          17.193777084350586
+        ],
+        "error_mm": 3.2794056210781006
+      }
+    },
+    {
+      "seed": 976115,
+      "rgb_sha256": "5d4ec4df4fc963d42ca65d49473fbfc4777073428735cc252af896c1c519a9ea",
+      "baseline": {
+        "xy_m": [
+          0.20917482674121857,
+          0.018266946077346802
+        ],
+        "error_mm": 39.30388377584364
+      },
+      "keypoint": {
+        "xy_m": [
+          0.17076586186885834,
+          0.031063124537467957
+        ],
+        "uv_160x120": [
+          63.32211685180664,
+          68.7088851928711
+        ],
+        "error_mm": 1.7987518862096306
+      }
+    },
+    {
+      "seed": 976116,
+      "rgb_sha256": "d38eb8540461909f4623cac5be020bc209a80752a1ae424a19c397e34d5abbf9",
+      "baseline": {
+        "xy_m": [
+          0.198766827583313,
+          0.02923758141696453
+        ],
+        "error_mm": 2.130692397871368
+      },
+      "keypoint": {
+        "xy_m": [
+          0.1975487768650055,
+          0.030648723244667053
+        ],
+        "uv_160x120": [
+          53.847496032714844,
+          34.13701248168945
+        ],
+        "error_mm": 0.9909247256197954
+      }
+    },
+    {
+      "seed": 976120,
+      "rgb_sha256": "38eef2863827adb851db79d158182f66def3534c42dbf6380369f36c835ad15c",
+      "baseline": {
+        "xy_m": [
+          0.2221529632806778,
+          -0.022441504523158073
+        ],
+        "error_mm": 5.164160614283896
+      },
+      "keypoint": {
+        "xy_m": [
+          0.22069409489631653,
+          -0.026041477918624878
+        ],
+        "uv_160x120": [
+          89.67082977294922,
+          23.65963363647461
+        ],
+        "error_mm": 4.7910979189602685
+      }
+    },
+    {
+      "seed": 976122,
+      "rgb_sha256": "0f2c962f23cc5ae82377aa580f86774317dce44a5a76da7660612af185fa1c1f",
+      "baseline": {
+        "xy_m": [
+          0.1945449709892273,
+          -0.006080286111682653
+        ],
+        "error_mm": 1.394149524271411
+      },
+      "keypoint": {
+        "xy_m": [
+          0.1932055503129959,
+          -0.0024594266433268785
+        ],
+        "uv_160x120": [
+          81.08153533935547,
+          32.32677459716797
+        ],
+        "error_mm": 2.5391880040606587
+      }
+    },
+    {
+      "seed": 976129,
+      "rgb_sha256": "2a4e9bef50f6cc6bbd4a8b54edff87e3e31908b38854bcaff6825d321e4fb8e4",
+      "baseline": {
+        "xy_m": [
+          0.22178515791893005,
+          -0.030220601707696915
+        ],
+        "error_mm": 4.938022818194253
+      },
+      "keypoint": {
+        "xy_m": [
+          0.21255090832710266,
+          -0.02913174405694008
+        ],
+        "uv_160x120": [
+          99.40845489501953,
+          16.781139373779297
+        ],
+        "error_mm": 6.736874447766214
+      }
+    },
+    {
+      "seed": 976132,
+      "rgb_sha256": "f0d29bc2c94cec920f7e4d5fd8d9d109fe2765fd8b42c223d53a1dbbb7186073",
+      "baseline": {
+        "xy_m": [
+          0.22063039243221283,
+          0.017058411613106728
+        ],
+        "error_mm": 4.357237207280969
+      },
+      "keypoint": {
+        "xy_m": [
+          0.22194692492485046,
+          0.016225814819335938
+        ],
+        "uv_160x120": [
+          63.59760284423828,
+          16.785470962524414
+        ],
+        "error_mm": 4.489668746260303
+      }
+    },
+    {
+      "seed": 976136,
+      "rgb_sha256": "42e671d3c96fb718b5fe6ae47a77993ed1de129d43d4c9878126543743bc222c",
+      "baseline": {
+        "xy_m": [
+          0.19314533472061157,
+          0.004771001171320677
+        ],
+        "error_mm": 0.8487581294757304
+      },
+      "keypoint": {
+        "xy_m": [
+          0.19074034690856934,
+          0.006185721606016159
+        ],
+        "uv_160x120": [
+          78.83939361572266,
+          41.269405364990234
+        ],
+        "error_mm": 2.382753756032087
+      }
+    },
+    {
+      "seed": 976143,
+      "rgb_sha256": "bfe13393a921f1245786ce390099c2eb99f09d0b8f2c24dd3655e79c43327292",
+      "baseline": {
+        "xy_m": [
+          0.18269690871238708,
+          0.028747012838721275
+        ],
+        "error_mm": 1.5650226150342408
+      },
+      "keypoint": {
+        "xy_m": [
+          0.18277236819267273,
+          0.02694059908390045
+        ],
+        "uv_160x120": [
+          63.9071159362793,
+          44.612770080566406
+        ],
+        "error_mm": 1.3418542007801784
+      }
+    },
+    {
+      "seed": 976145,
+      "rgb_sha256": "522add01fdb5a69dbf94da0744980ff7feb590147a53cb18e802395347993f70",
+      "baseline": {
+        "xy_m": [
+          0.19272054731845856,
+          0.017205748707056046
+        ],
+        "error_mm": 4.489427236242364
+      },
+      "keypoint": {
+        "xy_m": [
+          0.19189924001693726,
+          0.014561869204044342
+        ],
+        "uv_160x120": [
+          79.94474029541016,
+          39.30951690673828
+        ],
+        "error_mm": 1.781964392879128
+      }
+    },
+    {
+      "seed": 976156,
+      "rgb_sha256": "d571d927bc6cd2182d176fc8bed6eee46cc459271136ebcad3667087aa798136",
+      "baseline": {
+        "xy_m": [
+          0.1885053515434265,
+          0.031755078583955765
+        ],
+        "error_mm": 1.6718179511285927
+      },
+      "keypoint": {
+        "xy_m": [
+          0.18606117367744446,
+          0.033681463450193405
+        ],
+        "uv_160x120": [
+          62.465797424316406,
+          42.86676025390625
+        ],
+        "error_mm": 4.553453004277156
+      }
+    },
+    {
+      "seed": 976160,
+      "rgb_sha256": "f377344ef7584af8f9dec34a5ce4970d62145e3b444de244c730e65401e14462",
+      "baseline": {
+        "xy_m": [
+          0.2176099717617035,
+          -0.03818172216415405
+        ],
+        "error_mm": 5.634930555380083
+      },
+      "keypoint": {
+        "xy_m": [
+          0.21798786520957947,
+          -0.03518998250365257
+        ],
+        "uv_160x120": [
+          118.68022155761719,
+          23.85915756225586
+        ],
+        "error_mm": 3.185394924790639
+      }
+    },
+    {
+      "seed": 976161,
+      "rgb_sha256": "234cbc9d088a7d67e19aa92e5a69477218de8fa7712b95588cb7217842b44d23",
+      "baseline": {
+        "xy_m": [
+          0.22075174748897552,
+          -0.035835299640893936
+        ],
+        "error_mm": 3.2587086060539625
+      },
+      "keypoint": {
+        "xy_m": [
+          0.21826250851154327,
+          -0.03172815591096878
+        ],
+        "uv_160x120": [
+          97.54479217529297,
+          18.210391998291016
+        ],
+        "error_mm": 1.982341310716877
+      }
+    },
+    {
+      "seed": 976166,
+      "rgb_sha256": "fb4ea3d4726267b4f7723896f93d4fda796f68ed2ad58af01bf812197cad9319",
+      "baseline": {
+        "xy_m": [
+          0.18083584308624268,
+          -0.013358883559703827
+        ],
+        "error_mm": 3.0859899017791754
+      },
+      "keypoint": {
+        "xy_m": [
+          0.1783437728881836,
+          -0.010258064605295658
+        ],
+        "uv_160x120": [
+          85.31963348388672,
+          42.90583419799805
+        ],
+        "error_mm": 3.293213972915051
+      }
+    },
+    {
+      "seed": 976167,
+      "rgb_sha256": "43fed9e1763a2951ea3761e242e4a172852cd300eca0464d8d1606a181b8e27a",
+      "baseline": {
+        "xy_m": [
+          0.23196609318256378,
+          -0.015905218198895454
+        ],
+        "error_mm": 3.788492433542775
+      },
+      "keypoint": {
+        "xy_m": [
+          0.23519843816757202,
+          -0.014567950740456581
+        ],
+        "uv_160x120": [
+          99.53081512451172,
+          20.43204689025879
+        ],
+        "error_mm": 0.7354330957503181
+      }
+    },
+    {
+      "seed": 976168,
+      "rgb_sha256": "1f31fd7ba978926c59437353a3724f219ae78bba4f626cda1b31ee5826246287",
+      "baseline": {
+        "xy_m": [
+          0.179249107837677,
+          0.03284255042672157
+        ],
+        "error_mm": 3.0363102319893382
+      },
+      "keypoint": {
+        "xy_m": [
+          0.18198303878307343,
+          0.032395608723163605
+        ],
+        "uv_160x120": [
+          59.71308135986328,
+          51.96211242675781
+        ],
+        "error_mm": 2.269401721456002
+      }
+    },
+    {
+      "seed": 976173,
+      "rgb_sha256": "3cdd9a88e7ea18af399f9ae86b8f0adab1a33b8c14d2d29012ee0a8c015b67ed",
+      "baseline": {
+        "xy_m": [
+          0.1765078902244568,
+          0.006671188864856958
+        ],
+        "error_mm": 4.513922760623491
+      },
+      "keypoint": {
+        "xy_m": [
+          0.1731100082397461,
+          0.005152586847543716
+        ],
+        "uv_160x120": [
+          89.3084945678711,
+          57.90239334106445
+        ],
+        "error_mm": 1.040512726388535
+      }
+    },
+    {
+      "seed": 976175,
+      "rgb_sha256": "2111e46e31ad71c01e87ef159c0719e34bd384a81ed5db4ea884d399b9cf2c84",
+      "baseline": {
+        "xy_m": [
+          0.21426674723625183,
+          0.025309545919299126
+        ],
+        "error_mm": 3.417326912375709
+      },
+      "keypoint": {
+        "xy_m": [
+          0.2134971171617508,
+          0.02261042594909668
+        ],
+        "uv_160x120": [
+          72.23242950439453,
+          38.110435485839844
+        ],
+        "error_mm": 2.6412575819248474
+      }
+    },
+    {
+      "seed": 976178,
+      "rgb_sha256": "7aadd8d7a0bb97ee5576d5079cb5791fc2c5af63ffc839608d2b1b73007f7faf",
+      "baseline": {
+        "xy_m": [
+          0.18608295917510986,
+          0.00018440741405356675
+        ],
+        "error_mm": 2.7388696390337777
+      },
+      "keypoint": {
+        "xy_m": [
+          0.18795619904994965,
+          -0.003294680267572403
+        ],
+        "uv_160x120": [
+          86.35850524902344,
+          55.124610900878906
+        ],
+        "error_mm": 2.702855109345635
+      }
+    }
+  ],
+  "rows": [
+    {
+      "seed": 982300,
+      "initial": {
+        "arm": [
+          82.61442565917969,
+          56.362979888916016,
+          25.56500244140625,
+          18.085052490234375,
+          74.3776626586914,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22756195484998504,
+          -0.034223990251056144,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1538a7ab6cdb27a00a68488aa005a752bfbdeff3b668d4a55a7115692dc6bfd5"
+      },
+      "truth_xy_m": [
+        0.22756195484997374,
+        -0.0342239902511133
+      ],
+      "look_physics_sha256": "98cd751c464b5225cda882db50e6b23066675418aecd2b260d25bb075173c512",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "3691da9fb6d27aa9c9af53a59b5f3995a3a1b4b4e365c34bb611c30977b6069a"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953629519790411,
+        74.99952697753906,
+        30.008255004882812
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          396,
+          54,
+          515,
+          165
+        ],
+        "visible_pixels": 11769,
+        "unoccluded_pixels": 11769
+      },
+      "rgb_sha256": "ed5c537bfdbeb988b9a623911630666d224a8b5d4f2b169d6cd55d0c7e6f19fe",
+      "png_sha256": "67d7e21aeaf967635149066eec30f658df8bfa847fa9cb3bb84f281eb9bc63b3",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.2282208800315857,
+            -0.039508506655693054
+          ],
+          "error_mm": 5.3254385758578495,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982300,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.8,
+            "native_action_sha256": "4caac3e23462ffd7c897459d5009db2d10f8cf6c5326601ca1e60ec90d822881",
+            "projected_ticks": 3,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.2909036027893419,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24002847197273997
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.22469638288021088,
+            -0.04099854826927185
+          ],
+          "uv_160x120": [
+            112.0980224609375,
+            27.954174041748047
+          ],
+          "error_mm": 7.355687531107268,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982300,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "c8d14be7001c783cf1791ba635511c6df11912d14efb352bc239f1f29c1e4234",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.3896885059527182,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24140426862174913
+          }
+        }
+      }
+    },
+    {
+      "seed": 982301,
+      "initial": {
+        "arm": [
+          79.21851348876953,
+          58.6491584777832,
+          23.643484115600586,
+          17.75152587890625,
+          72.84024810791016,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2063445968606965,
+          -0.04140237150663735,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1962c2c56aeacb46ccdd9c110b4e02d92b70483053b54f22ce1a53f415e0a07a"
+      },
+      "truth_xy_m": [
+        0.2063445968606852,
+        -0.041402371506694506
+      ],
+      "look_physics_sha256": "1af89eab0e818661e6faf9476f7e4446cb0f8f9e69b30c204370456a81f9c3da",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "88b627dace2c9dff17836ab488d386829a63dad0b8f72c5f428a2d9db7d9e8cf"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532604366540909,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          390,
+          87,
+          498,
+          184
+        ],
+        "visible_pixels": 9961,
+        "unoccluded_pixels": 9961
+      },
+      "rgb_sha256": "a44b5b56a98c537c3ffc16fffbfd61bdc9128096e3d2090c3530f6e2b7a38cb3",
+      "png_sha256": "229c1211eb3275c2c01511b5da3fefd4d6e4336a793e2abd52f7669e5493cecd",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20878282189369202,
+            -0.04119531437754631
+          ],
+          "error_mm": 2.4470010147754624,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982301,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 309,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.5500000000000003,
+            "native_action_sha256": "ccc03e3cf9ecb3f8c88e878c15172173ea1b774426cad7556b3ed834860ea6b5",
+            "projected_ticks": 9,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.754552234294011,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24385519262454425
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2057386338710785,
+            -0.0411403626203537
+          ],
+          "uv_160x120": [
+            109.5462417602539,
+            34.14014434814453
+          ],
+          "error_mm": 0.6601816426519759,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982301,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 292,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.4,
+            "native_action_sha256": "9ebc4663776230161ffaa2197953e26c6274868ec67735997eb6b305f0478b93",
+            "projected_ticks": 10,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.8552427431402783,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2440649225425719
+          }
+        }
+      }
+    },
+    {
+      "seed": 982302,
+      "initial": {
+        "arm": [
+          83.84758758544922,
+          57.07954788208008,
+          22.878543853759766,
+          20.495277404785156,
+          74.25940704345703,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1857880821181163,
+          -0.033162008732214046,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1810b04eac25149fef356b217681301980d63adbf4eb65184a30ecdb81023629"
+      },
+      "truth_xy_m": [
+        0.18578808211816267,
+        -0.03316200873226061
+      ],
+      "look_physics_sha256": "0848c478529dfb4a53398c90d62bec24118eb8d84bfe1a4d8a510a981b64904e",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "65b236eaaa6382c47c0406020e323a91c8035ed3fecf2f0d947535708d7bec74"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009533855132758617,
+        74.99952697753906,
+        30.008207321166992
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          380,
+          93,
+          496,
+          195
+        ],
+        "visible_pixels": 11115,
+        "unoccluded_pixels": 11304
+      },
+      "rgb_sha256": "de4e4542cc5fb2ee964da313168e619d86ac769c0044f0cd8e7994f8b107989d",
+      "png_sha256": "2cec2fb12e6ba9b82915f88166ffc7433d19ddbf2d915be7d112503b82235de1",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.185588076710701,
+            -0.03016057424247265
+          ],
+          "error_mm": 3.0080909493402372,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982302,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 290,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.5,
+            "native_action_sha256": "91aff319d5b0432cc525a2ac628b82f908206d29637987672bd94e34809efb26",
+            "projected_ticks": 21,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7991395301224385,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24406412073060835
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18457308411598206,
+            -0.03560194373130798
+          ],
+          "uv_160x120": [
+            108.5876235961914,
+            35.670562744140625
+          ],
+          "error_mm": 2.7257114566437823,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982302,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 244,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 6.800000000000001,
+            "native_action_sha256": "32bba3471e2b2aa2e5d658d8c50c16ee98644162aa29bf93aa8d915988b107c4",
+            "projected_ticks": 18,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.49553086687097,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24620389888773664
+          }
+        }
+      }
+    },
+    {
+      "seed": 982303,
+      "initial": {
+        "arm": [
+          81.023193359375,
+          56.26315689086914,
+          21.566822052001953,
+          20.16431999206543,
+          73.8485107421875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18606690880162113,
+          -0.03703342796077933,
+          0.018000000000000002
+        ],
+        "reset_sha256": "54ae3a8941da0b8c59fe8f5e9984f73b7d68b125d65b44aadd4eb981ac5ab339"
+      },
+      "truth_xy_m": [
+        0.1860669088015969,
+        -0.037033427960811355
+      ],
+      "look_physics_sha256": "01929427d7b2d0d4ef4e811536f33bbe52c553f47e8d61d316159b7fa3d6be27",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "3bb3f829ff4de06a57eef9ab0d799ee5181c8a82ff81262011d4d4fdb6c8d6cd"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532617405056953,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          382,
+          88,
+          496,
+          197
+        ],
+        "visible_pixels": 10632,
+        "unoccluded_pixels": 10632
+      },
+      "rgb_sha256": "bd82222bda5067975800639f70ee33012c8191f1826eee31d269f14833aa44ba",
+      "png_sha256": "f9b44e19868e9dfd36076568fc9487b6af0a10a4bc215ecc82afe5d0ad0a6ac7",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.18727129697799683,
+            -0.03796252980828285
+          ],
+          "error_mm": 1.5211118047095953,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982303,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 287,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.65,
+            "native_action_sha256": "ed56039471c74efeaf7a43a9a7b2b697d0eec0fbeb5c20cfb1b32dfe80823f68",
+            "projected_ticks": 15,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.779265821521061,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2466716160139401
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.1904550939798355,
+            -0.03919944912195206
+          ],
+          "uv_160x120": [
+            107.80204010009766,
+            34.883766174316406
+          ],
+          "error_mm": 4.89365066479232,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982303,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 267,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 5.65,
+            "native_action_sha256": "f491bcd636efda5b4cd50f43ff7ff7be2b7f385e10e315ea4d9ccd208a38a741",
+            "projected_ticks": 13,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.9036820699506398,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24513190443785243
+          }
+        }
+      }
+    },
+    {
+      "seed": 982304,
+      "initial": {
+        "arm": [
+          81.22075653076172,
+          58.36058807373047,
+          23.32984733581543,
+          20.788362503051758,
+          76.3572769165039,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21097259623628845,
+          -0.04296492516935388,
+          0.018000000000000002
+        ],
+        "reset_sha256": "faa2630bbccc0aaf9fd2c94f8483109ada0c2229fa0f37e445685dd88dbde985"
+      },
+      "truth_xy_m": [
+        0.21097259623627715,
+        -0.042964925169411035
+      ],
+      "look_physics_sha256": "fc7ad055bc59bd391fea39d9a718e3cd8b2f3e1688ec8a0671df67f288171309",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "519132bcd0019d06ef4029cd324577ccb32cb6d21b03727c97002e403d3a6546"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532754309475422,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          412,
+          68,
+          532,
+          172
+        ],
+        "visible_pixels": 11329,
+        "unoccluded_pixels": 11563
+      },
+      "rgb_sha256": "2af945a9ca7bdd4f392b6781b489c501c358828756005d2e61c9c195bf83963b",
+      "png_sha256": "cc447ceb829f3451c2d2529f8970e062396194ae7658c3646c11b9e96ab25909",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21176327764987946,
+            -0.04731516167521477
+          ],
+          "error_mm": 4.421508199047427,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982304,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 308,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.6,
+            "native_action_sha256": "817c7cc0435c4d406a2bde2b13f97523fb719ec31ea79c4a9c0472466bc1fb95",
+            "projected_ticks": 9,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.393485375033477,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24395724400903446
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2114892154932022,
+            -0.04273870587348938
+          ],
+          "uv_160x120": [
+            115.5700912475586,
+            30.969345092773438
+          ],
+          "error_mm": 0.5639775052899636,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982304,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 286,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.7,
+            "native_action_sha256": "0df6df5772b7afebbaacb396a6ae47dcb2d74a5d2ba70190603407a35db7462a",
+            "projected_ticks": 9,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.835109216428245,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2427937096617082
+          }
+        }
+      }
+    },
+    {
+      "seed": 982305,
+      "initial": {
+        "arm": [
+          81.88838195800781,
+          56.61075973510742,
+          22.347883224487305,
+          20.441741943359375,
+          76.30042266845703,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18595536450583433,
+          -0.038535986949180645,
+          0.018000000000000002
+        ],
+        "reset_sha256": "115d26435572b2d52dba81837afd4abe477c015fb5094625b9ed5fdd741227e5"
+      },
+      "truth_xy_m": [
+        0.18595536450582303,
+        -0.0385359869492378
+      ],
+      "look_physics_sha256": "34c75e4083581d68dea446a9b79ec739e91fecd77dd9cbe26e34d9038aefd861",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "584e466d6fa80570dd74e325d989cd372d821ede430616b55731f853844fd6f8"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009536143392324448,
+        74.99952697753906,
+        30.008243560791016
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          338,
+          120,
+          452,
+          223
+        ],
+        "visible_pixels": 10466,
+        "unoccluded_pixels": 10591
+      },
+      "rgb_sha256": "bc9f5b10b41a4c62c0907a8a94fcc64576e2b63f6af5fe63c6f7a10e03f04670",
+      "png_sha256": "802daaeef123be3576de824e8ae6970116dac0b289837600696ec2f9c59d2e16",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.1845906674861908,
+            -0.033831577748060226
+          ],
+          "error_mm": 4.898353181173989,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982305,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 263,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 5.8500000000000005,
+            "native_action_sha256": "2a3629da36dfd55b223f74db1071ecae591140861d1f8aaa0fe0d74b1dd94cef",
+            "projected_ticks": 21,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.2579464450052962,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24666954365301608
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18254461884498596,
+            -0.03829755261540413
+          ],
+          "uv_160x120": [
+            96.43495178222656,
+            43.033241271972656
+          ],
+          "error_mm": 3.4190695948561247,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982305,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 202,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 8.9,
+            "native_action_sha256": "cfe962bf3520b40d1c259ecc93b89df68a12d80788224b9b6d875ed00027ceec",
+            "projected_ticks": 17,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.9197188934935765,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24441944854038294
+          }
+        }
+      }
+    },
+    {
+      "seed": 982306,
+      "initial": {
+        "arm": [
+          83.22716522216797,
+          57.680938720703125,
+          21.422744750976562,
+          18.466018676757812,
+          75.86439514160156,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20157759585041618,
+          0.016579189710434025,
+          0.018000000000000002
+        ],
+        "reset_sha256": "2016aa48ad5ab79ee037ad797e70796f9f9b1df67cdcc3ffcf8b1d937b2b6a5f"
+      },
+      "truth_xy_m": [
+        0.20157759585044707,
+        0.01657918971050356
+      ],
+      "look_physics_sha256": "14b5eeec17a11a5c06e6d1ccdfc70cf5a318b8df4626ab3c4806bf52375768be",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "b443ad88fdc6244331c7bb47e592e33285f17bc19bb630737f8f17c597a4394d"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009534711018204689,
+        74.99952697753906,
+        30.00822639465332
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          175,
+          97,
+          286,
+          205
+        ],
+        "visible_pixels": 9938,
+        "unoccluded_pixels": 9938
+      },
+      "rgb_sha256": "d5235d1d22077b932c0770b75ad52e320bbf97326acaf31bda7bde644369fadd",
+      "png_sha256": "0b8abdb110fcd945e7c48481be4402da9759da2b83f4d23f2b96a0ec11693841",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20284034311771393,
+            0.013483903370797634
+          ],
+          "error_mm": 3.342952016670299,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982306,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 293,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.3500000000000005,
+            "native_action_sha256": "fe7e6cea7b70ec7de19becd7d7f4eeab3449b486777ce2c0360e2ac1f6ee8533",
+            "projected_ticks": 23,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.48848588261779513,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2385988723256401
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.20069269835948944,
+            0.018482912331819534
+          ],
+          "uv_160x120": [
+            58.027000427246094,
+            37.82906723022461
+          ],
+          "error_mm": 2.099334034500769,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982306,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "415ffe27e900d0b7107cf7835dd684b720e6488e44928acd58727b92190be1d4",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.09626749554632956,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24216140388526736
+          }
+        }
+      }
+    },
+    {
+      "seed": 982307,
+      "initial": {
+        "arm": [
+          82.00531768798828,
+          54.80324172973633,
+          25.476816177368164,
+          17.81142807006836,
+          73.68578338623047,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22863074478014223,
+          -0.03064954219212057,
+          0.018000000000000002
+        ],
+        "reset_sha256": "1cf912b9788276c3152802054c63155e705d69e8eef09012b8e279e675b3c51e"
+      },
+      "truth_xy_m": [
+        0.22863074478017395,
+        -0.030649542192108126
+      ],
+      "look_physics_sha256": "423a3385b6de41ae10ade91eca2c2e217cc5aac395c031ed211e79d3e882b3e5",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e9c563a8ffa81aa3343ef9ced554f25aea05a4d160efdd0a4334555645396c59"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533955715596676,
+        74.99952697753906,
+        30.00821304321289
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          313,
+          32,
+          415,
+          140
+        ],
+        "visible_pixels": 10353,
+        "unoccluded_pixels": 10353
+      },
+      "rgb_sha256": "ca1ec79ec9aff16a7997bcd4a59d24c666a1e8276c3353035f787c1d82f2fc6b",
+      "png_sha256": "4e04976a0a3ccae04b6379f394ffc436cc975673de9a19daecf3b549363496cd",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.22764405608177185,
+            -0.023279359564185143
+          ],
+          "error_mm": 7.435936158715469,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982307,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "e6a47ae71933a9f769c86bd9b08bae847130d0447fa8adba1ca4b251dc8422d7",
+            "projected_ticks": 3,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7689121936149199,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24222047648255934
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.22872839868068695,
+            -0.028253106400370598
+          ],
+          "uv_160x120": [
+            89.6575698852539,
+            22.261913299560547
+          ],
+          "error_mm": 2.3984246471811614,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982307,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.55,
+            "native_action_sha256": "adac1071b2140fdbb1422292d1cdad102ea41e179c9205ed5a54121ee76ca9de",
+            "projected_ticks": 3,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.9369381231682286,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2410681475664318
+          }
+        }
+      }
+    },
+    {
+      "seed": 982308,
+      "initial": {
+        "arm": [
+          84.5324478149414,
+          56.73318099975586,
+          26.308731079101562,
+          22.48793601989746,
+          75.94715881347656,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2179151051826336,
+          0.02596425531393587,
+          0.018000000000000002
+        ],
+        "reset_sha256": "eaf2dabe95b15e2b80541b749faaab877d4d51871bb01ab05cf3e3d5c4d702a9"
+      },
+      "truth_xy_m": [
+        0.21791510518259744,
+        0.02596425531397222
+      ],
+      "look_physics_sha256": "c0e0821919bc172ee8e1cc1c9a8dd4ced461ee9c06e9fdcdeb3f478d47142712",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "4f1a1ad9d6603d4fe3e04e4e7b7a176cc0fc287dcffcd26846d4e4a7951d768e"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009536072611808777,
+        74.99952697753906,
+        30.008237838745117
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          169,
+          65,
+          281,
+          177
+        ],
+        "visible_pixels": 10834,
+        "unoccluded_pixels": 10854
+      },
+      "rgb_sha256": "946e759919bb551df0751a59b4bb9ca2c069daf20f2aa66fc0e93d781d58337b",
+      "png_sha256": "def628b3b65050e264170bfed6205df16b8aea69abd281418f8e9bcad104716a",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.22042828798294067,
+            0.026139602065086365
+          ],
+          "error_mm": 2.5192924147600197,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982308,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.05,
+            "native_action_sha256": "82ff69fd1bb9cdff20a91f47ec84717e044315eedea1ea8f1a61693b98ae3539",
+            "projected_ticks": 6,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.066944134339149,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24136557897506467
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21826276183128357,
+            0.02974672056734562
+          ],
+          "uv_160x120": [
+            57.03689956665039,
+            31.18157196044922
+          ],
+          "error_mm": 3.7984086850091288,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982308,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 342,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.9000000000000001,
+            "native_action_sha256": "502c1dffbad3c7df52c275ba74ee9c3699e28205d32d90cd1e0fdd8c234409e9",
+            "projected_ticks": 6,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.02631734756079,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24119103872759357
+          }
+        }
+      }
+    },
+    {
+      "seed": 982309,
+      "initial": {
+        "arm": [
+          83.01258087158203,
+          59.50930404663086,
+          22.979141235351562,
+          23.481441497802734,
+          71.85710144042969,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18348954166374035,
+          0.042895730489068765,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e6b95986a2159a85e97623de1a0e52340751932827bb255ba284b3ed36d9fdcc"
+      },
+      "truth_xy_m": [
+        0.1834895416637332,
+        0.04289573048907239
+      ],
+      "look_physics_sha256": "dea0eb39a717c685141182df68ca3249fa131e734904a7ad9348985a102dd06b",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "5f30a09ca9a3a597d004b376197cea16ea40526465a93200c3c5b12865e399c1"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009537188336253166,
+        74.99952697753906,
+        30.008249282836914
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          119,
+          124,
+          239,
+          230
+        ],
+        "visible_pixels": 10562,
+        "unoccluded_pixels": 10562
+      },
+      "rgb_sha256": "f3902a90a2af1a3e86bc44316c50be62bc90a0139630daf6fc3e7081d3b6ec72",
+      "png_sha256": "af0a7db46000a6bdbf8379b5cf57b13b2d10345fefbefb0bf5fa1fa3d3e34d98",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.18260185420513153,
+            0.04531747102737427
+          ],
+          "error_mm": 2.5793053830466444,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982309,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 357,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.1500000000000001,
+            "native_action_sha256": "488bcd5bc3ca4c7761fb8a6c073b1acb7cba14ee1d6a1ace3e6574152337d9f3",
+            "projected_ticks": 94,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6329379983756093,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2365429230907916
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18398648500442505,
+            0.045866481959819794
+          ],
+          "uv_160x120": [
+            45.96208572387695,
+            43.36304473876953
+          ],
+          "error_mm": 3.0120287158003394,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982309,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 320,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.0,
+            "native_action_sha256": "b4f21242247d867098db7a77ad9d13c41314cc181c1ee40f92572acc12a20031",
+            "projected_ticks": 91,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.5025594470789211,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23384708436292256
+          }
+        }
+      }
+    },
+    {
+      "seed": 982310,
+      "initial": {
+        "arm": [
+          80.46675109863281,
+          58.28141403198242,
+          26.97819709777832,
+          18.786226272583008,
+          75.74778747558594,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1936041856039179,
+          0.013813651516504502,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3335bcd95fe1c901d5bf83e0c9f16f5d84d51ed7a77178a66c9ce25c3451735a"
+      },
+      "truth_xy_m": [
+        0.19360418560400783,
+        0.013813651516540338
+      ],
+      "look_physics_sha256": "eb958f119a07c0a55923946166875c33398b679a3c249a4a5ca35d740e986dd4",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "36bb881b371f384e3e30eab2a047b7557b27b730f6638244efafd02ae5390c44"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533528238534927,
+        74.99952697753906,
+        30.008203506469727
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          255,
+          150,
+          354,
+          250
+        ],
+        "visible_pixels": 9420,
+        "unoccluded_pixels": 9420
+      },
+      "rgb_sha256": "8a3750795ed089f52f10c4880215f08b3caf07dd8e2a4a4762031ddb7be19025",
+      "png_sha256": "f6013ad05d987fb20baf004a98271cd8258c14a636874f5eead7a1d51f0e7c95",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.19279897212982178,
+            0.012643917463719845
+          ],
+          "error_mm": 1.420086790776756,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982310,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 300,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.0,
+            "native_action_sha256": "dc99edf087bacafc16a885b113f83e7546597d34f8993083b29bdc854c56a3ae",
+            "projected_ticks": 93,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6738436145247614,
+              0.0,
+              0.0,
+              7.105427357601002e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23580186744205744
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.1928393691778183,
+            0.017722824588418007
+          ],
+          "uv_160x120": [
+            75.9100570678711,
+            49.121131896972656
+          ],
+          "error_mm": 3.983287369957484,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982310,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 292,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.4,
+            "native_action_sha256": "984cc6e2acce047d2b1c2a061bd51b1c584091493c39dbbfb9a686168126ec57",
+            "projected_ticks": 94,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6578792983625862,
+              0.0,
+              0.0,
+              7.105427357601002e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2358794189744114
+          }
+        }
+      }
+    },
+    {
+      "seed": 982311,
+      "initial": {
+        "arm": [
+          83.87033081054688,
+          55.1978645324707,
+          25.405521392822266,
+          23.359054565429688,
+          74.7221908569336,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24508323629940854,
+          -0.04161109985779152,
+          0.018000000000000002
+        ],
+        "reset_sha256": "8fe0f52355cbdff1ed6b374118bb53fbd718bae04fdf6fc38cbea165e4cb973d"
+      },
+      "truth_xy_m": [
+        0.2450832362994325,
+        -0.04161109985776772
+      ],
+      "look_physics_sha256": "5dc2d28a3be87c0b7909baf3761ecd6c6e6fb85c9a330800ba3a047585f95dff",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "57e52bca87aa4608bdc7235b30915a3359ac6ffe2119bc8fee7acb685a1e55da"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953331496566534,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          394,
+          0,
+          504,
+          107
+        ],
+        "visible_pixels": 9907,
+        "unoccluded_pixels": 10419
+      },
+      "rgb_sha256": "fc80fd1742b77d3bc456cfeff3effa755a80a89651243cc9724d822a0896c206",
+      "png_sha256": "30bf52c237d6a20a2a3e9ec0429575dba47ceae42134b1ec07932c8fe75660bc",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.2417406290769577,
+            -0.044696908444166183
+          ],
+          "error_mm": 4.549201872376198,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982311,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 294,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.3,
+            "native_action_sha256": "1900d0ac16ce7f1415ac372d06d8932873730472619f3b4feed5ba6973ef3b9b",
+            "projected_ticks": 8,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              2.4059796577637416,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2407562351041218
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.23871254920959473,
+            -0.04205257073044777
+          ],
+          "uv_160x120": [
+            110.83500671386719,
+            12.767243385314941
+          ],
+          "error_mm": 6.385965121111329,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982311,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 347,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.6500000000000001,
+            "native_action_sha256": "1d8be11673a956a9538792fbcc349f6f394cf12901b1b87d94801f714b9c28c6",
+            "projected_ticks": 6,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              1.5373355519968008,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23867567402540446
+          }
+        }
+      }
+    },
+    {
+      "seed": 982312,
+      "initial": {
+        "arm": [
+          79.86993408203125,
+          55.974334716796875,
+          24.02052879333496,
+          20.22431182861328,
+          72.10034942626953,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18716359831297122,
+          -0.01983943971473212,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e40ba275a0f2bf278ea9c3cf61c6df0fbbb6bfc9d05cb1121026ab39bcc1690d"
+      },
+      "truth_xy_m": [
+        0.1871635983128877,
+        -0.01983943971464892
+      ],
+      "look_physics_sha256": "f6849e6dcef387159567945484bc5736a3f73332229ee931102f6136a1167376",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "505d4c79689ff1b92817f21cb7710d531efc63fe6f9b158a36413b2db76ec9dc"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009538179263472557,
+        74.99952697753906,
+        30.008272171020508
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          306,
+          142,
+          405,
+          243
+        ],
+        "visible_pixels": 8789,
+        "unoccluded_pixels": 8790
+      },
+      "rgb_sha256": "a1b4dffcda52089f4ff01f2fc4adb55fc462a7ccf488f6698d50570e2d373fb3",
+      "png_sha256": "23a649f41cfb72d509baafda60f531966700920fa45bf27980d3e3fcd14f8744",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.18771719932556152,
+            -0.021259408444166183
+          ],
+          "error_mm": 1.5240686579154992,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982312,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 311,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.45,
+            "native_action_sha256": "843d103bb8b2759618c3a67b2e84d61b1c899f5b3953a9e58e8198f62fc3976f",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7376262230115243,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2375286822068377
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18869079649448395,
+            -0.021134153008461
+          ],
+          "uv_160x120": [
+            87.74793243408203,
+            47.42040252685547
+          ],
+          "error_mm": 2.002153040864908,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982312,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 286,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.7,
+            "native_action_sha256": "3c4a40a9d9f9896063fc7692c437964fbc13902e80ac00cb1c9eba13b9765d89",
+            "projected_ticks": 16,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7726819947120418,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23526443195987518
+          }
+        }
+      }
+    },
+    {
+      "seed": 982313,
+      "initial": {
+        "arm": [
+          83.3767318725586,
+          59.52397537231445,
+          22.26095962524414,
+          20.729299545288086,
+          77.16929626464844,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24649283707187228,
+          0.02679981375512923,
+          0.018000000000000002
+        ],
+        "reset_sha256": "69635e0193cb8a5237a60091a7ef4a62908b691c58e5fc41e0461d7cd8ea50a7"
+      },
+      "truth_xy_m": [
+        0.2464928370719357,
+        0.02679981375507356
+      ],
+      "look_physics_sha256": "e59e738e04a078ffc52e8cc944ddc403e44c5f19a47ce5795fd19dce4fef74ce",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "3c7d29ff9a7ac87d98fd6fa61429a73311681ac5c594de8a94ba73a4766f8f48"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009535237215459347,
+        74.99952697753906,
+        30.008230209350586
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          164,
+          0,
+          268,
+          58
+        ],
+        "visible_pixels": 5302,
+        "unoccluded_pixels": 5302
+      },
+      "rgb_sha256": "30d1fdf9011716e46ac6fadd67d082121d35a6f7f715779c359b6dd40fb322cd",
+      "png_sha256": "49a4c389a7831792e42ad01ec341350b36d619cfa3b4af41e1e78e8af91b36b6",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.2476738691329956,
+            0.02403276413679123
+          ],
+          "error_mm": 3.0085545232366666,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982313,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 306,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.7,
+            "native_action_sha256": "7c76afe0d42d28e3b006c08215a9971bb32e2923232a0c57a30c718e6924b558",
+            "projected_ticks": 7,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.4540105498031336,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24087566619999612
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.24224762618541718,
+            0.025563053786754608
+          ],
+          "uv_160x120": [
+            54.19620132446289,
+            2.4696414470672607
+          ],
+          "error_mm": 4.421695454263183,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982313,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 287,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.65,
+            "native_action_sha256": "5af1e741fa63f059266be7557d7037e3ffb3baf0e2b97095b802d05e08ee0a0f",
+            "projected_ticks": 7,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.7749563495745321,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24105098213022413
+          }
+        }
+      }
+    },
+    {
+      "seed": 982314,
+      "initial": {
+        "arm": [
+          82.1812973022461,
+          59.6272087097168,
+          25.474775314331055,
+          19.343473434448242,
+          75.27814483642578,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22024234225763203,
+          -0.04744784760989978,
+          0.018000000000000002
+        ],
+        "reset_sha256": "ae42c495b78eab9c38dc1df47be456cecf10694f76b98ebc442355e477a3ed65"
+      },
+      "truth_xy_m": [
+        0.22024234225761677,
+        -0.047447847609902026
+      ],
+      "look_physics_sha256": "6a363fdbe90bf08caa042f006c8a4ca204436fce1317eb0ee5b5290b6993a7f6",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "774f8f24620cd92374820b4f97500ae89c08f3758ef1728f894d5b3bc2c3da0a"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009541098028421402,
+        74.99952697753906,
+        30.008312225341797
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          406,
+          78,
+          529,
+          184
+        ],
+        "visible_pixels": 11398,
+        "unoccluded_pixels": 11398
+      },
+      "rgb_sha256": "cff85fe7c5023eb827a78817ddf51c5b3264c8c87f1c0cbf08c06df54be91b27",
+      "png_sha256": "fdd8e6535742ccd741ff402aa18b7ae6b530fca27dc726dc66d4466314d0f508",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21810206770896912,
+            -0.051930900663137436
+          ],
+          "error_mm": 4.9677499757649075,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982314,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 267,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 5.65,
+            "native_action_sha256": "b3c07713596567796cf520b9f1537332a97c945ea199c0b91f6c9df32df6f9b6",
+            "projected_ticks": 8,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.1632454933225755,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2406851514426217
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21700581908226013,
+            -0.04955563321709633
+          ],
+          "uv_160x120": [
+            115.48523712158203,
+            33.65983963012695
+          ],
+          "error_mm": 3.862362286284919,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982314,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "da5c6999704280d58628c9530765bfe74c8ac5f943967f9e1ad52aec6dc40fba",
+            "projected_ticks": 8,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.1410590049238083,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24378264972280672
+          }
+        }
+      }
+    },
+    {
+      "seed": 982315,
+      "initial": {
+        "arm": [
+          80.2747802734375,
+          57.17796325683594,
+          25.326173782348633,
+          22.886005401611328,
+          72.46517181396484,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1905918796758727,
+          0.013246433377492664,
+          0.018000000000000002
+        ],
+        "reset_sha256": "8c7a5571600752b1c1e7c915e499e2562e00be3f6cd7353f3f2cf9b58acffa16"
+      },
+      "truth_xy_m": [
+        0.19059187967587965,
+        0.013246433377507855
+      ],
+      "look_physics_sha256": "1339f4847203f873cc7dff5b5585f6ba138371bbab656289cabb4d26a7aa67cb",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "53f8a064539f84d99902dc264aae3cb39c5e30d8ee15c518d9082e920cbca057"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953367818146944,
+        74.99952697753906,
+        30.008201599121094
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          218,
+          91,
+          313,
+          189
+        ],
+        "visible_pixels": 8698,
+        "unoccluded_pixels": 8750
+      },
+      "rgb_sha256": "6976bec5f6bc3c0d8aee1e943d494ac3836a68a4b22f422ccdcc1225e2935597",
+      "png_sha256": "3fde9c06e65145f0709a7502e1ed6a695ffa1eadd9258d237868c9c32fc93954",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.19351591169834137,
+            0.013108069077134132
+          ],
+          "error_mm": 2.9273038701165763,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982315,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 294,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.3,
+            "native_action_sha256": "4d990cb84568535c14548a54e2675e33354605c222761bfc198c3973a9bc40d9",
+            "projected_ticks": 93,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7346023869298981,
+              0.0,
+              0.0,
+              3.552713678800501e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23363294188537737
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.19042298197746277,
+            0.014982230961322784
+          ],
+          "uv_160x120": [
+            66.91175842285156,
+            34.6410026550293
+          ],
+          "error_mm": 1.743995322387152,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982315,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 329,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.5500000000000003,
+            "native_action_sha256": "dd08f77d349b0b48c4f0acaf9b4a9a6523c682b2a803ee4ace657f1685781a67",
+            "projected_ticks": 95,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.30685615952122164,
+              0.0,
+              0.0,
+              7.105427357601002e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23623872812820956
+          }
+        }
+      }
+    },
+    {
+      "seed": 982316,
+      "initial": {
+        "arm": [
+          79.02223205566406,
+          59.84507751464844,
+          26.216318130493164,
+          19.996509552001953,
+          72.82750701904297,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1946482715570248,
+          -0.03665629987963912,
+          0.018000000000000002
+        ],
+        "reset_sha256": "c0a2e4ed7d9cb41f7099c2a96aed2275acc2db7d8854939e4ce835a1b41c4e94"
+      },
+      "truth_xy_m": [
+        0.19464827155700057,
+        -0.036656299879671145
+      ],
+      "look_physics_sha256": "63dc725d97808ca3a02d18bbaf15733609060a2e23ecf3b35d0ef714a68f530e",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "841dcba80ae57b5d736407312ab679270807632db986d5ced9885b55684445a6"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532595984637737,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          390,
+          138,
+          491,
+          229
+        ],
+        "visible_pixels": 8866,
+        "unoccluded_pixels": 8866
+      },
+      "rgb_sha256": "57b486223d8a14dd76f3f2e9e53b1e2a8f26349aad012c7cee82c65a4b8e153f",
+      "png_sha256": "5212d1f55dbdcc7c00bca56e0fcc6b9ca5268c75982051d839ac0d1d01f0cf0a",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.19424307346343994,
+            -0.03719072416424751
+          ],
+          "error_mm": 0.6706674369388523,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982316,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 285,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.75,
+            "native_action_sha256": "73fe53a3f9485063a76bcd1479860ea08111ba811111eb4d9d539162db20dea1",
+            "projected_ticks": 13,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.5806707611954185,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2454357875679682
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.19427399337291718,
+            -0.033268265426158905
+          ],
+          "uv_160x120": [
+            108.48236846923828,
+            46.269866943359375
+          ],
+          "error_mm": 3.4086451292656945,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982316,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 302,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.9000000000000004,
+            "native_action_sha256": "23ac27eb1bb0115a59c4db238a0310f708a1342898baee86dc1461ef33cec13d",
+            "projected_ticks": 21,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0934094159583312,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24533157841362302
+          }
+        }
+      }
+    },
+    {
+      "seed": 982317,
+      "initial": {
+        "arm": [
+          80.07598876953125,
+          55.04723358154297,
+          23.16360092163086,
+          18.580915451049805,
+          74.91022491455078,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2132473635486138,
+          0.007813579351877542,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f2a550544f37e4ef1df473d46227bcefa28b5d55f8cc5f11e1d67b4bb6bbb230"
+      },
+      "truth_xy_m": [
+        0.21324736354861543,
+        0.007813579351886793
+      ],
+      "look_physics_sha256": "7623a413423e0341f20a49614b36c851548551fe4c70c017af98e62c50795300",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "22c18cfd20bf43746885335ebb60f9bf218b0c5b2e084b11ce3ee442ec43b63b"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533572942018509,
+        74.99952697753906,
+        30.008203506469727
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          249,
+          78,
+          348,
+          180
+        ],
+        "visible_pixels": 9301,
+        "unoccluded_pixels": 9301
+      },
+      "rgb_sha256": "446830cb97629b270c7a85b86e8034f2386b6ed0cc85bad9b7f00e9e083d50c9",
+      "png_sha256": "0f9762f4f8a1ed1219a5ce5e9a96d6e690cf979f4385b431403f2a8d09934533",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21283583343029022,
+            0.008034869097173214
+          ],
+          "error_mm": 0.4672538813725204,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982317,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "ea767769a13840046c5bc1e50e6c273a94fb1907243f0ef93a2e95c328538a12",
+            "projected_ticks": 13,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0370585915531279,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24537942153336184
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21303829550743103,
+            0.007509747985750437
+          ],
+          "uv_160x120": [
+            74.41283416748047,
+            32.824440002441406
+          ],
+          "error_mm": 0.3688128860180525,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982317,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "28aa88f890324fa95ad05e6a4fecab81bce67782cd8ea0f00cd12d8c16cded27",
+            "projected_ticks": 13,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0020288877591186,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2448267381688352
+          }
+        }
+      }
+    },
+    {
+      "seed": 982318,
+      "initial": {
+        "arm": [
+          84.53791809082031,
+          55.757667541503906,
+          23.59810447692871,
+          21.384288787841797,
+          72.49944305419922,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24744875830446916,
+          0.04110351123711964,
+          0.018000000000000002
+        ],
+        "reset_sha256": "02821a0fecd292d85e7cb5651ce3388c23e073f79af900bbe70a6ebe7f3fdb9e"
+      },
+      "truth_xy_m": [
+        0.24744875830454635,
+        0.04110351123715841
+      ],
+      "look_physics_sha256": "1b034a6b36b8409205d3a8bf8a839e4d824c96a6b3ed3401114fe0ff4a0ac511",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "7a6f00b370bfd14b550811c199e46d4f642487628f825639847917af331ced7f"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532943367958069,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          163,
+          0,
+          279,
+          95
+        ],
+        "visible_pixels": 4806,
+        "unoccluded_pixels": 9671
+      },
+      "rgb_sha256": "f13da83e0ed846830346daf981ffd1e87c5c1589030a16d9cfb91d8f679fe99d",
+      "png_sha256": "2d88e14f2c02873d698d4cb08cb6a6cbcb8eea4d9499f370df478ec1ef13ab23",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.23975683748722076,
+            0.026587514206767082
+          ],
+          "error_mm": 16.428019224676376,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982318,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "ebb9f565a7e20e90fdf020044c3f56184ca4dc1dbd288574f25ca2f33e790b18",
+            "projected_ticks": 6,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.6557487634980829,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.0014872264281846938
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.24475857615470886,
+            0.033801011741161346
+          ],
+          "uv_160x120": [
+            59.747772216796875,
+            9.737597465515137
+          ],
+          "error_mm": 7.782260525601907,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982318,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 331,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.45,
+            "native_action_sha256": "d2a04a094b1230d1af2dd554625fa65c4837c0c3298d29522e7dbd99b7305b41",
+            "projected_ticks": 8,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.661298502581398,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24326821146904165
+          }
+        }
+      }
+    },
+    {
+      "seed": 982319,
+      "initial": {
+        "arm": [
+          83.213134765625,
+          58.28873825073242,
+          24.26432228088379,
+          18.3126220703125,
+          73.14479064941406,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22663001553180384,
+          0.02012776970239699,
+          0.018000000000000002
+        ],
+        "reset_sha256": "ab2caf198f63e94d4c5e082e4ae4af9ecee8b8aa38facb3fd8c227e7e67a7b22"
+      },
+      "truth_xy_m": [
+        0.22663001553183473,
+        0.020127769702466526
+      ],
+      "look_physics_sha256": "c5d198ef40b626a98911a6986e392a77f99309d971fef0030e54ff140046f20c",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "8ee9d525dcdb1c8162a13852d5f15f118cf4e982c2fb7a4177ad7e5a94f2caf1"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532738476991653,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          194,
+          0,
+          300,
+          86
+        ],
+        "visible_pixels": 8369,
+        "unoccluded_pixels": 8369
+      },
+      "rgb_sha256": "13f1dbb88bd68ea8c1eb1f8b84756f6624bda53ef2b9d8af59d43101ca76caf7",
+      "png_sha256": "de747bbee2bd5c648d05f81aa44c818758c82f9bfb6cbeafed8201a1887b7a97",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.22497493028640747,
+            0.024191705510020256
+          ],
+          "error_mm": 4.388038447592319,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982319,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "553e2593388a516c4d789f5ea6433e2a639f8ad8cf48798a9212d0d80d20a9dc",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0933068342821723,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2448429792568233
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2257579267024994,
+            0.019829586148262024
+          ],
+          "uv_160x120": [
+            62.748077392578125,
+            8.073742866516113
+          ],
+          "error_mm": 0.9216573974365524,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982319,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "99414dfae29ba3f62c98ef735565a510477405103b952fc93c9fdff3c108085f",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7274477660706048,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2440943402145293
+          }
+        }
+      }
+    },
+    {
+      "seed": 982320,
+      "initial": {
+        "arm": [
+          82.17514038085938,
+          54.773040771484375,
+          23.910037994384766,
+          19.916460037231445,
+          73.71207427978516,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20739820198604805,
+          0.04177115971222879,
+          0.018000000000000002
+        ],
+        "reset_sha256": "b5705e0a5b39f956150dc94c695dfa6a370daf77220232857f45a797480f0093"
+      },
+      "truth_xy_m": [
+        0.20739820198604092,
+        0.041771159712232414
+      ],
+      "look_physics_sha256": "77c4bec8e04f7915d251b526e3211e03222ddac541a78f8cd0515dd94f441ba9",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "884e2f34f2f8e48bb9d93495f8e2401feeeaa7ad50ee245ed7de7dd5d633cdf1"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.71083450317383,
+        23.834362030029297,
+        0.009548112750053406,
+        74.99952697753906,
+        30.00838279724121
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          167,
+          32,
+          274,
+          133
+        ],
+        "visible_pixels": 9917,
+        "unoccluded_pixels": 10143
+      },
+      "rgb_sha256": "0755583195f871de4b983ca537d996db5f2142f9d3bdc2223b283de58ca55c7f",
+      "png_sha256": "377c1af1259e68bbd09bb5e8084d380869fcbb390d238a0f52d39c2166887f9a",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21215666830539703,
+            0.03792287036776543
+          ],
+          "error_mm": 6.119831091720153,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982320,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 348,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.6,
+            "native_action_sha256": "e6014831f4c421983465afdbc13d5423ed65ae97e090ae57799b63f60d3589b4",
+            "projected_ticks": 6,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.5071561337549964,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2397089261666409
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.20975126326084137,
+            0.04258432984352112
+          ],
+          "uv_160x120": [
+            55.731117248535156,
+            21.26021385192871
+          ],
+          "error_mm": 2.4896070021964523,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982320,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "05d50d932bd869b359bb0c8e80b1ebf1e364eb482300d1760fb59244042045ea",
+            "projected_ticks": 4,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.16735150078996766,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24067757491164216
+          }
+        }
+      }
+    },
+    {
+      "seed": 982321,
+      "initial": {
+        "arm": [
+          84.59420776367188,
+          54.04627227783203,
+          22.44923973083496,
+          23.524105072021484,
+          75.83150482177734,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17623482569321772,
+          -0.04642940130628423,
+          0.018000000000000002
+        ],
+        "reset_sha256": "89533880b6e0258f388a00543ff7db8eb5273a30fdc1f240441d098a12afa7d7"
+      },
+      "truth_xy_m": [
+        0.1762348256932641,
+        -0.046429401306330796
+      ],
+      "look_physics_sha256": "8062cb34f90a632fe731bb8956bce47e0695138dc6c3820fc587bc312bbad54e",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "fcacd2972de3a938833a89d67f7168bd33884e445b8a4723d061ba46d74381ba"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533378295600414,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          382,
+          179,
+          480,
+          265
+        ],
+        "visible_pixels": 7850,
+        "unoccluded_pixels": 8055
+      },
+      "rgb_sha256": "7159df5f60260fb6388250b848b1822b27edc7629f2194e4d970dc716f71bce2",
+      "png_sha256": "a63db5ad60650b8c586cc4558e55010830a947f4fdf128acf7a9b19525659f6e",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.17850016057491302,
+            -0.04031464457511902
+          ],
+          "error_mm": 6.520888897068796,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982321,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 200,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "16138bbc38e40208867bf7123a9e5d8ced95a93580e9b9af52ea48591af4f0a1",
+            "projected_ticks": 18,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.3492782098707936,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23980565160420808
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.17821598052978516,
+            -0.04126556217670441
+          ],
+          "uv_160x120": [
+            105.76049041748047,
+            54.16275405883789
+          ],
+          "error_mm": 5.530841621573647,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982321,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 200,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "dc43cd508ad1d8a6333a0640878193884c53d967cd2d77691fdaa48e89a48e2b",
+            "projected_ticks": 17,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.5061896568153936,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24005711922754885
+          }
+        }
+      }
+    },
+    {
+      "seed": 982322,
+      "initial": {
+        "arm": [
+          82.11280822753906,
+          55.76058578491211,
+          26.396350860595703,
+          18.366615295410156,
+          76.57150268554688,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18981893667001531,
+          0.00030363450066259873,
+          0.018000000000000002
+        ],
+        "reset_sha256": "bac78b13adae709547865d646cd637c6cd236f6a2a751e4d81ce5a0d10b1af7b"
+      },
+      "truth_xy_m": [
+        0.1898189366699891,
+        0.0003036345007086362
+      ],
+      "look_physics_sha256": "e1cf0cd483c34fc171fa13027bf601556dc92a404f5effe0ff72f50403e032d6",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1d2dd555f69d7d35dfdcb9674dd982135ad3d085c8df5eeb346ef290d2fadfbc"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532731957733631,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          295,
+          77,
+          403,
+          188
+        ],
+        "visible_pixels": 10469,
+        "unoccluded_pixels": 10469
+      },
+      "rgb_sha256": "86054c9289d80a7e0be4d743d535999c3d36f5ec1552e9f08efa8f06dfd21b69",
+      "png_sha256": "741e3464992671cc860ee898ab28a43cd99b12296d6bb35cb0cba81bcdc3c349",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.18818625807762146,
+            0.003925880882889032
+          ],
+          "error_mm": 3.9731987414669545,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982322,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 294,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.3,
+            "native_action_sha256": "29772503238338acb86637887016c048bf08fcfc9d49ad5cd14767785fda6413",
+            "projected_ticks": 92,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6431896273250918,
+              0.0,
+              0.0,
+              7.105427357601002e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23658610097504473
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18989945948123932,
+            0.0007782028988003731
+          ],
+          "uv_160x120": [
+            86.69226837158203,
+            33.99402618408203
+          ],
+          "error_mm": 0.4813513141137079,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982322,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 336,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.2,
+            "native_action_sha256": "f30d8e122cb3479d0700515953a87f558c9d6f801d4a142622bdb95486e6661f",
+            "projected_ticks": 93,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.890902678941579,
+              0.0,
+              0.0,
+              7.105427357601002e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23719964825000106
+          }
+        }
+      }
+    },
+    {
+      "seed": 982323,
+      "initial": {
+        "arm": [
+          84.0448226928711,
+          56.295806884765625,
+          21.99900245666504,
+          17.811548233032227,
+          73.62118530273438,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19340923265974913,
+          -0.039015563314208336,
+          0.018000000000000002
+        ],
+        "reset_sha256": "046d6d2140143e8c3088bcea33cffa4575168f677b8ad2d59c73ba6081c5aaec"
+      },
+      "truth_xy_m": [
+        0.1934092326597249,
+        -0.03901556331424036
+      ],
+      "look_physics_sha256": "0bd6a5b9b3eb49f257be9b851e6d89feb18983ace78d72c51d5396fba1dc9714",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "1d104742ec1fcdd23047cd389a3fc6ec1cbcab64878a9d7868cde17d2dddbaee"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532914496958256,
+        74.99952697753906,
+        30.008190155029297
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          331,
+          91,
+          431,
+          188
+        ],
+        "visible_pixels": 8430,
+        "unoccluded_pixels": 8430
+      },
+      "rgb_sha256": "b912dd7fc4d91a2f308a08ae7e93c4cb57f10f776b3121bdd953363730d1ffa2",
+      "png_sha256": "a8e7a34ea060d8caf332ec83a5f82d34446c195eaeef20494cd26e6304c8443f",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.1938253939151764,
+            -0.03285551443696022
+          ],
+          "error_mm": 6.174090407583878,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982323,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 300,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.0,
+            "native_action_sha256": "86077a3a0744d7d8706c70cb0d0c4c8bc4460a3007a99bbf58972149ea2f8bd7",
+            "projected_ticks": 21,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0498546686551222,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24468943865854126
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.19474925100803375,
+            -0.03565569594502449
+          ],
+          "uv_160x120": [
+            94.50375366210938,
+            34.49076461791992
+          ],
+          "error_mm": 3.6172306966139094,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982323,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 286,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.7,
+            "native_action_sha256": "8b6f4399a94ab39900caf0206193e14118462ad9c9ac49f638bf0b4b83dac572",
+            "projected_ticks": 13,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.377545711351187,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2441717719277987
+          }
+        }
+      }
+    },
+    {
+      "seed": 982324,
+      "initial": {
+        "arm": [
+          79.45249938964844,
+          59.39503479003906,
+          26.0891170501709,
+          18.88434410095215,
+          76.93096923828125,
+          112.00909423828125
+        ],
+        "cube": [
+          0.22677382694059844,
+          0.04336629205961581,
+          0.018000000000000002
+        ],
+        "reset_sha256": "75fe05c360a31f86a26f30fbc4b16504109c4723a3a9bd1d0ca27dbb98e8ed82"
+      },
+      "truth_xy_m": [
+        0.2267738269405927,
+        0.043366292059621475
+      ],
+      "look_physics_sha256": "ea5ea4f181160249a7d979a936dca2973a25a7d057738e8cf458c3c43aaa567b",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "562edb2ff0bf60156300d221cae456d469349b91ff86afe8ae52f6ec7556c703"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532569907605648,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          139,
+          0,
+          258,
+          111
+        ],
+        "visible_pixels": 12569,
+        "unoccluded_pixels": 12684
+      },
+      "rgb_sha256": "f435942a9b1cc32b4cc2a06ef3ed30843e528b666cb98ece788fb1dc75de76eb",
+      "png_sha256": "5103c876fb21d2fdee0e2db78cd13135d245ecd614b5770d17467198a326e206",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.22643479704856873,
+            0.039322949945926666
+          ],
+          "error_mm": 4.057530864462252,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982324,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "94d6e64f7401f67bc8254990b7bf3374977b18d7258e50fca2838cd94478a031",
+            "projected_ticks": 4,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.5120960385075514,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24383230252162824
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.23029324412345886,
+            0.0456058569252491
+          ],
+          "uv_160x120": [
+            50.418128967285156,
+            14.048802375793457
+          ],
+          "error_mm": 4.171564226331327,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982324,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.55,
+            "native_action_sha256": "a1bf415b5b5342a14535daf3fdffd5ebfe2045b93a347ade0fbb55caa219b157",
+            "projected_ticks": 2,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.26900276585036775,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23939959852886894
+          }
+        }
+      }
+    },
+    {
+      "seed": 982325,
+      "initial": {
+        "arm": [
+          83.77803039550781,
+          57.221900939941406,
+          21.76924705505371,
+          17.77130889892578,
+          73.43041229248047,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2238875470322352,
+          -0.040735290154986094,
+          0.018000000000000002
+        ],
+        "reset_sha256": "09c4d98d32b17e4a5990da9d4bd53301ccc508c8cff86c0ce540cafec9d17ec1"
+      },
+      "truth_xy_m": [
+        0.22388754703222524,
+        -0.04073529015497643
+      ],
+      "look_physics_sha256": "39a33def864ad94bf351b37f38e1eecc5d7f1020f77891ff8dc2f6f16d3db1e1",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "abc427e921a483d5ef969b377bef51b577bd984fba49263287f4998f10600c82"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532608091831207,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          393,
+          24,
+          505,
+          137
+        ],
+        "visible_pixels": 11474,
+        "unoccluded_pixels": 11474
+      },
+      "rgb_sha256": "48fe68af3e7df17780fcac68231d3ba58185007f28361d3820aede40edff0757",
+      "png_sha256": "80d83968656f28d24458d21c44a6f06e93bf91cfc617801119e50b566ba0469b",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.2263951599597931,
+            -0.03963455557823181
+          ],
+          "error_mm": 2.7385651723021938,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982325,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "c76c1a2f37f1002f6bd5682625050b4d917793b2b7bb27bbbfe19678d25a2a60",
+            "projected_ticks": 4,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.4080351407086452,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2417071437289139
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.22486218810081482,
+            -0.04119247943162918
+          ],
+          "uv_160x120": [
+            111.03123474121094,
+            20.57125473022461
+          ],
+          "error_mm": 1.0765441223041905,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982325,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.8,
+            "native_action_sha256": "424a4684eab836cd5c459753c46a6b288a0d64adbda13cd10fa2ecf95d221c7a",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.3692443872698534,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24051587353786608
+          }
+        }
+      }
+    },
+    {
+      "seed": 982326,
+      "initial": {
+        "arm": [
+          79.13090515136719,
+          58.40876388549805,
+          23.258392333984375,
+          18.29521942138672,
+          77.24784088134766,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23445358747734163,
+          -0.004967805501424505,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9a4732a7f52d3cd0ea6f198cf18a073ed3def12e7aa7ff6be52de05adadc88db"
+      },
+      "truth_xy_m": [
+        0.23445358747740544,
+        -0.004967805501372147
+      ],
+      "look_physics_sha256": "5e52b579d371b307152991172a4bcae2f8baee24b8a174f376ceaf5f80568e12",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "d134eb27a7de9d95ecf86ac79c26967e38f223dfbf361935ce7ade176d34f646"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953321810811758,
+        74.99952697753906,
+        30.008195877075195
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          300,
+          0,
+          401,
+          110
+        ],
+        "visible_pixels": 10028,
+        "unoccluded_pixels": 10671
+      },
+      "rgb_sha256": "e360af897325a715f53b43dcf86309db51c56c000ee77dd46672e7d856076610",
+      "png_sha256": "8d51571575ddb434a1140a0e12dd26cc77c36920c9788f548b421f1445ffe60c",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.23681670427322388,
+            -0.006932875607162714
+          ],
+          "error_mm": 3.0734055234138804,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982326,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "14cb0333929ff9977b5ea359056ae8a41e207ebc2c5c4ceee1b6ed380e9a1dad",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.3334025010757131,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24041148060386547
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.23741191625595093,
+            -0.0034827995114028454
+          ],
+          "uv_160x120": [
+            87.09312438964844,
+            13.973851203918457
+          ],
+          "error_mm": 3.310128691186363,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982326,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 328,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.6,
+            "native_action_sha256": "033e9bf98a834357cbf835fa84a2d267b0a4fac524560d12bc567761dd2fb769",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.93749907193661,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23975538373291677
+          }
+        }
+      }
+    },
+    {
+      "seed": 982327,
+      "initial": {
+        "arm": [
+          79.8931655883789,
+          57.50899124145508,
+          24.185787200927734,
+          22.18012809753418,
+          76.52482604980469,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20229563310240223,
+          0.01117205323532098,
+          0.018000000000000002
+        ],
+        "reset_sha256": "c9402d5482cc190a2a96eec92014df114ddfdb6f97ca78e9e020949b44a2a4d9"
+      },
+      "truth_xy_m": [
+        0.20229563310240548,
+        0.01117205323532445
+      ],
+      "look_physics_sha256": "fb97e1723129171d40804b326e019ec591b24a995c93510d46250b1fba8f2df0",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "e01e8560a63145b86605dd254f2084204f4e360dd86a6ead13f178467326986b"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009536574594676495,
+        74.99952697753906,
+        30.00824546813965
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          198,
+          47,
+          297,
+          149
+        ],
+        "visible_pixels": 9514,
+        "unoccluded_pixels": 9536
+      },
+      "rgb_sha256": "4394b8be5e3cf48f7f18c3c71eb610bf2b11ad4c80eed57ec0e1e163bacc1bff",
+      "png_sha256": "4ae76a6ba96df415ab5637bbd670195a14fc8b9df22ab23c1893ace0a29a2df3",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20201703906059265,
+            0.010192562825977802
+          ],
+          "error_mm": 1.018339875550236,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982327,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 357,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.1500000000000001,
+            "native_action_sha256": "e0bf3a0b6e90b718d26fc315501d1f1a005a5e4a76439889d14db59e1bd1dea7",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.3908653896938206,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2432808169242459
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2019139677286148,
+            0.011738031171262264
+          ],
+          "uv_160x120": [
+            62.25205612182617,
+            25.778057098388672
+          ],
+          "error_mm": 0.6826415468744916,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982327,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.55,
+            "native_action_sha256": "bf1148054ae87c211a811054462729c6d2b8b0d6d5ccd3e811576c36a43a0374",
+            "projected_ticks": 18,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.075975868431157,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24264113269743043
+          }
+        }
+      }
+    },
+    {
+      "seed": 982328,
+      "initial": {
+        "arm": [
+          81.37646484375,
+          54.63740539550781,
+          23.310670852661133,
+          19.074220657348633,
+          75.73580169677734,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20875464578570452,
+          -0.021599707527794543,
+          0.018000000000000002
+        ],
+        "reset_sha256": "7b961ed82bb5a0312044e8e64520c876d0d3f8c9d4a366f9e87cf45bf8bc2d70"
+      },
+      "truth_xy_m": [
+        0.20875464578574274,
+        -0.021599707527784107
+      ],
+      "look_physics_sha256": "09f05094c901d10f72b9b2fa36cc62c65555800c310e6b4e99c69fdf098884c1",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "05c0ceaf263b182a5517ba8545255ad49a6788738bf6582194e4b42e6f59a2e9"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009536090306937695,
+        74.99952697753906,
+        30.00824737548828
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          319,
+          45,
+          416,
+          146
+        ],
+        "visible_pixels": 8374,
+        "unoccluded_pixels": 8381
+      },
+      "rgb_sha256": "f31f745911f02297d78f7759cbd9c875d37b0efd18091dfca72692e6c2bc5fa0",
+      "png_sha256": "e74dd6eb6d2d2252bf4935d5dae9a785d95534c7aa163ea091a80534ac08703f",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20870593190193176,
+            -0.02229219861328602
+          ],
+          "error_mm": 0.694202381136484,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982328,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "190e2d223d477fa79d67a72bec303f1763db03e5f44bc6926971be05a90e8d56",
+            "projected_ticks": 17,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.5484601449995443,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24677248538692376
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2079710066318512,
+            -0.022532498463988304
+          ],
+          "uv_160x120": [
+            91.06289672851562,
+            24.52473258972168
+          ],
+          "error_mm": 1.218273062238738,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982328,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 303,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.85,
+            "native_action_sha256": "3989012e07dee902c5d7fd8d06e24d10a4b3c1e6006f42d3bbe779346d9c88fd",
+            "projected_ticks": 18,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.7484435973735957,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24416069565393506
+          }
+        }
+      }
+    },
+    {
+      "seed": 982329,
+      "initial": {
+        "arm": [
+          79.94485473632812,
+          56.89527893066406,
+          27.123472213745117,
+          17.680578231811523,
+          74.66700744628906,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20039714921454782,
+          0.03473074582700268,
+          0.018000000000000002
+        ],
+        "reset_sha256": "8bea5c991470d323e153660ce2271fcecb904d2a0ccf28e6e6435c2a61f22dfe"
+      },
+      "truth_xy_m": [
+        0.20039714921454208,
+        0.034730745827008344
+      ],
+      "look_physics_sha256": "54dee9cb3d53d0d3c6c33e34215aad725f0c25943248857e402bc493a52835ae",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "7deac640e8e464320e1801b5a36382bedbcb9ae90097255067bff66603c21e93"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532632306218147,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          152,
+          151,
+          260,
+          249
+        ],
+        "visible_pixels": 9000,
+        "unoccluded_pixels": 9000
+      },
+      "rgb_sha256": "db5d9ebf100bfb61f21341cb96562d30f3f3dfe30062074306f6e8a2f977ad8c",
+      "png_sha256": "adbf691de135d977a2efdbe095821ffcb6009721391c1b95a76463e56570d09a",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.19525931775569916,
+            0.03660259023308754
+          ],
+          "error_mm": 5.468191070184537,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982329,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "2ef91f98e14d5ef71aa7cd53b97420b80978329cd39e890aa8acf3fc7ff175de",
+            "projected_ticks": 23,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.3433259683254137,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2469838220088743
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2002285122871399,
+            0.03384507820010185
+          ],
+          "uv_160x120": [
+            51.8620719909668,
+            49.192291259765625
+          ],
+          "error_mm": 0.9015794799316507,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982329,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 320,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.0,
+            "native_action_sha256": "4c07eb72e49044b9e2bcaec7fdee0436266fa22eab3c7b2f95ff7cec7f71b3a3",
+            "projected_ticks": 22,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7282391913575834,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24124573405907462
+          }
+        }
+      }
+    },
+    {
+      "seed": 982330,
+      "initial": {
+        "arm": [
+          79.70496368408203,
+          56.612239837646484,
+          25.625093460083008,
+          18.45934295654297,
+          75.97933197021484,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21161759496867596,
+          0.024924992304729138,
+          0.018000000000000002
+        ],
+        "reset_sha256": "022b7e290eec62197307abf7424961243be1d9f4041fea3f40be3523196253f5"
+      },
+      "truth_xy_m": [
+        0.2116175949686398,
+        0.024924992304765487
+      ],
+      "look_physics_sha256": "769472782eb6eaeef7da90c5b3424707bfc739580c2ae1bb488f4055e632c0a8",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f6ebda46fa90e55aadf41244a90cd44fd74db28779af9717f9af15b52cd37e99"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953296571969986,
+        74.99952697753906,
+        30.008190155029297
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          201,
+          70,
+          298,
+          170
+        ],
+        "visible_pixels": 9261,
+        "unoccluded_pixels": 9261
+      },
+      "rgb_sha256": "9e5e696d17569949db5320d6f347aca11f49691b60c6196315411c8df3e7165a",
+      "png_sha256": "6c62b154899d103512cdd95861b50dddd7e6f2d97fc59bb3eb9a70e246f4e696",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21183642745018005,
+            0.020809730514883995
+          ],
+          "error_mm": 4.121075982584608,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982330,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 336,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.2,
+            "native_action_sha256": "ba08b2a4e95937af368a2dade2bd93d690376bfc68aabb89722f598435ec5003",
+            "projected_ticks": 12,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.2482878741478312,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24428806033291467
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21226537227630615,
+            0.02563317120075226
+          ],
+          "uv_160x120": [
+            62.74092483520508,
+            30.456056594848633
+          ],
+          "error_mm": 0.9597566301143801,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982330,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.30000000000000004,
+            "native_action_sha256": "b4cb0541d553fac560660e4bf76c00a59290a83e9ad7c0cca7eb4377ebc3f441",
+            "projected_ticks": 11,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6951245391821536,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24095584425063843
+          }
+        }
+      }
+    },
+    {
+      "seed": 982331,
+      "initial": {
+        "arm": [
+          84.06807708740234,
+          56.491214752197266,
+          25.392833709716797,
+          18.319984436035156,
+          74.1479721069336,
+          112.00909423828125
+        ],
+        "cube": [
+          0.214587712378094,
+          -0.04052101168770816,
+          0.018000000000000002
+        ],
+        "reset_sha256": "0a9c8f9b4d5e94ce557ff528e24cfb1f2723d2c467be644d3522394c43c27c77"
+      },
+      "truth_xy_m": [
+        0.21458771237806976,
+        -0.04052101168774018
+      ],
+      "look_physics_sha256": "8c7a7e17e5b6a101dd04f8868f9b8d049749c4ee52593e658c05d7b7de23123d",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "cd9983330f9124d46a8258316db986b59989a738abbe5216ebc0ca2df3ee02fe"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533390402793884,
+        74.99952697753906,
+        30.008201599121094
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          417,
+          77,
+          536,
+          188
+        ],
+        "visible_pixels": 11624,
+        "unoccluded_pixels": 11624
+      },
+      "rgb_sha256": "6d5190ec5889fa4a4fa032e0fa1a8f475bdd3e86ac35c97922e4639964e74b2f",
+      "png_sha256": "2750145d15d9fe2b997b79ddf5c61aab7635965f72612088f1e5c80b57b9acf3",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21260756254196167,
+            -0.04343807324767113
+          ],
+          "error_mm": 3.525654764418327,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982331,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "ec45aa753e06b1138b484d96fd18d5410ef18697efd979073ea9ecc0e10d47fa",
+            "projected_ticks": 9,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.860400111420835,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24455957026668979
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21573768556118011,
+            -0.04244551807641983
+          ],
+          "uv_160x120": [
+            117.2242431640625,
+            34.20835876464844
+          ],
+          "error_mm": 2.241910605252083,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982331,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 284,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.800000000000001,
+            "native_action_sha256": "0d5f78eea5cb8fa5f488c5c49bcfe2f026402ab61ae7afc7f63716361e826bf9",
+            "projected_ticks": 8,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.4776838542904864,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2408304158711489
+          }
+        }
+      }
+    },
+    {
+      "seed": 982332,
+      "initial": {
+        "arm": [
+          80.9170150756836,
+          58.534061431884766,
+          21.61208152770996,
+          18.798625946044922,
+          74.3311538696289,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21714506436863726,
+          -0.022740066456111777,
+          0.018000000000000002
+        ],
+        "reset_sha256": "06b9a6ee77456aa0362e11e21fb273817add7331e7f0bfc7702b0210f92651c3"
+      },
+      "truth_xy_m": [
+        0.21714506436855374,
+        -0.022740066456028576
+      ],
+      "look_physics_sha256": "caf94bb44cae9428108fc174a4aaa63a459eb77dd4cce32e7b0e043d867c0a5a",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "13021dc38c41ca2d5aa6c5a15545d9a7fd0937bb085e6f3ed69be77e0e8689c7"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953266117721796,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          312,
+          10,
+          420,
+          122
+        ],
+        "visible_pixels": 10847,
+        "unoccluded_pixels": 10847
+      },
+      "rgb_sha256": "a1ff99a66555037c26dfb550d0e3b13fdfd89c30b9de2a9370cd24065b84cd80",
+      "png_sha256": "8a67e83e4afc60799f8819314d677d820f76d42eb274f12b12955f7cbb7fd068",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.2170797884464264,
+            -0.02312624268233776
+          ],
+          "error_mm": 0.3916542145515338,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982332,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.30000000000000004,
+            "native_action_sha256": "005a2492f13e3f11b5f944489a53c1ba3f6a43addf1887babfe6bf1f6aec11c1",
+            "projected_ticks": 9,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.2056647890548917,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2413376175106109
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21833378076553345,
+            -0.02390517108142376
+          ],
+          "uv_160x120": [
+            90.10984802246094,
+            17.61479377746582
+          ],
+          "error_mm": 1.6644865456247053,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982332,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "59adfec87638adbcb1dc0040e2e82302cd98f59fdd6522f980a6e03884196e07",
+            "projected_ticks": 4,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.30579596977129453,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24123425383720581
+          }
+        }
+      }
+    },
+    {
+      "seed": 982333,
+      "initial": {
+        "arm": [
+          83.83194732666016,
+          54.97480392456055,
+          26.73539924621582,
+          18.133495330810547,
+          76.19253540039062,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2224582606342991,
+          -0.020533223386561206,
+          0.018000000000000002
+        ],
+        "reset_sha256": "636b0e2530313de09a3c7d6c8fcb678124a230e8ad17e8a3964fe41fbc8bdf88"
+      },
+      "truth_xy_m": [
+        0.22245826063433125,
+        -0.02053322338657126
+      ],
+      "look_physics_sha256": "07c5f67d7fc3356c375e1e89d2ae2310ab2de605c6b74f0dc7005f756bab373d",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2d2055ec577f1a7d7f7c080e7801f9a1914ffd27366b3379e5270c83b0bb4809"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.00953567586839199,
+        74.99952697753906,
+        30.008243560791016
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          308,
+          13,
+          407,
+          124
+        ],
+        "visible_pixels": 9025,
+        "unoccluded_pixels": 9360
+      },
+      "rgb_sha256": "97c7bf682c16562abe1e096343127bdf840ab42fe9cdfdca0c4806d44dce950b",
+      "png_sha256": "7319924f09683372b76a953df08c90fae54379bdc603f1cdd5c867ca346aa1dc",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.22749626636505127,
+            -0.023978885263204575
+          ],
+          "error_mm": 6.103612660617646,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982333,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.15000000000000002,
+            "native_action_sha256": "59d00749bfeb775a9ceca2705f158765406a4170d9a89bf4401e1c0c21ce2161",
+            "projected_ticks": 3,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.8106604144945685,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23936237391181847
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.22322998940944672,
+            -0.01990463212132454
+          ],
+          "uv_160x120": [
+            88.08309936523438,
+            18.02743148803711
+          ],
+          "error_mm": 0.9953352606462305,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982333,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 339,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.0500000000000003,
+            "native_action_sha256": "dc6c38e4f1051a2f2a773fb25a820f362bea02fa99b913769a8a6ef315142cff",
+            "projected_ticks": 4,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.3659624987715696,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24060972230177619
+          }
+        }
+      }
+    },
+    {
+      "seed": 982334,
+      "initial": {
+        "arm": [
+          80.76390075683594,
+          58.70555114746094,
+          27.076614379882812,
+          22.906091690063477,
+          76.93719482421875,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2087793859500557,
+          0.00795295466907886,
+          0.018000000000000002
+        ],
+        "reset_sha256": "41570e4ed0a63b3ac60471cb39387901985520c9fda197c2f0b6bce6b982dae0"
+      },
+      "truth_xy_m": [
+        0.20877938595009102,
+        0.007952954669054553
+      ],
+      "look_physics_sha256": "701bcdb98b52c28c013f515d40a04ac5c79285aa93c2911b31ff97918f1221e9",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f861ca48c2fd11c1d4b8028f602a8f983c33cd72c33900be5a0da6479666e601"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532933123409748,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          252,
+          63,
+          350,
+          164
+        ],
+        "visible_pixels": 9316,
+        "unoccluded_pixels": 9316
+      },
+      "rgb_sha256": "b1e5fbb69ce2195940a1fb00d472a3557663f8190e533936fff6daf2caec6215",
+      "png_sha256": "3f3db133126a74847251133a49be92149cc32980d1096fae7ff5ad97fd1e8c5d",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20843787491321564,
+            0.008939106948673725
+          ],
+          "error_mm": 1.043612048083859,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982334,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 346,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.7000000000000002,
+            "native_action_sha256": "cb8c68dfefab0b6a14464fe1e7c23eab8cd46c0e246e552da52deb279be2e357",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.4345161847988246,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24122771513136337
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.21085503697395325,
+            0.008633376099169254
+          ],
+          "uv_160x120": [
+            75.10798645019531,
+            28.98737335205078
+          ],
+          "error_mm": 2.1843306744675033,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982334,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.4,
+            "native_action_sha256": "e553c655caf66ee42c4dca74adcccea68964eb2dcccf2c0cadf7f9dfad3b85c0",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7695670783648613,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24083362299610872
+          }
+        }
+      }
+    },
+    {
+      "seed": 982335,
+      "initial": {
+        "arm": [
+          84.06575775146484,
+          59.158668518066406,
+          25.664546966552734,
+          23.248497009277344,
+          77.25308227539062,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2008836409291872,
+          0.01982919340352164,
+          0.018000000000000002
+        ],
+        "reset_sha256": "ab502cbac7491390b7d71f513f073ca701e34d13bea2ed56d22701849417fd90"
+      },
+      "truth_xy_m": [
+        0.2008836409292181,
+        0.019829193403591176
+      ],
+      "look_physics_sha256": "40dd6c7e1b15d82c658d7364ac0379553a87a48e8e5e4b15b90c169fd35c7df1",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c3d9f9d3b86e4013aaad36cabac6128088f7e8a818687b738d9c53f2e3acd5af"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.0095368642359972,
+        74.99952697753906,
+        30.00824737548828
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          195,
+          84,
+          290,
+          181
+        ],
+        "visible_pixels": 8762,
+        "unoccluded_pixels": 8762
+      },
+      "rgb_sha256": "2dd091196d421de44f6ddbd901545cf56f6f00b84649f2abb96c2f348b69e5e6",
+      "png_sha256": "25df5810dcb69e2157136427281e12b9ad1c0309e4524661cb904267440be882",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20047467947006226,
+            0.02023634873330593
+          ],
+          "error_mm": 0.5770831288384739,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982335,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "c527f0524c02f8ae9e19360f3a5e7a655897c6b3797b4c63a5ccdaa77bdb0d63",
+            "projected_ticks": 15,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.12201310287642801,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24209943096441627
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.19954058527946472,
+            0.02086360938847065
+          ],
+          "uv_160x120": [
+            60.840484619140625,
+            33.01027297973633
+          ],
+          "error_mm": 1.6952329952276832,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982335,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 277,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 5.15,
+            "native_action_sha256": "a894e34167e58763eb31f492ed60e7d7539c8592ec10de5067c1c5aaaf919152",
+            "projected_ticks": 22,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.08224195214785084,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23924562592546317
+          }
+        }
+      }
+    },
+    {
+      "seed": 982336,
+      "initial": {
+        "arm": [
+          80.29190063476562,
+          56.96626281738281,
+          24.048297882080078,
+          21.893211364746094,
+          71.78701782226562,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18682788563050967,
+          0.047298753376566166,
+          0.018000000000000002
+        ],
+        "reset_sha256": "d3078ce947961c40c3421aebae755125b355e267f3bc722ceb9201a3a05e1e0d"
+      },
+      "truth_xy_m": [
+        0.18682788563051267,
+        0.04729875337655441
+      ],
+      "look_physics_sha256": "086be5074c8fd175b4f57b4c3f9ce440e3ca59e874deeb8e569cef1403554a2f",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2cb43a3d1eda7bb4b8935bd393b325e79fc3005b7390af2f7f9f2d637b1816e3"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009535872377455235,
+        74.99952697753906,
+        30.008235931396484
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          177,
+          195,
+          283,
+          290
+        ],
+        "visible_pixels": 8139,
+        "unoccluded_pixels": 8158
+      },
+      "rgb_sha256": "5fea6e34fe179ee0fb8fd797f00ffe685748c45bd9976ef36f7d732045c52951",
+      "png_sha256": "8b612c1ec6fa894274a555a2bb3124b9e2a6d306636ca036751f6eb7e894d8b0",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.1842324286699295,
+            0.04672002047300339
+          ],
+          "error_mm": 2.6591969855375885,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982336,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 336,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.2,
+            "native_action_sha256": "6d278ffb83392005101302bfb7f0dc8945a6c51ef030a0027a3ec36a2beb1673",
+            "projected_ticks": 90,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.4909142343178463,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23780173941170818
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18122999370098114,
+            0.04454486444592476
+          ],
+          "uv_160x120": [
+            58.26645278930664,
+            59.52070617675781
+          ],
+          "error_mm": 6.238613491550727,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982336,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.65,
+            "native_action_sha256": "dcb1bb612c72885043bdcb573419fc9a7b3e4c4412d6f19b488801fbb05cea4b",
+            "projected_ticks": 94,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.645697525249201,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24043164559072433
+          }
+        }
+      }
+    },
+    {
+      "seed": 982337,
+      "initial": {
+        "arm": [
+          83.66996765136719,
+          54.35224533081055,
+          24.063472747802734,
+          20.913225173950195,
+          76.0989990234375,
+          112.00909423828125
+        ],
+        "cube": [
+          0.19270453502912316,
+          -0.00933668023446034,
+          0.018000000000000002
+        ],
+        "reset_sha256": "3bae0848ecc8007539c975c2c3d5a67f99f963635c440b6d525dc1901559a1a5"
+      },
+      "truth_xy_m": [
+        0.19270453502912638,
+        -0.009336680234387022
+      ],
+      "look_physics_sha256": "7f50803532c98eacb0e0de79764cc54ad48c1a8d3e355f4db3a8b7169dffa1a6",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "6a9d9760a1cae685f13aa772d89cf05744307733b0c0dfa57c7cc598a717bdab"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532902389764786,
+        74.99952697753906,
+        30.00818634033203
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          333,
+          113,
+          426,
+          208
+        ],
+        "visible_pixels": 8518,
+        "unoccluded_pixels": 8520
+      },
+      "rgb_sha256": "dd1218a8e1c26a212b1bfa74202791a4c896bc1e8faeb1436fbaf21a6efa3c9f",
+      "png_sha256": "25a5c0d94cb7ca5254f6e7428c049d3cb9267e83631c212349a252222f9b28bc",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.19236409664154053,
+            -0.004631002899259329
+          ],
+          "error_mm": 4.717975993800363,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982337,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 261,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 5.95,
+            "native_action_sha256": "577c4f36d8219d8117f7cc43d1388d7ce7973c746be306d59888b6cabffcabe2",
+            "projected_ticks": 93,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.4526174360582866,
+              0.0,
+              0.0,
+              3.552713678800501e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23477640469014321
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.19148080050945282,
+            -0.011432478204369545
+          ],
+          "uv_160x120": [
+            94.0835952758789,
+            39.70280456542969
+          ],
+          "error_mm": 2.426910650523323,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982337,
+            "executed_ticks": 0,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "native_or_policy_stop: arm path collides with floor or chassis: [88, 55, 22, 2, 75, 33]",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "projected_ticks": 0,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": false,
+            "peak_lift_m": 0.0
+          }
+        }
+      }
+    },
+    {
+      "seed": 982338,
+      "initial": {
+        "arm": [
+          82.54446411132812,
+          59.58605194091797,
+          27.110980987548828,
+          20.517200469970703,
+          73.93730163574219,
+          112.00909423828125
+        ],
+        "cube": [
+          0.23572018903202907,
+          0.03231841013430124,
+          0.018000000000000002
+        ],
+        "reset_sha256": "9ffe5f6078eac6798073287bc612492e797e5d48d29f63316111b3eae97b69c1"
+      },
+      "truth_xy_m": [
+        0.2357201890320424,
+        0.032318410134308743
+      ],
+      "look_physics_sha256": "1b1d9bac9e31c9c51853a4bf7bb03f359c5522282b58abf7051d7a26685b7384",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "d0487a22ff0d62e665b2e564634960e75537d7848ceb6adf1e112ae8f3d7f1d2"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532894939184189,
+        74.99952697753906,
+        30.008188247680664
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          149,
+          0,
+          261,
+          34
+        ],
+        "visible_pixels": 3418,
+        "unoccluded_pixels": 3418
+      },
+      "rgb_sha256": "001fec13fdaaf508de72bff1f204bc4624f67a0f744d3d02f8400a2f8002aee3",
+      "png_sha256": "68e8449a4f04832884bb15aafde6c6e5d0777c45808377158d633888197f6b52",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.2386464625597,
+            0.03388461098074913
+          ],
+          "error_mm": 3.3190453220859077,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982338,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 304,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 3.8000000000000003,
+            "native_action_sha256": "fbf7f6bf1a3528a2e5365f0e3e2a38cfca94ac8dbe4234ed36fadeb18d61fff2",
+            "projected_ticks": 6,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.30303855502605886,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23802390013701974
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.22672757506370544,
+            0.030944671481847763
+          ],
+          "uv_160x120": [
+            52.87846755981445,
+            1.7967844009399414
+          ],
+          "error_mm": 9.09693705973577,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982338,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 336,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.2,
+            "native_action_sha256": "89bab122edf850c562f577a43cae24fab342bb15ef7b67b68e7a08e3b76ee606",
+            "projected_ticks": 4,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0913329496664979,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2438871078073272
+          }
+        }
+      }
+    },
+    {
+      "seed": 982339,
+      "initial": {
+        "arm": [
+          82.27647399902344,
+          56.32823181152344,
+          27.20271110534668,
+          18.596179962158203,
+          74.41355895996094,
+          112.00909423828125
+        ],
+        "cube": [
+          0.18131876377106915,
+          -0.046150703150249696,
+          0.018000000000000002
+        ],
+        "reset_sha256": "e11d42678c7edbbbbd7b9c5c69ef03c2a3961e874737447f92fd918633e8f52b"
+      },
+      "truth_xy_m": [
+        0.18131876377104492,
+        -0.04615070315028172
+      ],
+      "look_physics_sha256": "b8f4a5309fd29ad7857675d9f05ea4a2ab9af2a8c12c0522f5e3684ab8324ca9",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "93f79dda4587d0b6704a012416299a725bad0aa6cd11bdeaa79da76d286f0720"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532613679766655,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          393,
+          184,
+          494,
+          273
+        ],
+        "visible_pixels": 8351,
+        "unoccluded_pixels": 8351
+      },
+      "rgb_sha256": "5491750748c95e6fcdfd3980c65c3fd67a0b95d5b09dc588cbf749277fde83a7",
+      "png_sha256": "add566d855b54aadb45cf15b78ccf2701d4c936e4ebd3fd01c4a42b1d9a68655",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.18210966885089874,
+            -0.04398074746131897
+          ],
+          "error_mm": 2.3095970508728114,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982339,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 202,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 8.9,
+            "native_action_sha256": "fd40eb23f6e6523c50ec45ff816685ed9448b84e2c7284e10aa584ce7b3daf4c",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.7833694655181995,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24317966768744076
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.18425622582435608,
+            -0.04340893030166626
+          ],
+          "uv_160x120": [
+            110.05471801757812,
+            55.806026458740234
+          ],
+          "error_mm": 4.0182087636219155,
+          "field_contract_eligible": false,
+          "abstention_reason": "Predicted cube is outside the motor demonstration hull",
+          "native": {
+            "seed": 982339,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 203,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 8.85,
+            "native_action_sha256": "2f860cf2568d09e3d876fb8a7eb7215304e74aa37e9eed5cf51999a6044f3a7e",
+            "projected_ticks": 13,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              2.634636932265261,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24388612679369182
+          }
+        }
+      }
+    },
+    {
+      "seed": 982340,
+      "initial": {
+        "arm": [
+          80.11474609375,
+          57.1151008605957,
+          25.70148468017578,
+          18.327247619628906,
+          72.90428161621094,
+          112.00909423828125
+        ],
+        "cube": [
+          0.2461116518426698,
+          0.034088412880346336,
+          0.018000000000000002
+        ],
+        "reset_sha256": "6409e7487a0d1c2652d8a0cabe8ab0a7f0fe9e5c5719c64f245c888bf5597b1c"
+      },
+      "truth_xy_m": [
+        0.24611165184268313,
+        0.03408841288035384
+      ],
+      "look_physics_sha256": "3209c2c23268e82b2c6e9b7bb94531eb9ea7f6adfcb17b91faf79ae6ee610a33",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "d2fe613059ecac4465aa350c80ccda22555965934ca11bf0cf19ff028fa4d89b"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009535063989460468,
+        74.99952697753906,
+        30.00823402404785
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          224,
+          2,
+          321,
+          115
+        ],
+        "visible_pixels": 10473,
+        "unoccluded_pixels": 10473
+      },
+      "rgb_sha256": "12eff8936f2874bd98e9beaf409aaba2fb16025a03ee46af9dc2e282e2ab6ab8",
+      "png_sha256": "4b0398dc20b5ed717d07f9324495f88332c229581b4b2609abb07793a8a49323",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.24352014064788818,
+            0.03044717386364937
+          ],
+          "error_mm": 4.4692898596442,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982340,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 247,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 6.65,
+            "native_action_sha256": "3e82034c7c1947f282c666eba757db9e0d199c40e9ed6d82ff2573f8d712ad83",
+            "projected_ticks": 7,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.6928215253184992,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23755446454119367
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.24468444287776947,
+            0.031712375581264496
+          ],
+          "uv_160x120": [
+            68.971435546875,
+            15.018980979919434
+          ],
+          "error_mm": 2.7717284636474937,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982340,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 263,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 5.8500000000000005,
+            "native_action_sha256": "8794a95f6858f2034c08ebeaab5946337844f251db64b3d8a146f6f0b4ad6da5",
+            "projected_ticks": 7,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              0.6450195743510598,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24053513845469482
+          }
+        }
+      }
+    },
+    {
+      "seed": 982341,
+      "initial": {
+        "arm": [
+          84.18067932128906,
+          58.79526138305664,
+          24.39212417602539,
+          22.074432373046875,
+          75.46405792236328,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20289265182116686,
+          -0.04815196802939392,
+          0.018000000000000002
+        ],
+        "reset_sha256": "8bf9335a7f0506e9da682d93a44a7a72a90855ea24d5c8c5e73201555e66b004"
+      },
+      "truth_xy_m": [
+        0.20289265182111588,
+        -0.048151968029343364
+      ],
+      "look_physics_sha256": "4b658cb837795db7a717fc5a133cf8f9ebb2a0ddcbba359e6daa0e59d9e2c36c",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2c221f2fdea054f1c80391a9012673f3ab47259ce6aba967f739982552cd854d"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.009537874720990658,
+        74.99952697753906,
+        30.008262634277344
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          430,
+          90,
+          557,
+          195
+        ],
+        "visible_pixels": 12591,
+        "unoccluded_pixels": 12648
+      },
+      "rgb_sha256": "c8e6beab590dd706e5ef9cb67b4b2082860627e2555677a6342b2533bc88ee46",
+      "png_sha256": "2ec0b4879a4cfb0e3a15502666762bfcdb288ca6375057ee6ab6dec6ea324020",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20888559520244598,
+            -0.05176808312535286
+          ],
+          "error_mm": 6.9994041717431985,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982341,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 286,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.7,
+            "native_action_sha256": "d32f5056d461e092affd45ca66f6b73a59e2dc8af6263ef63efbb59b69b8903e",
+            "projected_ticks": 9,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              3.034779769715679,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24314405545799717
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2050921767950058,
+            -0.05075875669717789
+          ],
+          "uv_160x120": [
+            121.60568237304688,
+            35.826446533203125
+          ],
+          "error_mm": 3.410756114048019,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982341,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 338,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.1,
+            "native_action_sha256": "aea18fdc6b00bea0992edcbf0a21b4cddd8d8bb2f973aaaa81172211db72b138",
+            "projected_ticks": 10,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              3.111820993387663,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24721813381544006
+          }
+        }
+      }
+    },
+    {
+      "seed": 982342,
+      "initial": {
+        "arm": [
+          81.8900375366211,
+          56.7603874206543,
+          21.74980354309082,
+          21.697404861450195,
+          72.57096099853516,
+          112.00909423828125
+        ],
+        "cube": [
+          0.17799413068599776,
+          -0.015024117981449182,
+          0.018000000000000002
+        ],
+        "reset_sha256": "f59a8d4799548ce812bfc90df942366f1c517a57a16d3e01bde2a5fcd18e2dfc"
+      },
+      "truth_xy_m": [
+        0.17799413068598285,
+        -0.015024117981442155
+      ],
+      "look_physics_sha256": "5f6f3d3667f98b36aade0d3509585e2e43a7abe0a2f815ab1ba5a9cfe0ef12c6",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "fafe6378acede5a19b279b8675d0b95174d5a693e7accaa7991c8cbde0c10f6f"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834360122680664,
+        0.009550105780363083,
+        74.99951934814453,
+        30.00838851928711
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          311,
+          184,
+          410,
+          281
+        ],
+        "visible_pixels": 7973,
+        "unoccluded_pixels": 8274
+      },
+      "rgb_sha256": "207f4ac377811417faa8e9b2a19f9136649e40fbb896cb98f21cb74be79c4283",
+      "png_sha256": "3f8439d90147d1649edb6bddd22ded078fe80e9acc82ceca5a9221bcdce2b142",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.1756180375814438,
+            -0.01747443713247776
+          ],
+          "error_mm": 3.413192403508767,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982342,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 329,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 2.5500000000000003,
+            "native_action_sha256": "0cbd2fdb649ae25814a316e4693dd1dad653b83b6c3eb71ecc630b1601bb77ea",
+            "projected_ticks": 76,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.0311598714169146,
+              0.0,
+              0.0,
+              7.105427357601002e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24181676758725162
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.17784306406974792,
+            -0.015885189175605774
+          ],
+          "uv_160x120": [
+            88.56961822509766,
+            57.2603759765625
+          ],
+          "error_mm": 0.8742223538431354,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982342,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.45,
+            "native_action_sha256": "d854d95ec83797e958059e73d160e0db0d23b891dafb461be8b9d4660f1f695a",
+            "projected_ticks": 59,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.3936440535190624,
+              0.0,
+              0.0,
+              3.552713678800501e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23704062526438835
+          }
+        }
+      }
+    },
+    {
+      "seed": 982343,
+      "initial": {
+        "arm": [
+          78.83927154541016,
+          59.55219268798828,
+          23.304977416992188,
+          21.344907760620117,
+          73.6299819946289,
+          112.00909423828125
+        ],
+        "cube": [
+          0.20832422295114517,
+          -0.014608517219179294,
+          0.018000000000000002
+        ],
+        "reset_sha256": "128e8c9c465bba428e6820af25f1d0e48329e1597a4aaebaee783431aefd680e"
+      },
+      "truth_xy_m": [
+        0.20832422295104547,
+        -0.014608517219172761
+      ],
+      "look_physics_sha256": "6803d5f96fa08bcf060fe90c48533c50d1ad9b4c41db7140d7729116e13e3a4c",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "2bbcbba9fa52d43b00ab5600051f693d2fb82c33813b3238649a22956cf072d6"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532644413411617,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          308,
+          26,
+          410,
+          130
+        ],
+        "visible_pixels": 10017,
+        "unoccluded_pixels": 10017
+      },
+      "rgb_sha256": "35d59b89f31ad1c81254d82ea421f65d4f5db8cd44470264d564d351d7412faa",
+      "png_sha256": "e21df57e2f7a97ed9a5dff21b6aad204c3ec95cf7c7a6d9a2309566b130e2c1a",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.212565615773201,
+            -0.012275292538106441
+          ],
+          "error_mm": 4.840800603636696,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982343,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "9b2e1af0f4a7397453b93192bcec5d07e27b3733bd65a4e21c76a9076d7bc75e",
+            "projected_ticks": 14,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.4357250918467872,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24565163882745483
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2045336663722992,
+            -0.012473247945308685
+          ],
+          "uv_160x120": [
+            87.65430450439453,
+            20.539873123168945
+          ],
+          "error_mm": 4.350596976115424,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982343,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "9ca095ce7f36826a826320f5d16db01acfa4ca7ddc0ddedff33d5d36ad73ffc4",
+            "projected_ticks": 11,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7677314859146875,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24498793643815953
+          }
+        }
+      }
+    },
+    {
+      "seed": 982344,
+      "initial": {
+        "arm": [
+          81.11365509033203,
+          57.2586784362793,
+          24.60869026184082,
+          22.28837776184082,
+          75.78478240966797,
+          112.00909423828125
+        ],
+        "cube": [
+          0.21887289644976127,
+          0.03632281983559492,
+          0.018000000000000002
+        ],
+        "reset_sha256": "2a12b32ce4cc3b98850fa5f855079d664a22c1801deb96efe73b23ffe9780a14"
+      },
+      "truth_xy_m": [
+        0.21887289644975552,
+        0.03632281983560058
+      ],
+      "look_physics_sha256": "de1479d8ab02e763d00ad2fa9c774a8e6fdade326c96be06fe50d825b4b93ae1",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "5da32e67c8d7d021ac0cea8a2459affc9ec0d9a302dc4768052adc081935d261"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532812982797623,
+        74.99952697753906,
+        30.0081844329834
+      ],
+      "visibility": {
+        "full": true,
+        "box": [
+          185,
+          58,
+          293,
+          162
+        ],
+        "visible_pixels": 9478,
+        "unoccluded_pixels": 9478
+      },
+      "rgb_sha256": "ca90473f0e37d847c89ba4e2f59458282ba58daf688a2162d2fb0a584af0674f",
+      "png_sha256": "1a39f2ccb43dd4e315733d247bb37f0e375ae7c64e914d29575f9309419f2557",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.21883833408355713,
+            0.03584429249167442
+          ],
+          "error_mm": 0.4797738801167224,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982344,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 344,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.8,
+            "native_action_sha256": "7431447823b9bf9765425ef2ad593bbec25944eaeeb3fc47d3d9f2824cae025e",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.7932683079647391,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24181979126596131
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2174290269613266,
+            0.03686055541038513
+          ],
+          "uv_160x120": [
+            59.97836685180664,
+            28.264812469482422
+          ],
+          "error_mm": 1.540752623883818,
+          "field_contract_eligible": true,
+          "abstention_reason": null,
+          "native": {
+            "seed": 982344,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "d622d7c2b58da2b75dd0d24acc0549aaf31e87dad5ee1a8f990118c27336e620",
+            "projected_ticks": 5,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6976473795926423,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24205599198805317
+          }
+        }
+      }
+    },
+    {
+      "seed": 982345,
+      "initial": {
+        "arm": [
+          79.90853881835938,
+          56.8304328918457,
+          21.7530460357666,
+          23.411102294921875,
+          76.21781921386719,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24937266383266754,
+          0.03458757870944473,
+          0.018000000000000002
+        ],
+        "reset_sha256": "7d0437f83ec4621c54cddc698a2a30727928ccaf9d03dd10df0ad9465eb11e3b"
+      },
+      "truth_xy_m": [
+        0.24937266383268086,
+        0.034587578709452234
+      ],
+      "look_physics_sha256": "9ab576bda883b66e20764c2186c81f1c0117fc3d71875873c678113724fd1859",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "c1a9eb334d93e83f97f3589630f2637d56721282e23f43b9d95f0b336ccaa539"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.834362030029297,
+        0.00953383557498455,
+        74.99952697753906,
+        30.008201599121094
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          186,
+          0,
+          296,
+          83
+        ],
+        "visible_pixels": 7625,
+        "unoccluded_pixels": 8564
+      },
+      "rgb_sha256": "8b0f55e558d330ab0a47cc39112279d1fc35c08ec9a9a758ed2f8f81d538ec86",
+      "png_sha256": "f2a77222662a6148eb53ab09c9c55688426d33f3d26b16434284dc85af1abbab",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.25195708870887756,
+            0.028221050277352333
+          ],
+          "error_mm": 6.871094251823413,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982345,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "43fd1633c3a2d3264ee19c5a508b307c09304fbc2ee35af63c96009d31a785b5",
+            "projected_ticks": 126,
+            "max_projection_deg": [
+              0.0,
+              3.6200482521034334,
+              0.0,
+              1.4223770320777585,
+              0.0,
+              3.552713678800501e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.00620747423471444
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.25321051478385925,
+            0.033070411533117294
+          ],
+          "uv_160x120": [
+            60.97068405151367,
+            6.463357448577881
+          ],
+          "error_mm": 4.1268506350980285,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982345,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "dea56fc89bd8f761695d7152fa48fa07f36360c036413d7d3a739bb5f4bfc4fb",
+            "projected_ticks": 132,
+            "max_projection_deg": [
+              0.0,
+              7.030205994261179,
+              0.0,
+              3.8409156139000125,
+              0.0,
+              3.552713678800501e-15
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.1754893843861709
+          }
+        }
+      }
+    },
+    {
+      "seed": 982346,
+      "initial": {
+        "arm": [
+          78.9115982055664,
+          55.928916931152344,
+          23.33554458618164,
+          21.766767501831055,
+          74.00785827636719,
+          112.00909423828125
+        ],
+        "cube": [
+          0.1980965107844066,
+          0.04710521160811214,
+          0.018000000000000002
+        ],
+        "reset_sha256": "22b40b009f761e9dbfd8933abb91228bfd8693526995e5fd339c3c1628cab675"
+      },
+      "truth_xy_m": [
+        0.19809651078439494,
+        0.04710521160811714
+      ],
+      "look_physics_sha256": "93d253b40386280cfb4eb13e7f98c912b0f730591ffdae337d94713609956295",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "f639c18266c8e7da04fa547221b8786e1fa37883ac0a74853e97eb1638ac255f"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009533258154988289,
+        74.99952697753906,
+        30.008193969726562
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          123,
+          79,
+          235,
+          179
+        ],
+        "visible_pixels": 10521,
+        "unoccluded_pixels": 10600
+      },
+      "rgb_sha256": "70dfd14174efc92edd0fc8eee2b0b7d2cb349e1280f0779ff8cfd188708bd75d",
+      "png_sha256": "b1aa1739ee2e96f929c83d4e580700d9fc4163b7b9de31484573326155d62d98",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.20153124630451202,
+            0.04643087461590767
+          ],
+          "error_mm": 3.500305482699486,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982346,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 342,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 1.9000000000000001,
+            "native_action_sha256": "508e2e764519fc9bff05dc58909093a6c14a2047c7969385d0c20f0f1acb121f",
+            "projected_ticks": 17,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              1.1475589157837818,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.241287602671721
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.2020774632692337,
+            0.04807889834046364
+          ],
+          "uv_160x120": [
+            45.566795349121094,
+            31.8746337890625
+          ],
+          "error_mm": 4.098298249187279,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982346,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": 297,
+            "terminal_success": true,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 4.15,
+            "native_action_sha256": "ef7e54947cb480c0799b66d803656b959e436aa7047a63ed0455c97d59e75f2a",
+            "projected_ticks": 12,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.6905340580690689,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.23643060345983802
+          }
+        }
+      }
+    },
+    {
+      "seed": 982347,
+      "initial": {
+        "arm": [
+          80.07624053955078,
+          55.88173294067383,
+          22.7258243560791,
+          20.22700309753418,
+          76.92053985595703,
+          112.00909423828125
+        ],
+        "cube": [
+          0.24675202021792858,
+          0.01318362565454198,
+          0.018000000000000002
+        ],
+        "reset_sha256": "a7744a291360fa78fc86d5a5366e443e520082f93c9617dcd2dfc482f10dea34"
+      },
+      "truth_xy_m": [
+        0.2467520202179757,
+        0.013183625654502705
+      ],
+      "look_physics_sha256": "660b6c533f4bf484cf77184d1b7fb221eb795655bbfb8e4cc7fc662abc792b69",
+      "camera": {
+        "device_id": "mujoco:front_cam",
+        "camera_calibration_sha256": "53d9e41b1ffa925258b84501f0cc02fc4db1080dc0748a33c91c8a9e234eb09e"
+      },
+      "look_pose_native": [
+        90.00001525878906,
+        56.710838317871094,
+        23.83436393737793,
+        0.009532611817121506,
+        74.99952697753906,
+        30.008182525634766
+      ],
+      "visibility": {
+        "full": false,
+        "box": [
+          267,
+          0,
+          370,
+          74
+        ],
+        "visible_pixels": 6412,
+        "unoccluded_pixels": 6984
+      },
+      "rgb_sha256": "1a4101273aee3ca9688ce81cedc5b86ff2ba86526b4fa6e695f7e44295c55084",
+      "png_sha256": "43ffd70cd8b32b2d466731eb0c92b4c805fdb8e863bb384fff0e73943b9d2ad0",
+      "protocol_sha256": "1562fe3295182ead0861fc04baf65d4fe0954c2627669ab5e9b1f5408ba70f51",
+      "fit_sha256": "99a1745fcc060c8d125dead1709cdeb45301ccdf15b1b50184b2f566bb18a4bf",
+      "methods": {
+        "baseline": {
+          "xy_m": [
+            0.24631065130233765,
+            0.0149490712210536
+          ],
+          "error_mm": 1.819781461644703,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982347,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "4b2da970654fbb2ca4805904e2715b3c11fe5d0243223d824ec547dbb501828e",
+            "projected_ticks": 7,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              1.5317248312189757,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.2420104563591069
+          }
+        },
+        "keypoint": {
+          "xy_m": [
+            0.24631381034851074,
+            0.016245270147919655
+          ],
+          "uv_160x120": [
+            78.68614196777344,
+            5.063209533691406
+          ],
+          "error_mm": 3.0928457597763965,
+          "field_contract_eligible": false,
+          "abstention_reason": "A full initial target inside the recorded image is required",
+          "native": {
+            "seed": 982347,
+            "executed_ticks": 360,
+            "first_stable_hold_tick": null,
+            "terminal_success": false,
+            "termination": "field_sequence_complete",
+            "terminal_qualified_hold_s": 0.0,
+            "native_action_sha256": "fa22b7e9ea86bc6e5ec43bc2e0fef9da82cba13b8daf26b74ef064d75e175354",
+            "projected_ticks": 7,
+            "max_projection_deg": [
+              0.0,
+              0.0,
+              0.0,
+              1.3821009311417256,
+              0.0,
+              0.0
+            ],
+            "bilateral_contact": true,
+            "peak_lift_m": 0.24201974454909836
+          }
+        }
+      }
+    }
+  ],
+  "physical_trials": 0
+}
