@@ -1,5 +1,6 @@
 """Select among executable actions using complete, same-domain terminal forecasts."""
 
+import hashlib
 import json
 import math
 import re
@@ -57,14 +58,20 @@ def observed_choice(evidence, *, admissible, fallback, domain, scope=None):
             or (scope is not None and forecast.get("scope") != scope)):
         return {**default, "reason": "unbound or expired history"}
     try:
-        store.validate_evidence_artifact(item)
         model = (store.DATA / ref).resolve()
-        fit = json.loads(model.read_bytes())
+        if not model.is_relative_to(store.DATA.resolve()) or item.content_sha256 != store.digest(item.payload):
+            return {**default, "reason": "unbound evidence"}
+        raw = model.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != digest:
+            return {**default, "reason": "fitted artifact changed"}
+        fit = json.loads(raw)
     except (ValueError, TypeError, OSError):
         return {**default, "reason": "fitted evidence or model changed"}
     if (not isinstance(fit, dict) or fit.get("domain") != domain
+            or not forecast.get("scope") or fit.get("scope") != forecast["scope"]
             or not fit.get("version") or not fit.get("calibration")
-            or not isinstance(fit.get("actions"), list) or not set(admissible) <= set(fit["actions"])):
+            or not isinstance(fit.get("actions"), list) or not all(isinstance(a, str) for a in fit["actions"])
+            or not set(admissible) <= set(fit["actions"])):
         return {**default, "reason": "fit does not cover this domain and action set"}
     result = choose_action(admissible=admissible, fallback=fallback, domain=domain,
                            forecasts=forecast.get("forecasts"), time_weight=forecast.get("time_weight"),

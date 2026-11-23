@@ -81,10 +81,10 @@ def test_action_value_in_normal_broker_requires_bound_same_domain_calibration(ag
     import time
     from explorer4.cognitive.action_value import observed_choice
     actions = ["ask:tank", "recovery", "human"]
-    model = tmp_path / "fit.json"
-    model.write_text(json.dumps({"version": 1, "calibration": [15, 28], "domain": "sim", "actions": actions}))
-    sha = hashlib.sha256(model.read_bytes()).hexdigest()
     scope = {"recipient": "rosmaster", "skill": "pick_floor", "object": "cookie", "reason": "pick_failed"}
+    model = tmp_path / "fit.json"
+    model.write_text(json.dumps({"version": 1, "calibration": [15, 28], "domain": "sim", "actions": actions, "scope": scope}))
+    sha = hashlib.sha256(model.read_bytes()).hexdigest()
     forecasts = {name: {"p_success": .5, "elapsed_s": seconds, "help_cost": 0, "uncertainty": .1,
                         "support": 12, "verified": True, "domain": "sim", "model_sha256": sha}
                  for name, seconds in zip(actions, [4, 1, 8])}
