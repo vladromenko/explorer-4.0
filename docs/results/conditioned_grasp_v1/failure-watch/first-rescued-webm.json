@@ -1,0 +1,22 @@
+{
+  "input": "first-rescued.mp4",
+  "input_sha256": "969e22735cd530248d6d63a54f725c1f7189c4f7767792b6cb554eb8767df4b6",
+  "output": "first-rescued.webm",
+  "output_sha256": "b64e014a904d0b9eafa8ec1089ee375ed9e1cfaf5e18040627839e528f2bbbd9",
+  "codec": "VP9",
+  "encoder": "libvpx-vp9",
+  "encoder_options": {
+    "lossless": "1",
+    "deadline": "good",
+    "cpu-used": "4",
+    "row-mt": "0",
+    "threads": "1"
+  },
+  "pixel_format": "yuv420p",
+  "rate_fps": 5,
+  "frame_count": 121,
+  "duration_s": 24.2,
+  "verification": "All 121 decoded picture presentation times and YUV420p byte-array SHA-256 digests match the H.264 original.",
+  "sequence_sha256_of_ordered_frame_sha256_hex": "46fe5fd2acf489ecc135d93fa251a687ce84a801457ccb78578f92bdba9e99ef",
+  "pyav_version": "15.1.0"
+}

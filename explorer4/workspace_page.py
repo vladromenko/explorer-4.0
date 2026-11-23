@@ -284,7 +284,7 @@ def results():
                 original = sum(row["stale_hold"] for row in watch["pairs"])
                 repeated = sum(row["recovery_hold"] for row in watch["pairs"])
                 ui.label(f"Повторный взгляд перед захватом · {original}/{n} → {repeated}/{n} в MuJoCo")
-                evidence_link("Видео одной и той же попытки с повторным взглядом и без", watch_path + "first-rescued.mp4")
+                evidence_link("Видео одной и той же попытки с повторным взглядом и без", watch_path + "first-rescued.webm")
                 evidence_link("Исходы и ошибки предупреждения", watch_path + "result.json")
             refresh_path = REPORT + "grasp-look-refresh-development-v1-1/result.json"
             refresh = read(MEDIA / refresh_path).get("all_scenes", {}).get("shifted")
