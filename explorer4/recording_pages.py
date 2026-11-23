@@ -94,6 +94,8 @@ def install_collection():
     from nicegui import app
     from urllib.parse import urlencode
     from . import collection,catalog
+    from . import so101_donor_review_page
+    so101_donor_review_page.install()
 
     @app.get('/recording/media/{episode}/{kind}')
     def media(episode:str,kind:str):
@@ -302,6 +304,14 @@ def install_collection():
                                             ui.video(f'/recording/media/{e}/video').style('width:min(640px,90vw)')
                                         d.open()
                                     ui.button('Видео',on_click=play).props('flat dense no-caps')
+                                    if state['task']=='so101_pick_place':
+                                        from .so101_donor_review import episode_root
+                                        try:
+                                            episode_root(e)
+                                        except ValueError:
+                                            ui.label('В этой записи нет обзорной геометрии C920').style('font-size:12px')
+                                        else:
+                                            ui.link('Разобрать кадры C920 и четыре фазы',f'/recording/so101-donor/{e}')
                                     if not a['user_excluded']:
                                         def drop(e=e):
                                             collection.exclude(e);shots_key[0]=None

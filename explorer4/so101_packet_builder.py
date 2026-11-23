@@ -72,18 +72,25 @@ def calibration_for_review(review, meta):
         value = calibration.get(key)
         if type(value) not in (int, float) or not np.isfinite(value) or not 0 < value <= maximum:
             raise ValueError('Measured uncertainty outside pilot scope: ' + key)
+    sizes = np.asarray(calibration.get('size_sigma_m'), dtype=float)
+    axis = np.asarray(calibration.get('closing_axis_tcp'), dtype=float)
+    if sizes.shape != (3,) or not np.isfinite(sizes).all() or np.any(sizes <= 0):
+        raise ValueError('Measured uncertainty of all three cube dimensions required')
+    if axis.shape != (3,) or not np.isfinite(axis).all() or np.linalg.norm(axis) < .99:
+        raise ValueError('Measured closing axis required')
     return calibration
 
 
-def build_real_packet(episode_id, review):
+def measure_real_donor(episode_id, review):
+    """Evaluate the original measurements without creating a verification or registering a packet."""
     entries = [e for e in catalog.rows('episodes') if e['id'] == episode_id]
     if len(entries) != 1 or entries[0]['profile'] != 'so101_pick_place' or entries[0]['outcome'] != 'success' or entries[0]['category'] not in ('demonstration', 'correction') or entries[0]['excluded']:
         raise ValueError('A successful original real SO-101 episode is required')
     entry = entries[0]
     root = Path(entry['dataset']).resolve()
     fingerprint = datasets.fingerprint(root)
-    if review.get('episode_sha256') != fingerprint or not review.get('operator'):
-        raise ValueError('Review must identify the unchanged original episode and reviewer')
+    if review.get('episode_sha256') != fingerprint:
+        raise ValueError('Review must identify the unchanged original episode')
     provenance = json.loads((root / 'provenance.json').read_text())
     if provenance.get('domain', 'real') != 'real':
         raise ValueError('A simulated donor cannot become a real packet')
@@ -131,6 +138,14 @@ def build_real_packet(episode_id, review):
     phase_ranges = review.get('phase_frames', {})
     if set(phase_ranges) != set(PHASES):
         raise ValueError('Review all four grasp phases')
+    controls_ref = calibration['independent_control_evidence']
+    controls = read_artifact(controls_ref['reference'], controls_ref['sha256'])
+    calibration_exposures = set()
+    if controls.get('capture_episode') == episode_id:
+        surveyed = [entry.get('frame') for entry in controls.get('survey', [])]
+        if not surveyed or any(type(i) is not int or not 0 <= i < len(rows) for i in surveyed):
+            raise ValueError('The calibration survey must identify its original frame numbers')
+        calibration_exposures = {rows[i]['camera_timestamp_ns'] for i in surveyed}
     curve = np.asarray(calibration['jaw_curve_percent_m'])
     offset = transform(calibration['fixed_tip_from_tcp'])
     phases, trace = [], []
@@ -142,6 +157,11 @@ def build_real_packet(episode_id, review):
         start, end = phase_ranges[name]
         if type(start) is not int or type(end) is not int or not previous_end <= start < end <= len(rows):
             raise ValueError('Phase boundaries must be ordered recorded frame indices')
+        if calibration_exposures.intersection(r['camera_timestamp_ns'] for r in rows[start:end]):
+            raise ValueError('Кадр метрической калибровки попал в фазу показа; разметьте только само действие')
+        if start != previous_end:
+            previous_retained = False
+            held_s = 0.
         previous_end = end
         selected = []
         for row in rows[start:end]:
@@ -192,8 +212,22 @@ def build_real_packet(episode_id, review):
     position_sigma = float(np.hypot(calibration['position_sigma_m'], timing_sigma))
     if position_sigma > .005:
         raise ValueError('Measured motion and camera timing uncertainty exceed the 5 mm pilot scope')
+    return {'settings': settings, 'meta': meta, 'fingerprint': fingerprint, 'calibration': calibration,
+            'phases': phases, 'trace': trace, 'held_s': best_held, 'lift_m': best_lift if best_held else None,
+            'position_sigma_m': position_sigma, 'timing_sigma_m': timing_sigma}
+
+
+def build_real_packet(episode_id, review):
+    if not str(review.get('operator') or '').strip():
+        raise ValueError('The reviewer must identify themselves')
+    measurements = measure_real_donor(episode_id, review)
+    best_held, best_lift = measurements['held_s'], measurements['lift_m']
     if best_held < 1.:
         raise ValueError('No independently visible 50 mm lift held for one continuous second')
+    phases, trace = measurements['phases'], measurements['trace']
+    meta, fingerprint, settings = measurements['meta'], measurements['fingerprint'], measurements['settings']
+    calibration = measurements['calibration']
+    position_sigma, timing_sigma = measurements['position_sigma_m'], measurements['timing_sigma_m']
     verification = {'method': 'independent_visual_measurement', 'episode_id': episode_id,
                     'episode_sha256': fingerprint, 'review': review, 'trace': trace,
                     'lift_m': best_lift, 'held_s': best_held, 'recipient_verified': False}

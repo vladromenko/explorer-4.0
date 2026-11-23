@@ -115,3 +115,50 @@ def test_frame_bracketing_and_source_phase_reference_are_required(recording):
     changed['episode_sha256'] = datasets.fingerprint(root)
     with pytest.raises(ValueError, match='unambiguous'):
         builder.build_real_packet('fixture', changed)
+
+
+def test_private_ui_review_inclusive_signature_and_separate_registration(recording, monkeypatch):
+    from explorer4 import so101_donor_review as reviewer
+
+    root, _, _, form = recording
+    episode = 'a' * 32
+    monkeypatch.setattr(reviewer, 'DATA', builder.DATA)
+    with catalog.connect() as db:
+        db.execute('UPDATE episodes SET id=? WHERE id=?', (episode, 'fixture'))
+    original = datasets.fingerprint(root)
+    ranges = {p: [start, end - 1] for p, (start, end) in form['phase_frames'].items()}
+    incomplete = reviewer.save_draft(episode, ranges, '', '', '')
+    assert not reviewer.inspect(episode, incomplete)['ready_to_sign']
+    with pytest.raises(ValueError, match='калибровки'):
+        reviewer.sign(episode, incomplete['revision'], 'operator', True, False)
+    with pytest.raises(ValueError, match='другой вкладке'):
+        reviewer.save_draft(episode, ranges, form['calibration_ref'], form['calibration_sha256'], '')
+    saved = reviewer.save_draft(episode, ranges, form['calibration_ref'], form['calibration_sha256'], incomplete['revision'])
+    measurements = reviewer.inspect(episode, saved)
+    assert measurements['ready_to_sign'] and measurements['hold_s'] >= 1.
+    with pytest.raises(ValueError, match='явное подтверждение'):
+        reviewer.sign(episode, saved['revision'], 'operator', False, True)
+    key = reviewer.sign(episode, saved['revision'], 'fixture operator', True, False)
+    review = json.loads(reviewer.signed(episode, key).read_text())
+    assert review['phase_frames'] == form['phase_frames']
+    assert review['source_use']['allowed'] == ['adaptation'] and review['operator'] == 'fixture operator'
+    assert not (builder.DATA / 'world/skill_packets').exists()
+    packet = reviewer.register(episode, key)
+    assert knowledge.load_packet(packet)['donor_verification']['held_s'] == measurements['hold_s']
+    assert datasets.fingerprint(root) == original
+
+
+def test_survey_exposures_cannot_count_again_in_demonstration_phases(recording):
+    _, _, calibration, form = recording
+    controls_file = builder.DATA / 'controls.json'
+    controls = json.loads(controls_file.read_text())
+    controls.update(capture_episode='fixture', survey=[{'frame': 0}])
+    controls_file.write_text(json.dumps(controls))
+    calibration['independent_control_evidence']['sha256'] = hashlib.sha256(controls_file.read_bytes()).hexdigest()
+    calibration_file = builder.DATA / 'calibration.json'
+    calibration_file.write_text(json.dumps(calibration))
+    form['calibration_sha256'] = hashlib.sha256(calibration_file.read_bytes()).hexdigest()
+    with pytest.raises(ValueError, match='метрической калибровки'):
+        builder.measure_real_donor('fixture', form)
+    form['phase_frames']['approach'][0] = 1
+    assert builder.measure_real_donor('fixture', form)['held_s'] >= 1.
