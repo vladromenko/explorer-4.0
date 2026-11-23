@@ -52,6 +52,35 @@ def install():
         except ValueError as exc:
             raise HTTPException(404, str(exc)) from exc
 
+    @app.get("/api/rosmaster/grasp-calibration/{ident}/passive-relook")
+    def passive_report(ident: str):
+        from .grasp_reobservation import current
+
+        try:
+            path = capture.open_session(ident)
+            refusals = path / "passive-reobservation/refusals.jsonl"
+            return {**current(path), "refusals": [json.loads(line) for line in refusals.read_text().splitlines()]
+                    if refusals.is_file() else []}
+        except ValueError as exc:
+            raise HTTPException(404, str(exc)) from exc
+
+    @app.get("/api/rosmaster/grasp-calibration/{ident}/passive-relook/{view}.png")
+    def passive_image(ident: str, view: str):
+        from fastapi.responses import FileResponse
+
+        from .grasp_reobservation import current
+
+        try:
+            path = capture.open_session(ident)
+            if view not in ("first", "second") or view not in (state := current(path)):
+                raise ValueError("Снимок ещё не сохранён")
+            png = path / "passive-reobservation" / (view + ".png")
+            if capture.file_hash(png) != state[view]["png_sha256"]:
+                raise ValueError("Контрольная сумма сохранённого снимка изменилась")
+            return FileResponse(png, media_type="image/png")
+        except (ValueError, OSError) as exc:
+            raise HTTPException(404, str(exc)) from exc
+
     @ui.page("/rosmaster/grasp-calibration")
     def calibration_page(session: str = ""):
         import cv2
@@ -100,6 +129,34 @@ def install():
                 "Все исходные сцены, причины отказа и результат внутри области",
                 "/simlab-media/reports/grasp-admission-native-v3/result.json",
             )
+            with ui.expansion("Какую политику проверяет полевая проба").classes("w-full"):
+                ui.label(
+                    "На роботе свежий кадр в измеренной позе обзора задаёт один план RBF: "
+                    "220 команд, затем удержание до 360-го такта. Критерий — высота кубика "
+                    "и непрерывное удержание в конце записи. Кубик оставьте в четвёртой измеренной точке."
+                )
+                ui.label(
+                    "В другом опыте MuJoCo рука после 7 тактов возвращалась в ту же позу "
+                    "обзора, снимала ещё один кадр и заново рассчитывала план. Первый устойчивый "
+                    "перенос до 500 тактов получился в 28 из 32 сцен против 21 из 32 по одному кадру. "
+                    "Запуск этого режима на физической руке пока недоступен."
+                )
+                ui.label(
+                    "Для отдельной проверки повторного осмотра нужны два разных по времени "
+                    "исходных RGB 640×480 с той же камеры: до движения и после возврата. "
+                    "Каждому нужны привязанные параметры камеры, измеренное положение кубика, "
+                    "видимый целиком кубик и телеметрия шести сервоприводов, включая захват. "
+                    "Два архивных проверочных показа этим условиям не отвечают. "
+                    "Три показа для текущей полевой пробы снимайте по обычной инструкции ниже."
+                )
+                ui.link(
+                    "Повторный обзор в симуляторе · исходы 32 пар",
+                    "/simlab-media/reports/wrist-video-failure-watch-v1/paired-test/result.json",
+                )
+                ui.link(
+                    "Каких измерений нет в двух реальных записях",
+                    "/simlab-media/reports/conditioned-grasp-v1/physical-shadow.json",
+                )
         if not session:
             with ui.card().classes("grasp-card"):
                 ui.label("Новая серия").classes("text-h6")
@@ -187,6 +244,55 @@ def install():
 
         results()
         if capture.summary(path)["status"] == "positive":
+            from . import grasp_reobservation
+
+            with ui.expansion("Необязательная проверка двух кадров после ручного возврата").classes("w-full"):
+                ui.label(
+                    "Отдельно от записи трёх захватов. Оставьте тот же кубик в точке №4. "
+                    "Измерьте X/Y, сохраните первый обзор, затем на штатном ручном пульте отведите "
+                    "руку до смыкания и остановите её. Здесь сохраните показание об уходе. "
+                    "Вручную верните руку к позе обзора, остановите, повторно измерьте X/Y и снимите второй кадр. "
+                    "Мастер только читает датчики. Результат проверяет повторяемость локализации "
+                    "неподвижного кубика. Поведение при смещении и исход захвата требуют отдельных опытов."
+                )
+
+                @ui.refreshable
+                def pair_controls():
+                    record = grasp_reobservation.current(path)
+                    stage = record["stage"]
+                    for key, caption in (("first", "Первый обзор"), ("second", "После ручного возврата")):
+                        if key in record:
+                            ui.link(caption + " · сохранённый RGB", f"/api/rosmaster/grasp-calibration/{session}/passive-relook/{key}.png")
+                    if stage == "completed":
+                        change = record["difference"]["error_change_xy_mm"]
+                        ui.label(f"Два независимых кадра и измеренный уход с возвратом сохранены. "
+                                 f"Изменение ошибки X/Y: {change[0]:+.1f} / {change[1]:+.1f} мм.")
+                    else:
+                        x = y = same = None
+                        if stage != "away":
+                            with ui.row():
+                                x = ui.number("Измеренный X, мм", value=None)
+                                y = ui.number("Измеренный Y, мм", value=None)
+                            same = ui.checkbox("Тот же кубик в точке №4, целиком виден камере")
+                        error = ui.label("").classes("grasp-error")
+
+                        async def capture_stage():
+                            button.disable()
+                            try:
+                                await run.io_bound(grasp_reobservation.add, path, stage,
+                                                   [x.value, y.value] if x is not None else None,
+                                                   bool(same.value) if same is not None else False)
+                                pair_controls.refresh()
+                            except (OSError, ValueError, RuntimeError) as exc:
+                                error.set_text(str(exc))
+                                button.enable()
+
+                        labels = {"first": "Снять первый обзор", "away": "Измерить уход из позы обзора",
+                                  "second": "Снять обзор после возврата"}
+                        button = ui.button(labels[stage], on_click=capture_stage)
+                    ui.link("Измерения пары в JSON", f"/api/rosmaster/grasp-calibration/{session}/passive-relook")
+
+                pair_controls()
             ui.label(
                 "После проверки камеры запишите по одному успешному человеческому захвату в трёх отдельных расстановках. Начинайте в проверенной позе, на секунду удержите неподвижный кадр с целым кубиком, затем возьмите и удержите кубик. Укажите фактический исход каждой попытки. Записи попадут в диагностическую выборку."
             )
@@ -224,7 +330,7 @@ def install():
                             except (OSError, ValueError, PermissionError) as exc:
                                 problem.set_text(str(exc))
 
-                        ui.button("Открыть одну наблюдаемую пробу ROSMASTER", on_click=setup_trial)
+                        ui.button("Открыть одну наблюдаемую пробу по исходному кадру", on_click=setup_trial)
                     elif (path / "physical-trial-claimed.json").is_file():
                         ui.label("Одиночная проба использована.")
                 elif len(selected) == 3:
