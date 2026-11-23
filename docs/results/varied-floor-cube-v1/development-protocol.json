@@ -1,0 +1,381 @@
+{
+  "scenarios": [
+    {
+      "seed": 988200,
+      "distance": "near",
+      "xy": [
+        0.18968918060032194,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988201,
+      "distance": "near",
+      "xy": [
+        0.17698662317564087,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988202,
+      "distance": "near",
+      "xy": [
+        0.17792816776023226,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988203,
+      "distance": "near",
+      "xy": [
+        0.18941812734730568,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988204,
+      "distance": "near",
+      "xy": [
+        0.19039534992045837,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988205,
+      "distance": "near",
+      "xy": [
+        0.1844360872614944,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988206,
+      "distance": "near",
+      "xy": [
+        0.187247583299535,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988207,
+      "distance": "near",
+      "xy": [
+        0.17824996188523162,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988208,
+      "distance": "near",
+      "xy": [
+        0.1837732138207343,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988209,
+      "distance": "middle",
+      "xy": [
+        0.21201726194933657,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988210,
+      "distance": "middle",
+      "xy": [
+        0.2006658251902274,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988211,
+      "distance": "middle",
+      "xy": [
+        0.20135515258225453,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988212,
+      "distance": "middle",
+      "xy": [
+        0.21340449176084056,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988213,
+      "distance": "middle",
+      "xy": [
+        0.2061159139907053,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988214,
+      "distance": "middle",
+      "xy": [
+        0.208774075455603,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988215,
+      "distance": "middle",
+      "xy": [
+        0.21236433363777474,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988216,
+      "distance": "middle",
+      "xy": [
+        0.2019906135270184,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988217,
+      "distance": "middle",
+      "xy": [
+        0.20828596524770257,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988218,
+      "distance": "edge",
+      "xy": [
+        0.24159498533425694,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988219,
+      "distance": "edge",
+      "xy": [
+        0.23826260975558614,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988220,
+      "distance": "edge",
+      "xy": [
+        0.24423047514135326,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988221,
+      "distance": "edge",
+      "xy": [
+        0.24404133481581175,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988222,
+      "distance": "edge",
+      "xy": [
+        0.23936237073966318,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988223,
+      "distance": "edge",
+      "xy": [
+        0.23325179394223913,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988224,
+      "distance": "edge",
+      "xy": [
+        0.2346441087147151,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988225,
+      "distance": "edge",
+      "xy": [
+        0.22611019510040936,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988226,
+      "distance": "edge",
+      "xy": [
+        0.24169149495567166,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988227,
+      "distance": "outside",
+      "xy": [
+        0.45631224008172355,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988228,
+      "distance": "outside",
+      "xy": [
+        0.4324818086054287,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988229,
+      "distance": "outside",
+      "xy": [
+        0.4367059442482087,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988230,
+      "distance": "outside",
+      "xy": [
+        0.3558012419202099,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988231,
+      "distance": "outside",
+      "xy": [
+        0.41038828604978567,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988232,
+      "distance": "outside",
+      "xy": [
+        0.331533146026163,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988233,
+      "distance": "outside",
+      "xy": [
+        0.32981600070463013,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording"
+    },
+    {
+      "seed": 988234,
+      "distance": "outside",
+      "xy": [
+        0.4376689792639974,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised"
+    },
+    {
+      "seed": 988235,
+      "distance": "outside",
+      "xy": [
+        0.30274897552776253,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording"
+    }
+  ],
+  "methods": [
+    "teacher",
+    "depth"
+  ],
+  "exports_demonstrations": false,
+  "source_sha256": "4f5908f9cbbef0d103f7180d29e36074c33385837a508824a5bbc2b5ff324e30",
+  "scene_revision": "0f7800dc89c565f1ea0cb1c3d68d29cfedd204aecff92e84aee676d7196663d4",
+  "look": [
+    90.8,
+    93.46,
+    2.05,
+    4.86,
+    90.0,
+    31.0
+  ],
+  "endpoint": "Bilateral contact, >50 mm lift and carry pose for final second",
+  "scope": "Simulated stationary arm, plus sequential base/arm teacher using privileged coordinates."
+}

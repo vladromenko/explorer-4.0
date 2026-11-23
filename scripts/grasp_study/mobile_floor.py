@@ -17,10 +17,10 @@ from explorer4.sim_protocol import scene_revision, sha256_file
 
 from .depth_floor_recovery import SIZE, capture
 from .evaluate import save_json
-from .scenarios import OUT, evaluate_scenario, oriented_top, scenarios
+from .scenarios import LOOK, OUT, evaluate_scenario, oriented_top, scenarios
 
 
-SCAN_LOOK = (90., 130., 1., 25., 90., 31.)
+SCAN_LOOKS = ((90., 130., 1., 5., 90., 31.), (90., 130., 1., 25., 90., 31.))
 SCAN_BOUNDS = ((.155, .65), (-.18, .18))
 STOP_DISTANCE = .195
 
@@ -44,17 +44,22 @@ def set_scene(base, scenario):
     centre = m.geom('target_center').id
     m.geom_size[centre] = [.0001, .0001, .0001]
     m.geom_rgba[centre, 3] = m.geom_rgba[m.geom('dock_zone').id, 3] = 0.
+    mujoco.mj_setConst(m, mujoco.MjData(m))
+    mujoco.mj_forward(m, d)
+    return cube
+
+
+def point_camera(base, look):
+    m, d = base.model, base.data
     camera = m.camera(base.camera_name).id
     world_from_base = transform(d, m.body('base').id)
     parent_from_base = np.linalg.inv(transform(d, m.cam_bodyid[camera])) @ world_from_base
-    base_from_camera = ArmModel().camera_pose(SCAN_LOOK)
+    base_from_camera = ArmModel().camera_pose(look)
     optical_from_mujoco = np.diag([1., -1., -1., 1.])
     mount = parent_from_base @ base_from_camera @ optical_from_mujoco
     m.cam_pos[camera] = mount[:3, 3]
     m.cam_quat[camera] = Rotation.from_matrix(mount[:3, :3]).as_quat()[[3, 0, 1, 2]]
-    mujoco.mj_setConst(m, mujoco.MjData(m))
     mujoco.mj_forward(m, d)
-    return cube
 
 
 def acquire(base, renderer):
@@ -75,7 +80,12 @@ def drive(scenario):
         camera = mujoco.Renderer(base.model, height=240, width=320)
         camera.enable_depth_rendering()
         try:
-            target = acquire(base, camera)
+            target = None
+            for look in SCAN_LOOKS:
+                point_camera(base, look)
+                target = acquire(base, camera)
+                if target is not None:
+                    break
             if target is None:
                 return {'reason': 'far_cube_unobserved'}
             base.goal = np.r_[target - [STOP_DISTANCE, 0.], 0.]
@@ -88,6 +98,7 @@ def drive(scenario):
                     return {'reason': 'base_contact', 'ticks': base.steps}
                 if done or timeout:
                     break
+            point_camera(base, LOOK)
             measured = acquire(base, camera)
         finally:
             camera.close()
@@ -102,8 +113,9 @@ def drive(scenario):
             reason = 'base_did_not_stop_in_reach'
         else:
             reason = 'ready_for_arm'
-        return {'reason': reason, 'ticks': base.steps, 'base_speed': speed,
+        return {'reason': reason, 'ticks': base.steps, 'base_speed': speed, 'acquisition_look': list(look),
                 'first_estimate_world_xy': target.tolist(),
+                'end_estimate_world_xy': None if measured is None else measured.tolist(),
                 'stopped_pose': base.data.qpos.tolist(), 'cube_relative_xy_for_scene_transfer': relative[:2].tolist()}
 
 
@@ -120,8 +132,9 @@ def scenario_result(scene):
 
 def main():
     cases = [row for row in scenarios(988200) if row['distance'] == 'outside']
-    root = OUT / 'mobile-development'
-    protocol = {'scenarios': cases, 'scan_look': list(SCAN_LOOK), 'stop_distance_m': STOP_DISTANCE,
+    root = OUT / 'mobile-development-v2'
+    protocol = {'scenarios': cases, 'scan_looks': [list(p) for p in SCAN_LOOKS],
+                'stopped_reacquisition_look': list(LOOK), 'stop_distance_m': STOP_DISTANCE,
                 'comparison': 'Same distant scenes as the original stationary-arm and privileged sequential teacher.',
                 'scope': 'Simulated registered depth, ideal base odometry, two sequential physics models. No shared whole-body dynamics.',
                 'mobile_scene_revision': scene_revision('rosmaster_dock_sim'),

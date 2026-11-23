@@ -1,0 +1,1617 @@
+{
+  "results": [
+    {
+      "seed": 988200,
+      "distance": "near",
+      "xy": [
+        0.18968918060032194,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "fd5d403c86ea5e5ae86bb9f94e48a6f42fd16c33b3d7569328774b4988f9400a",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.18968918060033865,
+        -0.04300000000003342
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988200,
+      "distance": "near",
+      "xy": [
+        0.18968918060032194,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "fd5d403c86ea5e5ae86bb9f94e48a6f42fd16c33b3d7569328774b4988f9400a",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.1897282600402832,
+        -0.042953524738550186
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988201,
+      "distance": "near",
+      "xy": [
+        0.17698662317564087,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "9681f162099a391d6c447c15e6a3ae4cc2104aa2f7b08d406e4f1f724043fb5f",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.17698662317568054,
+        -0.043000000000040325
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988201,
+      "distance": "near",
+      "xy": [
+        0.17698662317564087,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "9681f162099a391d6c447c15e6a3ae4cc2104aa2f7b08d406e4f1f724043fb5f",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.17701591551303864,
+        -0.043009646236896515
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988202,
+      "distance": "near",
+      "xy": [
+        0.17792816776023226,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "04ffc8fdaf556bc4b470042da784829477678a8f0582ab357ad0a44dd94090b2",
+      "steps": 360,
+      "retained": false,
+      "reason": "terminal_hold_not_verified",
+      "method": "teacher",
+      "measured_xy": [
+        0.17792816776027484,
+        -0.04299999999996655
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988202,
+      "distance": "near",
+      "xy": [
+        0.17792816776023226,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "04ffc8fdaf556bc4b470042da784829477678a8f0582ab357ad0a44dd94090b2",
+      "steps": 360,
+      "retained": false,
+      "reason": "terminal_hold_not_verified",
+      "method": "depth",
+      "measured_xy": [
+        0.17792585492134094,
+        -0.042994242161512375
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988203,
+      "distance": "near",
+      "xy": [
+        0.18941812734730568,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "c113333564bc6f3e0eb01397c8940f64f49812c57adb92ec6c10176514482f24",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.18941812734740301,
+        -9.297950948360174e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988203,
+      "distance": "near",
+      "xy": [
+        0.18941812734730568,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "c113333564bc6f3e0eb01397c8940f64f49812c57adb92ec6c10176514482f24",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.18941357731819153,
+        -3.787502646446228e-05
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988204,
+      "distance": "near",
+      "xy": [
+        0.19039534992045837,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "107caee90e02d418a68e6adec6cd21a53fad7e21589d32574ec0d3c51ea8ce21",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.19039534992043383,
+        2.6625409739065167e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988204,
+      "distance": "near",
+      "xy": [
+        0.19039534992045837,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "107caee90e02d418a68e6adec6cd21a53fad7e21589d32574ec0d3c51ea8ce21",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.19037464261054993,
+        -5.308538675308228e-07
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988205,
+      "distance": "near",
+      "xy": [
+        0.1844360872614944,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "852fa091730491e20c3cd66498abb3806ffb086305f1527ee3b31882d729caa0",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.18443608726147093,
+        4.4670193238861204e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988205,
+      "distance": "near",
+      "xy": [
+        0.1844360872614944,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "852fa091730491e20c3cd66498abb3806ffb086305f1527ee3b31882d729caa0",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.18442058563232422,
+        2.0191073417663574e-06
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988206,
+      "distance": "near",
+      "xy": [
+        0.187247583299535,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "89ad1174ed353313d0635e6b8e4e9fe0b5200ea79e98048376212979065a1c02",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.1872475832995349,
+        0.04299999999985368
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988206,
+      "distance": "near",
+      "xy": [
+        0.187247583299535,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "89ad1174ed353313d0635e6b8e4e9fe0b5200ea79e98048376212979065a1c02",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.18728643655776978,
+        0.04296771064400673
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988207,
+      "distance": "near",
+      "xy": [
+        0.17824996188523162,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "8881c9b47faa8c300af69480a9b55496ff89b3ce9b97c38116d776680c51633a",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.17824996188514355,
+        0.043000000000086885
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988207,
+      "distance": "near",
+      "xy": [
+        0.17824996188523162,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "8881c9b47faa8c300af69480a9b55496ff89b3ce9b97c38116d776680c51633a",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.17828314006328583,
+        0.04275214672088623
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988208,
+      "distance": "near",
+      "xy": [
+        0.1837732138207343,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "eaa7a8405bf98ef102ee941789ee72391f0aa8a3c946b33646c334c7908d4c8d",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.18377321382072045,
+        0.042999999999905364
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988208,
+      "distance": "near",
+      "xy": [
+        0.1837732138207343,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "eaa7a8405bf98ef102ee941789ee72391f0aa8a3c946b33646c334c7908d4c8d",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.1838405877351761,
+        0.04285881668329239
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988209,
+      "distance": "middle",
+      "xy": [
+        0.21201726194933657,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "5ccc440185cf7f3294d45cd6d49a034188d570a96effee451cb6edab2a7c4e64",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2120172619493269,
+        -0.04300000000005046
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988209,
+      "distance": "middle",
+      "xy": [
+        0.21201726194933657,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "5ccc440185cf7f3294d45cd6d49a034188d570a96effee451cb6edab2a7c4e64",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.21198542416095734,
+        -0.04298466444015503
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988210,
+      "distance": "middle",
+      "xy": [
+        0.2006658251902274,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "a8192f7d935d2a40cc413f9222777a2bcaf7e7bb49e618fcf418da120753634c",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2006658251902026,
+        -0.04300000000012305
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988210,
+      "distance": "middle",
+      "xy": [
+        0.2006658251902274,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "a8192f7d935d2a40cc413f9222777a2bcaf7e7bb49e618fcf418da120753634c",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.20065270364284515,
+        -0.0430096760392189
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988211,
+      "distance": "middle",
+      "xy": [
+        0.20135515258225453,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "87b6b513e82074a001101f4c9c6b0606be6328872d46907274163fc86d4d3997",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.20135515258223968,
+        -0.04300000000001194
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988211,
+      "distance": "middle",
+      "xy": [
+        0.20135515258225453,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "87b6b513e82074a001101f4c9c6b0606be6328872d46907274163fc86d4d3997",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.20130731165409088,
+        -0.04300425946712494
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988212,
+      "distance": "middle",
+      "xy": [
+        0.21340449176084056,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "265cf0e010fd25a37424d4011d1b668c78e8e5d129a8b3c57c4ed7427b4a3f2e",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.21340449176080314,
+        8.798874610067901e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988212,
+      "distance": "middle",
+      "xy": [
+        0.21340449176084056,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "265cf0e010fd25a37424d4011d1b668c78e8e5d129a8b3c57c4ed7427b4a3f2e",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.21334421634674072,
+        1.4958903193473816e-05
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988213,
+      "distance": "middle",
+      "xy": [
+        0.2061159139907053,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "13d9b955de76cda5a7add36029ae96b5d4b0bc07ba62acf0b065ec0c02363ee7",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.20611591399071738,
+        -1.3389456953918665e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988213,
+      "distance": "middle",
+      "xy": [
+        0.2061159139907053,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "13d9b955de76cda5a7add36029ae96b5d4b0bc07ba62acf0b065ec0c02363ee7",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.20611423254013062,
+        1.3289973139762878e-05
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988214,
+      "distance": "middle",
+      "xy": [
+        0.208774075455603,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "c1c2b6cae2f3a22f025ef651c9a372da8cc4a5326e134c83a62a4b9859ba3819",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.20877407545554694,
+        -2.6914877048324548e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988214,
+      "distance": "middle",
+      "xy": [
+        0.208774075455603,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "c1c2b6cae2f3a22f025ef651c9a372da8cc4a5326e134c83a62a4b9859ba3819",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.20877134799957275,
+        -2.7902424335479736e-06
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988215,
+      "distance": "middle",
+      "xy": [
+        0.21236433363777474,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "0423f982a63a2816cd320df0992466892cdc558c42dc3168ec995cac66424cc1",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.21236433363776772,
+        0.04300000000003666
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988215,
+      "distance": "middle",
+      "xy": [
+        0.21236433363777474,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "0423f982a63a2816cd320df0992466892cdc558c42dc3168ec995cac66424cc1",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.21235771477222443,
+        0.0429878868162632
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988216,
+      "distance": "middle",
+      "xy": [
+        0.2019906135270184,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "ad44d89faedb77190e8d3334b823074fbdbda616894f7f51f75c30ed78311256",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.20199061352704012,
+        0.042999999999977286
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988216,
+      "distance": "middle",
+      "xy": [
+        0.2019906135270184,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "ad44d89faedb77190e8d3334b823074fbdbda616894f7f51f75c30ed78311256",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.20199482142925262,
+        0.04290805011987686
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988217,
+      "distance": "middle",
+      "xy": [
+        0.20828596524770257,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "6f0f3412cb0e5f989528b163fb07229b56160528de33478c2d31fb20bf8f742e",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.20828596524770374,
+        0.04300000000000271
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988217,
+      "distance": "middle",
+      "xy": [
+        0.20828596524770257,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "6f0f3412cb0e5f989528b163fb07229b56160528de33478c2d31fb20bf8f742e",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.20821838080883026,
+        0.04295865446329117
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988218,
+      "distance": "edge",
+      "xy": [
+        0.24159498533425694,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "6299550c50a80eb14950c8c20b4776f1c4102fcbc74f0225ea04afe4cd6936ae",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.24159498533416088,
+        -0.04300000000002055
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988218,
+      "distance": "edge",
+      "xy": [
+        0.24159498533425694,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "6299550c50a80eb14950c8c20b4776f1c4102fcbc74f0225ea04afe4cd6936ae",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.24160003662109375,
+        -0.043035127222537994
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988219,
+      "distance": "edge",
+      "xy": [
+        0.23826260975558614,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "92c347faaa8be5b6e3f5d118d6c870a6230d2288bbeef409c32d88ceb7d9ac94",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.23826260975557145,
+        -0.042999999999985494
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988219,
+      "distance": "edge",
+      "xy": [
+        0.23826260975558614,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "92c347faaa8be5b6e3f5d118d6c870a6230d2288bbeef409c32d88ceb7d9ac94",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.23836468160152435,
+        -0.04303239285945892
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988220,
+      "distance": "edge",
+      "xy": [
+        0.24423047514135326,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "296f2e53695f73d27d855fecffa49bf60441c0829a3044f39c71f3c07083254c",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2442304751413761,
+        -0.04299999999998809
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988220,
+      "distance": "edge",
+      "xy": [
+        0.24423047514135326,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "296f2e53695f73d27d855fecffa49bf60441c0829a3044f39c71f3c07083254c",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.24425111711025238,
+        -0.04296249896287918
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988221,
+      "distance": "edge",
+      "xy": [
+        0.24404133481581175,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "b2698698f02fa3d86819728fe8c3e435143ad670b7ea27a8bceb0c55d7f1ddd8",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2440413348159379,
+        2.385162095112823e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988221,
+      "distance": "edge",
+      "xy": [
+        0.24404133481581175,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "b2698698f02fa3d86819728fe8c3e435143ad670b7ea27a8bceb0c55d7f1ddd8",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.2440168857574463,
+        -3.7495046854019165e-06
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988222,
+      "distance": "edge",
+      "xy": [
+        0.23936237073966318,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "c58b2dfdf7cdb51d190917c657e03256e4b047906c382ee55cab0abe5bb19ace",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2393623707396098,
+        5.53671461356664e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988222,
+      "distance": "edge",
+      "xy": [
+        0.23936237073966318,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "c58b2dfdf7cdb51d190917c657e03256e4b047906c382ee55cab0abe5bb19ace",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.23933365941047668,
+        3.8564205169677734e-05
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988223,
+      "distance": "edge",
+      "xy": [
+        0.23325179394223913,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "9eba72cc880429ee79a8ba9723cb8e0f841c1f1ebfff6dad85f9e0926c378beb",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2332517939421744,
+        1.2738834045167078e-14
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988223,
+      "distance": "edge",
+      "xy": [
+        0.23325179394223913,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "9eba72cc880429ee79a8ba9723cb8e0f841c1f1ebfff6dad85f9e0926c378beb",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.23323047161102295,
+        7.3052942752838135e-06
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988224,
+      "distance": "edge",
+      "xy": [
+        0.2346441087147151,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "5e6a3bc98bd3902c3d7fef1bbbcf9d4a2fc063c8d0c8689ef97e8f3c986cf55b",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.23464410871472344,
+        0.042999999999951195
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988224,
+      "distance": "edge",
+      "xy": [
+        0.2346441087147151,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "5e6a3bc98bd3902c3d7fef1bbbcf9d4a2fc063c8d0c8689ef97e8f3c986cf55b",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.23461006581783295,
+        0.042970191687345505
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988225,
+      "distance": "edge",
+      "xy": [
+        0.22611019510040936,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "2a942a3aab3248997563ba9fa72cfebf4f016218c62c988cbf7dc5aa0b029b44",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.2261101951003213,
+        0.043000000000086885
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988225,
+      "distance": "edge",
+      "xy": [
+        0.22611019510040936,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "2a942a3aab3248997563ba9fa72cfebf4f016218c62c988cbf7dc5aa0b029b44",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.22610348463058472,
+        0.04293840005993843
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988226,
+      "distance": "edge",
+      "xy": [
+        0.24169149495567166,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "637adfee43bf899a331c53fe777dea41c67a37a6a390b1302b52876bb0d9b773",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.24169149495568903,
+        0.04299999999996019
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988226,
+      "distance": "edge",
+      "xy": [
+        0.24169149495567166,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "637adfee43bf899a331c53fe777dea41c67a37a6a390b1302b52876bb0d9b773",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "depth",
+      "measured_xy": [
+        0.24168142676353455,
+        0.04300554096698761
+      ],
+      "forbidden_contacts": [],
+      "base": null
+    },
+    {
+      "seed": 988227,
+      "distance": "outside",
+      "xy": [
+        0.45631224008172355,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "2be23f617f668afae0c84638da443f77d4e756a1046306c67dcbea2b285a01c6",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22445341447154807,
+        -0.004590463665497798
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          0.02869843767590244,
+          0.025334334793310653,
+          -0.11460158098289733
+        ],
+        "stopped_pose": [
+          0.2318590046132099,
+          -0.038400792206063405,
+          -3.895744627480138e-05
+        ],
+        "ticks": 67,
+        "base_speed": 0.000587610237760086,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988227,
+      "distance": "outside",
+      "xy": [
+        0.45631224008172355,
+        -0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988228,
+      "distance": "outside",
+      "xy": [
+        0.4324818086054287,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "fa4882fcfbd30e276be24584584033eb5179016483cbe323b2f39e3f68abc8c7",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22414740329689353,
+        -0.002683359616004232
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          0.020287697154857176,
+          -0.013392482236364855,
+          -0.09380329380316496
+        ],
+        "stopped_pose": [
+          0.2083344537224284,
+          -0.04031259930750248,
+          -1.802865866504288e-05
+        ],
+        "ticks": 66,
+        "base_speed": 0.0009070670645077323,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988228,
+      "distance": "outside",
+      "xy": [
+        0.4324818086054287,
+        -0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988229,
+      "distance": "outside",
+      "xy": [
+        0.4367059442482087,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "034141ca0cc1b4bf3d4da76b4e01b07df2cd1a4be6fbad1e2922e153c687e30d",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22539145555381288,
+        0.00020103971948520695
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          0.02177856855819129,
+          -0.03057383466147416,
+          0.1127434804274122
+        ],
+        "stopped_pose": [
+          0.21131449050771217,
+          -0.04320306248227476,
+          8.9744430190205e-06
+        ],
+        "ticks": 60,
+        "base_speed": 0.00042275231931713267,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988229,
+      "distance": "outside",
+      "xy": [
+        0.4367059442482087,
+        -0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988230,
+      "distance": "outside",
+      "xy": [
+        0.3558012419202099,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "bc314479f8545dacb62cb7e1baf14702d16ced919ef2e05c3034d35868f1e7bf",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22526957257833397,
+        -0.0029609626901395663
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          -0.006776032263455321,
+          0.028458759824238913,
+          0.07050625345865497
+        ],
+        "stopped_pose": [
+          0.1305317337607017,
+          0.002965859609490199,
+          -2.1738044924152225e-05
+        ],
+        "ticks": 48,
+        "base_speed": 0.0005313296711858343,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988230,
+      "distance": "outside",
+      "xy": [
+        0.3558012419202099,
+        0.0
+      ],
+      "yaw_deg": -34.0,
+      "start": "raised",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988231,
+      "distance": "outside",
+      "xy": [
+        0.41038828604978567,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "initial_qpos_sha256": "48bad6c5e40d4affc099a8b2daa5eb657be761e3f058f263cea2532524774d02",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22502752053234532,
+        -0.0035479453030933185
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          0.01248998331168906,
+          0.030504622349732682,
+          -0.11866231605077221
+        ],
+        "stopped_pose": [
+          0.18536082497236123,
+          0.0035517142141160704,
+          -1.6748669274729827e-05
+        ],
+        "ticks": 60,
+        "base_speed": 0.000627460546062168,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988231,
+      "distance": "outside",
+      "xy": [
+        0.41038828604978567,
+        0.0
+      ],
+      "yaw_deg": 0.0,
+      "start": "recording",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988232,
+      "distance": "outside",
+      "xy": [
+        0.331533146026163,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "initial_qpos_sha256": "abbcec82f1ca8f683719095be666d80a3436ef4ceb140b42e298de59dff41b62",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22317794288501658,
+        0.003714232621673305
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          -0.015341242579001295,
+          -0.0240798168543113,
+          0.027826371233807212
+        ],
+        "stopped_pose": [
+          0.10835533410234906,
+          -0.0037220933933320623,
+          3.522200200075618e-05
+        ],
+        "ticks": 47,
+        "base_speed": 0.0004825989282714395,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988232,
+      "distance": "outside",
+      "xy": [
+        0.331533146026163,
+        0.0
+      ],
+      "yaw_deg": 34.0,
+      "start": "raised",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988233,
+      "distance": "outside",
+      "xy": [
+        0.32981600070463013,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "08f02ff0b0e270df31c497a92f21635297f144aa99d2e15767398c0044fd313f",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22056116348728255,
+        0.012375200924679105
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          -0.01594729386895406,
+          -0.048395865525934875,
+          0.07080043166081854
+        ],
+        "stopped_pose": [
+          0.10925612589600635,
+          0.030601852510596324,
+          0.00010403749834849289
+        ],
+        "ticks": 51,
+        "base_speed": 0.0006991824499331244,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988233,
+      "distance": "outside",
+      "xy": [
+        0.32981600070463013,
+        0.043
+      ],
+      "yaw_deg": -34.0,
+      "start": "recording",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988234,
+      "distance": "outside",
+      "xy": [
+        0.4376689792639974,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "initial_qpos_sha256": "32a4f801396ccda090d85c172fb74e4f760d33e8e6f0f41d27fd0bbf2bd864c0",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22187422639354826,
+        0.003313323614552206
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          0.022118463269646137,
+          -0.010268652055107103,
+          0.07750859551585107
+        ],
+        "stopped_pose": [
+          0.2157949332934556,
+          0.03967461645433485,
+          5.435483066927546e-05
+        ],
+        "ticks": 62,
+        "base_speed": 0.0007612894793591228,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988234,
+      "distance": "outside",
+      "xy": [
+        0.4376689792639974,
+        0.043
+      ],
+      "yaw_deg": 0.0,
+      "start": "raised",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    },
+    {
+      "seed": 988235,
+      "distance": "outside",
+      "xy": [
+        0.30274897552776253,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "initial_qpos_sha256": "d91e8ae201ae110e806e12c3eb41aeed1bfd7668a5d4fb1285eb6a8436c98dc3",
+      "steps": 360,
+      "retained": true,
+      "reason": "retained",
+      "method": "teacher",
+      "measured_xy": [
+        0.22712460602238257,
+        0.0015521454495808756
+      ],
+      "forbidden_contacts": [],
+      "base": {
+        "initial_pose": [
+          -0.025500361578436746,
+          0.03981328825424173,
+          0.11360771771407638
+        ],
+        "stopped_pose": [
+          0.07562479329788198,
+          0.04138703292596888,
+          0.0002677899237289305
+        ],
+        "ticks": 45,
+        "base_speed": 0.0010205448405831128,
+        "contact": false,
+        "stopped_in_reach": true
+      }
+    },
+    {
+      "seed": 988235,
+      "distance": "outside",
+      "xy": [
+        0.30274897552776253,
+        0.043
+      ],
+      "yaw_deg": 34.0,
+      "start": "recording",
+      "method": "depth",
+      "reason": "requires_mobile_perception",
+      "retained": false
+    }
+  ],
+  "scores_retained_over_all": {
+    "teacher": {
+      "near": [
+        8,
+        9
+      ],
+      "middle": [
+        9,
+        9
+      ],
+      "edge": [
+        9,
+        9
+      ],
+      "outside": [
+        9,
+        9
+      ]
+    },
+    "depth": {
+      "near": [
+        8,
+        9
+      ],
+      "middle": [
+        9,
+        9
+      ],
+      "edge": [
+        9,
+        9
+      ],
+      "outside": [
+        0,
+        9
+      ]
+    }
+  }
+}

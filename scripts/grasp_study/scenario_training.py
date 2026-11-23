@@ -3,14 +3,16 @@
 import argparse
 import hashlib
 import json
+import subprocess
+import time
 from collections import defaultdict
 from itertools import combinations
 from pathlib import Path
 from types import SimpleNamespace
 
-from explorer4 import catalog, datasets, training_drafts
+from explorer4 import catalog, datasets, training_drafts, training_schedule
 from explorer4.jobs import Jobs
-from explorer4.paths import DATA
+from explorer4.paths import DATA, ROOT, offline_environment
 from explorer4.peer_dock_real import write_json
 from explorer4.sim.import_episode import ingest
 
@@ -94,13 +96,66 @@ def register(steps, queue):
     return result
 
 
+def finish_queued():
+    receipt = OUT / 'queue.json'
+    deadline = time.monotonic() + 1800
+    while not receipt.is_file() and time.monotonic() < deadline:
+        time.sleep(5)
+    suite = json.loads(receipt.read_text())
+    jobs = Jobs(SimpleNamespace(owner=None, armed=False))
+    identifiers = {policy: item['job'] for policy, item in suite['models'].items()}
+    if set(identifiers) != {'act', 'diffusion'} or not all(identifiers.values()):
+        raise ValueError('The matched jobs have not been queued')
+    for policy, ident in identifiers.items():
+        row = jobs.get(ident)
+        config = json.loads(row['config'])
+        if (row['profile'] != PROFILE or row['policy'] != policy or config['plan_id'] != suite['plan']
+                or config.get('draft_id') != suite['models'][policy]['draft']):
+            raise ValueError('The queued job differs from the frozen scenario plan')
+    released = training_schedule.set_start(identifiers.values(), time.time())
+    print('Released matched scenario training jobs:', released, identifiers, flush=True)
+
+    terminal = {'completed', 'failed', 'cancelled', 'interrupted'}
+    logged = {}
+    while True:
+        rows = {policy: jobs.get(ident) for policy, ident in identifiers.items()}
+        statuses = {policy: row['status'] for policy, row in rows.items()}
+        if statuses != logged:
+            print(statuses, flush=True)
+            logged = statuses
+        if all(status in terminal for status in statuses.values()):
+            break
+        time.sleep(30)
+    report = {}
+    for policy, row in rows.items():
+        report[policy] = {'job': row['id'], 'training': row['status'], 'error': row.get('error')}
+        if row['status'] == 'completed' and row['checkpoint']:
+            name = policy + '-' + row['id'][:8]
+            output = OUT.parent / 'policy-evaluation' / name / 'result.json'
+            if not output.is_file():
+                environment = offline_environment()
+                environment.update(MUJOCO_GL='egl', OPENBLAS_NUM_THREADS='1')
+                run = subprocess.run([str(ROOT / '.venv-sim/bin/python'), '-u', '-m',
+                                      'scripts.grasp_study.scenario_policy', row['checkpoint'], name],
+                                     cwd=ROOT, env=environment, check=False)
+                report[policy]['evaluation_exit'] = run.returncode
+            if output.is_file():
+                report[policy]['evaluation'] = 'policy-evaluation/' + name + '/result.json'
+        write_json(OUT / 'workflow-result.json', report)
+    print(report, flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--steps', type=int, default=3000)
     parser.add_argument('--queue', action='store_true')
+    parser.add_argument('--finish-queue', action='store_true')
     args = parser.parse_args()
     catalog.initialize()
-    print(json.dumps(register(args.steps, args.queue), indent=2), flush=True)
+    if args.finish_queue:
+        finish_queued()
+    else:
+        print(json.dumps(register(args.steps, args.queue), indent=2), flush=True)
 
 
 if __name__ == '__main__':

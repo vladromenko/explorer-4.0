@@ -13,6 +13,7 @@ from .policy_catalog import SMOL_REV
 
 MEDIA = DATA / "simlab"
 REPORT = "reports/"
+VARIED_FLOOR = REPORT + "varied-floor-cube-v1/"
 ROBOTS = (
     (
         "ROSMASTER",
@@ -291,6 +292,19 @@ def results():
                 evidence_link("Видео на одной сцене до и после", depth_path + "paired-987140.webm")
                 evidence_link("График сравнения", depth_path + "carry-comparison.svg")
                 evidence_link("Что видела камера до исправления", depth_path + "initial-visibility.json")
+            varied = read(MEDIA / VARIED_FLOOR / "development/result.json").get("scores_retained_over_all", {})
+            if varied.get("depth"):
+                scored = varied["depth"]
+                ui.label("Кубик на разных расстояниях и под разными углами · MuJoCo").classes("work-muted")
+                for key, name in (("near", "Ближе"), ("middle", "Середина"), ("edge", "Граница досягаемости")):
+                    wins, total = scored[key]
+                    ui.label(f"{name} · {wins}/{total} удержаний")
+                evidence_link("36 сцен · позиции, повороты, исходы", VARIED_FLOOR + "development/result.json")
+            mobile_path = VARIED_FLOOR + "mobile-development-v2/result.json"
+            mobile = read(MEDIA / mobile_path)
+            if mobile:
+                ui.label(f"Кубик вне досягаемости · подъезд и захват {mobile['retained']}/{mobile['attempts']}")
+                evidence_link("Подъезд и повторное наблюдение перед захватом", mobile_path)
             watch_path = REPORT + "wrist-video-failure-watch-v1/paired-test/"
             watch = read(MEDIA / watch_path / "result.json")
             if watch.get("pairs"):
@@ -648,6 +662,16 @@ def install(jobs, css):
                 else:
                     detail = "ожидает свободного исполнителя"
                 ui.label(title + " · " + detail).classes("work-muted")
+            scenario_queue = read(MEDIA / VARIED_FLOOR / "training/queue.json")
+            if scenario_queue:
+                ui.label("Разные сценарии кубика · ACT и Diffusion").classes("work-name")
+                evidence_link("Разбиение, конфигурации и задания", VARIED_FLOOR + "training/queue.json")
+                for policy, item in scenario_queue["models"].items():
+                    if item.get("job"):
+                        current = jobs.get(item["job"])
+                        ui.link(policy.upper() + " · " + STATES.get(current["status"], current["status"]), "/jobs/" + item["job"])
+            elif (MEDIA / VARIED_FLOOR / "training/protocol.json").is_file():
+                ui.label("Готовятся показы в разных сценариях кубика").classes("work-muted")
 
         with queue_box:
             queue_view()
@@ -678,9 +702,9 @@ def install(jobs, css):
             )
         else:
             ui.label("Нет свежего статуса моста ROS 2.")
-        ui.label(
-            "Для проверки помощи в комнате нужны метка на цели, измеренное взаимное положение камер и наблюдаемая конечная позиция. Захват на полу проверяется отдельной физической попыткой."
-        )
+        evidence_link("Физический подъезд Tank по наблюдению ROSMASTER без меток",
+                      REPORT + "markerless-shelf-20261124/physical-pilot-continuation.json")
+        ui.label("Сравнительная полевая серия и физический захват кубика требуют отдельных контрольных попыток.")
         station_note = ui.label().classes("work-muted")
 
         async def check_station():
