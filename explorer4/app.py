@@ -169,6 +169,8 @@ from . import workspace_page
 workspace_page.install(jobs, CSS)
 from . import field_session_page
 field_session_page.install()
+from . import so101_metric_page
+so101_metric_page.install()
 from . import peer_dock_page
 peer_dock_page.install(control)
 (DATA/'world').mkdir(parents=True,exist_ok=True)

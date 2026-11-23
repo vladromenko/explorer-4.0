@@ -28,8 +28,17 @@ def camera_fingerprint(camera):
     return digest({key: camera.get(key) for key in keys})
 
 
+def marker_geometry_identity(meta):
+    keys = ('instance_id','size_m','marker_dictionary','marker_id','marker_side_m','marker_from_object')
+    return digest({key:meta['settings'][key] for key in keys})
+
+
 def calibration_for_review(review, meta):
     calibration = read_artifact(review['calibration_ref'], review['calibration_sha256'])
+    return validate_geometry_calibration(calibration, meta)
+
+
+def validate_geometry_calibration(calibration, meta):
     if calibration.get('schema') != 'so101-donor-geometry-validation-v1':
         raise ValueError('Independent current geometry validation required')
     if calibration.get('source_calibration_sha256') != meta['calibration_sha256'] or calibration.get('source_model_sha256') != meta['model_sha256']:
@@ -43,7 +52,12 @@ def calibration_for_review(review, meta):
     if controls.get('kind') != 'independent_geometry_controls' or controls.get('used_for_fit') is not False or controls.get('source_calibration_sha256') != meta['calibration_sha256']:
         raise ValueError('Held-out controls must match this calibration and be excluded from its fit')
     # Engineering admission for this pilot only, not a general accuracy guarantee.
-    for key, dimension, limit in (('pose_controls', 3, .005), ('jaw_controls', 1, .003)):
+    checks = [('pose_controls', 3, .005), ('jaw_controls', 1, .003)]
+    if 'marker_geometry_sha256' in calibration:
+        if marker_geometry_identity(meta) != calibration['marker_geometry_sha256']:
+            raise ValueError('Independent camera measurements refer to another target geometry')
+        checks.append(('camera_controls', 3, .005))
+    for key, dimension, limit in checks:
         items = controls.get(key, [])
         if len(items) < 3 or len({x.get('id') for x in items}) != len(items) or any(not x.get('id') for x in items):
             raise ValueError('At least three distinct measured controls required: ' + key)
