@@ -1,12 +1,101 @@
 """One preparation list for the physical session and its metric print targets."""
 
 from fastapi.responses import FileResponse
-from nicegui import app, ui
+from nicegui import app, run, ui
 
 from .paths import ROOT
+from . import field_time
+
+
+def time_panel():
+    with ui.expansion("Время работы участников", icon="timer").classes("w-full"):
+        ui.label(
+            "Отмечайте только наблюдаемое время одного человека. Для общего ресурса укажите только работу, общую для условий сравнения показов."
+        )
+        person = ui.input("Участник (имя или постоянный код)", value="оператор")
+        activity = ui.select(field_time.CATEGORIES, value="preparation", label="Вид работы").classes("w-full")
+        selected = {"resource": "common"}
+
+        async def handle(function, *args, **kwargs):
+            try:
+                result = await run.io_bound(function, *args, **kwargs)
+                if isinstance(result, dict) and "origin_resource" in result:
+                    selected["resource"] = result["origin_resource"]
+                view.refresh()
+            except (KeyError, ValueError, OSError) as error:
+                ui.notify(str(error), type="negative")
+
+        @ui.refreshable
+        def view():
+            state = field_time.read()
+            choices = field_time.labels(state)
+            resource = ui.select(choices, value=selected["resource"], label="Ресурс").classes("w-full")
+            ui.button(
+                "Начать отсчёт",
+                on_click=lambda: handle(field_time.start, person.value, activity.value, resource.value),
+            )
+            for ident, event in state["active"].items():
+                with ui.row().classes("items-center"):
+                    ui.label(
+                        f"{event['person_id']} · {field_time.CATEGORIES[event['activity']]} · {choices.get(event['origin_resource'], event['origin_resource'])}"
+                    )
+                    ui.button("Завершить", on_click=lambda _, key=ident: handle(field_time.stop, key))
+                    ui.button(
+                        "Закрыть без замера",
+                        on_click=lambda _, key=ident: handle(field_time.stop, key, unmeasured=True),
+                    ).props("flat")
+            report = field_time.summary(state)
+            ui.label(
+                f"Засечено {report['known_minutes']:.2f} чел.-мин, включая подготовку {report['known_preparation_minutes']:.2f}. Полные затраты с историческими показами неизвестны."
+            )
+            pending = {
+                k: label
+                for k, label in choices.items()
+                if k.startswith("pending-donor:") and not state["bindings"].get(k)
+            }
+            donors = {k: label for k, label in choices.items() if k.startswith("donor:")}
+            used = {e["origin_resource"] for e in [*state["active"].values(), *state["intervals"]]}
+            used.update(k for children in state["bindings"].values() for k in children)
+            used_donors = {k: v for k, v in donors.items() if k in used}
+            if pending and donors:
+                with ui.row().classes("items-center"):
+                    waiting = ui.select(pending, label="Засеченный показ", value=next(iter(pending)))
+                    take = ui.select(donors, label="Сохранённая запись SO-101")
+                    ui.button(
+                        "Связать с записью",
+                        on_click=lambda: handle(
+                            field_time.bind, waiting.value, take.value or "", person.value
+                        ),
+                    )
+            if used_donors:
+                candidates = sorted(p.stem for p in (field_time.DATA / "world/skill_packets").glob("*.json"))
+                for k, label in used_donors.items():
+                    links = list(state["bindings"].get(k, {}))
+                    ui.label(
+                        label + (" · SkillPacket " + ", ".join(links) if links else " · пока без SkillPacket")
+                    )
+                if candidates:
+                    donor = ui.select(used_donors, label="Измеренный показ", value=next(iter(used_donors)))
+                    packet = ui.select(candidates, label="SHA пакета")
+                    ui.button(
+                        "Связать с проверенным пакетом",
+                        on_click=lambda: handle(
+                            field_time.bind, donor.value, packet.value or "", person.value
+                        ),
+                    )
+            if pending and not donors:
+                ui.label("Ожидается сохранённая измеренная запись SO-101 для привязки.")
+            ui.button("Обновить список записей", on_click=view.refresh).props("flat")
+            ui.link("Журнал для расчёта человеко-минут", "/api/workspace/field-time-ledger.json")
+
+        view()
 
 
 def install():
+    @app.get("/api/workspace/field-time-ledger.json")
+    def time_ledger():
+        return field_time.read()
+
     @app.get("/api/workspace/field-targets.pdf")
     def print_pack():
         return FileResponse(
@@ -77,4 +166,6 @@ def install():
             ui.label(
                 "Если проверяете узнавание одного кубика двумя роботами, оставьте AprilTag №1 на том же 29-мм кубике. При STOP покажите его камере ROSMASTER и проверьте №1 на сохранённом кадре. Исходный кадр SO-101 уже есть."
             )
+            ui.link("Метрическая калибровка захвата SO-101", "/recording/so101-calibration")
             ui.link("Проверить метку кубика на ROSMASTER", "/rosmaster/sensors?object_marker=true")
+            time_panel()
