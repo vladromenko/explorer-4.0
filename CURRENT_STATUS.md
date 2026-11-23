@@ -2,7 +2,7 @@
 
 ## 23 November 2026
 
-On Homebrain the common-deadline docking pilot finished all 64 branches on 16 new scenes. Both local-first and the adaptive selector completed 13 with six requests. Local-only completed eight. Historical raw ACT completed three of twenty starts with skill initialization and one from scratch. The newer native motor and vision candidates each lost terminal successes on fresh tests. The current physical series has no observer-scored result. Source changes, confidence limits and the inputs needed from the operator are linked below. [Paired evidence and research audit](docs/RESEARCH_AUDIT.md) · [Generated table](README.md#measured-results) · [Field setup](http://192.168.0.168:8030/field-session)
+On Homebrain the common-deadline docking pilot finished all 64 branches on 16 new scenes. Both local-first and the adaptive selector completed 13 with six requests. Local-only completed eight. Historical raw ACT completed three of twenty starts with skill initialization and one from scratch. The newer native motor and vision candidates each lost terminal successes on fresh tests. Returning to the camera look pose before closure raised first stable carries from 21 to 28 on 32 paired simulated starts. The current physical series has no observer-scored result. Source changes, confidence limits and the inputs needed from the operator are linked below. [Paired evidence and research audit](docs/RESEARCH_AUDIT.md) · [Generated table](README.md#measured-results) · [Field setup](http://192.168.0.168:8030/field-session)
 
 ## Historical status at 16 November 2026
 
