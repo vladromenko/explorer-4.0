@@ -135,3 +135,14 @@ def test_http_goal_adds_policy_caps_to_manual_caps_and_keeps_plain_manual(hw, co
     assert hw.board.sent[-1] == [.08, .22]
     assert command_http(3, autonomous_goal='false').status_code == 422
     assert len(hw.board.sent) == 2
+
+
+def test_onboard_health_attests_only_the_current_open_lease(hw):
+    import hashlib
+    assert hw.status()['autonomous_command_guard'] == {'version':1,'lease_sha256':None}
+    arm(hw, Board())
+    assert hw.status()['autonomous_command_guard']['lease_sha256'] == hashlib.sha256(b'op').hexdigest()
+    hw.lease='next'
+    assert hw.status()['autonomous_command_guard']['lease_sha256'] == hashlib.sha256(b'next').hexdigest()
+    hw.armed=False
+    assert hw.status()['autonomous_command_guard']['lease_sha256'] is None

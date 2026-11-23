@@ -1,5 +1,6 @@
 """Tank observation/command contract without networking or motors."""
 import json
+import hashlib
 import threading
 import time
 from types import SimpleNamespace
@@ -12,6 +13,12 @@ import pytest
 from explorer4 import tank, local_work, trials
 
 
+def contract(lease, mode='manual'):
+    return {'robot':'tank', 'armed':True, 'hardware_open':True, 'mode':mode,
+            'task_profile':'tank_dock', 'software':tank.guard_sources(),
+            'autonomous_command_guard':{'version':1,'lease_sha256':hashlib.sha256(lease.encode()).hexdigest()}}
+
+
 @pytest.fixture
 def source(monkeypatch):
     requests=[]
@@ -19,12 +26,12 @@ def source(monkeypatch):
     jpeg=cv2.imencode('.jpg',np.zeros((400,640,3),np.uint8))[1].tobytes()
     def route(request):
         now=time.monotonic_ns()
-        if request.url.path=='/health':return httpx.Response(200,json={'monotonic_ns':now})
-        if request.url.path=='/session':return httpx.Response(200,json={'lease':'test-only'})
+        if request.url.path=='/health':return httpx.Response(200,json={'monotonic_ns':now,**contract('test-only')})
+        if request.url.path=='/session':return httpx.Response(200,json={'lease':'test-only',**contract('test-only')})
         if request.url.path=='/stop':return httpx.Response(200,json={})
         if request.url.path=='/frame.jpg':
             info={'sequence':1,'source_timestamp_ns':123,'source_clock':'robot_ros', 'received_ns':now-1000}
-            status={'monotonic_ns':now,'action':list(accepted),'battery_voltage':8.,'battery_received_ns':now,
+            status={**contract('test-only'),'monotonic_ns':now,'action':list(accepted),'battery_voltage':8.,'battery_received_ns':now,
                     'imu':None,'imu_received_ns':None}
             return httpx.Response(200,content=jpeg,headers={'X-Explorer-Camera':json.dumps(info),'X-Explorer-Observation':json.dumps(status)})
         value=json.loads(request.content);requests.append(value)
@@ -193,3 +200,119 @@ def test_replaced_goal_sends_neutral_without_cancelling_successor(source, replac
     src.control.goal = None
     src.send([.1, 0], obs)
     assert 'autonomous_goal' not in previous[-1]
+
+
+@pytest.mark.parametrize('mode', ['manual', 'policy', 'replay'])
+@pytest.mark.parametrize('implementation', ['old', 'wrong_lease', 'unknown_source', 'compatible'])
+def test_positive_motion_never_probes_an_unverified_running_agent(monkeypatch, mode, implementation):
+    requests = []
+    lease = 'actual-opened-lease'
+    proof = contract(lease, mode)
+    if implementation == 'old':
+        proof.pop('autonomous_command_guard')
+    elif implementation == 'wrong_lease':
+        proof['autonomous_command_guard']['lease_sha256'] = '0'*64
+    elif implementation == 'unknown_source':
+        proof['software']['limits.py'] = 'f'*64
+
+    def legacy_accepts_extra_fields(request):
+        now = time.monotonic_ns()
+        if request.url.path == '/health':
+            return httpx.Response(200, json={'monotonic_ns':now, **proof})
+        if request.url.path == '/session':
+            return httpx.Response(200, json={'lease':lease, **proof})
+        if request.url.path == '/stop':
+            return httpx.Response(200,json={})
+        assert request.url.path == '/command'
+        body = json.loads(request.content)
+        requests.append((body['v'],body['w']))
+        return httpx.Response(200, json={'action':[body['v'],body['w']], 'send_start_ns':now,
+                                         'send_end_ns':now, 'motor_targets_rps':[]})
+    monkeypatch.setattr(tank, 'client', lambda:httpx.Client(base_url='http://fake', transport=httpx.MockTransport(legacy_accepts_extra_fields)))
+    src = tank.TankSource(SimpleNamespace(goal=None), mode=mode)
+    try:
+        src.start(explicit_user_start=True)
+        now = time.monotonic_ns()
+        obs = {'observation_timestamp_ns':now, 'camera_missing':False,
+               'images':{'front':{'homebrain_receive_timestamp_ns':now, 'request_duration_ns':0,
+                                  'age_at_agent_response_ns':1000}},
+               'motion_sensors':{'scan_age_ns':1000,'front':1.,'rear':1.}}
+        goal = SimpleNamespace(active=True, cancel=lambda why:None)
+        if mode == 'manual':
+            src.control.goal = goal
+        result = src.send([.1,.1],obs,autonomous_goal=(mode=='manual'),
+                          expected_goal=goal if mode=='manual' else None)
+        if implementation == 'compatible':
+            assert requests == [(.1,.1)] and not result['motion_paused']
+        else:
+            assert requests == [(0.,0.)] and '--inspect-live' in result['pause_reason']
+            if mode == 'manual':
+                src.control.goal = None
+                src.send([.1,0.],obs)
+                assert requests[-1] == (.1,0.)
+    finally:
+        src.close()
+
+
+def test_changed_lease_cannot_inherit_a_previously_verified_guard(source):
+    src, sent = source
+    obs = src.observe()
+    obs['motion_sensors']={'scan_age_ns':1000,'front':1.,'rear':1.}
+    src.control.goal=SimpleNamespace(active=True,cancel=lambda _:None)
+    assert src.send([.1,0.],obs)['action'] == [.1,0.]
+    src.lease='different-lease'
+    result=src.send([.1,0.],obs)
+    assert sent[-1]['lease']=='different-lease' and sent[-1]['v']==0
+    assert result['motion_paused'] and '--inspect-live' in result['pause_reason']
+
+
+def test_transport_retry_rechecks_guard_before_new_server_can_see_any_motion(source):
+    src, _ = source
+    obs = src.observe()
+    obs['motion_sensors'] = {'scan_age_ns':1000,'front':1.,'rear':1.}
+    src.control.goal = SimpleNamespace(active=True, cancel=lambda _:None)
+    first, after = [], []
+    requests = []
+    original_post, original_get = src.http.post, src.http.get
+
+    def send(path, **kwargs):
+        body = kwargs['json']
+        if not first:
+            first.append([body['v'],body['w']])
+            raise httpx.ConnectTimeout('connection switched after an attested attempt')
+        after.append([body['v'],body['w']])
+        return original_post(path,**kwargs)
+
+    def old_health(path,**kwargs):
+        requests.append(path)
+        return httpx.Response(200, request=httpx.Request('GET','http://test/health'),
+                              json={'robot':'tank','armed':True,'mode':'manual','hardware_open':True})
+
+    src.http.post, src.http.get = send, old_health
+    try:
+        result = src.send([.1,0.],obs)
+    finally:
+        src.http.post, src.http.get = original_post, original_get
+    assert first == [[.1,0.]] and requests == ['/health'] and after == [[0.,0.]]
+    assert result['motion_paused'] and '--inspect-live' in result['pause_reason']
+
+
+def test_latest_camera_status_revokes_an_opened_guard_when_runtime_changes(source):
+    src, sent = source
+    get = src.http.get
+    def old_frame(path, **kwargs):
+        frame = get(path, **kwargs)
+        if path == '/frame.jpg':
+            raw = json.loads(frame.headers['X-Explorer-Observation'])
+            raw.pop('autonomous_command_guard')
+            frame.headers['X-Explorer-Observation'] = json.dumps(raw)
+        return frame
+    src.http.get = old_frame
+    src.control.goal = SimpleNamespace(active=True,cancel=lambda _:None)
+    try:
+        obs = src.observe()
+    finally:
+        src.http.get = get
+    obs['motion_sensors'] = {'scan_age_ns':1000,'front':1.,'rear':1.}
+    result = src.send([.1,.1],obs)
+    assert sent[-1]['v'] == sent[-1]['w'] == 0 and '--inspect-live' in result['pause_reason']

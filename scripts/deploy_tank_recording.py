@@ -24,6 +24,7 @@ HEALTH_FILES = ('agent.py', 'native_driver.py', 'native_client.py', 'limits.py',
                 'motion_permission.py', 'sensors.py')
 PREVIOUS_PERMISSION_SHA = 'b7c34ba88d19c487fd3e388754af76c26be2a0eadec15289673c0fb042a2b22c'
 REVIEWED_V2_AGENTS = {
+    'f926990099fca0092b47a1d41fbc71438221636eb33bee453e5a3929a9d553e4',  # c4cf849
     'bb82cf1a83f08d1fb610949110308543c8fe834efeababe9f813a43f21130ccb',  # 251f1c5
     'feb4046f3209914d2a7c1378fd31134dc0c68b50881bb160066e1bdc936e1fc1',  # f7822b8
 }

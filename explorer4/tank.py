@@ -1,12 +1,13 @@
 """Homebrain client for the isolated Tank agent. Motor watchdog lives on the robot."""
 import json
+import hashlib
 import math
 import threading
 import time
 import cv2
 import httpx
 import numpy as np
-from .paths import DATA
+from .paths import DATA, ROOT
 
 
 def config():return json.loads((DATA/'configs/tank-agent.json').read_text())
@@ -45,12 +46,26 @@ def autonomy_hold(observation, requested, now_ns):
     return None
 
 
+def guard_sources():
+    directory = ROOT / 'agents/tank'
+    names = ('agent.py', 'limits.py', 'motion_permission.py', 'native_client.py', 'native_driver.py')
+    return {name:hashlib.sha256((directory/name).read_bytes()).hexdigest() for name in names}
+
+
+AUTONOMY_UNVERIFIED = ('Автоматическое движение Tank недоступно: действующая сессия '
+                       'не подтвердила бортовую защиту. На Homebrain выполните '
+                       '.venv/bin/python -B scripts/deploy_tank_recording.py --inspect-live')
+
+
 class TankSource:
     def __init__(self,control,mode='manual',environment=False):
         self.control=control
         self.mode=mode
         self.http=client()
         self.lease=None
+        self.guard_context=None
+        self.guard_verified=False
+        self.expected_guard_sources={}
         self.previous_camera=None
         self.provenance={}
         self.sequence=0
@@ -60,9 +75,42 @@ class TankSource:
         from .tank_response import ScanResponse
         self.scan_response=ScanResponse()
 
+    def _context(self):
+        return (self.http, self.lease, self.mode, self.environment)
+
+    def bind_guard(self, status):
+        proof = status.get('autonomous_command_guard')
+        software = status.get('software')
+        lease_sha = hashlib.sha256(self.lease.encode()).hexdigest() if isinstance(self.lease, str) and self.lease else None
+        expected = self.expected_guard_sources
+        self.guard_verified = bool(lease_sha and status.get('robot') == 'tank'
+            and status.get('armed') is True and status.get('hardware_open') is True
+            and status.get('mode') == self.mode
+            and status.get('task_profile') == ('tank_dock_rgbd_lidar' if self.environment else 'tank_dock')
+            and isinstance(proof, dict) and type(proof.get('version')) is int and proof['version'] == 1
+            and proof.get('lease_sha256') == lease_sha and expected and isinstance(software, dict)
+            and all(software.get(name) == sha for name, sha in expected.items()))
+        self.guard_context = self._context()
+        self.provenance['onboard_autonomy'] = {'verified':self.guard_verified, 'lease_sha256':lease_sha,
+            'runtime_guard':proof, 'software':software}
+
+    def automatic_ready(self):
+        if self.guard_context != self._context():
+            try:
+                response = self.http.get('/health', timeout=.5)
+                response.raise_for_status()
+                self.bind_guard(response.json())
+            except (httpx.HTTPError, ValueError, AttributeError, TypeError):
+                self.guard_verified = False
+                self.guard_context = None
+        return self.guard_verified
+
     def start(self,explicit_user_start=False,stop=lambda:False):
         if not explicit_user_start or stop():raise InterruptedError('Explicit live operator required')
         self.stop_requested=stop
+        self.lease=None
+        self.guard_context=None
+        self.guard_verified=False
         observations=[]
         for _ in range(5):
             a=time.monotonic_ns();r=self.http.get('/health');r.raise_for_status();b=time.monotonic_ns()
@@ -80,7 +128,14 @@ class TankSource:
             from .tank_handoff import invoke
             invoke('enter')
             r=self.http.post('/session',json=request,timeout=20)
-        require_response(r,'запуск');self.lease=r.json()['lease']
+        require_response(r,'запуск')
+        opened = r.json()
+        self.lease = opened['lease']
+        try:
+            self.expected_guard_sources = guard_sources()
+        except OSError:
+            self.expected_guard_sources = {}
+        self.bind_guard(opened)
         if self.environment:
             from .sensors import SensorFeed,stream_age,SCHEMA
             self.sensors=SensorFeed(interval=.2,isolated=True);self.sensors.start()
@@ -115,6 +170,9 @@ class TankSource:
         received=time.monotonic_ns()
         if status is None:
             h=self.http.get('/health',timeout=.5);h.raise_for_status();status=h.json()
+        # The camera and the health fallback carry the active agent's own session receipt.
+        # A changed server can therefore revoke an old proof without a transport exception.
+        self.bind_guard(status)
         camera_missing=rgb is None
         if camera_missing:
             rgb=getattr(self,'last_rgb',None)
@@ -169,28 +227,43 @@ class TankSource:
         for attempt in range(2):
             if self.stop_requested():
                 raise InterruptedError("STOP before command")
+            context = self._context()
+            http, lease, mode, _ = context
+            needs_guard = any(intent) and autonomous
+            ready = self.automatic_ready() and self.guard_context == context if needs_guard else True
             now = time.monotonic_ns()
-            if any(intent) and autonomous:
-                hold = autonomy_hold(observation, intent, now)
+            if needs_guard:
+                hold = autonomy_hold(observation, intent, now) if ready else AUTONOMY_UNVERIFIED
             elif observation is not None and now - observation['observation_timestamp_ns'] > 2_000_000_000:
                 hold = "Наблюдение Tank устарело"
             owns_goal = bound_goal is not None and getattr(self.control, "goal", None) is bound_goal
             if autonomous_goal and (not owns_goal or not bound_goal.active):
                 hold = "Задание Tank завершено или заменено"
+            if needs_guard and self._context() != context:
+                hold = AUTONOMY_UNVERIFIED
             command = [0., 0.] if hold else intent
             if hold and owns_goal and bound_goal.active:
                 bound_goal.cancel(hold)
             self.provenance['last_command_attempt'].update(sequence=index, dispatched=command, guard_reason=hold)
             try:
-                payload={'lease':self.lease,'sequence':index,'v':command[0],'w':command[1]}
-                if autonomous and self.mode == "manual":
+                payload={'lease':lease,'sequence':index,'v':command[0],'w':command[1]}
+                if autonomous and mode == "manual":
                     payload["autonomous_goal"] = True
-                response=self.http.post('/command',json=payload,timeout=.5)
+                response=http.post('/command',json=payload,timeout=.5)
                 break
-            except httpx.TimeoutException as exc:
+            except httpx.TransportError as exc:
+                self.guard_context=None
+                self.guard_verified=False
+                if not isinstance(exc,httpx.TimeoutException):
+                    raise
                 if attempt:raise RuntimeError('Tank: нет ответа по Wi-Fi дважды подряд') from exc
                 index=self.sequence;self.sequence+=1
-        b=time.monotonic_ns();require_response(response,'команда');sent=response.json()
+        b=time.monotonic_ns()
+        if response.is_error:
+            self.guard_context=None
+            self.guard_verified=False
+        require_response(response,'команда')
+        sent=response.json()
         self.provenance['last_command_attempt']['accepted']=True
         return {'action':sent['action'],'requested_action':intent,
                 'motion_paused':bool(hold) or sent.get('motion_paused',False),'pause_reason':hold or sent.get('pause_reason'),
@@ -242,6 +315,9 @@ class TankSource:
         return result
 
     def close(self):
+        self.guard_context=None
+        self.guard_verified=False
+        self.lease=None
         errors=[]
         try:
             r=self.http.post('/stop',timeout=8);require_response(r,'STOP')

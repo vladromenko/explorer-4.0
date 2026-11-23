@@ -88,7 +88,10 @@ class Hardware:
 
     def status(self):
         with self.lock:
+            guard_lease = (hashlib.sha256(self.lease.encode()).hexdigest()
+                           if self.armed and self.board is not None and self.lease else None)
             return {'robot':'tank','software':self.software,'armed':self.armed,'hardware_open':self.board is not None,
+                    'autonomous_command_guard':{'version':1,'lease_sha256':guard_lease},
                     'sensor_errors':getattr(self,'sensor_errors',{}),'lidar':{'running':lidar_alive(),'error':LIDAR_STATE['error'],'restarts':LIDAR_STATE['restarts']},
                     'motion_paused':self.motion_paused,'depth_guard':{'front_m':self.depth_front,'floor':self.depth_floor,'age_s':None if self.depth_time is None else round((time.monotonic_ns()-self.depth_time)/1e9,2)},'mode':self.mode,'task_profile':self.task_profile,
                     'reason':self.reason,'action':self.last_action,'motor_acknowledged':False,
