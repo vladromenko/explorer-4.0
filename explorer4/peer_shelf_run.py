@@ -24,16 +24,20 @@ ROBOTS = ("tank", "rosmaster")
 
 
 def read_still(robot):
-    client = SensorClient(robot=robot)
-    try:
-        packet = client.snapshot(STREAMS)
-    finally:
-        client.close()
-    if not packet["meta"].get("read_only") or packet["meta"].get("motion_commands_sent") != 0:
-        raise ValueError(f"{robot}: нужен пассивный поток датчиков")
     names = ("rgb", "depth", "scan") if robot == "tank" else ("rgb", "depth", "arm", "odometry")
-    if any(not 0 <= stream_age(packet, name) <= MAX_AGE_S for name in names):
-        raise ValueError(f"{robot}: устарели данные датчиков")
+    # Tank publishes to the isolated ROS domain once the Explorer operator takes over.
+    for isolated in ((True, False) if robot == "tank" else (False,)):
+        client = SensorClient(robot=robot, isolated=isolated)
+        try:
+            packet = client.snapshot(STREAMS)
+        finally:
+            client.close()
+        if not packet["meta"].get("read_only") or packet["meta"].get("motion_commands_sent") != 0:
+            raise ValueError(f"{robot}: нужен пассивный поток датчиков")
+        if all(0 <= stream_age(packet, name) <= MAX_AGE_S for name in names):
+            break
+    else:
+        raise ValueError(f"{robot}: нет свежего кадра. Камера Tank запускается при включении управления.")
     if robot == "rosmaster":
         odom = packet["arrays"].get("odometry")
         if odom is None or odom.shape != (9,) or np.linalg.norm(odom[6:]) > .02:
@@ -126,7 +130,7 @@ def probe():
 def handoff(control, session, owner, expected, receipt, fleet):
     from .drive import DriveTo
 
-    reader = FleetLocalizer(interval=.15, fleet=fleet, sources={"tank": False}, persist=False)
+    reader = FleetLocalizer(interval=.15, fleet=fleet, sources={"tank": True}, persist=False)
 
     def measured(robot, _command):
         return fleet.pose(robot, MAX_AGE_S)[0]
