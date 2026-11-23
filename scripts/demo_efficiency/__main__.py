@@ -45,7 +45,7 @@ def main():
         result = {
             "study_day": sid,
             "training_started": False,
-            "run": ".venv/bin/python -m explorer4.study_day " + sid,
+            "run": ".venv/bin/python -m scripts.demo_efficiency.launch " + sid,
         }
     elif args.command == "size":
         from .accounting import paired_size, verify_reference
