@@ -82,6 +82,8 @@ def test_helper_heads_for_reported_place(room, monkeypatch):
     world_memory.record('tank', 'к носку', 'sock', 1.0, 0.0)        # sock at (1, 2)
     world_memory.POSES['rosmaster'].fix(1.0, 0.0, 0.0)              # ROSMASTER at (1, 0) facing +x
     monkeypatch.setattr(goto.Detector, 'shared', classmethod(lambda cls: NoDetections()))
+    from explorer4.fleet_map import FLEET
+    monkeypatch.setattr(FLEET, 'scan', lambda robot: np.array([[2., 0.], [2., .12]]))
     g = goto.GoTo('rosmaster', 'к носку')
     g.localizer.locate = lambda rgb, cam: None
     v, w = g.command(np.zeros((480, 640, 3), np.uint8))

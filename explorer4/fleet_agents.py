@@ -220,30 +220,86 @@ class FleetAgents:
     # ------------------------------------------------------------------ SceneObserver
     def sighting(self, item):
         """ObservationEvidence for a world-memory sighting; conflicts with an earlier place noted."""
-        o = self.role('SceneObserver')
-        if not item or not item.get('room_xy'):
+        o = self.role("SceneObserver")
+        if not item or not (item.get("room_xy") or item.get("identity")):
             return None
-        now = time.time()
-        payload = {'object': item['prompt'], 'room_xy': item['room_xy'], 'robot': item['robot'],
-                   'distance_m': item.get('distance'), 'uncertainty_m': item.get('uncertainty_m'), 'seen_at': item['at']}
-        ident = f'fleet:{item["robot"]}:{item["prompt"].replace(" ", "_")}:{int(item["at"] * 1000)}'[:128]
+        observed = item.get("observation") or {}
+        observed_at = item["at"]
+        received = observed.get("received_timestamp_ns", int(observed_at * 1e9))
+        payload = {
+            "object": item["prompt"],
+            "object_instance": item.get("object_instance"),
+            "identity_evidence": item.get("identity"),
+            "room_xy": item["room_xy"],
+            "robot": item["robot"],
+            "distance_m": item.get("distance"),
+            "uncertainty_m": item.get("uncertainty_m"),
+            "uncertainty_source": item.get("uncertainty_source", "legacy estimate"),
+            "measured_error_bound_m": item.get("measured_error_bound_m"),
+            "seen_at": observed_at,
+            "map_frame_id": item.get("frame_id"),
+            "source_pose": item.get("robot_pose"),
+            "rgb": observed,
+            "bbox_xyxy_px": item.get("bbox_xyxy_px"),
+            "snapshot": item.get("snapshot"),
+            "snapshot_sha256": item.get("snapshot_sha256"),
+        }
+        ident = "fleet:" + (
+            item.get("sample_id")
+            or store.digest([item["robot"], item["prompt"], observed_at, item["room_xy"]])
+        )
         try:
-            store.evidence([ident], fresh=False)          # already recorded (the same sighting)
+            store.evidence([ident], fresh=False)  # already recorded (the same sighting)
             return ident
         except ValueError:
             pass
+        artifact = {}
+        if item.get("snapshot") and item.get("snapshot_sha256"):
+            from . import world_memory
+
+            path = (world_memory.SNAPSHOTS / item["snapshot"]).resolve()
+            if path.is_relative_to(store.DATA.resolve()):
+                artifact = {
+                    "artifact_ref": str(path.relative_to(store.DATA.resolve())),
+                    "artifact_sha256": item["snapshot_sha256"],
+                }
         try:
-            store.put_evidence({'id': ident, 'domain': self.domain(), 'robot': item['robot'],
-                                'source': 'fleet_scout_sam3' if self.domain() == 'real' else 'fleet_sim_camera',
-                                'sample_id': ident, 'frame_id': 'fleet_map', 'camera_id': 'front',
-                                'source_timestamp_ns': int(item['at'] * 1e9), 'received_timestamp_ns': int(now * 1e9),
-                                'clock_domain': 'homebrain_wall', 'created_at': now, 'expires_at': now + EVIDENCE_TTL_S,
-                                'units': {'room_xy': 'm'}, 'status': 'observed', 'quality': {'score': item.get('score')},
-                                'content_sha256': store.digest(payload), 'payload': payload})
+            store.put_evidence(
+                {
+                    **artifact,
+                    "id": ident,
+                    "domain": self.domain(),
+                    "robot": item["robot"],
+                    "source": "fleet_scout_sam3" if self.domain() == "real" else "fleet_sim_camera",
+                    "sample_id": ident,
+                    "frame_id": item.get("frame_id") or "unversioned_room",
+                    "camera_id": observed.get("optical_frame") or (item["robot"] + "/scout_rgb"),
+                    "source_timestamp_ns": observed.get("source_timestamp_ns"),
+                    "received_timestamp_ns": received,
+                    "clock_domain": observed.get("receipt_clock", "homebrain_wall_receipt"),
+                    "boot_id": observed.get("boot_id"),
+                    "created_at": observed_at,
+                    "expires_at": observed_at + EVIDENCE_TTL_S,
+                    "units": {"room_xy": "m"} if item.get("room_xy") else {},
+                    "status": "estimated" if item.get("room_xy") else "observed",
+                    "quality": {
+                        "score": item.get("score"),
+                        "timing_basis": observed.get("timing_basis", "legacy_record_time"),
+                        "sensor_acquisition_known": observed.get("source_timestamp_ns") is not None,
+                    },
+                    "content_sha256": store.digest(payload),
+                    "payload": payload,
+                }
+            )
         except Exception as exc:
-            o.note('ошибка', f'свидетельство не сохранено: {exc}')
+            o.note("ошибка", f"свидетельство не сохранено: {exc}")
             return None
-        o.note('видит', f'{item["robot"]} видит «{item["prompt"]}» в ({item["room_xy"][0]:.2f}; {item["room_xy"][1]:.2f}) м', evidence=ident)
+        position = " · точка на карте " + str(item["room_xy"]) if item.get("room_xy") else ""
+        o.note(
+            "видит",
+            f"{item['robot']} видит «{item.get('object_instance') or item['prompt']}»{position}",
+            evidence=ident,
+        )
         return ident
 
     def conflict(self, prompt, old_xy, new_xy):

@@ -75,11 +75,14 @@ class Explore:
         if self.scout is not None:
             self.scout.set_camera(cam)
 
-    def command(self, rgb):
+    def command_from_camera(self, rgb, info, received_ns):
+        return self.command(rgb, camera_info=info, received_ns=received_ns)
+
+    def command(self, rgb, *, camera_info=None, received_ns=None):
         if not self.active:
             return [0., 0.]
         if self.scout is not None:
-            self.scout.feed(rgb)
+            self.scout.feed(rgb, camera_info=camera_info, received_monotonic_ns=received_ns)
         if self.stop_when is not None:
             why = self.stop_when()
             if why:

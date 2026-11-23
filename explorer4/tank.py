@@ -202,7 +202,11 @@ class TankSource:
             goal=None
         goal_control = goal is not None and goal.active
         if goal_control:
-            requested=goal.command(observation['images']['front']['image'])
+            image = observation['images']['front']
+            if hasattr(goal, 'command_from_camera'):
+                requested = goal.command_from_camera(image['image'], image, image.get('homebrain_receive_timestamp_ns'))
+            else:
+                requested = goal.command(image['image'])
         else:
             requested=self.control.base_action()
         action=self.send(requested,observation,autonomous_goal=goal_control)

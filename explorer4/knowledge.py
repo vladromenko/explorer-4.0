@@ -105,8 +105,8 @@ def assess(robot, prompt, domain='real', *, context=None, executor=None):
     context = context or {}
     out = {'gaps': [], 'reasons': {}, 'readiness': {}, 'executor': executor}
     instance = context.get('object_instance')
-    # The mobile sighting schema records a class box, not an observed instance ID.
-    item = None if instance else world_memory.target_for(None, prompt, WHERE_MAX_AGE_S)
+    item = (world_memory.target_for(robot, prompt, WHERE_MAX_AGE_S, object_instance=instance) if instance
+            else world_memory.target_for(robot, prompt, WHERE_MAX_AGE_S))
     uncertainty = item.get('uncertainty_m') if item else None
     unknown_location = item is None or type(uncertainty) not in (int, float) or not math.isfinite(uncertainty)
     poor_location = not unknown_location and uncertainty > WHERE_MAX_UNCERTAINTY_M
@@ -124,7 +124,10 @@ def assess(robot, prompt, domain='real', *, context=None, executor=None):
         out['reasons']['how'] = f'не хватает измерений подходящего экземпляра «{prompt}»'
     out['readiness']['object_properties_missing'] = properties_missing
     out['property_uncertainty_m'] = (measured or {}).get('evidence', {}).get('size_sigma_m')
-    out['readiness']['object_identity_unknown'] = True  # current recipient detectors observe classes only
+    recognition = item if instance and item else (world_memory.recent_instance(robot, prompt, instance, WHERE_MAX_AGE_S) if instance else None)
+    out['readiness']['object_identity_unknown'] = recognition is None
+    out['recipient_identity_observation'] = recognition.get('sample_id') if recognition else None
+    out['readiness']['continuous_recipient_identity_verified'] = False
     # Only a proved constraint can establish infeasibility. Unknown mechanics
     # produces uncertainty, not a fabricated impossibility or success.
     feasibility = context.get('feasibility') or {}

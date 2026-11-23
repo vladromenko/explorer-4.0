@@ -119,7 +119,12 @@ class RosmasterGoTo:
                 if started < slide_end and slide_direction:
                     dx, dy, yaw = 0., .08 * slide_direction, 0.
                 else:
-                    dx, yaw = goal.command(rgb)
+                    if hasattr(goal, "command_from_camera"):
+                        camera = {**sample["camera"], "arm_measured": sample.get("arm_measured"),
+                                  "arm_received_ns": sample.get("arm_received_ns")}
+                        dx, yaw = goal.command_from_camera(rgb, camera, sample["homebrain_received_ns"])
+                    else:
+                        dx, yaw = goal.command(rgb)
                     dy = 0.
                 reason = base_hold_reason(sample, scan_packet, camera_on_arm=camera_on_arm)
                 if reason or not 0 <= stream_age(packet, "depth") <= .5:

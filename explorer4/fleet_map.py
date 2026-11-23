@@ -398,8 +398,8 @@ class FleetMap:
             out = self._set(robot, pose=pose, quality=round(inl, 2), state=state, odom=odom, scan=fine, sub_pose=None,
                             message=f'На карте: {inl:.0%} точек совпало' + (f' · {note}' if note else ''))
             self.contrib[robot] = self.contrib.get(robot, 0) + (1 if self.last_key.get(robot) == pose else 0)
-        if state == 'tracking':
-            world_memory.POSES[robot].fix(*pose, source='lidar')
+            if state == 'tracking':
+                world_memory.POSES[robot].fix(*pose, source='lidar', frame_id='fleet_map:' + self.frame_id)
         return out
 
     def _without_robots(self, robot, pts_world, radius=.35):
@@ -504,6 +504,7 @@ class FleetMap:
             hits = self.grid.occupied().astype(np.float32)
             free = self.grid.known_free()
             track = {r: dict(s) for r, s in self.track.items()}
+            observation_frame = 'fleet_map:' + self.frame_id
         ys, xs = np.nonzero(hits + free)
         if len(xs) == 0:
             return None
@@ -529,7 +530,7 @@ class FleetMap:
             cv2.circle(img, p, int(.15 / RES * scale), colors[robot], 2, cv2.LINE_AA)
             tip = (int(cx + math.cos(t) * .3 / RES * scale), int(cy + math.sin(t) * .3 / RES * scale))
             cv2.arrowedLine(img, p, tip, colors[robot], 2, cv2.LINE_AA, tipLength=.35)
-        for item in world_memory.known_objects():
+        for item in world_memory.known_objects(frame_id=observation_frame):
             if item.get('room_xy'):
                 x, y = item['room_xy']
                 p = (int(((x / RES + SIZE // 2) - x0) * scale), int(((y / RES + SIZE // 2) - y0) * scale))

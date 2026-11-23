@@ -41,6 +41,8 @@ class Scout:
         self.cursor = 0
         self.frame = None
         self.frame_at = 0.
+        self.frame_context = None
+        self.last_source = None
         self.seen = {}                       # prompt -> last record time
         self.found = []                      # (prompt, item) found during this run
         self.passes = 0
@@ -52,12 +54,58 @@ class Scout:
         self.thread.start()
 
     def set_camera(self, cam):
-        self.cam = dict(cam)
+        with self.lock:
+            self.cam = dict(cam)
 
-    def feed(self, rgb):
-        if rgb is not None:
-            with self.lock:
-                self.frame, self.frame_at = rgb, time.monotonic()
+    def feed(self, rgb, *, camera_info=None, received_monotonic_ns=None):
+        """Keep the transport's clocks distinct from the SAM worker's processing time."""
+        if rgb is None:
+            return
+        info = camera_info or {}
+        if info.get("reused") or info.get("source_clock") == "missing":
+            return
+        stamp = info.get("source_timestamp_ns")
+        source_clock = info.get("source_clock")
+        stamp = stamp if type(stamp) is int and stamp > 0 and source_clock else None
+        sequence = info.get("sequence")
+        exposure = (
+            (info.get("boot_id"), sequence, stamp) if sequence is not None or stamp is not None else None
+        )
+        with self.lock:
+            if exposure is not None and exposure == self.last_source:
+                return
+            self.last_source = exposure
+            mono = time.monotonic_ns()
+            wall = time.time_ns()
+            receipt = mono if received_monotonic_ns is None else received_monotonic_ns
+            if not 0 < receipt <= mono:
+                raise ValueError("Invalid Homebrain monotonic receipt")
+            camera = self.cam.copy()
+            pose = world_memory.POSES[self.robot]
+            self.frame_context = (
+                camera,
+                {
+                    "received_timestamp_ns": receipt,
+                    "receipt_clock": "homebrain_monotonic",
+                    "receipt_wall_estimate_ns": wall - (mono - receipt),
+                    "timing_basis": "scout_intake" if received_monotonic_ns is None else "transport_receipt",
+                    "source_timestamp_ns": stamp,
+                    "source_clock": source_clock,
+                    "sequence": sequence,
+                    "boot_id": info.get("boot_id"),
+                    "optical_frame": info.get("frame_id"),
+                    "agent_received_ns": info.get("agent_receive_timestamp_ns", info.get("received_ns")),
+                    "camera_model": camera,
+                    "camera_model_sha256": world_memory.digest(camera),
+                    "source_arm_native": info.get("arm_measured"),
+                    "source_arm_received_ns": info.get("arm_received_ns"),
+                    "image_shape": list(rgb.shape),
+                    "calibration_sha256": info.get("calibration_sha256"),
+                    "pose_at": "scout_intake",
+                    "pose": pose.as_dict() if pose.known() else None,
+                },
+            )
+            self.frame, self.frame_at = rgb, mono / 1e9
 
     def stop(self):
         self.done.set()
@@ -75,41 +123,36 @@ class Scout:
         return batch
 
     def _run(self):
-        from .goto import ground_geometry
         while not self.done.is_set():
             with self.lock:
-                frame, at = self.frame, self.frame_at
+                frame, at, context = self.frame, self.frame_at, self.frame_context
                 self.frame = None
             if frame is None or time.monotonic() - at > 1.5:
                 self.done.wait(.1)
-                continue
-            try:
-                results, _ = self.detector.detect_many(frame, self.next_prompts(), conf=self.min_score)
-                self.error = None
-            except Exception as exc:
-                self.error = str(exc)
-                self.done.wait(2)
-                continue
-            self.passes += 1
-            for prompt, boxes in results.items():
-                boxes = [b for b in boxes if b[4] >= self.min_score]
-                if not boxes:
-                    continue
-                best = max(boxes, key=lambda b: b[4])
-                d, b, _ = ground_geometry(self.cam, best[:4], frame.shape[0])
-                if d > 5:
-                    continue                         # far away / above the horizon: position unreliable
-                if time.monotonic() - self.seen.get(prompt, 0) < 4 and prompt != self.priority:
-                    continue
-                self.seen[prompt] = time.monotonic()
+            else:
+                self._inventory_frame(frame, context)
+
+    def _inventory_frame(self, frame, context):
+        try:
+            results, _ = self.detector.detect_many(frame, self.next_prompts(), conf=self.min_score)
+            self.error = None
+        except Exception as exc:
+            self.error = str(exc)
+            self.done.wait(2)
+            return
+        self.passes += 1
+        for prompt, boxes in results.items():
+            boxes = [b for b in boxes if b[4] >= self.min_score]
+            ready = time.monotonic() - self.seen.get(prompt, 0) >= 4 or prompt == self.priority
+            if boxes and ready:
+                camera, info = context
                 name = self.names.get(prompt, prompt)
                 try:
-                    item = world_memory.record(self.robot, 'к ' + name, prompt, d, b, frame, best[:4], best[4])
-                except Exception:
-                    continue
-                self.found.append((prompt, item))
-                if self.on_found is not None:
-                    try:
-                        self.on_found(self.robot, prompt, item)
-                    except Exception:
-                        pass
+                    item = world_memory.record_boxes(self.robot, 'к ' + name, prompt, boxes, frame, camera, info)
+                    if item:
+                        self.seen[prompt] = time.monotonic()
+                        self.found.append((prompt, item))
+                        if self.on_found is not None:
+                            self.on_found(self.robot, prompt, item)
+                except Exception as exc:
+                    self.error = str(exc)

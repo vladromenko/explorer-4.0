@@ -450,11 +450,14 @@ class Swarm:
                 row['donor_reason'] = result['reason']
         if dimensions:
             row.update(dimension_knowledge_id=dimensions['id'], dimension_source=dimensions['source'])
+        from .knowledge import WHERE_MAX_AGE_S
+        recognition = world_memory.recent_instance("rosmaster", prompt, instance, WHERE_MAX_AGE_S)
+        row["recipient_single_frame_observation"] = recognition.get("sample_id") if recognition else None
         stages.append(row)
         note = ('Сохранена запись размеров этого экземпляра. ' if dimensions
                 else (row['donor_reason'] + '. ' if 'donor_reason' in row else ''))
-        return 'awaiting_recipient_identity', (note + f'Для «{instance}» нужен исполнитель, который распознаёт '
-                'метку в камере получателя и ведёт этот же предмет до цели. Сейчас мобильная камера различает только класс.')
+        identity = 'Камера получателя распознала метку в одном кадре. ' if recognition else 'Свежего кадра получателя с подтверждённой меткой пока нет. '
+        return 'awaiting_recipient_identity', note + identity + f'Для захвата «{instance}» нужно сопровождение того же экземпляра до конца действия.'
 
     def _fetch(self, prompt, text, stages):
         from . import so101_handoff

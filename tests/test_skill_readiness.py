@@ -15,7 +15,7 @@ def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(knowledge, 'STORE', tmp_path / 'knowledge.json')
     catalog.initialize()
     store.initialize()
-    monkeypatch.setattr(world_memory, 'target_for', lambda *a: None)
+    monkeypatch.setattr(world_memory, 'MEMORY', tmp_path / 'world.json')
     return tmp_path
 
 
