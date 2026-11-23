@@ -47,14 +47,23 @@ def claims():
         for seed, trial in budget_rows.items():
             branch = trial["methods"][arm]
             events = branch["events"]
-            measured_calls = sum(e["stage"] == "requested" for e in events)
+            requests = [e for e in events if e["stage"] == "requested"]
+            measured_calls = len(requests)
+            elapsed = events[-1]["t"]
+            help_units = sum(request["fee"] for request in requests)
+            times = [e["t"] for e in events]
+            if (branch["reset"] != trial["methods"][pilot["fixed"]]["reset"]
+                    or branch["seconds"] != elapsed or branch["help_units"] != help_units
+                    or sorted(times) != times or not 0 <= elapsed <= 20
+                    or (arm == "adaptive" and branch["model_sha256"] != pilot["model_sha256"])):
+                raise ValueError("Scene reset, model, service cost or clock differs from its receipt")
             if (branch["protocol_sha256"] != pilot["protocol_sha256"] or measured_calls != branch["calls"]
                     or events[-1]["stage"] != "recipient_outcome" or events[-1]["success"] != (branch["terminal"]["recipient"] == "success")):
                 raise ValueError("The branch and its terminal event disagree")
             outcomes[arm][seed] = branch["terminal"]["recipient"] == "success"
             calls[arm] += measured_calls
-            utility.append(int(outcomes[arm][seed]) - pilot["prices"]["time_weight"] * branch["seconds"]
-                           - pilot["prices"]["help_weight"] * branch["help_units"])
+            utility.append(int(outcomes[arm][seed]) - pilot["prices"]["time_weight"] * elapsed
+                           - pilot["prices"]["help_weight"] * help_units)
         average[arm] = mean(utility)
     n = len(budget_rows)
     fixed, adaptive, local, immediate = arms
