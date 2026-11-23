@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 import time
 from types import SimpleNamespace
-from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
 import numpy as np
@@ -92,17 +91,18 @@ def replay_stopped_scan(packet, goal, *, lateral_m=0.):
         return fleet_map.transform(points - pose[:2], [0., 0., -pose[2]])
 
     replay = SimpleNamespace(grid=grid, track={}, scan=scan)
-    with patch.multiple(drive, FLEET=replay, pose_now=lambda *_: pose.tolist(),
-                        time=SimpleNamespace(monotonic=lambda: now)):
-        controller = drive.DriveTo("tank", goal, tol=.045, heading_tol=.15, time_limit_s=20, v_max=.08)
-        for _ in range(401):
-            v, w = controller.command(None)
-            pose += [.05 * v * np.cos(pose[2]), .05 * v * np.sin(pose[2]), .05 * w]
-            elapsed += .05
-            now += .05
-            clearance = min(clearance, float(np.linalg.norm(points - pose[:2], axis=1).min()))
-            if not controller.active:
-                break
+    controller = drive.DriveTo(
+        "tank", goal, tol=.045, heading_tol=.15, time_limit_s=20, v_max=.08,
+        fleet=replay, pose_lookup=lambda *_: pose.tolist(), clock=lambda: now,
+    )
+    for _ in range(401):
+        v, w = controller.command(None)
+        pose += [.05 * v * np.cos(pose[2]), .05 * v * np.sin(pose[2]), .05 * w]
+        elapsed += .05
+        now += .05
+        clearance = min(clearance, float(np.linalg.norm(points - pose[:2], axis=1).min()))
+        if not controller.active:
+            break
     return {
         "goal": goal.tolist(), "terminal_pose": pose.tolist(), "state": controller.state,
         "message": controller.message, "simulated_seconds": elapsed,

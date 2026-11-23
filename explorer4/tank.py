@@ -25,18 +25,24 @@ def require_response(response, operation):
         raise RuntimeError('Tank · '+operation+': '+str(response.json().get('detail','Управление остановлено')))
     response.raise_for_status()
 
+
+CAMERA_MISSING = "Нет изображения камеры Tank"
+CAMERA_STALE = "Нет свежего наблюдения камеры Tank"
+
+
 def autonomy_hold(observation, requested, now_ns):
     """Check the age of both robot observations at dispatch, including transport and inference."""
     if not observation or observation.get("camera_missing", True):
-        return "Нет изображения камеры Tank"
+        return CAMERA_MISSING
     image = observation["images"]["front"]
     local_age = now_ns - image["homebrain_receive_timestamp_ns"]
     transport = image.get("request_duration_ns")
     sensors = observation.get("motion_sensors", {})
-    for name, age in (("камеры", image.get("age_at_agent_response_ns")), ("лидара", sensors.get("scan_age_ns"))):
+    for reason, age in ((CAMERA_STALE, image.get("age_at_agent_response_ns")),
+                        ("Нет свежего наблюдения лидара Tank", sensors.get("scan_age_ns"))):
         if (type(age) is not int or type(transport) is not int or min(age, local_age, transport) < 0
                 or age + local_age + transport > 500_000_000):
-            return "Нет свежего наблюдения " + name + " Tank"
+            return reason
     v, w = requested
     needed = ("front", "rear") if w else (("front",) if v > 0 else ("rear",))
     for direction in needed:
@@ -225,6 +231,7 @@ class TankSource:
         response=None
         hold = None
         for attempt in range(2):
+            wait_for_camera = False
             if self.stop_requested():
                 raise InterruptedError("STOP before command")
             context = self._context()
@@ -241,8 +248,12 @@ class TankSource:
                 hold = "Задание Tank завершено или заменено"
             if needs_guard and self._context() != context:
                 hold = AUTONOMY_UNVERIFIED
+            if needs_guard and owns_goal and bound_goal.active:
+                camera_recovery = getattr(bound_goal, 'camera_recovery', None)
+                if camera_recovery is not None:
+                    hold, wait_for_camera = camera_recovery(hold, observation, now)
             command = [0., 0.] if hold else intent
-            if hold and owns_goal and bound_goal.active:
+            if hold and not wait_for_camera and owns_goal and bound_goal.active:
                 bound_goal.cancel(hold)
             self.provenance['last_command_attempt'].update(sequence=index, dispatched=command, guard_reason=hold)
             try:

@@ -217,8 +217,10 @@ def add_operator_action(control,session,owner):
         ui.label('Одна проверка на сохранённой расстановке. ROSMASTER остаётся на месте.')
         supervised = ui.checkbox('Я рядом, вижу Tank и могу сразу нажать STOP')
         shelf_status = ui.label('Включите управление Tank и подтвердите наблюдение.').classes('muted')
+        runner = None
 
         async def start_shelf():
+            nonlocal runner
             from . import peer_shelf_run
             if not supervised.value:
                 ui.notify('Подтвердите, что видите Tank и можете его остановить', type='warning')
@@ -230,7 +232,7 @@ def add_operator_action(control,session,owner):
                 receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
                 if not supervised.value:
                     return
-                peer_shelf_run.handoff(control, session, owner, expected, receipt, shelf_map)
+                runner = peer_shelf_run.handoff(control, session, owner, expected, receipt, shelf_map)
                 shelf_status.set_text('Tank принял цель. Держите STOP под рукой.')
                 ui.notify('Tank принял точку стеллажа от ROSMASTER. STOP останавливает попытку.')
             except Exception as exc:
@@ -238,7 +240,20 @@ def add_operator_action(control,session,owner):
                 logging.getLogger(__name__).warning('Shelf approach did not start: %s', exc)
                 ui.notify(str(exc), type='negative')
             finally:
-                shelf_button.enable()
+                if runner is None or not runner.active:
+                    shelf_button.enable()
 
         shelf_button = ui.button('Начать один пробный подъезд', on_click=start_shelf).props('outline no-caps')
+
+        def update_shelf_status():
+            nonlocal runner
+            if runner is None:
+                return
+            hold = (session.latest or {}).get('pause_reason') if runner.active else None
+            shelf_status.set_text(hold or runner.message)
+            if not runner.active:
+                runner = None
+                shelf_button.enable()
+
+        ui.timer(.5, update_shelf_status)
     series_page.operator_button(control,session,owner)

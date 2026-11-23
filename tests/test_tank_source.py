@@ -155,6 +155,39 @@ def test_goal_on_manual_lease_never_dispatches_motion_after_sensor_loss(source, 
     assert stopped["requested_action"] == [.1, .1] and stopped["pause_reason"] == goal.reason
 
 
+def test_shelf_goal_waits_at_zero_for_distinct_fresh_frames(source, monkeypatch, tmp_path):
+    from explorer4 import episodes, peer_shelf_run
+
+    src, sent = source
+    src.control.lock = threading.RLock()
+    stopped_pose = (0., 0., 0.)
+    monkeypatch.setattr(peer_shelf_run, 'operator_session', lambda *_: 'test-session')
+    monkeypatch.setattr(peer_shelf_run, 'current_pose', lambda _: (stopped_pose, 'local'))
+    monkeypatch.setattr(peer_shelf_run.FleetLocalizer, 'start', lambda _: None)
+    monkeypatch.setattr(episodes, 'ROOT', tmp_path)
+    receipt = {'id': 'test', 'pose': (.22, 0., 0.), 'map_frame_id': 'local',
+               'tank_start_pose': stopped_pose, 'expires_monotonic_s': time.monotonic() + 1.}
+    peer_shelf_run.handoff(src.control, None, None, 'test-session', receipt, SimpleNamespace(track={}))
+    goal = src.control.goal
+
+    def send_frame(sequence, *, stale=False):
+        obs = src.observe()
+        obs['motion_sensors'] = {'scan_age_ns': 2000, 'front': 1., 'rear': 1.}
+        obs['images']['front'].update(sequence=sequence, age_at_agent_response_ns=550_000_000 if stale else 2000)
+        row = src.send([.06, 0.], obs, autonomous_goal=True, expected_goal=goal)
+        assert row['action'] == [sent[-1]['v'], sent[-1]['w']]
+        return row['action']
+
+    assert send_frame(1, stale=True) == [0., 0.]
+    assert goal.active
+    assert send_frame(2) == send_frame(2) == [0., 0.]
+    assert send_frame(3) == [.06, 0.]
+    assert send_frame(3, stale=True) == [0., 0.]
+    goal.camera_hold_started_ns -= 800_000_000
+    assert send_frame(4) == [0., 0.]
+    assert not goal.active and goal.message == tank.CAMERA_STALE
+
+
 def test_onboard_guard_stops_unobserved_rotation_before_ramp():
     from agents.tank.agent import Hardware
     from agents.tank.limits import DEFAULTS, Ramp

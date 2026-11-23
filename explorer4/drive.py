@@ -11,14 +11,15 @@ from .fleet_map import FLEET
 
 class DriveTo:
     def __init__(self, robot, pose, *, text='к месту', tol=.10, heading_tol=.08, v_max=.12, w_max=.6,
-                 time_limit_s=180, record=False, fleet=None, pose_lookup=None):
+                 time_limit_s=180, record=False, fleet=None, pose_lookup=None, clock=time.monotonic):
         self.robot, self.goal = robot, tuple(pose)
         self.fleet = FLEET if fleet is None else fleet
         self.pose_lookup = pose_now if pose_lookup is None else pose_lookup
         self.text, self.prompt = text, 'drive'
         self.tol, self.heading_tol, self.v_max, self.w_max = tol, heading_tol, v_max, w_max
         self.time_limit = time_limit_s
-        self.started = time.monotonic()
+        self.clock = clock
+        self.started = self.clock()
         self.active = True
         self.state, self.message = 'start', f'Еду {text}'
         self.path, self.planned_at = None, 0.
@@ -28,7 +29,7 @@ class DriveTo:
         self.observed_pose = None
         self.blocked_since = None
         self.aligning = False            # inside the tolerance: turn to the heading (with hysteresis)
-        self.episode = Episode(robot, 'drive', text) if record else None
+        self.episode = Episode(robot, 'drive', text, fleet=fleet) if record else None
 
     def set_camera(self, cam):
         pass
@@ -43,7 +44,7 @@ class DriveTo:
         return cmd
 
     def _command(self):
-        now = time.monotonic()
+        now = self.clock()
         if now - self.started > self.time_limit:
             self.finish('timeout', f'Не доехал {self.text} за отведённое время')
             return [0., 0.]

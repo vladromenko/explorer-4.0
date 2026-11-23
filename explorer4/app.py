@@ -681,10 +681,11 @@ def index(request:Request):
             with ui.tab_panel(datasets):
                 ui.label('Исходные эпизоды сохраняются. Исключение влияет только на подбор обучения.').classes('muted')
                 episode_table=ui.table(columns=[{'name':k,'label':v,'field':k} for k,v in [('id','Эпизод'),('profile','Задача'),('outcome','Исход'),('frames','Кадры'),('category','Тип'),('session','Сессия'),('scene','Расстановка'),('excluded','Исключён')]],rows=[],row_key='id',selection='single')
-                def exclusion():
+                async def exclusion():
                     for row in episode_table.selected:
                         catalog.exclude(row['id'],not bool(row['excluded']))
                     refresh()
+                    await refresh_catalog()
                 ui.button('Исключить / вернуть в обучение',on_click=exclusion)
                 def view_selected():
                     if episode_table.selected:
@@ -936,16 +937,6 @@ def index(request:Request):
             phases['idle']='Управление выключено — нажмите «Включить управление»'
         phase_text='Передача управления — дождитесь завершения' if control.maintenance else phases.get(session.phase,session.phase)
         recording_status.set_text(session.error or (phase_text+' · кадров: '+str(session.frame_count)+((' · '+control.last_stop_reason) if control.last_stop_reason else '')))
-        device_table.rows=[{'name':k,'state':('занято' if v['owners'] else 'USB обнаружено, не открыто') if v['present'] else 'отсутствует'} for k,v in inventory().items()]
-        device_table.update()
-        profile_table.rows=local_pages.profile_statuses();profile_table.update()
-        episode_table.rows=catalog.rows('episodes');episode_table.update()
-        from . import deploy_gate as _gate
-        def _gate_text(j):
-            g=_gate.latest(j['id']) if j.get('checkpoint') else None
-            return '' if g is None else ('допущена' if g['verdict']=='ready' else 'не допущена')
-        job_table.rows=[{**j,'gate':_gate_text(j)} for j in catalog.rows('jobs')];job_table.update()
-        event_table.rows=catalog.rows('events')[:20];event_table.update()
         mode_label.set_text((session.error or phase_text) if control.robot=='tank' else control.mode+' · '+(session.error or phase_text))
         pause_reason=(session.latest or {}).get('pause_reason')
         tank_motion_state.set_text((session.error or pause_reason or phase_text).removeprefix('RuntimeError: '))
@@ -953,6 +944,29 @@ def index(request:Request):
         if control.robot=='tank' and not tank_bench and (DATA/'validation/tank-motion-incident.json').exists():
             tank_motion_state.set_text('Tank заблокирован после отказа STOP. Соединение с моторной платой пропало; закрытие программы не подтверждает остановку гусениц. Повторный запуск запрещён до проверки причины.')
             tank_motion_state.classes('text-red-4',remove='text-green-4')
+
+    def catalog_tables():
+        from . import deploy_gate
+
+        devices = []
+        for name, device in inventory().items():
+            state = 'отсутствует'
+            if device['present']:
+                state = 'занято' if device['owners'] else 'USB обнаружено, не открыто'
+            devices.append({'name': name, 'state': state})
+        job_rows = catalog.rows('jobs')
+        for job in job_rows:
+            gate = deploy_gate.latest(job['id']) if job.get('checkpoint') else None
+            job['gate'] = '' if gate is None else ('допущена' if gate['verdict'] == 'ready' else 'не допущена')
+        return devices, local_pages.profile_statuses(), catalog.rows('episodes'), job_rows, catalog.rows('events')[:20]
+
+    async def refresh_catalog():
+        rows_by_table = await asyncio.to_thread(catalog_tables)
+        tables = (device_table, profile_table, episode_table, job_table, event_table)
+        for table, rows in zip(tables, rows_by_table, strict=True):
+            if table.rows != rows:
+                table.rows = rows
+
     def refresh_preview():
         with session.lock:
             sample=session.latest
@@ -989,6 +1003,7 @@ def index(request:Request):
     refresh()
     ui.timer(2,refresh_tank)
     ui.timer(2,refresh)
+    ui.timer(2,refresh_catalog)
     ui.timer(.25,refresh_preview)
 
 async def prepare_recording_runtime():

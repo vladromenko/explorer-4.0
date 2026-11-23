@@ -16,6 +16,7 @@ from .peer_dock_config import MAX_AGE_S
 from .peer_dock_real import map_from_base, operator_session, write_json
 from .peer_dock_shelf import from_tf, goal_from_shelf, observe, tank_base_from_depth
 from .sensors import SensorClient, stream_age
+from .tank import CAMERA_MISSING, CAMERA_STALE
 
 REFERENCE = ROOT / "docs/results/markerless-shelf-20261124"
 EVIDENCE = DATA / "peer-dock/shelf"
@@ -166,6 +167,31 @@ def handoff(control, session, owner, expected, receipt, fleet):
         return fleet.pose(robot, MAX_AGE_S)[0]
 
     class SupervisedShelfDrive(DriveTo):
+        camera_hold_started_ns = None
+        first_fresh_frame = None
+
+        def camera_recovery(self, hold, observation, now_ns):
+            # Keep issuing neutral while the same observation fault is transient. A
+            # lidar, lease or hardware fault still cancels immediately in TankSource.
+            if hold in (CAMERA_MISSING, CAMERA_STALE):
+                self.first_fresh_frame = None
+                if self.camera_hold_started_ns is None:
+                    self.camera_hold_started_ns = now_ns
+                    self.episode.extra['camera_holds'] = self.episode.extra.get('camera_holds', 0) + 1
+            elif hold or self.camera_hold_started_ns is None:
+                return hold, False
+            if now_ns - self.camera_hold_started_ns >= 800_000_000:
+                return hold or CAMERA_STALE, False
+            if hold:
+                return hold, True
+            frame = observation['images']['front']['sequence']
+            if self.first_fresh_frame is None:
+                self.first_fresh_frame = frame
+            if frame <= self.first_fresh_frame:
+                return 'Жду второй свежий кадр Tank', True
+            self.camera_hold_started_ns = self.first_fresh_frame = None
+            return None, False
+
         def finish(self, state, message):
             reader.stop()
             super().finish(state, message)
@@ -205,3 +231,4 @@ def handoff(control, session, owner, expected, receipt, fleet):
                                     planned_stop=receipt["pose"])
         reader.start()
         control.goal = runner
+        return runner

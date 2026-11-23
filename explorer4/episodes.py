@@ -23,7 +23,7 @@ OPERATOR = {'cancelled', 'intervened'}
 
 
 class Episode:
-    def __init__(self, robot, kind, task):
+    def __init__(self, robot, kind, task, *, fleet=None):
         self.robot, self.kind, self.task = robot, kind, task
         self.started = time.time()
         self.id = time.strftime('%Y%m%d-%H%M%S', time.localtime(self.started)) + f'-{robot}-{kind}'
@@ -33,6 +33,7 @@ class Episode:
         self.last_step = self.last_frame = 0.
         self.closed = False
         self.extra = {}
+        self.fleet = fleet
 
     def step(self, pose, cmd, state, rgb=None, **info):
         now = time.time()
@@ -68,7 +69,8 @@ class Episode:
         self.dir.mkdir(parents=True, exist_ok=True)
         try:
             from .fleet_map import FLEET
-            img = FLEET.image(3)
+            fleet = FLEET if self.fleet is None else self.fleet
+            img = fleet.image(3)
             if img is not None:
                 cv2.imwrite(str(self.dir / 'map.png'), cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
         except Exception:
