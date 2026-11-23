@@ -74,8 +74,18 @@ def release(destination):
         for path in sorted((reports / directory).rglob("*.json")):
             files["experiments/" + str(path.relative_to(reports))] = path
     local_controls = reports / "peer-local-six-seconds"
-    for path in sorted(local_controls.glob("[0-9]*/*.json")):
-        files["experiments/" + str(path.relative_to(reports))] = path
+    controls = json.loads(
+        (D / "peer-camera-docking/local-six-seconds-result.json").read_bytes()
+    )
+    for row in controls["rows"]:
+        for method, branch in row["methods"].items():
+            if method != "local_first":
+                path = local_controls / str(row["seed"]) / (method + ".json")
+                if file_hash(path) != branch["receipt_sha256"]:
+                    raise ValueError(
+                        f"Local camera replay changed at {row['seed']}/{method}"
+                    )
+                files["experiments/" + str(path.relative_to(reports))] = path
 
     for pattern in (
         "scripts/grasp_study/wrist_heatmap/*.py",
