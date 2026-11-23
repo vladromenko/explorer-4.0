@@ -288,7 +288,7 @@ def results():
                     "Испытания этой схемы на реальном ROSMASTER ещё впереди."
                 )
                 evidence_link("Положение кубика, траектории и исходы", depth_path + "result.json")
-                evidence_link("Видео на одной сцене до и после", depth_path + "paired-987140.mp4")
+                evidence_link("Видео на одной сцене до и после", depth_path + "paired-987140.webm")
                 evidence_link("График сравнения", depth_path + "carry-comparison.svg")
                 evidence_link("Что видела камера до исправления", depth_path + "initial-visibility.json")
             watch_path = REPORT + "wrist-video-failure-watch-v1/paired-test/"
