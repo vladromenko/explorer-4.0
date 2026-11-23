@@ -1,0 +1,19 @@
+{
+  "observed_unix_s": 1795471281.8806167,
+  "read_only": true,
+  "physical_commands": 0,
+  "armed": false,
+  "hardware_open": false,
+  "compatible": false,
+  "reason": "Onboard limit format requires explicit migration. Version 1 has different stop and sensor semantics; preserve the file and compare its active limits before updating.",
+  "stored_version": 1,
+  "reported_version": 2,
+  "manual_speed_stored_vs_reported_m_s": [
+    0.2,
+    0.3
+  ],
+  "ttl_stored_vs_reported_s": [
+    0.35,
+    0.5
+  ]
+}

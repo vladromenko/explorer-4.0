@@ -1,5 +1,9 @@
 # Explorer 4.0 current status
 
+## 24 November 2026
+
+Both physical robots independently reconstructed the front corner and a second divider of the same unmarked shelf from RGB-D while stopped. One exposure pair bound the cameras to each other. On seven additional pairs at the same placement, the ROSMASTER-only Tank goal agreed with the separately computed Tank goal within 0.8 mm and 0.12 degrees. The measurement tests repeatability at that placement. No external survey established absolute accuracy. The unchanged Tank controller stopped before the centre goal in four offline replays of newly captured lidar. A 10 cm lateral offset passed four replays. The first replay informed the offset and the other three came from the same stationary layout. There were zero physical drive attempts. The installed Tank service reports version-2 defaults while its stored version-1 policy contains lower manual speed and a shorter command timeout. The existing preflight rejects automatic dispatch. [RGB-D calculation and scan replay](docs/results/markerless-shelf-20261124/result.json) · [Tank preflight](docs/results/markerless-shelf-20261124/tank-preflight.json)
+
 ## 23 November 2026
 
 

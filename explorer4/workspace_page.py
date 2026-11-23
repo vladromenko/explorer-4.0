@@ -421,6 +421,19 @@ def results():
                          f"после поиска с помощью {sequential['win']}/{n}, "
                          f"обученный выбор {adaptive['win']}/{n}.")
                 evidence_link("Выбор помощи при ограниченном времени · парные исходы", pilot_path)
+            shelf_path = REPORT + "markerless-shelf-20261124/result.json"
+            shelf = read(MEDIA / shelf_path)
+            if shelf.get("offline_replay"):
+                path = shelf["offline_replay"]
+                ui.label("Стеллаж как ориентир · реальные кадры глубины").classes("work-name")
+                ui.label(
+                    f"Разница между локальной и переданной целью до "
+                    f"{1000 * shelf['max_donor_goal_error_on_withheld_pairs_m']:.1f} мм "
+                    f"при неподвижных машинах. На записанном лидаре проверка маршрута "
+                    f"прошла в {path['left_arrived']}/{path['fresh_pairs']} повторах со смещением "
+                    "цели влево. Реальные заезды по этой схеме ещё впереди."
+                )
+                evidence_link("Расчёт общей точки и проверка маршрута", shelf_path)
             local_path = REPORT + "peer-local-six-seconds/result.json"
             local_check = read(MEDIA / local_path)
             if local_check.get("summary"):
