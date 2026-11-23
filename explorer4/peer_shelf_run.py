@@ -10,6 +10,7 @@ import uuid
 import numpy as np
 
 from . import navigation, peer_dock_survey
+from .fleet_map import FleetLocalizer, FleetMap
 from .paths import DATA, ROOT
 from .peer_dock_config import MAX_AGE_S
 from .peer_dock_real import map_from_base, operator_session, write_json
@@ -41,7 +42,6 @@ def read_still(robot):
 
 
 def current_pose(fleet):
-    peer_dock_survey.require_real_map()
     pose, _, frame = fleet.pose_frame("tank", MAX_AGE_S)
     nav = fleet.nav("tank", MAX_AGE_S)
     if pose is None or nav is None or nav[0] != "main" or fleet.scan("tank", MAX_AGE_S) is None:
@@ -72,10 +72,17 @@ def calibrated_goal(tank, donor, reference, calibration):
     return transferred, position_error, yaw_error
 
 
-def probe(fleet):
+def probe():
     from scripts.peer_dock_shelf import replay_stopped_scan
+    from . import tank as tank_transport
 
-    before, initial_frame = current_pose(fleet)
+    with tank_transport.client() as client:
+        response = client.get("/health", timeout=1.5)
+        response.raise_for_status()
+        status = response.json()
+    live_sources = status.get("software", {})
+    if any(live_sources.get(k) != v for k, v in tank_transport.guard_sources().items()):
+        raise ValueError("Tank не подтвердил версию бортовой защиты")
     raw_reference = (REFERENCE / "shelf-reference.json").read_bytes()
     reference = json.loads(raw_reference)
     calibration = json.loads((EVIDENCE / "calibration.json").read_text())
@@ -87,16 +94,16 @@ def probe(fleet):
     replay = replay_stopped_scan(tank, goal, lateral_m=.10)
     if replay["state"] != "arrived" or replay["minimum_scan_return_clearance_m"] < .25:
         raise ValueError("Свежий лидар не подтверждает маршрут к стеллажу")
+    fleet = FleetMap()
+    fleet.update("tank", tank)
     pose, frame = current_pose(fleet)
-    if frame != initial_frame or not peer_dock_survey.close_pose(before, pose, .015, .04):
-        raise ValueError("Tank сместился или карта изменилась во время замера")
     if any(stream_age(p, "depth") > MAX_AGE_S for p in (tank, donor)):
         raise ValueError("Глубина устарела, повторите замер")
     relative = replay["goal"]
     xyz = map_from_base(pose) @ [*relative[:2], 0., 1.]
     ident = uuid.uuid4().hex
     receipt = {
-        "id": ident, "frame": "fleet_map", "map_frame_id": frame,
+        "id": ident, "frame": "tank_scan_local", "map_frame_id": frame,
         "pose": [*xyz[:2].tolist(), navigation.wrap(pose[2] + relative[2])],
         "tank_start_pose": list(pose), "source_robot": "rosmaster",
         "evidence": ident, "calibration_run": calibration["id"],
@@ -113,13 +120,22 @@ def probe(fleet):
     for k, p in zip(ROBOTS, (tank, donor), strict=True):
         (folder / f"{k}.npz").write_bytes(p["payload"])
     write_json(folder / "result.json", receipt)
-    return receipt
+    return receipt, fleet
 
 
 def handoff(control, session, owner, expected, receipt, fleet):
     from .drive import DriveTo
 
+    reader = FleetLocalizer(interval=.15, fleet=fleet, sources={"tank": False}, persist=False)
+
+    def measured(robot, _command):
+        return fleet.pose(robot, MAX_AGE_S)[0]
+
     class SupervisedShelfDrive(DriveTo):
+        def finish(self, state, message):
+            reader.stop()
+            super().finish(state, message)
+
         def _command(self):
             try:
                 _, frame = current_pose(fleet)
@@ -149,8 +165,9 @@ def handoff(control, session, owner, expected, receipt, fleet):
             raise ValueError("Замер устарел или Tank сместился")
         runner = SupervisedShelfDrive(
             "tank", receipt["pose"], text="к стеллажу", tol=.045, heading_tol=.15,
-            v_max=.08, time_limit_s=20, record=True,
+            v_max=.08, time_limit_s=20, record=True, fleet=fleet, pose_lookup=measured,
         )
         runner.episode.extra.update(shelf_observation_id=receipt["id"], source_robot="rosmaster",
                                     planned_stop=receipt["pose"])
+        reader.start()
         control.goal = runner

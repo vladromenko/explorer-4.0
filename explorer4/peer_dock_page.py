@@ -63,11 +63,10 @@ def install(control=None):
     @app.get('/api/peer-dock/shelf-readiness')
     async def shelf_readiness():
         from . import peer_shelf_run, peer_dock_survey
-        from .fleet_map import FLEET
         try:
             if control is not None:
                 peer_dock_survey.require_stopped(control)
-            receipt = await asyncio.to_thread(peer_shelf_run.probe, FLEET)
+            receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
             return {'ready': True, 'receipt': receipt['id'],
                     'goal_disagreement_m': receipt['donor_local_disagreement_m'],
                     'no_motion': True}
@@ -219,17 +218,16 @@ def add_operator_action(control,session,owner):
 
         async def start_shelf():
             from . import peer_shelf_run
-            from .fleet_map import FLEET
             if not supervised.value:
                 ui.notify('Подтвердите, что видите Tank и можете его остановить', type='warning')
                 return
             shelf_button.disable()
             try:
                 expected = study.operator_session(control, session, owner)
-                receipt = await asyncio.to_thread(peer_shelf_run.probe, FLEET)
+                receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
                 if not supervised.value:
                     return
-                peer_shelf_run.handoff(control, session, owner, expected, receipt, FLEET)
+                peer_shelf_run.handoff(control, session, owner, expected, receipt, shelf_map)
                 ui.notify('Tank принял точку стеллажа от ROSMASTER. STOP останавливает попытку.')
             except Exception as exc:
                 ui.notify(str(exc), type='negative')

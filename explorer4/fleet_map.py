@@ -659,11 +659,18 @@ class FleetLocalizer:
 
     SOURCES = {'rosmaster': False, 'tank': True}         # SensorClient(isolated=...) that carries the scan
 
-    def __init__(self, interval=.4):
+    def __init__(self, interval=.4, *, fleet=None, sources=None, persist=True):
         self.interval = interval
+        self._fleet = fleet
+        self.sources = self.SOURCES if sources is None else sources
+        self.persist = persist
         self.threads = []
         self.done = threading.Event()
         self.errors = {}
+
+    @property
+    def fleet(self):
+        return FLEET if self._fleet is None else self._fleet
 
     def running(self):
         return any(t.is_alive() for t in self.threads)
@@ -671,11 +678,13 @@ class FleetLocalizer:
     def start(self):
         if self.running():
             return
-        FLEET.load()
+        if self.persist:
+            self.fleet.load()
         self.done.clear()
         self.threads = [threading.Thread(target=self._run, args=(robot, isolated), daemon=True, name=f'fleet-{robot}')
-                        for robot, isolated in self.SOURCES.items()]
-        self.threads.append(threading.Thread(target=self._save_loop, daemon=True, name='fleet-save'))
+                        for robot, isolated in self.sources.items()]
+        if self.persist:
+            self.threads.append(threading.Thread(target=self._save_loop, daemon=True, name='fleet-save'))
         for t in self.threads:
             t.start()
 
@@ -684,12 +693,12 @@ class FleetLocalizer:
 
     def _save_loop(self):
         while not self.done.wait(30):
-            FLEET.save()
-        FLEET.save()
+            self.fleet.save()
+        self.fleet.save()
 
     def _run(self, robot, isolated):
         """One reader per robot: a slow Wi-Fi link to one robot does not delay the other."""
-        from .sensors import SensorClient
+        from .sensors import SensorClient, stream_age
         client = None
         seen = {}
         while not self.done.is_set():
@@ -698,19 +707,25 @@ class FleetLocalizer:
                 if client is None:
                     client = SensorClient(isolated=isolated, robot=robot)
                 packet = client.snapshot(only=('scan', 'scan_rear', 'odometry'))
-                if fresh_marker(packet) == seen.get('marker'):
+                if not self.persist:
+                    marker = fresh_marker(packet)
+                    if stream_age(packet, "scan") > .50 or marker == seen.get("marker"):
+                        self.done.wait(self.interval)
+                        continue
+                    seen["marker"] = marker
+                if self.persist and fresh_marker(packet) == seen.get('marker'):
                     if started - seen.get('since', started) > STALE_S:
                         # the ROS publisher stopped (ROSMASTER: the native bridge hands the serial
                         # port, lidars included, to the Explorer agent) -> read the agent instead
                         packet = agent_scans(robot)
                         if packet is None:
-                            FLEET.stale(robot, 'Лидар не обновляется: положение не используется для езды')
+                            self.fleet.stale(robot, 'Лидар не обновляется: положение не используется для езды')
                             self.errors[robot] = 'лидар не обновляется'
                             self.done.wait(self.interval)
                             continue
                 else:
                     seen.update(marker=fresh_marker(packet), since=started)
-                FLEET.update(robot, packet, odom_pose(packet) if robot == 'rosmaster' else None)
+                self.fleet.update(robot, packet, odom_pose(packet) if robot == 'rosmaster' else None)
                 self.errors.pop(robot, None)
             except Exception as exc:                      # robot off / out of Wi-Fi: retry, keep the other one going
                 self.errors[robot] = str(exc)[:200]

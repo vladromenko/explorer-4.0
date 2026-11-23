@@ -11,8 +11,10 @@ from .fleet_map import FLEET
 
 class DriveTo:
     def __init__(self, robot, pose, *, text='к месту', tol=.10, heading_tol=.08, v_max=.12, w_max=.6,
-                 time_limit_s=180, record=False):
+                 time_limit_s=180, record=False, fleet=None, pose_lookup=None):
         self.robot, self.goal = robot, tuple(pose)
+        self.fleet = FLEET if fleet is None else fleet
+        self.pose_lookup = pose_now if pose_lookup is None else pose_lookup
         self.text, self.prompt = text, 'drive'
         self.tol, self.heading_tol, self.v_max, self.w_max = tol, heading_tol, v_max, w_max
         self.time_limit = time_limit_s
@@ -37,7 +39,7 @@ class DriveTo:
         cmd = self._command()
         self.last_cmd = (cmd[0], cmd[1])
         if self.episode is not None:
-            self.episode.step(pose_now(self.robot, (0., 0.)), cmd, self.state, rgb)
+            self.episode.step(self.pose_lookup(self.robot, (0., 0.)), cmd, self.state, rgb)
         return cmd
 
     def _command(self):
@@ -45,8 +47,8 @@ class DriveTo:
         if now - self.started > self.time_limit:
             self.finish('timeout', f'Не доехал {self.text} за отведённое время')
             return [0., 0.]
-        pose = pose_now(self.robot, self.last_cmd)
-        self.observed_pose = pose_now(self.robot, (0., 0.))
+        pose = self.pose_lookup(self.robot, self.last_cmd)
+        self.observed_pose = self.pose_lookup(self.robot, (0., 0.))
         if pose is None:
             self.state, self.message = 'localizing', 'Жду своё место на общей карте…'
             return [0., 0.]
@@ -79,7 +81,7 @@ class DriveTo:
             else:
                 v = min(.06, .5 * dist + .02) if abs(b) < .5 else 0.
             w = max(-.5, min(.5, 1.5 * b))
-            v, w, why = navigation.guard(FLEET.scan(self.robot), self.robot, v, w)
+            v, w, why = navigation.guard(self.fleet.scan(self.robot), self.robot, v, w)
             if why:
                 self.blocked_since = self.blocked_since or now
                 if now - self.blocked_since > 3:
@@ -92,27 +94,27 @@ class DriveTo:
             return [v, w]
         if self.path is None or now - self.planned_at > 2.:
             self.planned_at = now
-            path = navigation.plan(FLEET.grid, self.robot, pose[:2], self.goal[:2], allow_unknown=True)
+            path = navigation.plan(self.fleet.grid, self.robot, pose[:2], self.goal[:2], allow_unknown=True)
             self.endpoint = navigation.path_endpoint(self.goal[:2], path)
             if path is None:
                 self.finish('no_path', f'Нет пути {self.text} по карте')
                 return [0., 0.]
             self.path = path
-            FLEET.track.setdefault(self.robot, {})['path'] = list(path)
+            self.fleet.track.setdefault(self.robot, {})['path'] = list(path)
         v, w, remaining = navigation.follow(pose, self.path, self.v_max, self.w_max, lookahead=min(.12, self.tol))
         if remaining < self.tol:
             if self.endpoint['goal_cell_relocated']:
                 self.finish('blocked', f'Конец обходного пути достигнут. До исходной цели {dist*100:.0f} см')
                 return [0., 0.]
             v = 0.
-        v, w, why = navigation.guard(FLEET.scan(self.robot), self.robot, v, w)
+        v, w, why = navigation.guard(self.fleet.scan(self.robot), self.robot, v, w)
         self.state = 'blocked' if why else 'drive'
         self.message = f'Объезжаю: {why}' if why else f'Еду {self.text}: {remaining:.1f} м'
         return [v, w]
 
     def finish(self, state, message):
         self.state, self.message, self.active = state, self.route_message(message), False
-        FLEET.track.setdefault(self.robot, {})['path'] = None
+        self.fleet.track.setdefault(self.robot, {})['path'] = None
         if self.episode is not None:
             self.episode.extra.update(planner_endpoint=self.endpoint, requested_pose=self.goal,
                                       last_observed_pose=self.observed_pose, position_tolerance_m=self.tol,
