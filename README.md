@@ -32,6 +32,7 @@ The table is calculated from one row per scene and method. The two optimizer see
 | Experiment | Per-scene result |
 | --- | --- |
 | Common-deadline peer docking | Local 8/16, immediate 12/16 (12 calls), local-first 13/16 (6 calls), adaptive 13/16 (6 calls). Adaptive gained 0 and lost 0 vs local-first. Mean utility difference +0.000875. [Rows](docs/results/research-audit/trials/common-budget-events.json) |
+| Six-second local search, post hoc | On the same 16 scenes, extended heading search docked 8/16, left arc 8/16 and right arc 8/16, all with zero calls. Local-first gained 5 and lost 0 against extended heading search. [Rows](docs/results/peer-camera-docking/local-six-seconds-result.json) |
 | Recorded starts, raw ACT | Before 0/20, skill initialization 3/20, scratch 1/20. Baseline reset vectors were unavailable. [Rows](docs/results/research-audit/trials/raw-act-after.json) |
 | Fixed-look grasp | ACT 15/20 and Diffusion 18/20. Second optimizer seed on the same scenes gave 19 and 16. RBF 20, IK 18. [Rows](docs/results/conditioned_grasp_v1/optimizer-seed-1001.json) |
 | Native grasp admission | 29/128 eligible, 20 executed, 12 terminal holds. 9 eligible starts unexecuted. [Rows](docs/results/conditioned_grasp_v1/field-admission-v3.json) |

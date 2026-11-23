@@ -2,6 +2,7 @@
 
 import argparse
 import csv
+import hashlib
 import json
 from pathlib import Path
 from statistics import mean
@@ -95,6 +96,49 @@ def claims():
         f"({calls[immediate]} calls), local-first {sum(outcomes[fixed].values())}/{n} ({calls[fixed]} calls), "
         f"adaptive {sum(outcomes[adaptive].values())}/{n} ({calls[adaptive]} calls). "
         f"Adaptive gained {gain} and lost {loss} vs local-first. Mean utility difference {average[adaptive] - average[fixed]:+.6f}.",
+        source,
+    )
+
+    source = D / "peer-camera-docking/local-six-seconds-result.json"
+    sensitivity = read(source)
+    protocol = source.with_name("local-six-seconds-protocol.json")
+    repeated = indexed(sensitivity["rows"])
+    if (
+        sensitivity["protocol_sha256"]
+        != hashlib.sha256(protocol.read_bytes()).hexdigest()
+        or list(repeated) != list(budget_rows)
+        or any(
+            row["reset"] != budget_rows[k]["methods"][fixed]["reset"]
+            for k, row in repeated.items()
+        )
+    ):
+        raise ValueError("Additional sensing must reuse the registered starts")
+    local_policies = ("extend_heading", "arc_left", "arc_right")
+    extra_outcomes = {}
+    for method in ("repeat_3s", "local_first", *local_policies):
+        branches = {seed: row["methods"][method] for seed, row in repeated.items()}
+        if any(
+            b["sensing_s"] > 6.00001
+            or b["seconds"] > 20.00001
+            or (method != "local_first" and b["calls"])
+            for b in branches.values()
+        ):
+            raise ValueError(
+                "The additional control exceeded the sensing or action budget"
+            )
+        extra_outcomes[method] = {seed: bool(b["win"]) for seed, b in branches.items()}
+    if (
+        extra_outcomes["repeat_3s"] != outcomes[local]
+        or extra_outcomes["local_first"] != outcomes[fixed]
+    ):
+        raise ValueError("The supplementary comparison lost an original endpoint")
+    counts = [sum(extra_outcomes[m].values()) for m in local_policies]
+    gain, loss = paired(extra_outcomes["extend_heading"], outcomes[fixed])
+    add(
+        "Six-second local search, post hoc",
+        f"On the same {n} scenes, extended heading search docked {counts[0]}/{n}, "
+        f"left arc {counts[1]}/{n} and right arc {counts[2]}/{n}, all with zero calls. "
+        f"Local-first gained {gain} and lost {loss} against extended heading search.",
         source,
     )
 

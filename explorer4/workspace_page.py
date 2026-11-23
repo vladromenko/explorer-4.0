@@ -407,6 +407,18 @@ def results():
                          f"после поиска с помощью {sequential['win']}/{n}, "
                          f"обученный выбор {adaptive['win']}/{n}.")
                 evidence_link("Выбор помощи при ограниченном времени · парные исходы", pilot_path)
+            local_path = REPORT + "peer-local-six-seconds/result.json"
+            local_check = read(MEDIA / local_path)
+            if local_check.get("summary"):
+                n = local_check["n"]
+                local = local_check["summary"]
+                ui.label(
+                    f"Самостоятельный поиск до 6 с на тех же {n} сценах · "
+                    f"исходный поворот {local['extend_heading']['successes']}/{n}, "
+                    f"дуга влево {local['arc_left']['successes']}/{n}, "
+                    f"вправо {local['arc_right']['successes']}/{n}."
+                )
+                evidence_link("Дополнительная проверка времени и траектории поиска", local_path)
             evidence_link("Аудит, методы и практические ограничения", REPORT + "research-register-20261122/audit.html")
             evidence_link("Воспроизвести результаты и таблицы статьи", REPORT + "explorer-audit-20261123/reproduction.zip")
             ui.link(

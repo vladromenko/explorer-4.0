@@ -85,6 +85,8 @@ A new registered pilot used 24 fitting scenes, 16 calibration scenes and 16 conf
 
 Local-only docking succeeded in 8/16 and asking immediately when possible succeeded in 12/16 with 12 calls. Both adaptive and local-first policies achieved 13/16 with six calls on the same starts. Each rescued five of the local failures and spoiled zero local successes. The immediate policy spoiled one. Mean elapsed times were 9.525 and 9.700 simulated seconds for adaptive and fixed. Their average utility difference was 0.000875, with zero median difference. This measured advantage corresponds to time saved on this bank. Neither terminal performance nor calls improved. The earlier original-versus-recovered analyses and this new independent bank are reported separately.
 
+The primary unassisted policy searched for up to three seconds. After examining its outcomes we registered a sensitivity analysis on the same 16 starts. We gave the recipient the full six-second sensing window, extending its original turn or driving one of two fixed mirror-image arcs. Each policy reproduced the original three-second prefix. In the eight scenes requiring more inspection, the arcs moved the camera by 0.23--0.27 m. None of the three continuations recovered an additional dock. Each finished at 8/16 with zero calls. Local-first gained five and lost zero against each (two-sided exact paired $p=0.0625$). Its mean terminal time was 9.700 s versus 6.853 s for these local policies. These replays add no independent scenes.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/common-deadline-docking.png}
@@ -141,6 +143,7 @@ Original and recovered comparisons use the same scene IDs. The earlier learned r
 \begin{tabular}{@{}p{.24\textwidth}p{.71\textwidth}@{}}\hline
 Comparison & Measured outcome \\\hline
 Common-deadline peer docking & Local 8/16, immediate 12/16 (12 calls), local-first 13/16 (6 calls), adaptive 13/16 (6 calls). Adaptive gained 0 and lost 0 vs local-first. Mean utility difference +0.000875. \\
+Six-second local search, post hoc & On the same 16 scenes, extended heading search docked 8/16, left arc 8/16 and right arc 8/16, all with zero calls. Local-first gained 5 and lost 0 against extended heading search. \\
 Recorded starts, raw ACT & Before 0/20, skill initialization 3/20, scratch 1/20. Baseline reset vectors were unavailable. \\
 Fixed-look grasp & ACT 15/20 and Diffusion 18/20. Second optimizer seed on the same scenes gave 19 and 16. RBF 20, IK 18. \\
 Native grasp admission & 29/128 eligible, 20 executed, 12 terminal holds. 9 eligible starts unexecuted. \\

@@ -49,6 +49,8 @@ def release(destination):
         D / "knowledge_gap_sim/20261122-e1/manifest.json",
         D / "peer-camera-docking/sequential-confirmation-protocol.json",
         D / "peer-camera-docking/action-value-pilot.json",
+        D / "peer-camera-docking/local-six-seconds-protocol.json",
+        D / "peer-camera-docking/local-six-seconds-verification.json",
     ):
         include(path)
     components = json.loads(
@@ -71,12 +73,17 @@ def release(destination):
     ):
         for path in sorted((reports / directory).rglob("*.json")):
             files["experiments/" + str(path.relative_to(reports))] = path
+    local_controls = reports / "peer-local-six-seconds"
+    for path in sorted(local_controls.glob("[0-9]*/*.json")):
+        files["experiments/" + str(path.relative_to(reports))] = path
+
     for pattern in (
         "scripts/grasp_study/wrist_heatmap/*.py",
         "scripts/grasp_study/failure_watch*.py",
         "scripts/grasp_study/*residual*.py",
         "scripts/grasp_study/active_initial_look.py",
         "scripts/peer_action_value*.py",
+        "scripts/peer_local_six_seconds.py",
         "explorer4/cognitive/action_value.py",
         "explorer4/grasp_residual.py",
         "configs/*lock*",
