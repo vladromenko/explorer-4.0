@@ -86,6 +86,7 @@ def replay_stopped_scan(packet, goal, *, lateral_m=0.):
     now = 100.
     elapsed = 0.
     clearance = float("inf")
+    reverse_steps = 0
 
     def scan(_):
         return fleet_map.transform(points - pose[:2], [0., 0., -pose[2]])
@@ -97,6 +98,7 @@ def replay_stopped_scan(packet, goal, *, lateral_m=0.):
     )
     for _ in range(401):
         v, w = controller.command(None)
+        reverse_steps += int(v < 0.)
         pose += [.05 * v * np.cos(pose[2]), .05 * v * np.sin(pose[2]), .05 * w]
         elapsed += .05
         now += .05
@@ -108,6 +110,7 @@ def replay_stopped_scan(packet, goal, *, lateral_m=0.):
         "message": controller.message, "simulated_seconds": elapsed,
         "terminal_position_error_m": float(np.linalg.norm(goal[:2] - pose[:2])),
         "minimum_scan_return_clearance_m": clearance,
+        "reverse_steps": reverse_steps,
         "lateral_offset_m": lateral_m,
         "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O.",
     }

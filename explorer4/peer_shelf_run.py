@@ -4,18 +4,19 @@ from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 import math
+import re
 import time
 import uuid
 
 import numpy as np
 
-from . import navigation, peer_dock_survey
-from .fleet_map import FleetLocalizer, FleetMap
+from . import episodes, navigation, peer_dock_survey
+from .fleet_map import FleetLocalizer, FleetMap, Grid, compose, inverse, scan_points, thin
 from .paths import DATA, ROOT
 from .peer_dock_config import MAX_AGE_S
 from .peer_dock_real import map_from_base, operator_session, write_json
 from .peer_dock_shelf import from_tf, goal_from_shelf, observe, tank_base_from_depth
-from .sensors import SensorClient, stream_age
+from .sensors import SensorClient, decode_packet, stream_age
 from .tank import CAMERA_MISSING, CAMERA_STALE
 
 REFERENCE = ROOT / "docs/results/markerless-shelf-20261124"
@@ -82,31 +83,45 @@ def current_pose(fleet):
     return pose, frame
 
 
-def calibrated_goal(tank, donor, reference, calibration):
-    present = {name: observe(p, reference[name])
-               for name, p in (("tank", tank), ("rosmaster", donor))}
-    tank_shelf, donor_shelf = [np.asarray(present[name]["depth_from_shelf"]) for name in ROBOTS]
-    tank_base = tank_mount(tank)
+def visible_shelf(donor, reference, calibration):
     arm = donor["arrays"].get("arm")
     original_arm = np.asarray(calibration["rosmaster_arm_deg"])
-    if arm is None or arm.shape != (6,) or np.max(np.abs(arm - original_arm)) > 1.:
+    if arm is None or arm.shape != (6,) or not np.isfinite(arm).all() or np.max(np.abs(arm - original_arm)) > 1.:
         raise ValueError("Положение камеры ROSMASTER изменилось. Нужна повторная привязка.")
+    observed = observe(donor, reference["rosmaster"])
+    width = -observed["witness_in_shelf_m"][0]
+    if abs(width - calibration["width_m"]["rosmaster"]) > .010:
+        raise ValueError("Кромка не совпадает с проверенной секцией стеллажа")
+    return np.asarray(observed["depth_from_shelf"]), width
+
+
+def calibrated_goal(tank, donor, reference, calibration):
+    present = observe(tank, reference["tank"])
+    tank_shelf = np.asarray(present["depth_from_shelf"])
+    donor_shelf, donor_width = visible_shelf(donor, reference, calibration)
+    tank_base = tank_mount(tank)
     base_from_donor = tank_base @ np.asarray(calibration["optical_from_donor"])
-    local = goal_from_shelf(tank_base @ tank_shelf, -present["tank"]["witness_in_shelf_m"][0])
-    transferred = goal_from_shelf(base_from_donor @ donor_shelf, -present["rosmaster"]["witness_in_shelf_m"][0])
+    tank_width = -present["witness_in_shelf_m"][0]
+    if abs(tank_width - calibration["width_m"]["tank"]) > .010:
+        raise ValueError("Кромка не совпадает с проверенной секцией стеллажа")
+    local = goal_from_shelf(tank_base @ tank_shelf, tank_width)
+    transferred = goal_from_shelf(base_from_donor @ donor_shelf, donor_width)
     position_error = math.dist(local[:2], transferred[:2])
     yaw_error = abs(navigation.wrap(local[2] - transferred[2]))
     if position_error > .015 or yaw_error > math.radians(3):
         raise ValueError("Наблюдения Tank и ROSMASTER больше не совпадают на этой расстановке")
-    for name in ROBOTS:
-        reference_width = calibration["width_m"][name]
-        if abs(-present[name]["witness_in_shelf_m"][0] - reference_width) > .010:
-            raise ValueError("Кромка не совпадает с проверенной секцией стеллажа")
     return transferred, position_error, yaw_error
 
 
-def probe():
-    from scripts.peer_dock_shelf import replay_stopped_scan
+def shelf_calibration():
+    raw_reference = (REFERENCE / "shelf-reference.json").read_bytes()
+    calibration = json.loads((EVIDENCE / "calibration.json").read_text())
+    if hashlib.sha256(raw_reference).hexdigest() != calibration["reference_sha256"]:
+        raise ValueError("Разметка кадра стеллажа изменилась после калибровки")
+    return json.loads(raw_reference), calibration
+
+
+def tank_health():
     from . import tank as tank_transport
 
     with tank_transport.client() as client:
@@ -116,16 +131,20 @@ def probe():
     live_sources = status.get("software", {})
     if any(live_sources.get(k) != v for k, v in tank_transport.guard_sources().items()):
         raise ValueError("Tank не подтвердил версию бортовой защиты")
-    raw_reference = (REFERENCE / "shelf-reference.json").read_bytes()
-    reference = json.loads(raw_reference)
-    calibration = json.loads((EVIDENCE / "calibration.json").read_text())
-    if hashlib.sha256(raw_reference).hexdigest() != calibration["reference_sha256"]:
-        raise ValueError("Разметка кадра стеллажа изменилась после калибровки")
+    return status
+
+
+def probe():
+    from scripts.peer_dock_shelf import replay_stopped_scan
+
+    tank_health()
+    reference, calibration = shelf_calibration()
     with ThreadPoolExecutor(2) as executor:
         tank, donor = executor.map(read_still, ROBOTS)
     goal, error, yaw_error = calibrated_goal(tank, donor, reference, calibration)
     replay = replay_stopped_scan(tank, goal, lateral_m=.10)
-    if replay["state"] != "arrived" or replay["minimum_scan_return_clearance_m"] < .25:
+    if (replay["state"] != "arrived" or replay["minimum_scan_return_clearance_m"] < .25
+            or replay["reverse_steps"]):
         raise ValueError("Свежий лидар не подтверждает маршрут к стеллажу")
     fleet = FleetMap()
     fleet.update("tank", tank)
@@ -155,6 +174,133 @@ def probe():
     if (mount := tank.get("mount_source")) is not None:
         write_json(folder / "tank-mount.json", mount)
     write_json(folder / "result.json", receipt)
+    return receipt, fleet
+
+
+def resumable_shelf_run():
+    last = next((item for item in episodes.load() if item.get("shelf_observation_id")), None)
+    if (last and not last.get("resumed_episode") and last.get("outcome") == "cancelled"
+            and last.get("message") in (CAMERA_MISSING, CAMERA_STALE)
+            and last.get("localized_share", 0.) >= .95 and last.get("last_observed_pose")):
+        return last
+    return None
+
+
+def shelf_anchor(run, calibration):
+    ident = run.get("shelf_observation_id", "")
+    if not re.fullmatch("[0-9a-f]{32}", ident):
+        raise ValueError("В журнале нет сохранённой привязки стеллажа")
+    directory = EVIDENCE / ident
+    receipt = json.loads((directory / "result.json").read_text())
+    if (receipt["id"] != ident or receipt["source_robot"] != "rosmaster"
+            or receipt["calibration_run"] != calibration["id"] or receipt["pose"] != run["requested_pose"]
+            or receipt["tank_start_pose"] != [0., 0., 0.]):
+        raise ValueError("Привязка прерванного подъезда изменилась")
+    packets = {}
+    for robot in ROBOTS:
+        raw = (directory / f"{robot}.npz").read_bytes()
+        if hashlib.sha256(raw).hexdigest() != receipt["packets"][robot]:
+            raise ValueError("Нарушена целостность исходного кадра стеллажа")
+        packets[robot] = decode_packet(raw)
+        if packets[robot]["meta"]["robot"] != robot:
+            raise ValueError("Исходный кадр пришёл от другого робота")
+    source = directory / "tank-mount.json"
+    if source.is_file():
+        packets["tank"]["mount_source"] = json.loads(source.read_text())
+    return packets, receipt
+
+
+def read_resume_scan(after=None):
+    client = SensorClient(robot="tank", isolated=True)
+    deadline = time.monotonic() + .35
+    try:
+        while time.monotonic() < deadline:
+            packet = client.snapshot(("scan",))
+            meta = packet["meta"]
+            stamp = meta["streams"]["scan"]["source_timestamp_ns"]
+            if (meta.get("read_only") is True and meta.get("motion_commands_sent") == 0
+                    and stamp > (after or 0) and 0 <= stream_age(packet, "scan") <= MAX_AGE_S):
+                return packet
+            time.sleep(.025)
+    finally:
+        client.close()
+    raise ValueError("Tank не подтвердил два свежих скана лидара")
+
+
+def stopped_scan_pose(grid, anchor, current, expected):
+    for key in ("boot_id", "source_sha256"):
+        if not current["meta"].get(key) or anchor["meta"].get(key) != current["meta"][key]:
+            raise ValueError("Поток лидара Tank изменился после первой попытки")
+    if anchor["meta"]["streams"]["scan"]["frame_id"] != current["meta"]["streams"]["scan"]["frame_id"]:
+        raise ValueError("Координаты лидара Tank изменились")
+    scan = thin(scan_points("tank", current), .04, 360)
+    if len(scan) < 70:
+        raise ValueError("Слишком мало отражений от исходной расстановки")
+    _, pose = grid.refine(scan, expected, rounds=((.15, .03, math.radians(16), math.radians(2)),
+                                                   (.04, .01, math.radians(3), math.radians(.5))))
+    overlap = grid.inliers(scan, pose)
+    if overlap < .72 or not peer_dock_survey.close_pose(pose, expected, .04, math.radians(6)):
+        raise ValueError("Tank сместился после остановки или исходная расстановка изменилась")
+    return pose, overlap
+
+
+def probe_resume(previous, *, supervised=False):
+    from scripts.peer_dock_shelf import replay_stopped_scan
+
+    state = tank_health()
+    if (state.get("action") != [0., 0.] or state.get("armed") is not supervised
+            or state.get("hardware_open") is not supervised):
+        raise ValueError("Tank должен стоять. Продолжение доступно из готового пульта.")
+    if supervised:
+        callback = state.get("camera_timing", {}).get("callback_started_ns")
+        if type(callback) is not int or not 0 <= state['monotonic_ns'] - callback < 500_000_000:
+            raise ValueError("Дождитесь свежего кадра Tank в пульте")
+    reference, calibration = shelf_calibration()
+    anchors, original = shelf_anchor(previous, calibration)
+    old_shelf, _ = visible_shelf(anchors["rosmaster"], reference, calibration)
+    base_from_donor = tank_mount(anchors["tank"]) @ np.asarray(calibration["optical_from_donor"])
+    grid = Grid()
+    grid.add(scan_points("tank", anchors["tank"]), (0., 0., 0.))
+    with ThreadPoolExecutor(2) as executor:
+        donor_future = executor.submit(read_still, "rosmaster")
+        first = read_resume_scan()
+        scan = read_resume_scan(first["meta"]["streams"]["scan"]["source_timestamp_ns"])
+        donor = donor_future.result()
+    new_shelf, width = visible_shelf(donor, reference, calibration)
+    if (np.linalg.norm(new_shelf[:3, 3] - old_shelf[:3, 3]) > .015
+            or np.trace(old_shelf[:3, :3].T @ new_shelf[:3, :3]) < 1 + 2 * math.cos(math.radians(3))
+            or donor["meta"]["boot_id"] != anchors["rosmaster"]["meta"]["boot_id"]):
+        raise ValueError("ROSMASTER не подтвердил исходную секцию стеллажа")
+    poses, overlaps = zip(*(stopped_scan_pose(grid, anchors["tank"], p, previous["last_observed_pose"])
+                            for p in (first, scan)), strict=True)
+    if not peer_dock_survey.close_pose(*poses, .025, math.radians(3)):
+        raise ValueError("Два измерения позиции Tank расходятся")
+    goal = goal_from_shelf(base_from_donor @ new_shelf, width)
+    relative = compose(inverse(poses[1]), goal)
+    replay = replay_stopped_scan(scan, relative, lateral_m=original["shadow_replay"]["lateral_offset_m"])
+    if (replay["state"] != "arrived" or replay["minimum_scan_return_clearance_m"] < .25
+            or replay["reverse_steps"] or not peer_dock_survey.close_pose(
+                compose(poses[1], replay["goal"]), original["pose"], .015, math.radians(3))):
+        raise ValueError("Свежий лидар не подтвердил безопасный путь к прежней цели")
+    fleet = FleetMap()
+    fleet.update("tank", scan)
+    pose, frame = current_pose(fleet)
+    expires = min(p["received_ns"] / 1e9 + MAX_AGE_S - stream_age(p, stream, p["received_ns"])
+                  for p, stream in ((scan, "scan"), (donor, "depth")))
+    if time.monotonic() >= expires:
+        raise ValueError("Снимки устарели во время сверки стеллажа")
+    ident = uuid.uuid4().hex
+    receipt = {"id": ident, "map_frame_id": frame, "pose": replay["goal"], "tank_start_pose": list(pose),
+               "source_robot": "rosmaster", "calibration_run": calibration["id"],
+               "expires_monotonic_s": expires, "resumed_episode": previous["id"],
+               "anchor_observation_id": original["id"], "tank_poses_in_anchor": poses,
+               "scan_overlap": overlaps, "shadow_replay": replay, "physical_trial": False}
+    if supervised:
+        directory = EVIDENCE / ident
+        directory.mkdir(mode=0o700, parents=True, exist_ok=False)
+        for name, packet in (("tank-first", first), ("tank", scan), ("rosmaster", donor)):
+            (directory / f"{name}.npz").write_bytes(packet["payload"])
+        write_json(directory / "result.json", receipt)
     return receipt, fleet
 
 
@@ -229,6 +375,8 @@ def handoff(control, session, owner, expected, receipt, fleet):
         )
         runner.episode.extra.update(shelf_observation_id=receipt["id"], source_robot="rosmaster",
                                     planned_stop=receipt["pose"])
+        if "resumed_episode" in receipt:
+            runner.episode.extra["resumed_episode"] = receipt["resumed_episode"]
         reader.start()
         control.goal = runner
         return runner

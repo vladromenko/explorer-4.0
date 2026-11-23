@@ -67,6 +67,12 @@ def install(control=None):
         try:
             if control is not None:
                 peer_dock_survey.require_stopped(control)
+            previous = await asyncio.to_thread(peer_shelf_run.resumable_shelf_run)
+            if previous is not None:
+                receipt, _ = await asyncio.to_thread(peer_shelf_run.probe_resume, previous)
+                return {'ready': True, 'resume': previous['id'], 'goal_relative': receipt['pose'],
+                        'scan_overlap': receipt['scan_overlap'], 'replay': receipt['shadow_replay'],
+                        'no_motion': True}
             receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
             return {'ready': True, 'receipt': receipt['id'],
                     'goal_disagreement_m': receipt['donor_local_disagreement_m'],
@@ -213,6 +219,8 @@ def add_operator_action(control,session,owner):
         except Exception as exc:
             ui.notify(str(exc),type='negative')
     ui.button('Подъехать к измеренной совместной цели',on_click=accept).props('outline no-caps')
+    from . import peer_shelf_run
+    previous = peer_shelf_run.resumable_shelf_run()
     with ui.expansion('Пробный подъезд к стеллажу без меток', value=True):
         ui.label('Одна проверка на сохранённой расстановке. ROSMASTER остаётся на месте.')
         supervised = ui.checkbox('Я рядом, вижу Tank и могу сразу нажать STOP')
@@ -221,7 +229,6 @@ def add_operator_action(control,session,owner):
 
         async def start_shelf():
             nonlocal runner
-            from . import peer_shelf_run
             if not supervised.value:
                 ui.notify('Подтвердите, что видите Tank и можете его остановить', type='warning')
                 return
@@ -229,7 +236,13 @@ def add_operator_action(control,session,owner):
             try:
                 expected = study.operator_session(control, session, owner)
                 shelf_status.set_text('Проверяю свежие кадры и маршрут…')
-                receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
+                current = await asyncio.to_thread(peer_shelf_run.resumable_shelf_run)
+                if previous is not None and current != previous:
+                    raise ValueError('Журнал подъезда изменился. Обновите страницу.')
+                if previous is None:
+                    receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
+                else:
+                    receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe_resume, previous, supervised=True)
                 if not supervised.value:
                     return
                 runner = peer_shelf_run.handoff(control, session, owner, expected, receipt, shelf_map)
@@ -243,7 +256,8 @@ def add_operator_action(control,session,owner):
                 if runner is None or not runner.active:
                     shelf_button.enable()
 
-        shelf_button = ui.button('Начать один пробный подъезд', on_click=start_shelf).props('outline no-caps')
+        action = 'Продолжить прерванный подъезд' if previous else 'Начать один пробный подъезд'
+        shelf_button = ui.button(action, on_click=start_shelf).props('outline no-caps')
 
         def update_shelf_status():
             nonlocal runner
