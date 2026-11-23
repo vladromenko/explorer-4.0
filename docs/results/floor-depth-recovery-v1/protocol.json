@@ -1,0 +1,71 @@
+{
+  "scene": "rosmaster_floor_pick_sim",
+  "scene_revision": "0f7800dc89c565f1ea0cb1c3d68d29cfedd204aecff92e84aee676d7196663d4",
+  "same_scenes": [
+    987140,
+    987141,
+    987142,
+    987143,
+    987144,
+    987145,
+    987146,
+    987147,
+    987148,
+    987149,
+    987150,
+    987151
+  ],
+  "fresh_scenes": [
+    987200,
+    987201,
+    987202,
+    987203,
+    987204,
+    987205,
+    987206,
+    987207,
+    987208,
+    987209,
+    987210,
+    987211,
+    987212,
+    987213,
+    987214,
+    987215
+  ],
+  "looks": [
+    [
+      [
+        90,
+        130,
+        0,
+        -15,
+        90,
+        30
+      ],
+      25
+    ],
+    [
+      [
+        90.0,
+        57.0,
+        24.0,
+        0.0,
+        75.0,
+        30.0
+      ],
+      45
+    ]
+  ],
+  "ticks": 360,
+  "cube_side_m": 0.032,
+  "endpoint": "Bilateral floor carry v2, last one second at 20 Hz and forbidden arm contact guard",
+  "scope": "Simulated calibrated metric depth. No cube coordinates or semantic ID enter the controller.",
+  "source_sha256": {
+    "explorer4/floor_cube_localization.py": "01e84294d5b612957820e6900683d0f42a73542947be4447be72d03b11e03a0b",
+    "explorer4/sim/floor_carry.py": "2839d3ad8bbfb8553ba8fd80ecf17b062462db761ec3c4b8c30dd7e67717ed7a",
+    "scripts/grasp_study/evaluate.py": "31469393b999c7ffdc3a88f15077a85b365d3776b84c6391963731a023c16935",
+    "scripts/grasp_study/depth_floor_recovery.py": "0ea709ba2ded4a75c45e310c4e28c6f3f30405a6faef099b670aecf33ad3ddd7"
+  },
+  "baseline_sha256": "1b18c8d8c87840ff34a566bf2fe718c55fc7e9cc7d3a3b5529e96711371ea6be"
+}

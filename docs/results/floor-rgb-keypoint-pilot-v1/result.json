@@ -1,0 +1,205 @@
+{
+  "training_frames": 77,
+  "validation_frames": 23,
+  "optimizer_updates": 40,
+  "test_total": 32,
+  "test_labelled": 15,
+  "rgb_p90_m": 0.03242179859861745,
+  "depth_p90_m": 0.00043489929612173817,
+  "history": [
+    {
+      "epoch": 1,
+      "validation_p90_m": 0.08079701093924731
+    },
+    {
+      "epoch": 2,
+      "validation_p90_m": 0.07086234082937008
+    },
+    {
+      "epoch": 3,
+      "validation_p90_m": 0.057889659624208556
+    },
+    {
+      "epoch": 4,
+      "validation_p90_m": 0.032063707031704754
+    },
+    {
+      "epoch": 5,
+      "validation_p90_m": 0.027215640843587942
+    },
+    {
+      "epoch": 6,
+      "validation_p90_m": 0.027363891740789726
+    },
+    {
+      "epoch": 7,
+      "validation_p90_m": 0.027306733195702038
+    },
+    {
+      "epoch": 8,
+      "validation_p90_m": 0.026649745517135264
+    }
+  ],
+  "test": [
+    {
+      "seed": 988400,
+      "visible_top": false
+    },
+    {
+      "seed": 988401,
+      "visible_top": true,
+      "rgb_error_m": 0.005938195637834935,
+      "depth_error_m": 0.00018906312202703532
+    },
+    {
+      "seed": 988402,
+      "visible_top": false
+    },
+    {
+      "seed": 988403,
+      "visible_top": true,
+      "rgb_error_m": 0.04444855292603375,
+      "depth_error_m": 0.00022806346342426777
+    },
+    {
+      "seed": 988404,
+      "visible_top": true,
+      "rgb_error_m": 0.008240473627517557,
+      "depth_error_m": 0.0002593994292365843
+    },
+    {
+      "seed": 988405,
+      "visible_top": true,
+      "rgb_error_m": 0.0049764405606064896,
+      "depth_error_m": 0.0004100026198805047
+    },
+    {
+      "seed": 988406,
+      "visible_top": false
+    },
+    {
+      "seed": 988407,
+      "visible_top": false
+    },
+    {
+      "seed": 988408,
+      "visible_top": false
+    },
+    {
+      "seed": 988409,
+      "visible_top": true,
+      "rgb_error_m": 0.003295214136106502,
+      "depth_error_m": 0.00037790108491995327
+    },
+    {
+      "seed": 988410,
+      "visible_top": false
+    },
+    {
+      "seed": 988411,
+      "visible_top": false
+    },
+    {
+      "seed": 988412,
+      "visible_top": true,
+      "rgb_error_m": 0.027075324310130135,
+      "depth_error_m": 0.000275906013118093
+    },
+    {
+      "seed": 988413,
+      "visible_top": true,
+      "rgb_error_m": 0.026315955416765006,
+      "depth_error_m": 0.0003771712765941843
+    },
+    {
+      "seed": 988414,
+      "visible_top": true,
+      "rgb_error_m": 0.028602631139128105,
+      "depth_error_m": 0.0003171245625033186
+    },
+    {
+      "seed": 988415,
+      "visible_top": false
+    },
+    {
+      "seed": 988416,
+      "visible_top": true,
+      "rgb_error_m": 0.030746940251844455,
+      "depth_error_m": 0.000405548675339673
+    },
+    {
+      "seed": 988417,
+      "visible_top": true,
+      "rgb_error_m": 0.016006189520593444,
+      "depth_error_m": 0.0003636426985671753
+    },
+    {
+      "seed": 988418,
+      "visible_top": false
+    },
+    {
+      "seed": 988419,
+      "visible_top": false
+    },
+    {
+      "seed": 988420,
+      "visible_top": false
+    },
+    {
+      "seed": 988421,
+      "visible_top": true,
+      "rgb_error_m": 0.01619586410650145,
+      "depth_error_m": 0.00028883131392758475
+    },
+    {
+      "seed": 988422,
+      "visible_top": false
+    },
+    {
+      "seed": 988423,
+      "visible_top": false
+    },
+    {
+      "seed": 988424,
+      "visible_top": false
+    },
+    {
+      "seed": 988425,
+      "visible_top": true,
+      "rgb_error_m": 0.01975646590618614,
+      "depth_error_m": 0.0010019887552626173
+    },
+    {
+      "seed": 988426,
+      "visible_top": true,
+      "rgb_error_m": 0.03353837082979945,
+      "depth_error_m": 7.167500700090106e-05
+    },
+    {
+      "seed": 988427,
+      "visible_top": false
+    },
+    {
+      "seed": 988428,
+      "visible_top": true,
+      "rgb_error_m": 0.011663682221166115,
+      "depth_error_m": 0.0002624824709845834
+    },
+    {
+      "seed": 988429,
+      "visible_top": false
+    },
+    {
+      "seed": 988430,
+      "visible_top": true,
+      "rgb_error_m": 0.025872857408705537,
+      "depth_error_m": 0.0004514970802825605
+    },
+    {
+      "seed": 988431,
+      "visible_top": false
+    }
+  ],
+  "weights_sha256": "4781411ad8c8d6ed9d2d10e08076c78786ff870e1a3b66df57fcff4ce864c486",
+  "purpose": "Conditional localization comparison; not a new robot grasp rollout"
+}

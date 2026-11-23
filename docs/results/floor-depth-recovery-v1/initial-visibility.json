@@ -1,0 +1,187 @@
+{
+  "visible": 0,
+  "attempts": 12,
+  "method": "MuJoCo integer ID image for audit only, same RGB camera and exact saved reset states",
+  "rows": [
+    {
+      "seed": 987140,
+      "native_start_deg": [
+        87.68125915527344,
+        128.36634826660156,
+        -2.255581855773926,
+        23.909198760986328,
+        89.3741683959961,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987141,
+      "native_start_deg": [
+        92.2410659790039,
+        130.53549194335938,
+        -2.6968047618865967,
+        26.871061325073242,
+        88.30835723876953,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987142,
+      "native_start_deg": [
+        87.73748779296875,
+        131.67828369140625,
+        1.954506754875183,
+        22.359840393066406,
+        87.66514587402344,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987143,
+      "native_start_deg": [
+        89.01283264160156,
+        128.95054626464844,
+        -1.8060890436172485,
+        26.13667869567871,
+        91.74715423583984,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987144,
+      "native_start_deg": [
+        88.29915618896484,
+        129.73272705078125,
+        0.4644385874271393,
+        24.940223693847656,
+        87.103759765625,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987145,
+      "native_start_deg": [
+        91.07263946533203,
+        130.86341857910156,
+        1.3880559206008911,
+        26.965656280517578,
+        89.77086639404297,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987146,
+      "native_start_deg": [
+        91.99259185791016,
+        129.5458221435547,
+        0.33286958932876587,
+        25.598875045776367,
+        87.16669464111328,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987147,
+      "native_start_deg": [
+        92.47724914550781,
+        127.37069702148438,
+        -0.08143316954374313,
+        27.820945739746094,
+        89.50738525390625,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987148,
+      "native_start_deg": [
+        88.50980377197266,
+        129.4889373779297,
+        1.0785890817642212,
+        27.982439041137695,
+        88.10897827148438,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987149,
+      "native_start_deg": [
+        91.3829116821289,
+        127.8512954711914,
+        -2.5432844161987305,
+        24.6821346282959,
+        88.19342803955078,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987150,
+      "native_start_deg": [
+        90.63372039794922,
+        130.41116333007812,
+        -2.0617003440856934,
+        26.611536026000977,
+        87.08991241455078,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    },
+    {
+      "seed": 987151,
+      "native_start_deg": [
+        92.40484619140625,
+        129.99183654785156,
+        1.3297860622406006,
+        26.864431381225586,
+        87.62867736816406,
+        30.0
+      ],
+      "full": false,
+      "box": null,
+      "visible_pixels": 0,
+      "unoccluded_pixels": 0
+    }
+  ]
+}

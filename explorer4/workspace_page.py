@@ -277,6 +277,20 @@ def results():
                     f"Критериям подходили {selected['eligible_candidates']} из {len(selected['source_bank'])} стартов."
                 )
                 evidence_link("Сцены, отказы и удержание в конце команды", field_report)
+            depth_path = REPORT + "floor-depth-recovery-v1/"
+            depth = read(MEDIA / depth_path / "result.json")
+            if depth.get("fresh"):
+                same, fresh = depth["same"], depth["fresh"]
+                ui.label("Захват после измерения положения кубика").classes("work-muted")
+                ui.label(
+                    f"В MuJoCo: {same['successes']}/{same['attempts']} на прежних сценах, "
+                    f"{fresh['successes']}/{fresh['attempts']} на новых. "
+                    "Испытания этой схемы на реальном ROSMASTER ещё впереди."
+                )
+                evidence_link("Положение кубика, траектории и исходы", depth_path + "result.json")
+                evidence_link("Видео на одной сцене до и после", depth_path + "paired-987140.mp4")
+                evidence_link("График сравнения", depth_path + "carry-comparison.svg")
+                evidence_link("Что видела камера до исправления", depth_path + "initial-visibility.json")
             watch_path = REPORT + "wrist-video-failure-watch-v1/paired-test/"
             watch = read(MEDIA / watch_path / "result.json")
             if watch.get("pairs"):
