@@ -1,0 +1,215 @@
+{
+  "schema": "so101-donor-phase-proposal-v1",
+  "episode": "d891e94d13014e3abcda7f1a3dce517e",
+  "status": "proposed_not_admitted",
+  "human_signed": false,
+  "packet_admitted": false,
+  "domain": "physical human SO-101 demonstration",
+  "measurement_rows": 871,
+  "source_sha256": {
+    "research.jsonl": "efa611c13520e7949ab2bca958234b1014cb271e6161851a0671b3482739f109",
+    "donor_geometry/measurements.jsonl": "fe49096c16c5bf215913473c019e48a93c55c629cde48dc74a2250900a3998cf",
+    "donor_geometry/provenance.json": "7eab8ab6391d10f11411c5f47438931354af96c03e4acda77117c8f0816ac500"
+  },
+  "verified_archived_jpeg_hashes": 871,
+  "visibility": {
+    "distinct_views": 801,
+    "marker_detected": 619,
+    "unambiguous": 70,
+    "longest_uninterrupted_unambiguous": {
+      "seconds": 0.300132016,
+      "first_frame": 664,
+      "last_frame": 673
+    }
+  },
+  "first_unambiguous_frame": 425,
+  "undetected_intervals_at_least_15_rows_inclusive": [
+    [
+      279,
+      409
+    ],
+    [
+      706,
+      764
+    ]
+  ],
+  "interval_convention": "Zero-based original frame numbers, both endpoints inclusive. Camera times are relative to the first distinct overview timestamp.",
+  "proposed_intervals": [
+    {
+      "phase": "approach",
+      "first_frame": 208,
+      "last_frame": 334,
+      "first_camera_time_s": 6.925,
+      "last_camera_time_s": 11.115,
+      "gripper_encoder_percent_start_end": [
+        29.85,
+        30.71
+      ],
+      "visibility": {
+        "distinct_views": 122,
+        "marker_detected": 70,
+        "unambiguous": 0,
+        "longest_uninterrupted_unambiguous": {
+          "seconds": 0.0,
+          "first_frame": null,
+          "last_frame": null
+        }
+      },
+      "thumbnail_indices": [
+        208,
+        278,
+        330
+      ]
+    },
+    {
+      "phase": "grasp",
+      "first_frame": 335,
+      "last_frame": 389,
+      "first_camera_time_s": 11.147,
+      "last_camera_time_s": 12.942,
+      "gripper_encoder_percent_start_end": [
+        30.71,
+        15.95
+      ],
+      "visibility": {
+        "distinct_views": 52,
+        "marker_detected": 0,
+        "unambiguous": 0,
+        "longest_uninterrupted_unambiguous": {
+          "seconds": 0.0,
+          "first_frame": null,
+          "last_frame": null
+        }
+      },
+      "thumbnail_indices": [
+        335,
+        350,
+        389
+      ]
+    },
+    {
+      "phase": "lift",
+      "first_frame": 390,
+      "last_frame": 502,
+      "first_camera_time_s": 12.978,
+      "last_camera_time_s": 16.735,
+      "gripper_encoder_percent_start_end": [
+        15.95,
+        15.82
+      ],
+      "visibility": {
+        "distinct_views": 106,
+        "marker_detected": 86,
+        "unambiguous": 22,
+        "longest_uninterrupted_unambiguous": {
+          "seconds": 0.100066587,
+          "first_frame": 453,
+          "last_frame": 456
+        }
+      },
+      "thumbnail_indices": [
+        390,
+        425,
+        462
+      ]
+    },
+    {
+      "phase": "hold",
+      "first_frame": 505,
+      "last_frame": 690,
+      "first_camera_time_s": 16.832,
+      "last_camera_time_s": 22.985,
+      "gripper_encoder_percent_start_end": [
+        15.82,
+        15.09
+      ],
+      "visibility": {
+        "distinct_views": 175,
+        "marker_detected": 175,
+        "unambiguous": 42,
+        "longest_uninterrupted_unambiguous": {
+          "seconds": 0.300132016,
+          "first_frame": 664,
+          "last_frame": 673
+        }
+      },
+      "thumbnail_indices": [
+        505,
+        664,
+        673
+      ]
+    }
+  ],
+  "independent_object_lift_m": null,
+  "verified_object_hold_s": null,
+  "phase_anchors_confirmed": false,
+  "explanation": "The archived detector cannot provide an unambiguous pre-grasp reference or a one-second continuous observation. Images and encoder traces guide review only.",
+  "other_catalogued_successes": [
+    {
+      "episode": "2b02f12c214b4d548483c7789a162a32",
+      "original_frames": 1250,
+      "excluded": true,
+      "image_features": [
+        "observation.images.wrist"
+      ],
+      "overview_measurements_archived": true,
+      "visibility": {
+        "distinct_views": 1153,
+        "marker_detected": 956,
+        "unambiguous": 8,
+        "longest_uninterrupted_unambiguous": {
+          "seconds": 0.0,
+          "first_frame": 522,
+          "last_frame": 522
+        }
+      }
+    },
+    {
+      "episode": "451048674bfe4b579bcf3c6ea800c3aa",
+      "original_frames": 1117,
+      "excluded": false,
+      "image_features": [
+        "observation.images.wrist"
+      ],
+      "overview_measurements_archived": false
+    },
+    {
+      "episode": "47c74f2756df42edb42514658a43e04a",
+      "original_frames": 597,
+      "excluded": false,
+      "image_features": [
+        "observation.images.wrist"
+      ],
+      "overview_measurements_archived": false
+    },
+    {
+      "episode": "7d44a181fd8e4d029bbb21acafc3a472",
+      "original_frames": 849,
+      "excluded": true,
+      "image_features": [
+        "observation.images.wrist"
+      ],
+      "overview_measurements_archived": true,
+      "visibility": {
+        "distinct_views": 777,
+        "marker_detected": 584,
+        "unambiguous": 61,
+        "longest_uninterrupted_unambiguous": {
+          "seconds": 0.168447381,
+          "first_frame": 568,
+          "last_frame": 572
+        }
+      }
+    },
+    {
+      "episode": "cc209320e3af486b83e74791977dd913",
+      "original_frames": 922,
+      "excluded": false,
+      "image_features": [
+        "observation.images.wrist"
+      ],
+      "overview_measurements_archived": false
+    }
+  ],
+  "lan_contact_sheet_sha256": "3be10a561ea9c162c9eaea19b07dfaf2d978fe6f9863e8f15a07555fcce965f4"
+}
