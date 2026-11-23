@@ -148,7 +148,7 @@ def claims():
     plus, minus = paired(*scores)
     add("Learned RGB keypoint", f"Native unrestricted holds {sum(scores[0].values())} to {sum(scores[1].values())} on {len(wrist)} fresh scenes. {plus} gained and {minus} lost.", source)
 
-    source = A / "recovery-monitor.json"
+    source = G / "failure-watch/result.json"
     monitor = indexed(read(source)["pairs"])
     unchanged = {k:r["stale_hold"] for k,r in monitor.items()}
     relook = {k:r["recovery_hold"] for k,r in monitor.items()}

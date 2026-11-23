@@ -26,7 +26,7 @@ The research register traces the fleet’s controllers, pretrained policies and 
 
 ## Measured results
 
-The table is calculated from one row per scene and method. The two optimizer seeds reuse the same twenty scenes. In the conditioned grasp study a pretrained RGB localizer used 1,024 labelled simulated images. Each planner used 32 simulated motor demonstrations and predicted eight trajectory coefficients from a fixed camera estimate. The decoder generated 220 six-joint commands without subsequent visual feedback. The original peer comparison allowed three seconds of sensing for the learned selector and up to six for local search followed by a request. [Rebuild the table](scripts/research_claims.py) · [Audit, methods and acceptance criteria](docs/RESEARCH_AUDIT.md)
+The table is calculated from one row per scene and method. The two optimizer seeds reuse the same twenty scenes. In the conditioned grasp study a pretrained RGB localizer used 1,024 labelled simulated images. Each planner used 32 simulated motor demonstrations and predicted eight trajectory coefficients from a fixed camera estimate. The decoder generated 220 six-joint commands without subsequent visual feedback. The original peer comparison allowed three seconds of sensing for the learned selector and up to six for local search followed by a request. [Rebuild the table](scripts/research_claims.py) · [Audit, methods and acceptance criteria](docs/RESEARCH_AUDIT.md) · [Download the simulation evidence and weights](https://github.com/vladromenko/explorer-4.0/releases/download/research-audit-20261123/reproduction.zip)
 
 <!-- measured-results -->
 | Experiment | Per-scene result |
@@ -42,7 +42,7 @@ The table is calculated from one row per scene and method. The two optimizer see
 | Bounded motor correction | Terminal bilateral carry, original 31/32, fitted 29/32. 0 gained and 2 lost. Among 36 eligible of 160 assigned. [Rows](docs/results/conditioned_grasp_v1/native-residual/result.json) |
 | A second camera pose | Full target seen 11 to 17 on 32 assigned. Strict holds 4 to 4. [Rows](docs/results/research-audit/trials/active-view-fresh.json) |
 | Learned RGB keypoint | Native unrestricted holds 29 to 27 on 48 fresh scenes. 8 gained and 10 lost. [Rows](docs/results/conditioned_grasp_v1/wrist-heatmap/result.json) |
-| Pre-closure reobservation | First stable carries 21 to 28 on 32 starts. The return gained 8 and lost 1. RGB probe missed 11/11 failures and raised 5 false alarms. Template tracker issued 0 alarms. [Rows](docs/results/research-audit/trials/recovery-monitor.json) |
+| Pre-closure reobservation | First stable carries 21 to 28 on 32 starts. The return gained 8 and lost 1. RGB probe missed 11/11 failures and raised 5 false alarms. Template tracker issued 0 alarms. [Rows](docs/results/conditioned_grasp_v1/failure-watch/result.json) |
 | Archived human sequences | 5 full takes and 6 prefixes. Scratch 0/20, pretrained 0/20 terminal holds in MuJoCo. [Rows](docs/results/research-audit/trials/human11-results.json) |
 <!-- end-measured-results -->
 
