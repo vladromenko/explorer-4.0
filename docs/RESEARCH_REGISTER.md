@@ -1,10 +1,14 @@
 # Explorer 4 research register
 
+[November 23 audit, registered comparison and primary evidence](RESEARCH_AUDIT.md)
+
 [Published methods, places changed in the code and measured outcomes](RESEARCH_LINEAGE.md) · [Read this comparison on Homebrain](http://192.168.0.168:8030/simlab-media/reports/research-register-20261122/lineage.html)
 
 **Research question.** Can a robot decide, from its own observations, that another robot can supply missing information, and does using that information improve the outcome enough to justify the request?
 
-**Result on 23 November 2026.** On 16 held-out simulated docking scenes, Tank docked eight times using its own camera scan. Asking ROSMASTER only after the scan failed gave 16 dockings with eight requests. The learned selector also docked 16 times and made 14 requests. A random allocation of the same 14 requests docked 15 times. These trials support the value of a fresh peer observation in this task. They leave the advantage of the learned selector over random allocation unresolved. One sequential replay used the saved initial image after a five-channel-value rendering discrepancy. The original 15 strict pairs are preserved. [Held-out paired results](results/peer-camera-docking/sequential-confirmation-results.json) · [Development observations](results/peer-camera-docking/sequential-development.json) · [Homebrain panel](http://192.168.0.168:8030/workspace)
+**Earlier confirmation on 23 November 2026.** On 16 held-out simulated docking scenes, Tank docked eight times using its own camera scan. Asking ROSMASTER only after the scan failed gave 16 dockings with eight requests. The learned selector also docked 16 times and made 14 requests. A random allocation of the same 14 requests docked 15 times. These trials support the value of a fresh peer observation in this task. They leave the advantage of the learned selector over random allocation unresolved. One sequential replay used the saved initial image after a five-channel-value rendering discrepancy. The original 15 strict pairs are preserved. [Held-out paired results](results/peer-camera-docking/sequential-confirmation-results.json) · [Development observations](results/peer-camera-docking/sequential-development.json) · [Homebrain panel](http://192.168.0.168:8030/workspace)
+
+**Common-deadline follow-up.** When service could be delayed, uncertain or unavailable, local search alone docked in 8/16 new scenes. Both the learned and fixed local-first policies docked in 13/16 with six requests. [All terminal branches and service events](results/research-audit/trials/common-budget-events.json) · [Audit](RESEARCH_AUDIT.md)
 
 | Register | What the comparison covers |
 | --- | --- |

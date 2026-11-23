@@ -11,6 +11,7 @@ repo = ROOT
 published = DATA / "simlab/reports/research-register-20261122"
 audit = repo / "docs/results/research-audit-20261122"
 pages = {
+    "RESEARCH_AUDIT.md": ("audit.html", "Audit and paired experiments"),
     "RESEARCH_LINEAGE.md": ("lineage.html", "Sources and code changes"),
     "RESEARCH_REGISTER.md": ("index.html", "Overview"),
     "RESEARCH_REGISTER_LEARNING.md": ("learning.html", "Learning and models"),

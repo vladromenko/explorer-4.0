@@ -1,0 +1,808 @@
+{
+  "plan": {
+    "scene_seeds": [
+      925000,
+      925001,
+      925002,
+      925003,
+      925004,
+      925005,
+      925006,
+      925007,
+      925008,
+      925009,
+      925010,
+      925011,
+      925012,
+      925013,
+      925014,
+      925015,
+      925016,
+      925017,
+      925018,
+      925019
+    ],
+    "study": "article_human11_recorded_start_20261122",
+    "profile": "rosmaster_floor_pick_recorded_start_sim",
+    "physics": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "source_jobs": {
+      "T0": "5ee9adc024de414a9bbe4a9d82a00633",
+      "T1": "40de961f01b040b2831d7470d74ca1fc"
+    },
+    "evaluations": {
+      "T0": "3cfeb67da65f4cf29a902c166d680762",
+      "T1": "a24ba84dc3ea47e788543794b768c53c"
+    }
+  },
+  "summary": {
+    "T0": {
+      "source": "5ee9adc024de414a9bbe4a9d82a00633",
+      "evaluation": "3cfeb67da65f4cf29a902c166d680762",
+      "weight_sha256": "259d22d84ba8d81ec569359b62ed43e130f7d20eb8e73311dd974a51bcfe54d3",
+      "bundle_sha256": "75d8428cfdb25721fdb1545d7dfe5bcbd4b076547492d084a1bf1b1326641c82",
+      "validation_mae": 6.72622811794281,
+      "successes": 0,
+      "ever_held": 0,
+      "maximum_lift_cm": 0.3025094576934381,
+      "median_closest_distance_cm": 8.382125367023736
+    },
+    "T1": {
+      "source": "40de961f01b040b2831d7470d74ca1fc",
+      "evaluation": "a24ba84dc3ea47e788543794b768c53c",
+      "weight_sha256": "8edc3cf98e217b304ad682ba39329d6cb7f8c801da7f0f55adfbb8ab7a3de23f",
+      "bundle_sha256": "087e16403ca5a88aa74ab8c0481bb1bf5f92ed1a5ebf0d236438a46101702606",
+      "validation_mae": 6.125987311204275,
+      "successes": 0,
+      "ever_held": 0,
+      "maximum_lift_cm": 0.694697032135267,
+      "median_closest_distance_cm": 4.103939957198589
+    },
+    "visual": {
+      "successes": 19,
+      "weight_sha256": "a2967027c4a87e7d91f819aee9a15d581a2d80630ee80d9b53ea145bec4d08d8",
+      "median_error_cm": 0.2507125845889333
+    }
+  },
+  "scenes": [
+    {
+      "seed": 925000,
+      "initial_state": [
+        84.35335540771484,
+        54.332698822021484,
+        26.591888427734375,
+        19.610734939575195,
+        75.05142974853516,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.19183843543289364,
+        -0.012806727247425022,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 9.464390210209386,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 4.661362235784892,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.25662768831187327
+      }
+    },
+    {
+      "seed": 925001,
+      "initial_state": [
+        80.48211669921875,
+        57.91939163208008,
+        27.17352294921875,
+        19.966907501220703,
+        76.97722625732422,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.24992728686981397,
+        -0.04025372311362818,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 5.389671275193294,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.865881088907066,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.7817197977795655
+      }
+    },
+    {
+      "seed": 925002,
+      "initial_state": [
+        81.38318634033203,
+        59.49890899658203,
+        26.47983169555664,
+        19.197887420654297,
+        76.73339080810547,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21452659957595469,
+        0.018550845305223634,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 10.60644373285039,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 4.294261562637362,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.582372700788444
+      }
+    },
+    {
+      "seed": 925003,
+      "initial_state": [
+        82.07976531982422,
+        56.68233871459961,
+        23.437612533569336,
+        22.34896469116211,
+        72.2810287475586,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21923323044213666,
+        0.007877285360031294,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 6.404202059896551,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 2.585767664196009,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.07293519135780198
+      }
+    },
+    {
+      "seed": 925004,
+      "initial_state": [
+        81.52037048339844,
+        57.991729736328125,
+        22.146135330200195,
+        19.957324981689453,
+        74.99020385742188,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.1837306256862545,
+        -0.015162000323594771,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 9.838695313592996,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 5.135183384325826,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.34221126069419733
+      }
+    },
+    {
+      "seed": 925005,
+      "initial_state": [
+        82.53948974609375,
+        54.77495574951172,
+        23.451744079589844,
+        19.447858810424805,
+        72.48551177978516,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.22617780203360993,
+        -0.0051794375303602855,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 9.002319477514893,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.9092384617680174,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.08434876880102814
+      }
+    },
+    {
+      "seed": 925006,
+      "initial_state": [
+        80.07441711425781,
+        54.72674560546875,
+        25.203083038330078,
+        19.76935386657715,
+        75.79957580566406,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21433826647943144,
+        -0.02289244511647516,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 10.56673319794079,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 7.6117870865348,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.07214411764004877
+      }
+    },
+    {
+      "seed": 925007,
+      "initial_state": [
+        78.74909210205078,
+        58.2556266784668,
+        26.785388946533203,
+        23.52312660217285,
+        72.2391357421875,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.22227172640879334,
+        -0.016654374781050217,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 10.717343456292127,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.4064467685670543,
+        "max_lift_cm": 0.5501916889090588,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.7560801804365839
+      }
+    },
+    {
+      "seed": 925008,
+      "initial_state": [
+        80.71015930175781,
+        55.04997634887695,
+        27.308250427246094,
+        18.5042667388916,
+        73.05077362060547,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21543612997373474,
+        -0.006133374508753252,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 8.927316037194343,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.734093426524226,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.24479748086599332
+      }
+    },
+    {
+      "seed": 925009,
+      "initial_state": [
+        81.62922668457031,
+        58.81754684448242,
+        22.507461547851562,
+        20.43678855895996,
+        72.4902114868164,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.1812184000748713,
+        -0.013264295607973799,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 6.588311857353236,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.9977026937402607,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.12215724006582908
+      }
+    },
+    {
+      "seed": 925010,
+      "initial_state": [
+        81.79940032958984,
+        59.51504135131836,
+        24.750377655029297,
+        22.424850463867188,
+        75.20965576171875,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.22748501101104512,
+        0.006635005780166382,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 5.758655397204588,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 2.546075699450105,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.22926309836780925
+      }
+    },
+    {
+      "seed": 925011,
+      "initial_state": [
+        83.31756591796875,
+        56.02738952636719,
+        22.59299087524414,
+        22.1695613861084,
+        76.74885559082031,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.23380718287110086,
+        -0.030745618769399775,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 5.3711819692043665,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 4.519436801798995,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.11822863394214686
+      }
+    },
+    {
+      "seed": 925012,
+      "initial_state": [
+        83.21580505371094,
+        55.513038635253906,
+        24.040815353393555,
+        19.76858901977539,
+        71.68135833740234,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.20705662527298324,
+        0.019033313903097038,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 9.13256936723465,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.147343745754997,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.3128378942666473
+      }
+    },
+    {
+      "seed": 925013,
+      "initial_state": [
+        83.38290405273438,
+        54.87409210205078,
+        22.4029541015625,
+        18.82930564880371,
+        75.4183578491211,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.19763439051102077,
+        -0.04662726368728867,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 9.863627997502636,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 6.643958650282987,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "localization_error_cm": 1.2088296508766936
+      }
+    },
+    {
+      "seed": 925014,
+      "initial_state": [
+        84.10674285888672,
+        59.276329040527344,
+        27.143762588500977,
+        23.521289825439453,
+        75.28068542480469,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2130532031685238,
+        -0.02155680643503778,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 6.595458827899783,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 4.210177220656918,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.29494566687960644
+      }
+    },
+    {
+      "seed": 925015,
+      "initial_state": [
+        78.71097564697266,
+        55.80238342285156,
+        25.543643951416016,
+        22.72093963623047,
+        71.72187805175781,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21265280586326873,
+        -0.0023422768703299165,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 7.836934696853129,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 5.328414870511015,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.4842800168542088
+      }
+    },
+    {
+      "seed": 925016,
+      "initial_state": [
+        82.02516174316406,
+        55.9880256652832,
+        23.7930850982666,
+        23.479597091674805,
+        73.2165756225586,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.24946568281215875,
+        -0.009591471985848324,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 7.536873401760827,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.546662813032592,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.09374192690310426
+      }
+    },
+    {
+      "seed": 925017,
+      "initial_state": [
+        81.21237182617188,
+        57.02961349487305,
+        22.29048728942871,
+        23.28793716430664,
+        75.5027847290039,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.18112661884007836,
+        0.0288734515370207,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 5.118236800702548,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 7.392779639773725,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.23347051265067453
+      }
+    },
+    {
+      "seed": 925018,
+      "initial_state": [
+        82.2142562866211,
+        55.57910919189453,
+        21.59034538269043,
+        18.965126037597656,
+        72.78351593017578,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2360759552823648,
+        0.026914506063944535,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 3.0180175113461907,
+        "max_lift_cm": 0.3025094576934381,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 2.944481914365269,
+        "max_lift_cm": 0.694697032135267,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.20697850372193216
+      }
+    },
+    {
+      "seed": 925019,
+      "initial_state": [
+        81.52669525146484,
+        56.28815460205078,
+        24.101308822631836,
+        18.01608657836914,
+        76.62809753417969,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.17519673590660245,
+        -0.01854067108320593,
+        0.018000000000000002
+      ],
+      "T0": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 9.909660378584835,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "T1": {
+        "outcome": "failure",
+        "reason": "task_deadline",
+        "ever_held": false,
+        "min_tip_cube_cm": 6.3685229082555725,
+        "max_lift_cm": 0.0,
+        "steps": 500
+      },
+      "visual": {
+        "outcome": "success",
+        "reason": "held_in_carry_pose",
+        "localization_error_cm": 0.2796078025923551
+      }
+    }
+  ]
+}

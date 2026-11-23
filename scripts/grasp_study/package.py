@@ -20,6 +20,36 @@ from scripts.grasp_study.evaluate import (
 )
 
 
+def verified_archive(archive, files):
+    """Build an immutable deterministic ZIP and verify an existing copy against its inputs."""
+    archive.parent.mkdir(parents=True, exist_ok=True)
+    manifest = {k: file_hash(v) for k, v in files.items()}
+    if archive.exists():
+        with zipfile.ZipFile(archive) as z:
+            if (
+                set(z.namelist()) != {*manifest, "manifest.json"}
+                or json.loads(z.read("manifest.json")) != manifest
+                or any(
+                    hashlib.sha256(z.read(member)).hexdigest() != digest
+                    for member, digest in manifest.items()
+                )
+            ):
+                raise ValueError(
+                    "An existing release differs from the requested files. Use a new report directory."
+                )
+    else:
+        temporary = archive.with_suffix(".tmp.zip")
+        with zipfile.ZipFile(temporary, "w") as z:
+            for member, file in files.items():
+                z.writestr(zipfile.ZipInfo(member), file.read_bytes(), compress_type=zipfile.ZIP_DEFLATED)
+            z.writestr(
+                zipfile.ZipInfo("manifest.json"),
+                json.dumps(manifest, indent=2),
+                compress_type=zipfile.ZIP_DEFLATED,
+            )
+        temporary.replace(archive)
+
+
 def publish(report, bundle, source, vision, repository_results):
     blocks = ("development", "fresh", "historical_confirmation")
     summaries = {b: json.loads((report / b / "summary.json").read_text()) for b in blocks}
@@ -89,32 +119,8 @@ def publish(report, bundle, source, vision, repository_results):
     for optional in ("physical-shadow.json", "diffusion-940200.json", "diffusion-940200.mp4"):
         if (report / optional).is_file():
             files[optional] = report / optional
-    manifest = {k: file_hash(v) for k, v in files.items()}
     archive = report / name
-    if archive.exists():
-        with zipfile.ZipFile(archive) as z:
-            if (
-                set(z.namelist()) != {*manifest, "manifest.json"}
-                or json.loads(z.read("manifest.json")) != manifest
-                or any(
-                    hashlib.sha256(z.read(member)).hexdigest() != digest
-                    for member, digest in manifest.items()
-                )
-            ):
-                raise ValueError(
-                    "An existing release differs from the requested files. Use a new report directory."
-                )
-    else:
-        temporary = archive.with_suffix(".tmp.zip")
-        with zipfile.ZipFile(temporary, "w") as z:
-            for member, file in files.items():
-                z.writestr(zipfile.ZipInfo(member), file.read_bytes(), compress_type=zipfile.ZIP_DEFLATED)
-            z.writestr(
-                zipfile.ZipInfo("manifest.json"),
-                json.dumps(manifest, indent=2),
-                compress_type=zipfile.ZIP_DEFLATED,
-            )
-        temporary.replace(archive)
+    verified_archive(archive, files)
     index = dict(
         domain="MuJoCo",
         physical_trials=0,

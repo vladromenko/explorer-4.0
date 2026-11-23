@@ -1,4 +1,11 @@
-# Explorer 4.0 (born 16 November 2026)
+# Explorer 4.0 current status
+
+## 23 November 2026
+
+On Homebrain the common-deadline docking pilot finished all 64 branches on 16 new scenes. Both local-first and the adaptive selector completed 13 with six requests. Local-only completed eight. Historical raw ACT completed three of twenty starts with skill initialization and one from scratch. The newer native motor and vision candidates each lost terminal successes on fresh tests. The current physical series has no observer-scored result. Source changes, confidence limits and the inputs needed from the operator are linked below. [Paired evidence and research audit](docs/RESEARCH_AUDIT.md) · [Generated table](README.md#measured-results) · [Field setup](http://192.168.0.168:8030/field-session)
+
+## Historical status at 16 November 2026
+
 
 The work is done on Homebrain. The current work code and the completed results are combined with Main; the interface:8030 is updated to 01b3ada. Further minor changes are published from the codex /complete-research-20261116. Previous timeline is available in Git. Specific actions are: [TODO_NEXT.md](docs/TODO_NEXT.md).
 

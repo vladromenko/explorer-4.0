@@ -277,6 +277,15 @@ def results():
                     f"Критериям подходили {selected['eligible_candidates']} из {len(selected['source_bank'])} стартов."
                 )
                 evidence_link("Сцены, отказы и удержание в конце команды", field_report)
+            watch_path = REPORT + "wrist-video-failure-watch-v1/paired-test/"
+            watch = read(MEDIA / watch_path / "result.json")
+            if watch.get("pairs"):
+                n = len(watch["pairs"])
+                original = sum(row["stale_hold"] for row in watch["pairs"])
+                repeated = sum(row["recovery_hold"] for row in watch["pairs"])
+                ui.label(f"Повторный взгляд перед захватом · {original}/{n} → {repeated}/{n} в MuJoCo")
+                evidence_link("Видео одной и той же попытки с повторным взглядом и без", watch_path + "first-rescued.mp4")
+                evidence_link("Исходы и ошибки предупреждения", watch_path + "result.json")
             refresh_path = REPORT + "grasp-look-refresh-development-v1-1/result.json"
             refresh = read(MEDIA / refresh_path).get("all_scenes", {}).get("shifted")
             if refresh:
@@ -387,6 +396,19 @@ def results():
                     row = confirmed[key]
                     ui.label(f"{label} · {row['successes']}/{row['scenes']} стыковок, запросов {row['calls']}")
                 evidence_link("Методы, исходные сцены и восстановление кадра", confirmation)
+            pilot_path = REPORT + "peer-action-value-v1/evidence.json"
+            common_budget = read(MEDIA / pilot_path)
+            if common_budget.get("method_summary"):
+                n = common_budget["n_unique_scenes"]
+                outcomes = common_budget["method_summary"]
+                sequential = outcomes[common_budget["strongest_local_first"]]
+                adaptive = outcomes["adaptive"]
+                ui.label(f"Общий лимит времени · Tank один {outcomes['local_only']['win']}/{n}, "
+                         f"после поиска с помощью {sequential['win']}/{n}, "
+                         f"обученный выбор {adaptive['win']}/{n}.")
+                evidence_link("Выбор помощи при ограниченном времени · парные исходы", pilot_path)
+            evidence_link("Аудит, методы и практические ограничения", REPORT + "research-register-20261122/audit.html")
+            evidence_link("Воспроизвести результаты и таблицы статьи", REPORT + "explorer-audit-20261123/reproduction.zip")
             ui.link(
                 "Доставка в 96 комнатах · журнал и парные исходы",
                 "/simlab-media/reports/room-study-e1/index.html",

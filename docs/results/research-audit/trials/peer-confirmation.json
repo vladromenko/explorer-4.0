@@ -1,0 +1,764 @@
+{
+  "status": "completed",
+  "scope": "Post hoc shared-first-image technical recovery in held-out MuJoCo; original preregistered strict image pairing completed for 15/16.",
+  "protocol_sha256": "0924e1390458cd0b639d827b108cb38ffef494964fd01d2747c37e1257d58a46",
+  "original_protocol_sha256": "7c2228938b4ec9d86a161e3f316340a1048ba2d48d5ad6f923562cb691ec714f",
+  "original_strict_scenes": 15,
+  "shared_first_image_seeds": [
+    863015
+  ],
+  "model_sha256": "c596f9f844a6c11916a3f04f318fede7c1283fb0d1966cec68c4c47ecef69f24",
+  "primary_evidence_sha256": "dde1c37eafbfa3c02c7e602de60a097f5cbf68594d3ae073ce2d3d59bbd05ff6",
+  "original_registration_sha256": "a7ea000c9f5ef883e751fc465dd6acd480df951d206ab5f26c16a07a49914497",
+  "original_strict_report": "shared-initial-v1/original-strict.json",
+  "rows": [
+    {
+      "seed": 863000,
+      "initial_state_sha256": "1a1c02e46a736eb89f5f13b05579f66ddc8c0d4e2156265d9745589676a2045c",
+      "sequential_result_sha256": "566d2e908d2683c21d3628c18f470334af4478eb4246c7fd8f3e7c23568e2508",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.500000000001341,
+          "sensing_s": 3.000000000001341,
+          "decision_frames": 2,
+          "utility": 0.8474999999999933
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.500000000001341,
+          "sensing_s": 3.000000000001341,
+          "decision_frames": 2,
+          "utility": 0.8474999999999933
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 13.450000000004946,
+          "sensing_s": 6.000000000004946,
+          "decision_frames": 17,
+          "utility": 0.8327499999999752
+        }
+      }
+    },
+    {
+      "seed": 863001,
+      "initial_state_sha256": "7ca551dbafdebc6438518a5eb896f5abb5167c6a645869fb20d27ea0712b5bfd",
+      "sequential_result_sha256": "1221fcedb0d79fe8ef84c2426ee4a600df176d2822964e67f5c7e398c3ca6504",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 12.150000000003358,
+          "sensing_s": 3.0000000000033573,
+          "decision_frames": 2,
+          "utility": 0.8392499999999832
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 9.450000000000058,
+          "sensing_s": 1.4000000000000572,
+          "decision_frames": 8,
+          "utility": 0.9527499999999998
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 12.150000000003358,
+          "sensing_s": 3.0000000000033573,
+          "decision_frames": 2,
+          "utility": 0.8392499999999832
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 9.450000000000058,
+          "sensing_s": 1.4000000000000572,
+          "decision_frames": 8,
+          "utility": 0.9527499999999998
+        }
+      }
+    },
+    {
+      "seed": 863002,
+      "initial_state_sha256": "873885397457ebc659b5334784778062127bb8ef8d522dcaa235373ab1085218",
+      "sequential_result_sha256": "b6bf19d068a4a302c111bb25f8b25f310bd7fcb29add76c2be01bcca2deaa248",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.050000000002013,
+          "sensing_s": 3.0000000000020126,
+          "decision_frames": 2,
+          "utility": 0.8447499999999899
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.050000000002013,
+          "sensing_s": 3.0000000000020126,
+          "decision_frames": 2,
+          "utility": 0.8447499999999899
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 14.000000000005619,
+          "sensing_s": 6.000000000005619,
+          "decision_frames": 17,
+          "utility": 0.8299999999999719
+        }
+      }
+    },
+    {
+      "seed": 863003,
+      "initial_state_sha256": "248727876a77cabe5ec48933e3e935b1765d80edb47c4299f0da7549208d1f2b",
+      "sequential_result_sha256": "c169ae21f4eea7a6354655edfa6ff9ed9b1eed6bcb039894c9c222789fb2d11a",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.850000000001769,
+          "sensing_s": 3.0000000000017684,
+          "decision_frames": 2,
+          "utility": 0.8457499999999911
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.14999999999847,
+          "sensing_s": 0.9999999999984688,
+          "decision_frames": 6,
+          "utility": 0.9592500000000077
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.850000000001769,
+          "sensing_s": 3.0000000000017684,
+          "decision_frames": 2,
+          "utility": 0.8457499999999911
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.14999999999847,
+          "sensing_s": 0.9999999999984688,
+          "decision_frames": 6,
+          "utility": 0.9592500000000077
+        }
+      }
+    },
+    {
+      "seed": 863004,
+      "initial_state_sha256": "81caaabc6f55b4ba6e52ca6ba88d4a119b158613e79743762aee9cc75fadff43",
+      "sequential_result_sha256": "0364a05c1acbec2bf5339f2322c491435d1c623d87731e672d9c463fd0fb29ff",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.800000000001708,
+          "sensing_s": 3.000000000001707,
+          "decision_frames": 2,
+          "utility": 0.8459999999999914
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.800000000001708,
+          "sensing_s": 3.000000000001707,
+          "decision_frames": 2,
+          "utility": 0.8459999999999914
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 13.850000000005435,
+          "sensing_s": 6.000000000005435,
+          "decision_frames": 17,
+          "utility": 0.8307499999999728
+        }
+      }
+    },
+    {
+      "seed": 863005,
+      "initial_state_sha256": "49c1d78efe10bea2775307020c8dea89e0f4ce368937197ba7b2c7eb77e8a8b9",
+      "sequential_result_sha256": "ede52e849172c6007d5f33d40dfb273e355be7ec0be5bd25804a40ea26937490",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 9.850000000000547,
+          "sensing_s": 3.0000000000005462,
+          "decision_frames": 2,
+          "utility": 0.8507499999999972
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 6.849999999998923,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9657500000000054
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 9.850000000000547,
+          "sensing_s": 3.0000000000005462,
+          "decision_frames": 2,
+          "utility": 0.8507499999999972
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 6.849999999998923,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9657500000000054
+        }
+      }
+    },
+    {
+      "seed": 863006,
+      "initial_state_sha256": "737bf281b93019d55c2125db5c92872a69cb52172a17c20a118a80753b25a4e2",
+      "sequential_result_sha256": "e7c455f53006ebbc4705d975e34a0587b0be956bb63f136f04714792cda0cc2c",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.200000000000975,
+          "sensing_s": 3.0000000000009743,
+          "decision_frames": 2,
+          "utility": 0.8489999999999951
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.200000000000975,
+          "sensing_s": 3.0000000000009743,
+          "decision_frames": 2,
+          "utility": 0.8489999999999951
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 13.200000000004641,
+          "sensing_s": 6.000000000004641,
+          "decision_frames": 17,
+          "utility": 0.8339999999999768
+        }
+      }
+    },
+    {
+      "seed": 863007,
+      "initial_state_sha256": "21f23950e22a210bd34184dc8eb7845bd4d7d68d29edc782ffab987358a77d71",
+      "sequential_result_sha256": "5d04c4f91527c5d7ef47dc4d0251c7d6fb5df316a84ecddfbd4f7aac45b5d0fd",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.250000000001036,
+          "sensing_s": 3.0000000000010356,
+          "decision_frames": 2,
+          "utility": 0.8487499999999948
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 7.2499999999987015,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9637500000000065
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.250000000001036,
+          "sensing_s": 3.0000000000010356,
+          "decision_frames": 2,
+          "utility": 0.8487499999999948
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 7.2499999999987015,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9637500000000065
+        }
+      }
+    },
+    {
+      "seed": 863008,
+      "initial_state_sha256": "ddfc1c92ba08fce3befcf37a796d90727652b3d3618f9df48a549d8311f65f8a",
+      "sequential_result_sha256": "8e4301d6544c0b88eae0d9d37fc843f1b1ec9a9e166e2245d34df0ba64948839",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.850000000001769,
+          "sensing_s": 3.0000000000017684,
+          "decision_frames": 2,
+          "utility": 0.8457499999999911
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.850000000001769,
+          "sensing_s": 3.0000000000017684,
+          "decision_frames": 2,
+          "utility": 0.8457499999999911
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 13.850000000005435,
+          "sensing_s": 6.000000000005435,
+          "decision_frames": 17,
+          "utility": 0.8307499999999728
+        }
+      }
+    },
+    {
+      "seed": 863009,
+      "initial_state_sha256": "5db7f9f6d4a578c1545674dd2be2361165af4d2fe4d6031c38134b5515be1692",
+      "sequential_result_sha256": "8fc56a7eede615142bd7be178de863b5c52bddfb37c83cc77d2c0209bfa6478f",
+      "learned_request": false,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 7.699999999998452,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9615000000000078
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 7.699999999998452,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9615000000000078
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 10.700000000001586,
+          "sensing_s": 3.0000000000015854,
+          "decision_frames": 2,
+          "utility": 0.846499999999992
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 7.699999999998452,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9615000000000078
+        }
+      }
+    },
+    {
+      "seed": 863010,
+      "initial_state_sha256": "db36a688112aa9943e115ccd92f5b2c573cb20fb7d0d42e97de0622186742df9",
+      "sequential_result_sha256": "a0e5bf554bb05105cfba6a7aadad531add8cb61a1cc66491d2ea5ecd83976bbf",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.300000000002319,
+          "sensing_s": 3.000000000002318,
+          "decision_frames": 2,
+          "utility": 0.8434999999999884
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.300000000002319,
+          "sensing_s": 3.000000000002318,
+          "decision_frames": 2,
+          "utility": 0.8434999999999884
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 12.800000000004152,
+          "sensing_s": 6.000000000004151,
+          "decision_frames": 17,
+          "utility": 0.8359999999999792
+        }
+      }
+    },
+    {
+      "seed": 863011,
+      "initial_state_sha256": "dbe9577ebfdb31dbbd2a4625e7fb056c2a9ff2cb60791ab2ea19ad9135874ce5",
+      "sequential_result_sha256": "769e0b385971d562b1cc0d5699d40d986012b5f86586f175ab24388e33c3cb97",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.150000000002136,
+          "sensing_s": 3.000000000002135,
+          "decision_frames": 2,
+          "utility": 0.8442499999999893
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.449999999998836,
+          "sensing_s": 1.1999999999988358,
+          "decision_frames": 7,
+          "utility": 0.9577500000000059
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.150000000002136,
+          "sensing_s": 3.000000000002135,
+          "decision_frames": 2,
+          "utility": 0.8442499999999893
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.449999999998836,
+          "sensing_s": 1.1999999999988358,
+          "decision_frames": 7,
+          "utility": 0.9577500000000059
+        }
+      }
+    },
+    {
+      "seed": 863012,
+      "initial_state_sha256": "a3677b43d1a564dd1da64b792dd4e819de5ce9d6d94d2a60942a51568523915d",
+      "sequential_result_sha256": "03d28100571e03e69487fca46d73499064e8573e8f9fb33ea926540efbf70520",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.900000000003052,
+          "sensing_s": 3.000000000003052,
+          "decision_frames": 2,
+          "utility": 0.8404999999999847
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.900000000003052,
+          "sensing_s": 3.000000000003052,
+          "decision_frames": 2,
+          "utility": 0.8404999999999847
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 14.850000000006657,
+          "sensing_s": 6.000000000006658,
+          "decision_frames": 17,
+          "utility": 0.8257499999999667
+        }
+      }
+    },
+    {
+      "seed": 863013,
+      "initial_state_sha256": "525373bc33e424974b83daf400968080b9cc84cd65baf3a3dcc53ae174b5ef67",
+      "sequential_result_sha256": "d1d976f996c3898d9d961471dd613db2e6f63445fe7624680d3da6403775afce",
+      "learned_request": false,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.549999999998958,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9572500000000053
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.549999999998958,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9572500000000053
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 11.500000000002563,
+          "sensing_s": 3.0000000000025633,
+          "decision_frames": 2,
+          "utility": 0.8424999999999871
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 8.549999999998958,
+          "sensing_s": 0.0,
+          "decision_frames": 1,
+          "utility": 0.9572500000000053
+        }
+      }
+    },
+    {
+      "seed": 863014,
+      "initial_state_sha256": "99b9f6d3bee7afd56041289f8909c03e4bde8680461a320ce973948d065c02a3",
+      "sequential_result_sha256": "85e4828cd02614d53b0a692a78f658e463b505fab4baa77f294ac025130a8f15",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 8.999999999999508,
+          "sensing_s": 2.999999999999508,
+          "decision_frames": 2,
+          "utility": 0.8550000000000024
+        },
+        "local_scan": {
+          "success": 0,
+          "calls": 0,
+          "seconds": 3.000000000000169,
+          "sensing_s": 3.000000000000169,
+          "decision_frames": 16,
+          "utility": -0.015000000000000846
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 8.999999999999508,
+          "sensing_s": 2.999999999999508,
+          "decision_frames": 2,
+          "utility": 0.8550000000000024
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 12.000000000003174,
+          "sensing_s": 6.000000000003174,
+          "decision_frames": 17,
+          "utility": 0.8399999999999841
+        }
+      }
+    },
+    {
+      "seed": 863015,
+      "initial_state_sha256": "2c151115df9f78698d1a57d45ceae7ac513f3efe221cc479b09c5772568e00fb",
+      "sequential_result_sha256": "912b297ea8eb9b0b334ce795fe4595d3f7ddd9ad6b5ff2b4a2fa25c05dd6f2b7",
+      "learned_request": true,
+      "methods": {
+        "learned": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 13.200000000004641,
+          "sensing_s": 3.00000000000464,
+          "decision_frames": 2,
+          "utility": 0.8339999999999768
+        },
+        "local_scan": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 10.150000000000913,
+          "sensing_s": 2.000000000000913,
+          "decision_frames": 11,
+          "utility": 0.9492499999999955
+        },
+        "immediate_peer": {
+          "success": 1,
+          "calls": 1,
+          "seconds": 13.200000000004641,
+          "sensing_s": 3.00000000000464,
+          "decision_frames": 2,
+          "utility": 0.8339999999999768
+        },
+        "sequential": {
+          "success": 1,
+          "calls": 0,
+          "seconds": 10.150000000000913,
+          "sensing_s": 2.000000000000913,
+          "decision_frames": 11,
+          "utility": 0.9492499999999955
+        }
+      }
+    }
+  ],
+  "methods": {
+    "learned": {
+      "scenes": 16,
+      "successes": 16,
+      "calls": 14,
+      "mean_seconds": 10.581250000001473,
+      "mean_sensing_s": 2.625000000001635,
+      "mean_decision_frames": 1.875,
+      "mean_utility": 0.8595937499999926
+    },
+    "local_scan": {
+      "scenes": 16,
+      "successes": 8,
+      "calls": 0,
+      "mean_seconds": 5.659374999999667,
+      "mean_sensing_s": 1.8499999999999768,
+      "mean_decision_frames": 10.25,
+      "mean_utility": 0.47170312500000167
+    },
+    "immediate_peer": {
+      "scenes": 16,
+      "successes": 16,
+      "calls": 16,
+      "mean_seconds": 10.953125000001895,
+      "mean_sensing_s": 3.0000000000018945,
+      "mean_decision_frames": 2,
+      "mean_utility": 0.8452343749999904
+    },
+    "sequential": {
+      "scenes": 16,
+      "successes": 16,
+      "calls": 8,
+      "mean_seconds": 10.909375000002086,
+      "mean_sensing_s": 3.350000000002396,
+      "mean_decision_frames": 10.75,
+      "mean_utility": 0.8954531249999895
+    }
+  },
+  "paired": {
+    "learned_minus_local_scan": {
+      "discordant_wins": 8,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 0.0078125,
+      "mean_delta_success": 0.5,
+      "mean_delta_calls": 0.875,
+      "mean_delta_seconds": 4.921875000001807,
+      "mean_delta_sensing_s": 0.7750000000016585,
+      "mean_delta_decision_frames": -8.375,
+      "mean_delta_utility": 0.3878906249999909
+    },
+    "learned_minus_immediate_peer": {
+      "discordant_wins": 0,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 1.0,
+      "mean_delta_success": 0,
+      "mean_delta_calls": -0.125,
+      "mean_delta_seconds": -0.3718750000004212,
+      "mean_delta_sensing_s": -0.3750000000002593,
+      "mean_delta_decision_frames": -0.125,
+      "mean_delta_utility": 0.014359375000002117
+    },
+    "learned_minus_sequential": {
+      "discordant_wins": 0,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 1.0,
+      "mean_delta_success": 0,
+      "mean_delta_calls": 0.375,
+      "mean_delta_seconds": -0.32812500000061195,
+      "mean_delta_sensing_s": -0.7250000000007606,
+      "mean_delta_decision_frames": -8.875,
+      "mean_delta_utility": -0.035859374999996974
+    },
+    "local_scan_minus_immediate_peer": {
+      "discordant_wins": 0,
+      "discordant_losses": 8,
+      "exact_two_sided_p": 0.0078125,
+      "mean_delta_success": -0.5,
+      "mean_delta_calls": -1,
+      "mean_delta_seconds": -5.293750000002229,
+      "mean_delta_sensing_s": -1.1500000000019177,
+      "mean_delta_decision_frames": 8.25,
+      "mean_delta_utility": -0.37353124999998877
+    },
+    "local_scan_minus_sequential": {
+      "discordant_wins": 0,
+      "discordant_losses": 8,
+      "exact_two_sided_p": 0.0078125,
+      "mean_delta_success": -0.5,
+      "mean_delta_calls": -0.5,
+      "mean_delta_seconds": -5.250000000002419,
+      "mean_delta_sensing_s": -1.500000000002419,
+      "mean_delta_decision_frames": -0.5,
+      "mean_delta_utility": -0.42374999999998786
+    },
+    "immediate_peer_minus_sequential": {
+      "discordant_wins": 0,
+      "discordant_losses": 0,
+      "exact_two_sided_p": 1.0,
+      "mean_delta_success": 0,
+      "mean_delta_calls": 0.5,
+      "mean_delta_seconds": 0.04374999999980922,
+      "mean_delta_sensing_s": -0.3500000000005013,
+      "mean_delta_decision_frames": -8.75,
+      "mean_delta_utility": -0.05021874999999909
+    }
+  },
+  "training_updates_in_confirmation": 0,
+  "physical_robot_commands": 0
+}

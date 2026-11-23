@@ -22,6 +22,8 @@ Our experiment holds the vehicles, terminal criterion and controller fixed while
 \subsection{Related work}
 KnowNo calibrates when a language-model planner needs human clarification \cite{ren}. Fleet-DAgger allocates scarce human supervision across robots \cite{hoque}. Proactive collaboration has already demonstrated that embodied agents can recruit heterogeneous teammates \cite{recruitment}. Physical viewpoint assistance has used a moving camera to recover object shape for manipulation \cite{viewpoint}. When2com learns communication groups, and V2V4Real compares collaborative perception across vehicles and synchronization conditions \cite{liu,xu}. Marcotte et al. estimate the value of a message by forward-simulating a teammate with and without it \cite{marcotte}. We measure that difference in a tracked recipient's terminal docking task. An inexpensive active local sensing action provides a comparator to the peer's observation.
 
+Communication actions in multi-agent POMDPs explicitly trade information against coordination cost~\cite{askpomdp}. Uncertainty-aware policy steering distinguishes ambiguity about the instruction from the feasibility of sampled actions~\cite{ups}. We test a narrower engineering question. Under a common simulated sensing deadline, can a short history of failed detections and a quoted helper service change which action maximizes realized docking utility?
+
 \section{An actionable observation in a shared world}
 A tracked base and a wheeled manipulator occupy one MuJoCo world. A fixed wall heading and a surveyed start pad define the task frame. We vary the board position in the plane near the wall and the tracked robot's starting heading. The initial camera can face away from the board. Six engineering scenes preceded the fixed set of 24 evaluation seeds. Both sets use the same three room presets. The seeds define different starts within those presets.
 
@@ -78,6 +80,17 @@ Against a prespecified random assignment of the same 14 calls, the learned rule 
 
 Fifteen sequential replays satisfied the original byte-identical initial-image check. One replay from the same physics state differed from the saved frame in five pixels by one intensity level. A separately registered technical recovery sent the original first image through the detector and rendered later frames live. It reproduced the original trajectory and endpoint. The 16-scene comparison includes this recovery. No policy was refitted.
 
+\subsection{A fixed deadline and variable helper offers}
+A new registered pilot used 24 fitting scenes, 16 calibration scenes and 16 confirmation starts in a third room. The recipient observed detection attempts and turn history. It could persist with local search or ask the manipulator. A declared service offer described availability, queue time and transform risk. All methods received six simulated seconds for sensing and twenty seconds overall. The adaptive selector compared terminal estimates under the same costs. We chose the fixed local-first comparator on calibration scenes before confirmation. No confirmation outcomes updated either decision rule.
+
+Local-only docking succeeded in 8/16 and asking immediately when possible succeeded in 12/16 with 12 calls. Both adaptive and local-first policies achieved 13/16 with six calls on the same starts. Each rescued five of the local failures and spoiled zero local successes. The immediate policy spoiled one. Mean elapsed times were 9.525 and 9.700 simulated seconds for adaptive and fixed. Their average utility difference was 0.000875, with zero median difference. This measured advantage corresponds to time saved on this bank. Neither terminal performance nor calls improved. The earlier original-versus-recovered analyses and this new independent bank are reported separately.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/common-deadline-docking.png}
+\caption{Within each service offer, each column represents the same starting scene across four policies. Adaptive and local-first calls led to the same docking outcomes.}
+\end{figure}
+
 \subsection{Requesting complementary skills in a delivery model}
 A separate 2-D experiment, E1, repeated five fleet configurations in each of 96 rooms. The requested object and the recipient's initial information about location and grasp properties varied across rooms. The Tank could participate in a search stage; a station could supply an object-width measurement with simulated noise. Every condition used the same final virtual handover. Success required the requested object to be delivered within the 600\,s mission deadline. This model scores graspability using object width.
 
@@ -112,11 +125,37 @@ Inverse kinematics & 18 & --- \\\hline
 
 The first training seed used 1,000 ACT and 2,000 diffusion optimizer updates. Frozen development and fresh evaluation sets comprised eight and 20 scenes, respectively. Diffusion gained 16 fresh scenes over its own constant-target control and lost zero. A second, retrospective comparison matched initial arm angles, cube position and physics revision against 20 historical starts. Raw image-to-action ACT had produced six holds and raw diffusion one. The position-conditioned pipelines produced 19 and 20. Localization supervision, the deliberate look and the motor representation all changed together, so that comparison cannot isolate an architecture effect. The spline result also demonstrates that the extra neural motor model provided no observed advantage on the fresh set. A second replay applied the physical controller's native joint and gripper rate limits, command quantization and path checks, using simulated telemetry. On the same starts the spline, ACT and diffusion then held 17, 14 and 17 cubes. Sixty attempts used this command path; real actuators were disconnected from the replay.
 
+In a separate moving-target experiment, the robot could return to its calibrated look pose before closure and generate a new trajectory. Half the starts received a 10\,mm lateral cube shift after six movement ticks. Fit, calibration and evaluation used 40, 24 and 32 distinct scenes. The endpoint was first stable carry within the original time budget. Reobservation on every start reached that endpoint in 28/32 against 21/32 without a second look (eight gains, one loss, exploratory exact paired $p=0.0391$). This differs from the fixed-horizon final retention endpoint. A visual failure probe missed all eleven baseline failures and made five false alarms. The template monitor made no calls. At the original strict visual check the first paired execution stopped before any pair was complete. A separately registered recovery used one archived RGB exposure at each common physical decision state, with the fitted model and thresholds unchanged. All 32 recovered pairs then executed their two terminal branches independently.
+
 \section{Transfer and limits}
 We retained the split between physical development recordings and sealed final evaluation recordings. On two archived physical development episodes, the first yielded no RGB frame within the required camera pose window. The second yielded one camera-pose match while wrist and gripper configuration differed from the trained observation posture. Neither episode had an independently checked mapping from RGB estimates to measured floor coordinates. The robot issued zero motor commands. Physical duplication of a simulated hold, or completion of a coordinated docking trial, remains to be measured.
 
 Physical evaluation of a request rule requires the two platforms in a surveyed shared frame, verified camera mounts and stopping behaviour, paired initial placements, and an endpoint measured independently after the stop. The reported simulated outcomes and passive camera replays contribute zero measured physical docking or carry attempts to these comparisons.
 
+\section*{Machine-generated evidence table}
+Original and recovered comparisons use the same scene IDs. The earlier learned request rule had a three-second sensing allowance while the sequential rule could use six. Motor demonstrations, labelled camera images and independent evaluation scenes are counted separately.
+% measured-results
+\begin{table*}[t]
+\centering\footnotesize
+\caption{Evidence computed from archived simulator outcomes. Each denominator refers to its own registered scene bank.}
+\begin{tabular}{@{}p{.24\textwidth}p{.71\textwidth}@{}}\hline
+Comparison & Measured outcome \\\hline
+Common-deadline peer docking & Local 8/16, immediate 12/16 (12 calls), local-first 13/16 (6 calls), adaptive 13/16 (6 calls). Adaptive gained 0 and lost 0 vs local-first. Mean utility difference +0.000875. \\
+Recorded starts, raw ACT & Before 0/20, skill initialization 3/20, scratch 1/20. Baseline reset vectors were unavailable. \\
+Fixed-look grasp & ACT 15/20 and Diffusion 18/20. Second optimizer seed on the same scenes gave 19 and 16. RBF 20, IK 18. \\
+Native grasp admission & 29/128 eligible, 20 executed, 12 terminal holds. 9 eligible starts unexecuted. \\
+Peer docking, original strict & Learned / local-first / always peer, each reported as success, calls and utility. 15/15, 13 calls, 0.86130 / 15/15, 8 calls, 0.89187 / 15/15, 15 calls, 0.84598. \\
+Peer docking, including recovery & Learned / local-first / always peer, each reported as success, calls and utility. 16/16, 14 calls, 0.85959 / 16/16, 8 calls, 0.89545 / 16/16, 16 calls, 0.84523. \\
+2D delivery, matched rooms & K0 63/96, K1 64/96, K2 91/96, K3 91/96, K5 87/96. K3 gained 2 and lost 2 against K2, gained 5 and lost 1 against K5. \\
+Docking with common visual memory & Nav2 control law / PPO achieved 14 / 11 on 14 strict scenes, 16 / 12 on all 16 including RGB recovery. \\
+Bounded motor correction & Terminal bilateral carry, original 31/32, fitted 29/32. 0 gained and 2 lost. Among 36 eligible of 160 assigned. \\
+A second camera pose & Full target seen 11 to 17 on 32 assigned. Strict holds 4 to 4. \\
+Learned RGB keypoint & Native unrestricted holds 29 to 27 on 48 fresh scenes. 8 gained and 10 lost. \\
+Pre-closure reobservation & First stable carries 21 to 28 on 32 starts. The return gained 8 and lost 1. RGB probe missed 11/11 failures and raised 5 false alarms. Template tracker issued 0 alarms. \\
+Archived human sequences & 5 full takes and 6 prefixes. Scratch 0/20, pretrained 0/20 terminal holds in MuJoCo. \\
+\hline\end{tabular}
+\end{table*}
+% end-measured-results
 \bibliographystyle{plainnat}
 \bibliography{references}
 \end{document}

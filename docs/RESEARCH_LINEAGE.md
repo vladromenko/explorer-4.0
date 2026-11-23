@@ -1,5 +1,7 @@
 # Which published methods changed Explorer
 
+[November 23 audit, registered comparison and primary evidence](RESEARCH_AUDIT.md)
+
 Explorer tests whether a mobile robot can recognize that its own observation is insufficient, request a measurement from another robot and use the reply to complete a task. A stable simulated carry, a settled placement and a dock are three different outcomes. All closed-loop counts below are from MuJoCo. Human recordings and live sensor checks address transfer separately.
 
 The review follows the three hardware interfaces and the article’s communication question. Sources were selected for an inspectable implementation or checkpoint, a matching sensor or action interface, or an experimental control that could distinguish two explanations in Explorer. Imported code, comparison methods and candidates awaiting data are identified in the individual rows.

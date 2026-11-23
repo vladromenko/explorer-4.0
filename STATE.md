@@ -1,6 +1,8 @@
-# Explorer 4.0 () is a record of the execution of the project.
+# Explorer 4.0 execution record
 
-Current status: [CURRENT_STATUS.md](CURRENT_STATUS.md). Since November 13, 2026, the SIM /REAL/REUSE. correction task has been performed. New steps: A Homebrain ♪ B ROSMASTER ♪ C Tank ♪ D SO-101 ♪ E joint work ♪ F Study.
+## 23 November 2026
+
+The audit based on ead8d4c was reconciled against the working system. Frozen partitions, alignment ancestry, native-sensor motion dispatch and physical endpoint handling were revised. The earlier original, recovered and new paired experiments retain distinct scene IDs and aggregate denominators. The original historical records follow in chronological sections. [Current status](CURRENT_STATUS.md) · [Audit and reproduction](docs/RESEARCH_AUDIT.md)
 
 ## 2026-11-13 is a new phase A, only Homebrain
 

@@ -1,0 +1,554 @@
+{
+  "status": "completed",
+  "domain": "sim",
+  "policy": "act",
+  "checkpoint": "/home/jetsonnx/.local/share/explorer3/checkpoints/0350a44a477346b8bcf1c12dc9fd2323-b8/checkpoints/last/pretrained_model",
+  "checkpoint_sha256": "4beac0dccf9fe091cd093e42226f9d5dea4e2b80e51c88539e3e9185baa74593",
+  "n_action_steps": 100,
+  "policy_seed_per_scene": false,
+  "model": {
+    "source": "Yahboom official ROSMASTER M3 PRO code archive, orin/M3Pro_ws-0.0.1.zip",
+    "source_url": "https://drive.google.com/file/d/1WxZbB2ulfWldWYRKiT5zheso-8EtqfdV/view",
+    "archive_sha256": "7f9083d301fef50633445272505e9acb561a4b6abe362dd946d7deaaf4caff0f",
+    "srdf_sha256": "770c7df6680f2bfb379019223f52f80162423e1e6dc392c35dae46650b853d59",
+    "gripper_closed_rad": -0.8398,
+    "urdf_sha256": "8046676e826b02f7764d1db5cbf24ea3d82202d22837ae824f8b6a8ddd82b6aa",
+    "meshes_sha256": {
+      "base_link.STL": "82897ec12100b78d8f33800edd7be19f86de3ffbc3574ed446f1d2bf04079f4a",
+      "arm1.STL": "d12f701abb74171df8ed3179b3885d10c6af2863f29d13e52bcce2d0d8933643",
+      "arm2.STL": "6ec3d8c7b02106560f61035e03a034637b988d153319d87bb50994e96728271e",
+      "arm3.STL": "74e309203df8ed80e57962a5ccc871909163cb07c1b1f6db0628233684360a98",
+      "arm4.STL": "8f74b107bdaba930ea482c95e6685d5cf5dccb3923a1e6d8b9280b7986811cda",
+      "arm5.STL": "1a52a732e4664ac3b703968416446b76d67067a78632b520d33858a80a26a281",
+      "rlink1.STL": "9e3bb9c0d08d3d177e01a532d275f108f514eb4be13e857c0a596c61c32891a6",
+      "rlink2.STL": "ff22b15d51ff0d96cddcaa74b6056c9e5f88e1abe6886023a2a90ca80ec3230d",
+      "llink1.STL": "0acf2b0ea73e9eb63e3ef9fec5637f0a151dae108ac3eed58ffd98f0062a6c9d",
+      "llink2.STL": "e356dfad82f1468a6c80e20fe127df4b7b40c395398cf5cb85a1522d9691b31c",
+      "rlink3.STL": "bcf76ccbadf426c3e7ec6135f0fd09c0669b54735e7de91bbee92276b5404b25",
+      "llink3.STL": "81f1c9f5ab75d86362d7e227fda6018c87488db713bd9621f6eb761bbec3109d",
+      "Gripping.STL": "e35ed860419dad49687084f9c8493f43c81cfece5b421d7e63944d27d22d63f7",
+      "DCW2.STL": "085efb1ffed33d9440071886bf1c2ce769facda5e45fd7e1ab24d4d55298d1a1",
+      "Camera.STL": "12d7158cdf2fab1072f2bd3989726e854a20d1fe717206cb7edc114afe59fdbe",
+      "lwheel1.STL": "e629352d69aaef698c948505f046fb241b1d9a7e734f0417a06dfe2d383eacfd",
+      "lwheel2.STL": "f07f85985d6c189b71d839a0d44bf3e893eacfd76dccc4f954b63d247a78ae1b",
+      "rwheel1.STL": "7218e9bea1d0862cacd44b0a8a72e207085d367a022843bfd4e6be23f6786fff",
+      "rwheel2.STL": "f8daf44a79b1b3d5bdec95ef3885e8151f3a39f21f93c2bf2e8fcbf09d57c323",
+      "arm_base_Link.STL": "bbd67c0a59cdbb8fd02c567e8ddff62bde72d3cae753ee63da7681f98f29871c"
+    },
+    "geometry": "original URDF link transforms, visual/collision STL, gripper mimic constraints",
+    "inertias": "original manufacturer CAD values, not identified whole-robot mass",
+    "calibration": "manufacturer_geometry_unverified_local_dynamics",
+    "license": "package.xml says Apache 2.0 but retains TurtleBot metadata; assets cached locally, no redistribution",
+    "adaptations": [
+      "empty visual tags removed",
+      "camera pan and wheels fixed for arm task",
+      "MuJoCo native URDF import; balanceinertia enabled; manufacturer SRDF collision exclusions",
+      "duplicate collision geometry invisible, still active"
+    ],
+    "xml_sha256": "0e44d9f93c8dd4b9a6452e009097b205209f509ebe0653dc78a339783e5925dc",
+    "presentation": {
+      "renderer": "native MuJoCo/Studio",
+      "style": "laboratory-v1",
+      "checker_cell_m": 0.1,
+      "reference": "Menagerie robotstudio_so101/scene.xml (Apache-2.0)",
+      "policy_camera": "same physical scene, no object coordinates or debug overlays"
+    },
+    "numerical_contact": {
+      "timestep_s": 0.0005,
+      "solref": [
+        0.001,
+        1
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2
+      ],
+      "iterations": 100,
+      "purpose": "bound numerical interpenetration, not fitted material compliance"
+    },
+    "controller_assumptions": [
+      "position servo gains/torque caps",
+      "lag",
+      "friction",
+      "servo-to-gripper alignment pending physical check",
+      "camera FOV pending intrinsics"
+    ],
+    "task_geometry": "simulated 32mm cube and bin; not a measurement of user objects",
+    "task_variant": "rosmaster_floor_pick",
+    "camera_roll_deg": 0.0
+  },
+  "new_process_reload": true,
+  "privileged_input": false,
+  "trials": [
+    {
+      "seed": 88300,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        79.47882080078125,
+        58.91423416137695,
+        23.279409408569336,
+        19.10609245300293,
+        72.4524154663086,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21389542429923675,
+        -0.033562628108964224,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 3.2595333803465585,
+      "max_lift_cm": 0.4619536805738341,
+      "ever_held": false
+    },
+    {
+      "seed": 88301,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        78.79967498779297,
+        56.373172760009766,
+        21.58138084411621,
+        21.566560745239258,
+        73.09170532226562,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2028529362941214,
+        0.003920708850834856,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 0.06355788820180241,
+      "max_lift_cm": 24.997107204234897,
+      "ever_held": false
+    },
+    {
+      "seed": 88302,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        84.02641296386719,
+        54.19398498535156,
+        21.6278018951416,
+        18.613309860229492,
+        74.28001403808594,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.20984726643716387,
+        -0.041322052259317066,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 1.6596760707260751,
+      "max_lift_cm": 0.6055268416447345,
+      "ever_held": false
+    },
+    {
+      "seed": 88303,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        79.10835266113281,
+        59.43446731567383,
+        24.8083438873291,
+        20.301883697509766,
+        73.91605377197266,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.23485343931392397,
+        -0.0012604847366606484,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 3.1744156110681985,
+      "max_lift_cm": 0.048080547547908054,
+      "ever_held": false
+    },
+    {
+      "seed": 88304,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        79.30695343017578,
+        56.675071716308594,
+        22.499338150024414,
+        18.505695343017578,
+        73.02447509765625,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.1739546742494489,
+        -0.035823537525600684,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 4.417441099634123,
+      "max_lift_cm": 0.4609047798492926,
+      "ever_held": false
+    },
+    {
+      "seed": 88305,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        80.38971710205078,
+        57.178306579589844,
+        25.56704330444336,
+        19.456636428833008,
+        76.47325134277344,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.20477275993180355,
+        0.02007507967853027,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.4108480078144625,
+      "max_lift_cm": 0.0,
+      "ever_held": false
+    },
+    {
+      "seed": 88306,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        81.88053131103516,
+        55.11095428466797,
+        27.328495025634766,
+        17.650789260864258,
+        77.27468872070312,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.18025368576294687,
+        0.020192209962603833,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 0.8586491680625409,
+      "max_lift_cm": 0.35687753149065,
+      "ever_held": false
+    },
+    {
+      "seed": 88307,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        81.25306701660156,
+        54.12897872924805,
+        23.085750579833984,
+        21.08439064025879,
+        72.85748291015625,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.19190192816238277,
+        -0.009564410544438705,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 0.3081820076092131,
+      "max_lift_cm": 24.708129495371534,
+      "ever_held": false
+    },
+    {
+      "seed": 88308,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        78.66294860839844,
+        56.527347564697266,
+        25.81073570251465,
+        22.635530471801758,
+        74.80677032470703,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.20906361947293584,
+        0.008483064115939819,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.2625694804562713,
+      "max_lift_cm": 0.6053717151346033,
+      "ever_held": false
+    },
+    {
+      "seed": 88309,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        84.31588745117188,
+        55.003997802734375,
+        24.367597579956055,
+        22.80058479309082,
+        77.02188873291016,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.17458604705290717,
+        0.011531788997324613,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 0.7359829354616124,
+      "max_lift_cm": 24.922497570697622,
+      "ever_held": false
+    },
+    {
+      "seed": 88310,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        83.71820068359375,
+        59.62216567993164,
+        23.25748062133789,
+        20.111955642700195,
+        76.62504577636719,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2350523207457815,
+        -0.040362571348542056,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 3.3897058676309113,
+      "max_lift_cm": 0.0,
+      "ever_held": false
+    },
+    {
+      "seed": 88311,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        80.15168762207031,
+        59.45695877075195,
+        22.03279685974121,
+        19.535236358642578,
+        73.03079986572266,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2427434659158799,
+        -0.01883239810830556,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 4.107620096095448,
+      "max_lift_cm": 0.11643835715070064,
+      "ever_held": false
+    },
+    {
+      "seed": 88312,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        83.54640197753906,
+        57.02933883666992,
+        23.800643920898438,
+        20.632701873779297,
+        76.06179809570312,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.24805906593481883,
+        0.01278703031179182,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 4.346351178169193,
+      "max_lift_cm": 0.0,
+      "ever_held": false
+    },
+    {
+      "seed": 88313,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        83.40769958496094,
+        56.88362121582031,
+        26.102874755859375,
+        19.258365631103516,
+        76.453125,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.18050566902747905,
+        -0.04536818121461333,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 3.004984645828815,
+      "max_lift_cm": 0.9571731043637517,
+      "ever_held": false
+    },
+    {
+      "seed": 88314,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        79.95867156982422,
+        54.96762466430664,
+        25.01129913330078,
+        17.870914459228516,
+        76.38032531738281,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21944886368817088,
+        -0.04234841845284642,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 5.469111782699025,
+      "max_lift_cm": 0.0,
+      "ever_held": false
+    },
+    {
+      "seed": 88315,
+      "outcome": "success",
+      "reason": "held_in_carry_pose",
+      "steps": 321,
+      "sim_seconds": 16.050000000007945,
+      "initial_state": [
+        82.80573272705078,
+        54.62910842895508,
+        24.050064086914062,
+        19.29849624633789,
+        71.34130096435547,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.2176896847425892,
+        -0.02698825799818603,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 0.8913421843328193,
+      "max_lift_cm": 23.920194855561782,
+      "ever_held": true
+    },
+    {
+      "seed": 88316,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        83.4234848022461,
+        56.45264434814453,
+        26.077302932739258,
+        21.599109649658203,
+        73.2254638671875,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.21581967156678825,
+        0.04679455814200183,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 3.0762582296704903,
+      "max_lift_cm": 0.4511086640430078,
+      "ever_held": false
+    },
+    {
+      "seed": 88317,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        80.81117248535156,
+        57.117549896240234,
+        22.73383140563965,
+        21.381549835205078,
+        73.0471420288086,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.18577523472230545,
+        -0.037931405777426444,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 4.492485383693115,
+      "max_lift_cm": 0.4805338402529009,
+      "ever_held": false
+    },
+    {
+      "seed": 88318,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        78.78093719482422,
+        54.6832160949707,
+        21.61024284362793,
+        21.709535598754883,
+        73.68910217285156,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.23433111938676252,
+        0.029700463226940893,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.7141434992504228,
+      "max_lift_cm": 0.30417258774081657,
+      "ever_held": false
+    },
+    {
+      "seed": 88319,
+      "outcome": "failure",
+      "reason": "task_deadline",
+      "steps": 500,
+      "sim_seconds": 24.999999999987086,
+      "initial_state": [
+        81.78826141357422,
+        55.423336029052734,
+        24.7673282623291,
+        20.559892654418945,
+        75.8323974609375,
+        112.00909423828125
+      ],
+      "cube_xyz0": [
+        0.19173126387810074,
+        -0.03361676552910994,
+        0.018000000000000002
+      ],
+      "min_tip_cube_cm": 2.7796134968405277,
+      "max_lift_cm": 0.9207258558838974,
+      "ever_held": false
+    }
+  ],
+  "success_fraction": 0.05,
+  "sensor_to_action_seconds_p50_p95_max": [
+    0.01356180700531695,
+    0.01615779600251699,
+    0.3901809939998202
+  ],
+  "physical_skill_verified": false
+}

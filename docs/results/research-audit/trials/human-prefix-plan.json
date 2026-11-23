@@ -1,0 +1,29 @@
+{
+  "plan": "22a6506624dc67b0ff460e0e9d4a45b078fb0ad91a6a764c766026606e7f5978",
+  "reference": {
+    "T0": "409fdbb8b4374483bea6f0330f7b2177",
+    "T1": "25f584513de446e988efdeac7f9e05a4"
+  },
+  "jobs": {
+    "T0": "5ee9adc024de414a9bbe4a9d82a00633",
+    "T1": "40de961f01b040b2831d7470d74ca1fc"
+  },
+  "statuses": {
+    "T0": "queued",
+    "T1": "queued"
+  },
+  "split_counts": {
+    "test": 3,
+    "train": 11,
+    "validation": 2
+  },
+  "train_frames": 5196,
+  "prefixes": {
+    "2a77e734": 523,
+    "e7c4671d": 410,
+    "aec27983": 361,
+    "536fd4a1": 244,
+    "d955c937": 448,
+    "7a29900f": 601
+  }
+}

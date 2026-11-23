@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-23",
+  "host": "Jetson Orin NX 16 GB shared",
+  "target": "absolute native six-servo angles, wrist RGB",
+  "units": "weights_bytes is storage, not runtime memory",
+  "models": [
+    {
+      "model": "lerobot/xvla-base",
+      "revision": "cdb7964e4fe842935d671bfab5a5ebe00a96648c",
+      "config_url": "https://huggingface.co/lerobot/xvla-base/blob/cdb7964e4fe842935d671bfab5a5ebe00a96648c/config.json",
+      "config_sha256": "f0138e2bfcfecf5d356b6cce6814d6078ce40fce0811613ac753dbb1fced593b",
+      "declared_license": "apache-2.0",
+      "weights_bytes": 3519073692,
+      "safetensors": {
+        "parameters": {
+          "F32": 879738545
+        },
+        "total": 879738545
+      },
+      "input_features": {
+        "observation.images.image": {
+          "type": "VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        },
+        "observation.images.image2": {
+          "type": "VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        },
+        "observation.state": {
+          "type": "STATE",
+          "shape": [
+            8
+          ]
+        },
+        "observation.images.image3": {
+          "type": "VISUAL",
+          "shape": [
+            3,
+            224,
+            224
+          ]
+        }
+      },
+      "output_features": {
+        "action": {
+          "type": "ACTION",
+          "shape": [
+            20
+          ]
+        }
+      },
+      "action_mode": "ee6d",
+      "action_horizon": 30,
+      "num_actions": 30
+    },
+    {
+      "model": "lerobot/smolvla_base",
+      "revision": "5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6",
+      "config_url": "https://huggingface.co/lerobot/smolvla_base/blob/5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6/config.json",
+      "config_sha256": "650584b56c104720f7a3c91d1ec6bec9e8de8ac11e60c92ba2fa82d93eda147d",
+      "declared_license": "apache-2.0",
+      "weights_bytes": 906712520,
+      "safetensors": {
+        "parameters": {
+          "F32": 3273552,
+          "BF16": 446772624
+        },
+        "total": 450046176
+      },
+      "input_features": {
+        "observation.state": {
+          "type": "STATE",
+          "shape": [
+            6
+          ]
+        },
+        "observation.images.camera1": {
+          "type": "VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        },
+        "observation.images.camera2": {
+          "type": "VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        },
+        "observation.images.camera3": {
+          "type": "VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        }
+      },
+      "output_features": {
+        "action": {
+          "type": "ACTION",
+          "shape": [
+            6
+          ]
+        }
+      },
+      "action_mode": null,
+      "action_horizon": 50,
+      "num_actions": 50
+    }
+  ]
+}
