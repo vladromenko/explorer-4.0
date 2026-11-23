@@ -6,6 +6,8 @@ In one supervised physical pilot, ROSMASTER supplied a goal at an unmarked shelf
 
 Before the drive, one RGB-D exposure pair registered the two cameras to each other. Across seven further pairs from the same placement, the ROSMASTER-only goal agreed with the goal computed from Tank's own camera within 0.8 mm and 0.12 degrees. A 10 cm lateral offset passed four offline scan replays after the first replay informed the choice. This measured repeatability at one placement. [RGB-D registration and scan replay](docs/results/markerless-shelf-20261124/result.json)
 
+ROSMASTER recovered from its folded arm position in 4.2 seconds using the native preset. All six encoders finished within 1.0 degree of the target and the chassis measured zero velocity throughout the sampled motion. In a separate stopped check the camera measured the blue-topped cube in ten frames, approximately 29.7 cm forward in the nominal base frame. Its top was approximately 30 mm above the local depth-fitted floor. The trained and evaluated workspace ends at 25 cm, and nominal low-grasp IK rejected the measured point. The depth check pairs fresh camera data with native joint feedback and uses no actuator calls. [Arm log](http://192.168.0.168:8030/simlab-media/reports/rosmaster-live-20261124/arm-preparation.json) · [Cube observations](http://192.168.0.168:8030/simlab-media/reports/rosmaster-live-20261124/cube-visibility.json) · [Read-only capture](scripts/rosmaster_depth_readiness.py)
+
 ## 23 November 2026
 
 
