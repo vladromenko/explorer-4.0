@@ -20,7 +20,8 @@ from .evaluate import save_json
 from .scenarios import LOOK, OUT, evaluate_scenario, oriented_top, scenarios
 
 
-SCAN_LOOKS = ((90., 130., 1., 5., 90., 31.), (90., 130., 1., 25., 90., 31.))
+SCAN_LOOKS = ((90.43, 41.99, 34.23, 44.03, 90., 31.),
+              (90., 130., 1., 5., 90., 31.), (90., 130., 1., 25., 90., 31.))
 SCAN_BOUNDS = ((.155, .65), (-.18, .18))
 STOP_DISTANCE = .195
 
@@ -107,6 +108,8 @@ def drive(scenario):
         speed = float(np.linalg.norm(base.body_velocity()))
         if measured is None:
             reason = 'no_fresh_view_after_stop'
+        elif np.linalg.norm(measured - target) > .020:
+            reason = 'observations_disagree_after_stop'
         elif speed >= .035:
             reason = 'base_did_not_settle'
         elif not (.17 <= relative[0] <= .25 and abs(relative[1]) <= .05):
@@ -132,7 +135,7 @@ def scenario_result(scene):
 
 def main():
     cases = [row for row in scenarios(988200) if row['distance'] == 'outside']
-    root = OUT / 'mobile-development-v2'
+    root = OUT / 'mobile-development-v3'
     protocol = {'scenarios': cases, 'scan_looks': [list(p) for p in SCAN_LOOKS],
                 'stopped_reacquisition_look': list(LOOK), 'stop_distance_m': STOP_DISTANCE,
                 'comparison': 'Same distant scenes as the original stationary-arm and privileged sequential teacher.',

@@ -300,7 +300,7 @@ def results():
                     wins, total = scored[key]
                     ui.label(f"{name} · {wins}/{total} удержаний")
                 evidence_link("36 сцен · позиции, повороты, исходы", VARIED_FLOOR + "development/result.json")
-            mobile_path = VARIED_FLOOR + "mobile-development-v2/result.json"
+            mobile_path = VARIED_FLOOR + "mobile-development-v3/result.json"
             mobile = read(MEDIA / mobile_path)
             if mobile:
                 ui.label(f"Кубик вне досягаемости · подъезд и захват {mobile['retained']}/{mobile['attempts']}")
