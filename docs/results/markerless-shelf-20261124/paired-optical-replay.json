@@ -1,0 +1,541 @@
+{
+  "scope": "Archived physical observations at a fixed placement. Visibility degradation is a software mask and execution is static-scan simulation.",
+  "physical_paired_attempts": 0,
+  "summary": {
+    "right_edge_masked_in_rgb": {
+      "local_only": {
+        "offline_arrivals": 0,
+        "requests": 0,
+        "attempts": 4
+      },
+      "selective_help": {
+        "offline_arrivals": 4,
+        "requests": 4,
+        "attempts": 4
+      }
+    },
+    "unchanged_rgb": {
+      "local_only": {
+        "offline_arrivals": 4,
+        "requests": 0,
+        "attempts": 4
+      },
+      "selective_help": {
+        "offline_arrivals": 4,
+        "requests": 0,
+        "attempts": 4
+      }
+    }
+  },
+  "rows": [
+    {
+      "pair": 0,
+      "depth_source_stamps_ns": [
+        1795471398311000000,
+        1795471398400006912
+      ],
+      "inputs_sha256": [
+        "a5b4d8b57f017faf8c00f16a2a114e4220c30c92e630524eb17c34d2a4b051d3",
+        "4cc7aad6797eeadfeb5c94b6e0b8dff11f8059dfc5ce5022925eabfb10fca76b"
+      ],
+      "condition": "unchanged_rgb",
+      "local_abstention_reason": null,
+      "local_only": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.20261662731631783,
+            -0.1092248233809167,
+            0.3781489087532159
+          ],
+          "terminal_pose": [
+            0.1667268782870242,
+            -0.0832764949883941,
+            0.23118021325345464
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.04428758101039023,
+          "minimum_scan_return_clearance_m": 0.2772481226931944,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.20261662731631783,
+            -0.1092248233809167,
+            0.3781489087532159
+          ],
+          "terminal_pose": [
+            0.1667268782870242,
+            -0.0832764949883941,
+            0.23118021325345464
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.04428758101039023,
+          "minimum_scan_return_clearance_m": 0.2772481226931944,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 0,
+      "depth_source_stamps_ns": [
+        1795471398311000000,
+        1795471398400006912
+      ],
+      "inputs_sha256": [
+        "a5b4d8b57f017faf8c00f16a2a114e4220c30c92e630524eb17c34d2a4b051d3",
+        "4cc7aad6797eeadfeb5c94b6e0b8dff11f8059dfc5ce5022925eabfb10fca76b"
+      ],
+      "condition": "right_edge_masked_in_rgb",
+      "local_abstention_reason": "Missing shelf line right",
+      "local_only": {
+        "result": "abstained",
+        "goal_source": null,
+        "requests": 0
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "rosmaster",
+        "requests": 1,
+        "replay": {
+          "goal": [
+            0.20248433196117577,
+            -0.10909813604811675,
+            0.37664388323819614
+          ],
+          "terminal_pose": [
+            0.166695890381934,
+            -0.08322838527255001,
+            0.2304033004225985
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.04415944469601873,
+          "minimum_scan_return_clearance_m": 0.27728871744888195,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 1,
+      "depth_source_stamps_ns": [
+        1795471399027000000,
+        1795471399131578112
+      ],
+      "inputs_sha256": [
+        "2915d9bfd02aa3a0ca950606d0f19e397bad9086adc60c5a3872a67673b90b17",
+        "1e59224f4dfd682d8224c757a8ff0a2d5e7303942a0809064a2c6d57d2fb6f37"
+      ],
+      "condition": "unchanged_rgb",
+      "local_abstention_reason": null,
+      "local_only": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.20262571018277453,
+            -0.10925478138093388,
+            0.3782127593224965
+          ],
+          "terminal_pose": [
+            0.1667063808315572,
+            -0.08320782039810058,
+            0.2305834328944881
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.044369385813671836,
+          "minimum_scan_return_clearance_m": 0.2724167534239652,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.20262571018277453,
+            -0.10925478138093388,
+            0.3782127593224965
+          ],
+          "terminal_pose": [
+            0.1667063808315572,
+            -0.08320782039810058,
+            0.2305834328944881
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.044369385813671836,
+          "minimum_scan_return_clearance_m": 0.2724167534239652,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 1,
+      "depth_source_stamps_ns": [
+        1795471399027000000,
+        1795471399131578112
+      ],
+      "inputs_sha256": [
+        "2915d9bfd02aa3a0ca950606d0f19e397bad9086adc60c5a3872a67673b90b17",
+        "1e59224f4dfd682d8224c757a8ff0a2d5e7303942a0809064a2c6d57d2fb6f37"
+      ],
+      "condition": "right_edge_masked_in_rgb",
+      "local_abstention_reason": "Missing shelf line right",
+      "local_only": {
+        "result": "abstained",
+        "goal_source": null,
+        "requests": 0
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "rosmaster",
+        "requests": 1,
+        "replay": {
+          "goal": [
+            0.20243383866800863,
+            -0.10896394799120404,
+            0.37623463229246057
+          ],
+          "terminal_pose": [
+            0.16668137064020044,
+            -0.08307371146419996,
+            0.2297945296260594
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.04414230756885805,
+          "minimum_scan_return_clearance_m": 0.27254281100046224,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "depth_source_stamps_ns": [
+        1795471399744000000,
+        1795471399932712960
+      ],
+      "inputs_sha256": [
+        "ea8f6ed6ad6d584fb19028e8b78f0a5a31010a12d7f269a604a552f0b973787d",
+        "4a7ff0fb677eba1a630fa676ca55a279112960b51413da575f7fd002374a0a69"
+      ],
+      "condition": "unchanged_rgb",
+      "local_abstention_reason": null,
+      "local_only": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.2025006225704195,
+            -0.1090555664496734,
+            0.37814929804686637
+          ],
+          "terminal_pose": [
+            0.16679183191749578,
+            -0.08280824844482824,
+            0.22817201448201385
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.749999999999988,
+          "terminal_position_error_m": 0.04431748449925607,
+          "minimum_scan_return_clearance_m": 0.28377616139681866,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.2025006225704195,
+            -0.1090555664496734,
+            0.37814929804686637
+          ],
+          "terminal_pose": [
+            0.16679183191749578,
+            -0.08280824844482824,
+            0.22817201448201385
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.749999999999988,
+          "terminal_position_error_m": 0.04431748449925607,
+          "minimum_scan_return_clearance_m": 0.28377616139681866,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 2,
+      "depth_source_stamps_ns": [
+        1795471399744000000,
+        1795471399932712960
+      ],
+      "inputs_sha256": [
+        "ea8f6ed6ad6d584fb19028e8b78f0a5a31010a12d7f269a604a552f0b973787d",
+        "4a7ff0fb677eba1a630fa676ca55a279112960b51413da575f7fd002374a0a69"
+      ],
+      "condition": "right_edge_masked_in_rgb",
+      "local_abstention_reason": "Missing shelf line right",
+      "local_only": {
+        "result": "abstained",
+        "goal_source": null,
+        "requests": 0
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "rosmaster",
+        "requests": 1,
+        "replay": {
+          "goal": [
+            0.20246576956443688,
+            -0.10918030687820349,
+            0.37681457748816255
+          ],
+          "terminal_pose": [
+            0.1667545801381243,
+            -0.08289028041638949,
+            0.22712996346311337
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.749999999999988,
+          "terminal_position_error_m": 0.0443447239432704,
+          "minimum_scan_return_clearance_m": 0.2836881283063652,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "depth_source_stamps_ns": [
+        1795471400463000000,
+        1795471400598553088
+      ],
+      "inputs_sha256": [
+        "8cfa2642c2cbc3ac0770d16d01ccfa6540c156c2a2e4cfb6fb67378aa95b428d",
+        "9ad750e399334139ef55cd7b881c098906f0263eff0dbcb2cc95909ed6c5db8d"
+      ],
+      "condition": "unchanged_rgb",
+      "local_abstention_reason": null,
+      "local_only": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.20269074285113012,
+            -0.1093137413639252,
+            0.3784913157207947
+          ],
+          "terminal_pose": [
+            0.16682174014966006,
+            -0.0829212193166105,
+            0.23712396804058491
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.04453257880267051,
+          "minimum_scan_return_clearance_m": 0.28047860491149423,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "tank",
+        "requests": 0,
+        "replay": {
+          "goal": [
+            0.20269074285113012,
+            -0.1093137413639252,
+            0.3784913157207947
+          ],
+          "terminal_pose": [
+            0.16682174014966006,
+            -0.0829212193166105,
+            0.23712396804058491
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.799999999999987,
+          "terminal_position_error_m": 0.04453257880267051,
+          "minimum_scan_return_clearance_m": 0.28047860491149423,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    },
+    {
+      "pair": 3,
+      "depth_source_stamps_ns": [
+        1795471400463000000,
+        1795471400598553088
+      ],
+      "inputs_sha256": [
+        "8cfa2642c2cbc3ac0770d16d01ccfa6540c156c2a2e4cfb6fb67378aa95b428d",
+        "9ad750e399334139ef55cd7b881c098906f0263eff0dbcb2cc95909ed6c5db8d"
+      ],
+      "condition": "right_edge_masked_in_rgb",
+      "local_abstention_reason": "Missing shelf line right",
+      "local_only": {
+        "result": "abstained",
+        "goal_source": null,
+        "requests": 0
+      },
+      "selective_help": {
+        "result": "offline_arrived",
+        "goal_source": "rosmaster",
+        "requests": 1,
+        "replay": {
+          "goal": [
+            0.20244989460068064,
+            -0.10914511646288311,
+            0.37671537116966075
+          ],
+          "terminal_pose": [
+            0.16675460081019075,
+            -0.08287270999763696,
+            0.2271296602234762
+          ],
+          "state": "arrived",
+          "message": "На месте к месту",
+          "simulated_seconds": 5.749999999999988,
+          "terminal_position_error_m": 0.04432147718955781,
+          "minimum_scan_return_clearance_m": 0.28051178082286105,
+          "reverse_steps": 0,
+          "lateral_offset_m": 0.1,
+          "scope": "Offline kinematics with perfect odometry, static scan returns and no actuator I/O."
+        }
+      }
+    }
+  ],
+  "implementation_sha256": "a058bb3e9c84d4baa879355bb3957d7a20315eabfea991ec6ce5544fbd0d3ca7",
+  "physical_pilot_optical_endpoint": {
+    "pose_xy_yaw": [
+      0.1733135364558046,
+      -0.10632399779351762,
+      0.28517170919158763
+    ],
+    "height_offset_m": 0.012925693643828454,
+    "corner_px": [
+      139.68966776625473,
+      411.9183152066963
+    ],
+    "front_plane_residual_m_p90": 0.0006533165805872325,
+    "plane_support": 6770,
+    "position_error_m": 0.029263541247183153,
+    "heading_error_deg": 5.267734356184161,
+    "within_pilot_tolerance": true,
+    "input_sha256": [
+      "989ae61f0441a64177f41ed224ab221135e06a857e0502eba631368be9c15883",
+      "332cdeeef090113c5498bbe3ed8aaeb816e23d3c20e18e816eee492251831227"
+    ],
+    "target_pose": [
+      0.20240417018324655,
+      -0.10950045425652902,
+      0.37711101782742507
+    ],
+    "scope": "One stopped physical frame with retrospective natural shelf line annotations. Uses RGB-D and the same mounting model, no lidar pose or control output."
+  },
+  "start_alignment": [
+    {
+      "pose_in_start_frame": [
+        -0.005000000000000164,
+        -0.010000000000000165,
+        0.008726646259971993
+      ],
+      "lidar_overlap": 0.8975409836065574,
+      "reverse_error_m": 0.014999999999999996,
+      "reverse_error_deg": 0.0,
+      "within_start_tolerance": true
+    },
+    {
+      "pose_in_start_frame": [
+        -0.005000000000000164,
+        -0.005000000000000164,
+        0.0
+      ],
+      "lidar_overlap": 0.9049586776859504,
+      "reverse_error_m": 0.009999999999999998,
+      "reverse_error_deg": 0.7500000000000042,
+      "within_start_tolerance": true
+    },
+    {
+      "pose_in_start_frame": [
+        -1.6306400674181987e-16,
+        0.004999999999999838,
+        0.0043633231299859965
+      ],
+      "lidar_overlap": 0.9142857142857143,
+      "reverse_error_m": 0.0050000000000000044,
+      "reverse_error_deg": 0.0,
+      "within_start_tolerance": true
+    },
+    {
+      "pose_in_start_frame": [
+        -0.005000000000000164,
+        -0.005000000000000164,
+        0.0043633231299859965
+      ],
+      "lidar_overlap": 0.91701244813278,
+      "reverse_error_m": 0.0049999999999999975,
+      "reverse_error_deg": 0.2500000000000099,
+      "within_start_tolerance": true
+    }
+  ],
+  "pilot_endpoint_against_start": {
+    "pose_in_start_frame": [
+      0.1749999999999998,
+      -0.10500000000000012,
+      0.26616271092913557
+    ],
+    "lidar_overlap": 0.8952380952380953,
+    "reverse_error_m": 0.0050000000000000044,
+    "reverse_error_deg": 0.2500000000000099,
+    "within_start_tolerance": false
+  }
+}

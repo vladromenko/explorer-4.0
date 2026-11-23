@@ -1,0 +1,9 @@
+{
+  "status": "retrospective annotation on one stopped frame",
+  "left_divider_side": "right edge of the upright",
+  "lines": {
+    "left": [[134.6, 1], [139.1, 363.1]],
+    "bottom": [[315.8, 400.2], [638.3, 378.7]]
+  },
+  "plane": [[110, 25, 130, 320], [430, 360, 575, 366]]
+}

@@ -1,0 +1,104 @@
+{
+  "scope": "Archived RGB-D at one fixed chassis placement and near arm preset. One calibration exposure and a later set of held-out frames. No physical commands.",
+  "current_pose_recheck_before_dispatch": true,
+  "arm_native_degrees": [
+    89.67272727272726,
+    129.6818181818182,
+    0.24545454545453538,
+    4.9090909090909065,
+    89.62048192771084,
+    31.33636363636363
+  ],
+  "near_reference_sha256": "2ae9cc6e49839951d423370db5a5fd4a5f0122fccf478a428bc075f036fc4fa9",
+  "tank_optical_from_donor_optical": [
+    [
+      0.9133853609446293,
+      0.30160059539897943,
+      -0.2734305455998475,
+      0.33001732634489606
+    ],
+    [
+      -0.028894662145372774,
+      0.7179967782745698,
+      0.695446421291276,
+      -0.1927856158478164
+    ],
+    [
+      0.40606930555208665,
+      -0.6273098972934502,
+      0.6645223937882961,
+      0.09915289034505287
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "verified_width_m": 0.3696650093699735,
+  "max_goal_error_m": 0.0015527973084430036,
+  "max_heading_error_deg": 0.16017378434062343,
+  "frames": [
+    {
+      "depth_stamp_ns": 1795476177612005888,
+      "goal_error_m": 0.0015527973084430036,
+      "heading_error_deg": 0.12022223484984745,
+      "width_difference_m": 4.001091812289026e-05
+    },
+    {
+      "depth_stamp_ns": 1795476177743177984,
+      "goal_error_m": 0.0014121411961733267,
+      "heading_error_deg": 0.1366664654343205,
+      "width_difference_m": 0.00011648713962536528
+    },
+    {
+      "depth_stamp_ns": 1795476178144666880,
+      "goal_error_m": 0.0013772100760287903,
+      "heading_error_deg": 0.1465533082428966,
+      "width_difference_m": 0.00010382201886338649
+    },
+    {
+      "depth_stamp_ns": 1795476178409371904,
+      "goal_error_m": 0.0013279185105872237,
+      "heading_error_deg": 0.15512729425665875,
+      "width_difference_m": 0.00012990685290314996
+    },
+    {
+      "depth_stamp_ns": 1795476178676915968,
+      "goal_error_m": 0.0013687901181606964,
+      "heading_error_deg": 0.1472992091819493,
+      "width_difference_m": 0.00012102006666880882
+    },
+    {
+      "depth_stamp_ns": 1795476178876334080,
+      "goal_error_m": 0.0014895324215553792,
+      "heading_error_deg": 0.1308270858218534,
+      "width_difference_m": 7.767704651451268e-05
+    },
+    {
+      "depth_stamp_ns": 1795476179075790080,
+      "goal_error_m": 0.0015370270069098519,
+      "heading_error_deg": 0.12489582205586691,
+      "width_difference_m": 9.013699241794404e-05
+    },
+    {
+      "depth_stamp_ns": 1795476179542830080,
+      "goal_error_m": 0.0014933660439123842,
+      "heading_error_deg": 0.12516037817610803,
+      "width_difference_m": 0.00012884348432889992
+    },
+    {
+      "depth_stamp_ns": 1795476179742208000,
+      "goal_error_m": 0.0013743459774790809,
+      "heading_error_deg": 0.14713533589358158,
+      "width_difference_m": 0.00012140885139144686
+    },
+    {
+      "depth_stamp_ns": 1795476180143994880,
+      "goal_error_m": 0.00127807725382933,
+      "heading_error_deg": 0.16017378434062343,
+      "width_difference_m": 0.0001663267283990022
+    }
+  ]
+}
