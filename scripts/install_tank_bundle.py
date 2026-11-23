@@ -19,7 +19,10 @@ def target(root,name):
     if relative.is_absolute() or '..' in relative.parts or str(relative)!=name:raise ValueError('Unsafe payload path')
     destination=root/name
     if not destination.resolve().is_relative_to(root.resolve()):raise ValueError('Payload escapes Explorer root')
-    if name in ('config.json','camera.yaml') or name.startswith(('calibration/','vendor/')):raise ValueError('Protected configuration')
+    if (name in LEGACY or name in ('config.json','camera.yaml') or
+            (len(relative.parts)==1 and relative.suffix=='.json') or
+            name.startswith(('calibration/','configs/','vendor/'))):
+        raise ValueError('Protected onboard configuration or permission: '+name)
     return destination
 
 
@@ -28,20 +31,20 @@ def install(stage,root):
     manifest=json.loads((stage/'MANIFEST.json').read_text())
     if manifest['platform']!='tank':raise ValueError('Not a Tank bundle')
     files={name[len('payload/'):]:checksum for name,checksum in manifest['files'].items() if name.startswith('payload/')}
-    if not files or any(name in LEGACY for name in files):raise ValueError('Payload must not grant or restore legacy permissions')
+    if not files:raise ValueError('Empty Tank payload')
     for name,checksum in files.items():
         target(root,name)
         if sha(stage/'payload'/name)!=checksum:raise ValueError('Staging hash mismatch: '+name)
     backup=root/'archive'/('deploy-recording-'+time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())+'-'+uuid.uuid4().hex[:8])
     backup.mkdir(parents=True,exist_ok=False)
     originals={}
-    for name in [*files,*LEGACY]:
+    for name in files:
         source=target(root,name)
         originals[name]={'exists':source.exists(),'sha256':sha(source) if source.exists() else None}
         if source.exists():
             dest=backup/'files'/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,dest)
     report={'status':'prepared','root':str(root.resolve()),'files':files,'originals':originals,
-        'reason':'RECORDING_READINESS_PROMPT_RU R2, operator floor authorization; no motion invoked',
+        'reason':'Software-only update with onboard operator settings and permission files preserved',
         'archive':str(backup.resolve()),'created_at':time.time()}
     journal=backup/'deployment.json';journal.write_text(json.dumps(report,indent=2))
     try:
@@ -50,7 +53,6 @@ def install(stage,root):
             temporary=dest.with_name(dest.name+'.deploy-tmp');shutil.copy2(stage/'payload'/name,temporary);temporary.replace(dest)
         for name,checksum in files.items():
             if sha(target(root,name))!=checksum:raise ValueError('Installed hash mismatch: '+name)
-        for name in LEGACY:target(root,name).unlink(missing_ok=True)
         report['status']='installed';journal.write_text(json.dumps(report,indent=2))
         return report
     except Exception:
@@ -61,6 +63,7 @@ def install(stage,root):
 def rollback(backup):
     backup=Path(backup);report=json.loads((backup/'deployment.json').read_text());root=Path(report['root'])
     for name,item in report['originals'].items():
+        target(root,name)  # validate the entire rollback before replacing any file
         if item['exists'] and sha(backup/'files'/name)!=item['sha256']:raise ValueError('Backup is corrupted')
     for name,item in report['originals'].items():
         dest=target(root,name)

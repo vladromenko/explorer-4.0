@@ -81,20 +81,19 @@ def build(runtime, output):
         if digest(data) != record.get('copy_sha256', record['source_sha256']):
             raise ValueError(f'Native copy changed: {name}')
         tank['payload/' + name] = data
-    tank['payload/configs/tank-limits.json'] = (REPO/'configs/tank-limits.json').read_bytes()
+    # An operator's onboard limits belong to the installation, including their format version.
+    tank['reference/historical-tank-limits-v1.json'] = (REPO/'configs/tank-limits.json').read_bytes()
     tank['provenance/native-manifest.json'] = encoded(native_manifest)
     tank['requirements.lock.txt'] = (REPO / 'configs/tank-agent-requirements.lock.txt').read_bytes()
     tank['software-validation.json'] = (REPO / 'docs/tank-native-software-validation.json').read_bytes()
     tank['READ-ME.txt'] = (
-        'Tank: локальный пакет для будущего обновления собственного /home/ubuntu/explorer3.\n'
-        'Это не установщик. Сейчас не копировать поверх работающего процесса и не запускать.\n'
-        'payload содержит выбранную штатную цепочку и агент Explorer, без изменения алгоритмов производителя.\n'
-        'Зависимости среды: существующий MentorPi / ROS Humble, ros_robot_controller_msgs, '
-        'собственная venv и ранее установленный vendor/camera. Бинарники камеры сюда не входят.\n'
-        'Секреты, конфигурация сети, состояние владения и разрешения на движение не включены.\n'
-        'При установке сохранить секреты/камеру; архивировать прежние допуски по R2.\n'
-        'Езда разрешена пользователем; после USB-отказа нужны восстановление и подтверждение остановки.\n'
-        'Программные проверки из software-validation.json не подтверждают остановку моторов.\n'
+        'Tank staging package for the existing /home/ubuntu/explorer3 installation.\n'
+        'Runtime prerequisites: MentorPi, ROS Humble, ros_robot_controller_msgs, the Explorer virtual '
+        'environment and installed vendor camera binaries.\n'
+        'The software update preserves onboard operator limits, permission markers, camera calibration '
+        'and network settings. The historical v1 limit file is a reference.\n'
+        'Use the deployment preflight to compare effective settings before application. A software '
+        'receipt does not certify a physical stop.\n'
     ).encode()
     ros = {name: (REPO / name).read_bytes() for name in (
         'agents/rosmaster/feedback_diagnostics.py', 'scripts/analyze_rosmaster_capture.py',
