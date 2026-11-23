@@ -237,6 +237,7 @@ def run_job(path: Path):
             (['--expected-model-sha256',cfg['expected_model_hash']] if cfg.get('expected_model_hash') else [])+
             (['--queue-config',str(path)] if cfg.get('protocol') else [])+
             (['--record-floor'] if record_floor else [])+
+            (['--carry-ticks',str(cfg['carry_ticks'])] if cfg.get('carry_ticks') else [])+
             action_steps+(['--seed-policy-per-scene'] if improvement or cfg.get('diagnostic')=='demo_efficiency_receiver' else []),
             check=True,env={**offline_environment(),'MUJOCO_GL':'egl'})
         return

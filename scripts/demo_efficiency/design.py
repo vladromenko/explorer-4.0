@@ -7,6 +7,7 @@ from pathlib import Path
 
 from explorer4 import catalog, datasets, knowledge, skill_packets, training_drafts
 from explorer4.paths import DATA, ROOT
+from explorer4.sim.floor_carry import ENDPOINT
 from explorer4.sim_protocol import scene_revision, sha256_file
 
 TARGET = "rosmaster_pick_place"
@@ -17,6 +18,7 @@ AUX = ARMS[1:]
 K = (1, 3, 5)
 TRAIN_SEEDS = tuple(range(987040, 987048))
 PILOT_SEEDS = tuple(range(987120, 987132))
+CONTROL_PILOT_SEEDS = tuple(range(987140, 987152))
 SOURCES = [
     "scripts/demo_efficiency/" + n + ".py" for n in ("design", "examples", "prepare", "accounting", "report")
 ]
@@ -25,6 +27,7 @@ SOURCES += [
     for n in (
         "skill_packets",
         "sim/skill_transfer",
+        "sim/floor_carry",
         "sim/aligned",
         "sim/evaluate",
         "sim/policy_worker",
@@ -143,33 +146,38 @@ def preflight(plan_id=PLAN):
 
 def freeze(packet_id, plan_id=PLAN):
     audit = preflight(plan_id)
-    if not audit["motor_comparison_ready"] or packet_id not in {
-        p["sha256"] for p in audit["packets"] if p["eligible"]
-    }:
+    controls = packet_id is None
+    if not controls and (
+        not audit["motor_comparison_ready"]
+        or packet_id not in {p["sha256"] for p in audit["packets"] if p["eligible"]}
+    ):
         raise ValueError("No admitted real human donor SkillPacket and five unique recipient training takes")
+    if len(audit["unique_real_train_takes"]) < max(K):
+        raise ValueError("Five unique recipient training takes are required")
     plan = datasets.load_plan(plan_id)
-    packet = knowledge.load_packet(packet_id)
+    packet = knowledge.load_packet(packet_id) if packet_id else None
     pool = {e["id"]: e for e in catalog.rows("episodes")}
     from explorer4.alignment_lineage import relatives
 
     forbidden = set().union(
         *(relatives(e, pool) for role in ("validation", "test") for e in plan["splits"][role])
     )
-    for parent in packet["donor"]["episodes"]:
+    for parent in (packet["donor"]["episodes"] if packet else []):
         e = pool[parent["id"]]
         if datasets.fingerprint(e["dataset"]) != parent["sha256"] or relatives(e, pool) & forbidden:
             raise ValueError("Changed or held-out donor source")
     value = {
-        "version": 1,
+        "version": 2,
+        "endpoint": ENDPOINT,
         "profile": TARGET,
         "simulation": SIM,
         "target_plan_id": plan_id,
         "packet": packet_id,
         "k": list(K),
         "ordered_training_takes": audit["unique_real_train_takes"][: max(K)],
-        "arms": list(ARMS),
+        "arms": list(ARMS[:2] if controls else ARMS),
         "aux_seeds": list(TRAIN_SEEDS),
-        "pilot_seeds": list(PILOT_SEEDS),
+        "pilot_seeds": list(CONTROL_PILOT_SEEDS if controls else PILOT_SEEDS),
         "paired_aux_scenes": 2,
         "ticks_per_synthetic_take": 360,
         "training": {
@@ -185,8 +193,9 @@ def freeze(packet_id, plan_id=PLAN):
         "scene_revision": scene_revision(SIM),
         "source_sha256": {p: sha256_file(ROOT / p) for p in SOURCES},
         "human_time": "observed non-overlapping person intervals only; unknown categories render total unknown",
-        "terminal": "Last 1 s at the native camera sample rate, object lower face above support by >50 mm, tip distance <60 mm and all five native joints in configured carry tolerance; native task also completed.",
-        "primary": "T2 minus T1 terminal receiver-only success at k=3; development pilot, no test opened",
+        "terminal": "Final 1 s of 360 control ticks, object lower face above support by >50 mm, tip distance <60 mm, carry joint tolerance and contact on both jaws.",
+        "primary": ("T1 minus T0 at k=3; separate donor-free development pilot" if controls else
+                    "T2 minus T1 at k=3; donor-disconnected development pilot"),
         "power": {"minimum_useful_gain": 0.20, "alpha_two_sided": 0.05, "target_power": 0.8},
         "arms_description": {
             "T0": "target only",
@@ -195,7 +204,7 @@ def freeze(packet_id, plan_id=PLAN):
             "T3": "same donor, cyclically wrong target XY from the next training seed",
             "G": "donor box dimensions and closing axis only, independent recipient motion",
         },
-        "shared_budget": "same real prefix and optimizer steps for all arms. T1/T2/T3/G use the same first two jointly successful training seeds and 720 synthetic frames. T0 uses zero synthetic frames by definition.",
+        "shared_budget": "T1 adds two independently verified 360-tick simulated examples" if controls else "same real prefix and optimizer steps for all arms. T1/T2/T3/G use the same first two jointly successful training seeds and 720 synthetic frames. T0 uses zero synthetic frames by definition.",
         "stopping": "screen eight training positions once; fewer than two common terminal successes closes the comparison without training",
         "independent_physical_admission": False,
     }

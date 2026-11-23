@@ -112,6 +112,8 @@ def enqueue(api, ident, key, task, found):
             design,_ = load(task['demo_efficiency'])
             if task['profile']!=design['simulation'] or task['seeds']!=design['pilot_seeds']:
                 raise ValueError('Receiver-only evaluation differs from the matched comparison')
+            if design.get('endpoint'):
+                cfg['carry_ticks'] = design['ticks_per_synthetic_take']
             cfg.update(diagnostic='demo_efficiency_receiver', demo_efficiency=task['demo_efficiency'],
                        protocol=protocol(task['profile'],task['seeds'],task['geometry'],str(bundle)))
     else:
@@ -340,6 +342,8 @@ def cycle(ident, plan, root, state, api, now):
     write_atomic(root/'state.json', json.dumps(state, indent=2))
     write_atomic(root/'status.json', json.dumps(summary, ensure_ascii=False, indent=2))
     write_atomic(report_root/f'study-{plan["day"]}.html', page(plan, summary))
+    if plan.get('efficiency_plan') and all(row['status'] == 'completed' for row in summary['tasks'].values()):
+        return True
     # Report the final state of already-dispatched work even if it completes past midnight.
     return seconds <= 0 and not any(row['status'] in ('running','queued') for row in found.values())
 

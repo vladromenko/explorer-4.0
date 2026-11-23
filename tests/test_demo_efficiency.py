@@ -156,3 +156,13 @@ def test_queue_materializes_all_five_arms_for_the_same_nested_physical_takes(tmp
             assert d["synthetic_frames"] == (0 if arm == "T0" else 720)
             assert (draft["steps"], draft["batch_size"], draft["train_seed"]) == (1000, 8, 1000)
             assert result["tasks"][f"{arm}-k{k}-receiver"]["seeds"] == list(design.PILOT_SEEDS)
+
+
+def test_terminal_window_scores_bilateral_retention_without_servo_angle():
+    from explorer4.sim.floor_carry import terminal_success
+
+    retained = (.12, .02, 2., True)
+    released = (.12, .02, 2., False)
+    assert terminal_success([released] + [retained] * 21, 20, 10)
+    assert not terminal_success([retained] * 20, 20, 10)
+    assert not terminal_success([retained] * 20 + [released], 20, 10)

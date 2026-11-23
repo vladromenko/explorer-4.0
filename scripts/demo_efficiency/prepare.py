@@ -55,7 +55,7 @@ def prepare(ident, day):
         _, stats_sha = target_statistics(real)
         train_keys = []
         eval_keys = []
-        for arm in ARMS:
+        for arm in p.get("arms", ARMS):
             aux = []
             if arm != "T0":
                 for seed in selection["seeds"]:
@@ -133,8 +133,8 @@ def prepare(ident, day):
         "day": day,
         "timezone": "Europe/Moscow",
         "study": "demonstration-efficiency",
-        "comparison": "T2 vs T1 at k=3; simulation development; recipient ACT only",
-        "limits": "Five matched treatments at k=1,3,5; human minutes require separately measured intervals",
+        "comparison": p.get("primary", "T2 vs T1 at k=3"),
+        "limits": "k=1,3,5; human minutes require separately measured intervals",
         "efficiency_plan": ident,
         "tasks": tasks,
         "groups": groups,

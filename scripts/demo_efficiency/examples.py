@@ -13,6 +13,7 @@ from explorer4.paths import ROOT, offline_environment
 from explorer4.resources import ResourceLease
 from explorer4.sim.capture import SimCapture
 from explorer4.sim.factory import EXPERTS, make
+from explorer4.sim.floor_carry import ENDPOINT, FloorCarry
 from explorer4.sim.skill_transfer import (
     RetargetedGrasp,
     TransferRejected,
@@ -29,6 +30,8 @@ def reset(env, seed, expected=None):
         save_reference,
     )
 
+    # EGL render history can alter shadows on an identical reset.
+    env.close()
     obs, _ = env.reset(seed=seed)
     obs["rgb"] = env.render()
     xy = env.data.body("task_cube").xpos[:2].tolist()
@@ -74,6 +77,7 @@ def rollout(env, arm, packet, plan, ident, starts, seed, *, save=False):
     seeds = plan["aux_seeds"]
     wrong = seeds[(seeds.index(seed) + 1) % len(seeds)]
     offset = np.subtract(starts[str(wrong)]["xy"], starts[str(seed)]["xy"])
+    carry = FloorCarry(env) if plan.get("endpoint") == ENDPOINT else None
     verify = TransferVerifier(env)
     env.physics_observer = verify
     trace = hashlib.sha256()
@@ -97,18 +101,19 @@ def rollout(env, arm, packet, plan, ident, starts, seed, *, save=False):
             if capture:
                 capture.add(env, action)
             _, _, term, trunc, info = env.step(action)
+            if carry:
+                carry.measure()
             trace.update(np.asarray(action, dtype="<f8").tobytes())
             trace.update(env.data.qpos.astype("<f8").tobytes())
             observed += 1
-            if term and info["outcome"] == "success":
+            if term and info["outcome"] == "success" and carry is None:
                 frozen_action = np.asarray(action).copy()
             if trunc or (term and info["outcome"] != "success"):
                 reason = info["termination_reason"]
                 break
         passed = bool(
             observed == plan["ticks_per_synthetic_take"]
-            and info["success"]
-            and verify.held_s >= 1.0
+            and (carry.success if carry else info["success"] and verify.held_s >= 1.0)
             and verify.report()["accepted"]
         )
         if passed:
@@ -134,6 +139,8 @@ def rollout(env, arm, packet, plan, ident, starts, seed, *, save=False):
         "verification": verify.report(),
         "shuffled_seed": wrong if arm == "T3" else None,
     }
+    if carry:
+        row.update(endpoint=ENDPOINT, terminal_samples=carry.samples[-(env.fps + 1):])
     if capture:
         spool = capture.finish("success" if passed else "failure", reason)
         return row, spool
@@ -143,7 +150,8 @@ def rollout(env, arm, packet, plan, ident, starts, seed, *, save=False):
 def collect(ident):
     plan, root = load(ident)
     root.mkdir(parents=True, exist_ok=True)
-    packet = knowledge.load_packet(plan["packet"])
+    packet = knowledge.load_packet(plan["packet"]) if plan["packet"] else None
+    auxiliaries = [arm for arm in plan["arms"] if arm in AUX]
     with ResourceLease("demo-efficiency-" + ident), make(SIM) as env:
         start_file = root / "training-starts.json"
         old = json.loads(start_file.read_text()) if start_file.exists() else {}
@@ -154,7 +162,7 @@ def collect(ident):
             atomic_write(start_file, bank)
         rows = []
         for seed in plan["aux_seeds"]:
-            for arm in AUX:
+            for arm in auxiliaries:
                 path = root / "screen" / f"{seed}-{arm}.json"
                 if not path.exists():
                     atomic_write(path, rollout(env, arm, packet, plan, ident, bank, seed)[0])
@@ -169,7 +177,7 @@ def collect(ident):
         atomic_write(receipt, decision)
         if decision["matched"]:
             for s in selected:
-                for arm in AUX:
+                for arm in auxiliaries:
                     p = root / "imports" / f"{s}-{arm}.json"
                     spool_file = p.with_suffix(".spool.json")
                     if not p.exists():

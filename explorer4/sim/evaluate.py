@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 import numpy as np
 from .factory import make
+from .floor_carry import ENDPOINT, FloorCarry
 from explorer4.profiles import profile as profile_config
 
 
@@ -15,7 +16,7 @@ from explorer4.sim_protocol import protocol, model_identity
 
 
 def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_model=None,device='cuda',record_floor=False,
-             seed_policy_per_scene=False, expected_protocol=None, development_starts=None):
+             seed_policy_per_scene=False, expected_protocol=None, development_starts=None, carry_ticks=None):
     seeds=list(seeds)
     if development_starts is not None:
         from .seeded_start import checked_fingerprint
@@ -23,6 +24,8 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
             raise ValueError('Unexpected order of frozen development starts')
     if record_floor and profile not in {'rosmaster_floor_pick_recorded_start_sim','rosmaster_floor_pick_sim'}:
         raise ValueError('Floor diagnostics require a floor-pick scene')
+    if carry_ticks is not None and (not record_floor or profile != "rosmaster_floor_pick_sim" or not 1 <= carry_ticks <= 500):
+        raise ValueError("Invalid fixed-horizon carry trial")
     output=Path(output);output.parent.mkdir(parents=True,exist_ok=True)
     env=make(profile,images=True)
     if expected_model is not None and env.manifest['xml_sha256']!=expected_model:
@@ -44,6 +47,8 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
         if requested is not None and client.ready.get('n_action_steps')!=int(requested):
             raise RuntimeError('Policy worker did not apply the requested execution horizon')
         for index,seed in enumerate(seeds):
+            if carry_ticks:
+                env.close()  # Each paired scene starts with fresh rendering state.
             obs,_=env.reset(seed=seed)
             if development_starts is not None:
                 realized=checked_fingerprint(seed,env,obs,development_starts[index])
@@ -61,6 +66,7 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
                 cube_start=env.data.body('task_cube').xpos.copy()
                 min_distance=float('inf');max_lift=0.;ever_held=False
                 frames=[env.data.qpos.tolist()]
+            carry = FloorCarry(env) if carry_ticks else None
             done=False
             while not done:
                 started=time.monotonic();action=client.action(obs,episode_cfg);latencies.append(time.monotonic()-started)
@@ -71,8 +77,17 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
                     max_lift=max(max_lift,float(cube[2]-cube_start[2]))
                     ever_held |= bool(info['held'])
                     if frames is not None:frames.append(env.data.qpos.tolist())
-                done=terminated or truncated
-            trials.append({'seed':seed,'outcome':info['outcome'],'reason':info['termination_reason'],
+                if carry:
+                    carry.measure()
+                    done = env.steps >= carry_ticks or (terminated and info['outcome'] == 'failure') or truncated
+                else:
+                    done = terminated or truncated
+            outcome, reason = info['outcome'], info['termination_reason']
+            if carry:
+                success = env.steps == carry_ticks and carry.success
+                outcome = 'success' if success else 'failure'
+                reason = 'bilateral_terminal_carry' if success else reason if env.steps < carry_ticks else 'terminal_carry_not_verified'
+            trials.append({'seed':seed,'outcome':outcome,'reason':reason,
                            'steps':env.steps,'sim_seconds':env.elapsed,'initial_qpos_sha256':initial_digest})
             if development_starts is not None:
                 trials[-1].update(realized,policy_seed=reset['applied_seed'])
@@ -82,9 +97,14 @@ def evaluate(checkpoint,output,seeds,profile='so101_pick_place_sim',expected_mod
                 if frames is not None:
                     trace=output.with_name(f'floor-trial-{seed}.json')
                     temporary=trace.with_suffix('.tmp')
-                    temporary.write_text(json.dumps(dict(profile=profile,seed=seed,fps=env.fps,
-                        model=env.manifest['xml_sha256'],outcome=info['outcome'],qpos=frames,
-                        checkpoint_sha256=weights_sha256)))
+                    telemetry = dict(profile=profile,seed=seed,fps=env.fps,
+                        model=env.manifest['xml_sha256'],outcome=outcome,qpos=frames,
+                        checkpoint_sha256=weights_sha256)
+                    if carry:
+                        telemetry.update(endpoint=ENDPOINT, carry_ticks=carry_ticks,
+                                         native_outcome=info['outcome'],
+                                         terminal_samples=carry.samples[-(env.fps + 1):])
+                    temporary.write_text(json.dumps(telemetry))
                     temporary.replace(trace)
                     if seed==seeds[0]:
                         alias=output.with_name('first-floor-trial.json')
@@ -116,6 +136,7 @@ if __name__=='__main__':
     parser.add_argument('--development-starts',type=Path)
     parser.add_argument('--device',choices=('cpu','cuda'),default='cuda')
     parser.add_argument('--record-floor',action='store_true')
+    parser.add_argument('--carry-ticks',type=int)
     parser.add_argument('--act-action-steps',type=int)
     parser.add_argument('--seed-policy-per-scene',action='store_true')
     args = parser.parse_args()
@@ -132,4 +153,5 @@ if __name__=='__main__':
     evaluate(args.checkpoint, args.output, seeds, args.profile, args.expected_model_sha256,
              device=args.device, record_floor=args.record_floor, seed_policy_per_scene=args.seed_policy_per_scene,
              expected_protocol=json.loads(args.queue_config.read_text())['protocol'] if args.queue_config else None,
-             development_starts=json.loads(args.development_starts.read_text()) if args.development_starts else None)
+             development_starts=json.loads(args.development_starts.read_text()) if args.development_starts else None,
+             carry_ticks=args.carry_ticks)

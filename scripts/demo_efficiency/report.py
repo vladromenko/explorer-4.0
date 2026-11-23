@@ -7,13 +7,14 @@ import numpy as np
 
 from explorer4 import catalog, study_day
 from explorer4.paths import DATA
+from explorer4.sim.floor_carry import ENDPOINT, carry_geometry, terminal_success
 from explorer4.sim_protocol import sha256_file
 
 from .accounting import human_minutes, paired_size
 from .design import ARMS, SIM, load
 
 
-def terminal(env, path, seed, checksum):
+def terminal(env, path, seed, checksum, expected_ticks=None):
     import mujoco
 
     raw = json.loads(path.read_text())
@@ -38,11 +39,7 @@ def terminal(env, path, seed, checksum):
     for row in q[-n:]:
         env.data.qpos[:] = row
         mujoco.mj_forward(env.model, env.data)
-        cube = env.data.body("task_cube")
-        bottom = cube.xpos[2] - np.abs(cube.xmat.reshape(3, 3)[2]) @ env.object_half()
-        dist = np.linalg.norm(cube.xpos - env.data.site("gripperframe").xpos)
-        err = max(abs(env.from_radians(row[:6])[:5] - np.asarray(env.cfg["carry_pose"])))
-        measured.append([bottom, float(dist), float(err)])
+        measured.append(carry_geometry(env))
     a = np.asarray(measured)
     held = bool(
         len(a) == n
@@ -50,9 +47,24 @@ def terminal(env, path, seed, checksum):
         and (a[:, 1] < 0.06).all()
         and (a[:, 2] < env.cfg["carry_tolerance_deg"]).all()
     )
+    if expected_ticks is not None:
+        samples = raw["terminal_samples"]
+        if (
+            raw["endpoint"] != ENDPOINT
+            or raw["carry_ticks"] != expected_ticks
+            or len(samples) != min(n, len(q) - 1)
+        ):
+            raise ValueError("Receiver trace lost the fixed-horizon contact receipt")
+        # Forward kinematics is reconstructed from joint/object positions. The
+        # recorded contacts come from the actual MuJoCo substeps.
+        held = len(q) == expected_ticks + 1 and held and terminal_success(
+            samples, env.fps, env.cfg["carry_tolerance_deg"]
+        )
+        if held != (raw["outcome"] == "success"):
+            raise ValueError("Receiver retained-cube outcome differs from the replay")
     return {
         "scene": seed,
-        "native_outcome": raw["outcome"],
+        "native_outcome": raw.get("native_outcome", raw["outcome"]),
         "success": bool(held and raw["outcome"] == "success"),
         "first_terminal_frame": max(0, len(q) - n),
         "last_terminal_frame": len(q) - 1,
@@ -72,11 +84,13 @@ def summarize(ident, study_id, ledger=None):
     if jobs_plan.get("efficiency_plan") != ident:
         raise ValueError("Unrelated job sequence")
     found = study_day.find_jobs(jobs_plan, study_id, catalog.rows("jobs"))
+    arms = p.get("arms", ARMS)
+    ticks = p["ticks_per_synthetic_take"] if p.get("endpoint") else None
     rows = []
     traces = {}
     with make(SIM, images=False) as env:
         for k in p["k"]:
-            for arm in ARMS:
+            for arm in arms:
                 key = f"{arm}-k{k}"
                 run = found.get(key + "-receiver", {})
                 if run.get("status") == "completed":
@@ -88,13 +102,14 @@ def summarize(ident, study_id, ledger=None):
                         or cfg.get("source_job") != found[key]["id"]
                         or result["protocol"] != cfg["protocol"]
                         or result["profile"] != SIM
+                        or cfg.get("carry_ticks") != ticks
                         or [r["seed"] for r in result["trials"]] != p["pilot_seeds"]
                     ):
                         raise ValueError(
                             "Receiver-only evaluation lost its registered checkpoint or seed binding"
                         )
                     trials = [
-                        terminal(env, folder / f"floor-trial-{s}.json", s, result["checkpoint_sha256"])
+                        terminal(env, folder / f"floor-trial-{s}.json", s, result["checkpoint_sha256"], ticks)
                         for s in p["pilot_seeds"]
                     ]
                     cost = human_minutes(
@@ -136,7 +151,8 @@ def summarize(ident, study_id, ledger=None):
             )
     return {
         "rows": rows,
-        "scheduled": len(p["k"]) * len(ARMS),
+        "scheduled": len(p["k"]) * len(arms),
+        "comparison": p["primary"],
         "evaluated": len(rows),
         "size_for_new_simulation_scenes": paired_size(pilot, p["power"]["minimum_useful_gain"], domain="sim"),
         "size_for_physical_confirmation": paired_size([], domain="real"),
