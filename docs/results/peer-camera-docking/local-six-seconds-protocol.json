@@ -1,0 +1,151 @@
+{
+  "question": "Does spending the full peer policy sensing cap on local observations recover docking performance?",
+  "scope": "Post-hoc on the previously opened 16 action-value confirmation starts. No new independent scenes or fit.",
+  "room": "inspection_screen",
+  "scenes": [
+    894200,
+    894201,
+    894202,
+    894203,
+    894204,
+    894205,
+    894206,
+    894207,
+    894208,
+    894209,
+    894210,
+    894211,
+    894212,
+    894213,
+    894214,
+    894215
+  ],
+  "primary_protocol": "ae3e78bd659c46bd9e20d6b8406daafd02dca63bb0623041f3abcb66684eae11",
+  "primary_summary": "4de820cb1bfad68e8637b443ba25f36f793f004319a80b2fc1d8c6a1e2ffc22d",
+  "primary_runtime": "9d6336b96b8acc37104c3372fb4525e84e7aa0af64d2505cf860bb62f4ee8d52",
+  "script_sha256": "6ec56fd156972851683db0850cccc3e329e29fea124c4f42ac6766fd3b25114f",
+  "reference_sha256": {
+    "894200": {
+      "reset.json": "d812f28d26b8a4b229e91432c28ddc81e0a17524d2a3e9cce6cf07fde53f6031",
+      "initial.png": "6659ff6a12839bf5ee77b04876bb7f2da7df1f77fc0aebe76cdae76586fbdc65",
+      "initial-state.json": "fe9660dbebcf6a419129a00a6f3076b785f012205da29e94ed931bad9669b242",
+      "local_only.json": "b31545c11076855fd63a3d30888cc0519dccb3ba6b19428666ae29afc6a2a879",
+      "local_3.0.json": "6fec1c0d533ea7852af44e7b89bab17033d90d68502d96944a0b0c7ca89dad0c"
+    },
+    "894201": {
+      "reset.json": "afe95a339da51dd459ef0e0221b5ac96299815307a258000e69cac1e7dfdacff",
+      "initial.png": "06699b81656e2eaf416cad65addc0543c0303b3859d566cc4b634aa21f9ee262",
+      "initial-state.json": "6b31912143573c2a63eb5425ca1785641045e2136f8779b503c6b15a903c27dc",
+      "local_only.json": "199b7d7ee209a081fda2bbd6ce9c1821628853627dff1f53fb177feef3854f67",
+      "local_3.0.json": "625150d545436872c68cae7b33c58d9dad9bef026b153bcbde7375c4f83fd94f"
+    },
+    "894202": {
+      "reset.json": "0a9b539712efac27401aa2f44683e312a8493e9dce9bbd133101897d4b7c694d",
+      "initial.png": "f41f50d3d300e328df8502f89317ae9a00ce0477848190a437ce5444bdcc3906",
+      "initial-state.json": "a258e15cabe8a8e6046a44121bdd4ee7fdb1a04f0761858b0ad12da96b170e0f",
+      "local_only.json": "5a0a4ec375190e737a57368afbb1f616f14711c4b84900fab37fd647210c8670",
+      "local_3.0.json": "ef5d974abb2a5e167cab4e15af70e5ec828e420a777473dde94b7f36cb3edfcb"
+    },
+    "894203": {
+      "reset.json": "001425c7b5bd9d97c3a9e86e9548eb907c082b920071e0d56af515e675528c25",
+      "initial.png": "ebc5d3d11ed4e6fd4846f3bcabaefea876ffd2fe51b77bb00b20426a558a9bd0",
+      "initial-state.json": "8c16c40a9afa6b16dfd70de9587c978ff057fd52be5d968ba1d5b2059e35ec97",
+      "local_only.json": "f83fb8f61f0752f30c2fe25cb56b4f5d3c0a4e50e81c97a2a1366dff8ba7a194",
+      "local_3.0.json": "e4eb79d9b9efcaec21ae28878e9b360dc1c035820c6aa6b3b7fabea7be3cfbac"
+    },
+    "894204": {
+      "reset.json": "adfd67f7d08377676437a6ba78bb31f132e8e7a339addcff2f886787eb165d0d",
+      "initial.png": "4a8dcacb52ebea153bfbde771d44284965068ca2157d5e11a58287e68ab07eab",
+      "initial-state.json": "3d1e2a0b4e74d8d4e15f12528f6abfb983300c2a45e9e465828bd4ddbd521e12",
+      "local_only.json": "98f48850ae5062d8198a2b115145563953a16bd2bdcf1b1654c4a4c9f9f2d7a5",
+      "local_3.0.json": "04c736773a63488cee6dce330651d685440585fd91d3f789b4aacfbabf62e0ef"
+    },
+    "894205": {
+      "reset.json": "b66d378c62933f7a6849ad772ab00a5b0373e63397ec154dd798c4a99c64e966",
+      "initial.png": "9e383e5a2282611bd931d34e35ed02ba466dad8c6964dd93b42e0d15b113f23b",
+      "initial-state.json": "d04e12d9539b5b142eb77fec970fa9b7fbe56c6fef48d9afbdfd1b9fdfa3f12e",
+      "local_only.json": "eca550fc6136a58dea07790780e8fd8ef0a9dca4d1dcd2f8a3874ce56bedeca9",
+      "local_3.0.json": "d6ad0e5dd3aa938da1d7da260733e750564bd2d6327ddf8b94a48acfcf905537"
+    },
+    "894206": {
+      "reset.json": "6e7707d0df46fa4e1cd964c343df36ddec2dfe330181fd5b5ec1bf965a566ea2",
+      "initial.png": "648c02653c890ee0be68d865fc395637a1347d069895d354fdd3a57b0f0254cd",
+      "initial-state.json": "f4093b1ab4b4331598e4d647d4a6aea9e290adbe9e79c47043a25e957810c433",
+      "local_only.json": "4e68c93b0b34c8ad73c7bff2a6153362a4fd2d4a9e6dbf43978dd61962461abc",
+      "local_3.0.json": "4687aaa73ce2961922d3941706be9339c1b6c7d7f4235f2baeccf7f6c324b66c"
+    },
+    "894207": {
+      "reset.json": "c9e89cdbd4408699891aceabb11669577f7c89d7eb98451786cc2ff3b272c79b",
+      "initial.png": "6449598645411d63c06fdd96c0e075c69a50991db5ce24daa722dd5a7380daf5",
+      "initial-state.json": "f1d08f7da934f2669a1c96028df9042e24bac929300f1a47f6d17e02ebbcaf0e",
+      "local_only.json": "0f8978407ca9a082a5884bf89e6f640e118acd90fc135ad62cec4509afc04fdf",
+      "local_3.0.json": "1f5396b4d30577db9129c535a7b0a5ae7934dea809dfe4f93e6b550d5a20a16a"
+    },
+    "894208": {
+      "reset.json": "0cd73f88fc6b2fc76f4edb7f84d120266388b111bb81f69c8446840041ad215a",
+      "initial.png": "e108714836eea352ffc19dc599f093c24aea2f57271be5951017142376abb89f",
+      "initial-state.json": "e6bf6a28c9d4b17f1f2bf5bcb13039da5495a1dbb6d2b808a8979bdc823ceb90",
+      "local_only.json": "587893eedf2faaa68783af975b14951c6915ad8fbf35105864fd9852596c49c4",
+      "local_3.0.json": "07c1b090dec7533390cc67bfc211d718315922ecbf2a69a3b1b4d27bc4342beb"
+    },
+    "894209": {
+      "reset.json": "c734aa7fbe2bed2a37fa90db55ff5be0168662c782fc0db5f099d6ae3d6a3fb5",
+      "initial.png": "222b62a9dec9557e6fc7230a135af1a8297b7b91ea276c962b72409f9a36f45c",
+      "initial-state.json": "256894c21f40f2c7e6ac8f5c5f1f4ae19538a047cf27d73ac549ff5fd2968b3c",
+      "local_only.json": "2e057a2d3587b2afe1eefed12cdaeff7726dfa028d2943b7008d50703e1288b7",
+      "local_3.0.json": "1e6178d1fcc29da73d298d647cc8dd7bf7b6da99685cd1a4a1f2a852169a6bbd"
+    },
+    "894210": {
+      "reset.json": "24db5658ff3f084538cb33116928669185ea083da8eb41851a5a20852b221873",
+      "initial.png": "4d0ecb5b6b40895adf5ad8d9c1ffcaea8060b70c6c1573d3f63779d873173992",
+      "initial-state.json": "b57d283006281dcb4a6ea9f648d8a49018f5723fe94d21d47f3fd517d961e93f",
+      "local_only.json": "6509f161206697f9d1286c9f219543ccfc206f4c32d8ae2effbee924b1831616",
+      "local_3.0.json": "951212fdd036195237f3cb978ad189798f557bd6fb4ee18ba94611ed7cbca21e"
+    },
+    "894211": {
+      "reset.json": "133ae7c5470a528cad5ffa3318c3ab4bf2b2878aef022551e85f867301dab7cb",
+      "initial.png": "6e8ffb39b9b4b1c447cca514d243c168d1cf836eea9a907acbae165744c18687",
+      "initial-state.json": "76f8efa7200f32a8e637338e22db4941f3c4e05efa38b6d3839904cba13cf973",
+      "local_only.json": "ce7ee878c091c582a4e2265e7e0829b6a4b7bf0910eda6ba570f2c8e5cae507f",
+      "local_3.0.json": "0163b3bb2284afc65da4126e1a56681cb0606ad14b22e7338a9ac93a4f199c05"
+    },
+    "894212": {
+      "reset.json": "7ad2775f78c11ce4cc288e4661ac454f2a2dddd9a471f94c2bc4fc72ba967c6d",
+      "initial.png": "fe1c3b8d83d4e4f3110f9285bdaa151f7961d351b18d691b21ca5a75d2b508c9",
+      "initial-state.json": "1fe2e8cf48719344f229b75e83f13ce87a4158dfc9924a98e52b5238d03c6485",
+      "local_only.json": "96ed8864fcf54fd83d1f843e9b37a6b1189485e3ef7bf8b66b1132096cf6821d",
+      "local_3.0.json": "70206c1b6f14f58056a4e579411f4da00bc558d26980e05b890d4a649f719450"
+    },
+    "894213": {
+      "reset.json": "5334728ad7e51270ce5c17897914053f5c57d20864422b39c553fbcf4afce708",
+      "initial.png": "da18228efe482395934aaab427b7d66e75b4568eec9e51b50501867b8dbd1991",
+      "initial-state.json": "115ab021c29b6387915c171a2556a330abd81187c38c42b3b69209a3db2f8e8e",
+      "local_only.json": "5464e883d62cd1af6b0578f578ba434ed748f356642e0b23441575d29de42b8c",
+      "local_3.0.json": "e427c9b1aacfe326e40af3810dada96d990b01ae20e71f09b2c74737e13550fa"
+    },
+    "894214": {
+      "reset.json": "ade5f3b1d498f5845e9241c85451beba8273b35a357ac8120f06089657089a5b",
+      "initial.png": "a0dcd1343ed5815e2c34f170aea87c22fc35654b9d95cd9eca68cae71889ec6f",
+      "initial-state.json": "cda104a916b5e473bf11f1b9fb431e9736fbb6e229aa3bed7685b3979102db5f",
+      "local_only.json": "ce84e7bb4f484c482ba71d200cddae08a7d54347d071c389ffa4818cdaf5630a",
+      "local_3.0.json": "d9ac38efdd179e41d19edc0650425f520efb60b87fb68c1605c40883074cdcb6"
+    },
+    "894215": {
+      "reset.json": "4463f623c8e7f269586bffa58933e2a0bcae5da888ea2af59f67059a4a437a90",
+      "initial.png": "e8f827b76aa1814bb5a424520c985d1d9f2ddba5291d42b29104d0d0f9bc000d",
+      "initial-state.json": "e8625ae0480f6055bad7f9aa535886a9c2e63e3002bd7105db82dbef0ef17e64",
+      "local_only.json": "34ac1627396a53565a8de83954a32bd1423b9f10a2babc4dedadd9909b5d738e",
+      "local_3.0.json": "e961afefa23fc7467ba629de91a628734081ada47bdf70bcdcd8c8e3c45a8eee"
+    }
+  },
+  "shared_prefix": "Rebuild the same scene model, restore the full archived simulator state and deliver the original initial RGB. Run the original local_only function for up to 3 s. On repeated branches serve exactly the RGB of the shared prefix only at the identical physical state, time and camera.",
+  "controls": {
+    "repeat_3s": "Replay original local_only; check the detection time, terminal win, consumed packet presence, command digest and duration against the original before using the controls.",
+    "extend_heading": "Primary sensitivity. At a 3 s miss continue the exact original local heading law, same pad, speed zero, turn clamp \u00b10.5 rad/s, yaw feedback from the latest 5 Hz sample, for 60 further 20 Hz ticks.",
+    "arc_left": "Exploratory onboard-only. At a 3 s miss: one second turn towards +0.55 rad at up to 0.65 rad/s, one second drive at 0.16 m/s with that heading target, then one second drive at 0.16 m/s while steering back towards zero. Same proportional heading law, 5 Hz odometry feedback.",
+    "arc_right": "Independent mirrored exploratory policy towards -0.55 rad. Both sides run on every start. No result-dependent choice."
+  },
+  "samples": "Original initial image, then every 4 native 50 ms steps of search (0.2 s). At the first valid onboard ArUco/IPPE measurement stop searching immediately and start the unchanged same-world docking controller. Stop without a packet at 6 s. No donor, map, seed, screen label, score or actual target is exposed to the action policy.",
+  "endpoint": "Original independent stable docking until 20 s from reset. Compare each control to archived calibration-selected local_3.0 (first search then request if feasible). Utility = success - 0.005*total simulated seconds - 0.1*quoted help units actually consumed. Report paired gains/losses, calls, sensing, terminal seconds, utility and measured end-of-search displacement.",
+  "limits": "Fixed bounded local paths on the existing open start pad in the simulator. No obstacle-aware navigation or physical permission is claimed. A negative result does not exclude other onboard views."
+}

@@ -1,0 +1,90 @@
+{
+  "exposure_timing": "Actual extra RGB at 5 Hz, matching full physical split state and original prefix for each method. Added observations may have identical pixels when the camera settles.",
+  "all_starts": 16,
+  "three_second_reproduction": {
+    "count": 16,
+    "matches": [
+      "terminal verdict and reason",
+      "number and digest of motion commands",
+      "total and sensing duration",
+      "initial RGB",
+      "full start-state hash"
+    ]
+  },
+  "methods": {
+    "repeat_3s": {
+      "docks": 8,
+      "control_only": 0,
+      "peer_only": 5,
+      "two_sided_exact_p": 0.0625,
+      "mean_total_s": 5.353125,
+      "mean_sensing_s": 1.6875000000000744,
+      "extension_used_starts": 0,
+      "added_rgb_frames": 0,
+      "minimum_distinct_extra_rgb_in_extended_episode": null,
+      "maximum_distinct_extra_rgb_in_extended_episode": null,
+      "new_detections_after_three_seconds": 0,
+      "measured_net_displacement_range_m": null
+    },
+    "extend_heading": {
+      "docks": 8,
+      "control_only": 0,
+      "peer_only": 5,
+      "two_sided_exact_p": 0.0625,
+      "mean_total_s": 6.853125,
+      "mean_sensing_s": 3.187499999999687,
+      "extension_used_starts": 8,
+      "added_rgb_frames": 120,
+      "minimum_distinct_extra_rgb_in_extended_episode": 10,
+      "maximum_distinct_extra_rgb_in_extended_episode": 15,
+      "new_detections_after_three_seconds": 0,
+      "measured_net_displacement_range_m": [
+        0.0,
+        0.0
+      ]
+    },
+    "arc_left": {
+      "docks": 8,
+      "control_only": 0,
+      "peer_only": 5,
+      "two_sided_exact_p": 0.0625,
+      "mean_total_s": 6.853125,
+      "mean_sensing_s": 3.187499999999687,
+      "extension_used_starts": 8,
+      "added_rgb_frames": 120,
+      "minimum_distinct_extra_rgb_in_extended_episode": 15,
+      "maximum_distinct_extra_rgb_in_extended_episode": 15,
+      "new_detections_after_three_seconds": 0,
+      "measured_net_displacement_range_m": [
+        0.2326798535050692,
+        0.26664944848999317
+      ]
+    },
+    "arc_right": {
+      "docks": 8,
+      "control_only": 0,
+      "peer_only": 5,
+      "two_sided_exact_p": 0.0625,
+      "mean_total_s": 6.853125,
+      "mean_sensing_s": 3.187499999999687,
+      "extension_used_starts": 8,
+      "added_rgb_frames": 120,
+      "minimum_distinct_extra_rgb_in_extended_episode": 15,
+      "maximum_distinct_extra_rgb_in_extended_episode": 15,
+      "new_detections_after_three_seconds": 0,
+      "measured_net_displacement_range_m": [
+        0.23267985238957348,
+        0.2666440939269324
+      ]
+    },
+    "local_first": {
+      "docks": 13,
+      "control_only": 0,
+      "peer_only": 0,
+      "two_sided_exact_p": 1.0,
+      "mean_total_s": 9.7,
+      "mean_sensing_s": 2.8124999999997837
+    }
+  },
+  "result_sha256": "559b689677e315fff9b91cfb1c4d353055d085ddca5ec49a043d21738ed107a4"
+}

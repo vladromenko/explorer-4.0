@@ -1,0 +1,1289 @@
+{
+  "phase": "Post-hoc repeated controls on opened scenes",
+  "n": 16,
+  "protocol_sha256": "8340fb0e5200990e4bc1b4e55a6ac7e55422893aa9b7d2ca72162fa5c9160c9a",
+  "full_trace": "One JSON receipt per seed and local policy on Homebrain, including time, actual odometry, RGB and state digests for each added camera frame.",
+  "physical_trials": 0,
+  "training_updates": 0,
+  "summary": {
+    "repeat_3s": {
+      "successes": 8,
+      "calls": 0,
+      "mean_sensing_s": 1.6875000000000744,
+      "mean_seconds": 5.353125,
+      "mean_utility": 0.473234375
+    },
+    "extend_heading": {
+      "successes": 8,
+      "calls": 0,
+      "mean_sensing_s": 3.187499999999687,
+      "mean_seconds": 6.853125,
+      "mean_utility": 0.46573437500000003
+    },
+    "arc_left": {
+      "successes": 8,
+      "calls": 0,
+      "mean_sensing_s": 3.187499999999687,
+      "mean_seconds": 6.853125,
+      "mean_utility": 0.46573437500000003
+    },
+    "arc_right": {
+      "successes": 8,
+      "calls": 0,
+      "mean_sensing_s": 3.187499999999687,
+      "mean_seconds": 6.853125,
+      "mean_utility": 0.46573437500000003
+    },
+    "local_first": {
+      "successes": 13,
+      "calls": 6,
+      "mean_sensing_s": 2.8124999999997837,
+      "mean_seconds": 9.7,
+      "mean_utility": 0.70775
+    }
+  },
+  "control_minus_local_first": {
+    "repeat_3s": {
+      "control_only": 0,
+      "local_first_only": 5,
+      "mean_delta_win": -0.3125,
+      "mean_delta_calls": -0.375,
+      "mean_delta_seconds": -4.346875,
+      "mean_delta_utility": -0.234515625
+    },
+    "extend_heading": {
+      "control_only": 0,
+      "local_first_only": 5,
+      "mean_delta_win": -0.3125,
+      "mean_delta_calls": -0.375,
+      "mean_delta_seconds": -2.846875,
+      "mean_delta_utility": -0.242015625
+    },
+    "arc_left": {
+      "control_only": 0,
+      "local_first_only": 5,
+      "mean_delta_win": -0.3125,
+      "mean_delta_calls": -0.375,
+      "mean_delta_seconds": -2.846875,
+      "mean_delta_utility": -0.242015625
+    },
+    "arc_right": {
+      "control_only": 0,
+      "local_first_only": 5,
+      "mean_delta_win": -0.3125,
+      "mean_delta_calls": -0.375,
+      "mean_delta_seconds": -2.846875,
+      "mean_delta_utility": -0.242015625
+    },
+    "local_first": {
+      "control_only": 0,
+      "local_first_only": 0,
+      "mean_delta_win": 0,
+      "mean_delta_calls": 0,
+      "mean_delta_seconds": 0.0,
+      "mean_delta_utility": 0.0
+    }
+  },
+  "rows": [
+    {
+      "seed": 894200,
+      "reset": {
+        "reset_sha256": "fe9660dbebcf6a419129a00a6f3076b785f012205da29e94ed931bad9669b242",
+        "initial_rgb_sha256": "4310a8d44c387cc21770980ee4fcbca97ecd0b724f9b6b864846cc43d588995c",
+        "camera_sha256": "6659ff6a12839bf5ee77b04876bb7f2da7df1f77fc0aebe76cdae76586fbdc65",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "5f8b4a28583836eccbdc1cc81de45200f594b9c25e3a237ed511d7940e832338"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.008624182800380744,
+          "receipt_sha256": "19e9065ae461f0294136c99584c814affa8b90b98a519105fc8f1b8d681f1ddd"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2652489879640483,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "53e7a3bfa41a99b6a66269a83a672b176e7f90c5e50555648225fcd54d154b1f"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2652441158696037,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "901d100382e291fd3f8e58cb01afc4d2bbca6cf76751263276eadf135bddfbb1"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 1,
+          "sensing_s": 5.999999999999394,
+          "seconds": 13.35,
+          "help_units": 1.0,
+          "utility": 0.83325
+        }
+      }
+    },
+    {
+      "seed": 894201,
+      "reset": {
+        "reset_sha256": "6b31912143573c2a63eb5425ca1785641045e2136f8779b503c6b15a903c27dc",
+        "initial_rgb_sha256": "ffe965ba0554ab37175c45465d90c1d792cd3e0e2d0c5e40fc43c5934eda895b",
+        "camera_sha256": "06699b81656e2eaf416cad65addc0543c0303b3859d566cc4b634aa21f9ee262",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 1.3999999999999013,
+          "seconds": 9.15,
+          "utility": 0.95425,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "b8353b16b63b5091dcd54f5f9d0ec4591e22f3867e311e71271cb8010e69d063"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 1.3999999999999013,
+          "seconds": 9.15,
+          "utility": 0.95425,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "398d5626f8feb919018ce2021e5d251d3d2a192ea00928bf54326d40a353573e"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 1.3999999999999013,
+          "seconds": 9.15,
+          "utility": 0.95425,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "5cd5711eb86a0dfa8d117a2a1b842c8a6ae575591757650922787246b31a766d"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 1.3999999999999013,
+          "seconds": 9.15,
+          "utility": 0.95425,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "1c00965ab7a9ee8d5f6756ab8e49c2a33e9533cc388985ce81bd8f87ccc2791b"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 1.3999999999999013,
+          "seconds": 9.15,
+          "help_units": 0.0,
+          "utility": 0.95425
+        }
+      }
+    },
+    {
+      "seed": 894202,
+      "reset": {
+        "reset_sha256": "a258e15cabe8a8e6046a44121bdd4ee7fdb1a04f0761858b0ad12da96b170e0f",
+        "initial_rgb_sha256": "7ccc8b974896f3c42263f547b401acb8c4772f005fa454082aae03e6ea83e10d",
+        "camera_sha256": "f41f50d3d300e328df8502f89317ae9a00ce0477848190a437ce5444bdcc3906",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "c0793d30c05b284433852032ecfa82e7159003c211e8aadbe6942621b7854a29"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0017798962063898575,
+          "receipt_sha256": "60eaacb8cffbc57ece9928a30cf7ff9c4feda1d9931792b00e557817c15b275c"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.24838451961710178,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "c96d479fa1de47371d207004083c4ca2ce84858a88dee37ae80a4b51fede92c6"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.24838528395305376,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "184f8d57b68b233d162845ee523835a1da1d5392c5e96baaa18ce20f3b6f5462"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 1,
+          "sensing_s": 5.999999999999394,
+          "seconds": 14.3,
+          "help_units": 2.0,
+          "utility": 0.7285
+        }
+      }
+    },
+    {
+      "seed": 894203,
+      "reset": {
+        "reset_sha256": "8c16c40a9afa6b16dfd70de9587c978ff057fd52be5d968ba1d5b2059e35ec97",
+        "initial_rgb_sha256": "fb6e2bfc3641ebe6a857700b841c0459114bc82899e6015fc8a841ea6c33d274",
+        "camera_sha256": "ebc5d3d11ed4e6fd4846f3bcabaefea876ffd2fe51b77bb00b20426a558a9bd0",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.9999999999999453,
+          "seconds": 8.5,
+          "utility": 0.9575,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "506fca99444f47ca05e6d9a910c359ca7cd405624f017b73ea9d4b97fe685d7d"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.9999999999999453,
+          "seconds": 8.5,
+          "utility": 0.9575,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "fb6e9b730a5740b42566468e203ea8f3471c52dc7b85a111a8bc605927d99d68"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.9999999999999453,
+          "seconds": 8.5,
+          "utility": 0.9575,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "f08a4697c35c20dc736a3b9f260b1da359ddce8c42fa9ab0fa4d2c0f4ed84307"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.9999999999999453,
+          "seconds": 8.5,
+          "utility": 0.9575,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "6698d8db3586f392552352375eae779e5c7ede95e9a211532c02657426fdce97"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.9999999999999453,
+          "seconds": 8.5,
+          "help_units": 0.0,
+          "utility": 0.9575
+        }
+      }
+    },
+    {
+      "seed": 894204,
+      "reset": {
+        "reset_sha256": "3d1e2a0b4e74d8d4e15f12528f6abfb983300c2a45e9e465828bd4ddbd521e12",
+        "initial_rgb_sha256": "7985c30544c8944310986217fc2d6c6b33afde375d90be52e3363b3ae4f0824d",
+        "camera_sha256": "4a8dcacb52ebea153bfbde771d44284965068ca2157d5e11a58287e68ab07eab",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "44e75a85f60e5e3fdeb15ad81a72b13a4ca872d6b78f06dd426399d89d315ae8"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 9.599167291723961e-05,
+          "receipt_sha256": "e2afc927e9604bfb6dbe7230818fcdfb217759431ce1063657395ab959aa0d41"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2364131948060645,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "a5bdbcb2cfdec06fa19efff5b6f0b200e6e80ba6e0f7fc41ec1e0686853f27d9"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.23641313836155076,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "ef45b83d09754a662929ffc3c417be0f6bf0279cf7a418de3b5f88b428c39a70"
+        },
+        "local_first": {
+          "win": 0,
+          "calls": 1,
+          "sensing_s": 5.999999999999394,
+          "seconds": 20.0,
+          "help_units": 1.5,
+          "utility": -0.25
+        }
+      }
+    },
+    {
+      "seed": 894205,
+      "reset": {
+        "reset_sha256": "d04e12d9539b5b142eb77fec970fa9b7fbe56c6fef48d9afbdfd1b9fdfa3f12e",
+        "initial_rgb_sha256": "1614aff0132cd988b9c2421a29c72dddd54248183b33cec01c1c610157079725",
+        "camera_sha256": "9e383e5a2282611bd931d34e35ed02ba466dad8c6964dd93b42e0d15b113f23b",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.2,
+          "utility": 0.964,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "3b3dde6c90091c038ce90ed7e20c503a44a5aff8935a0b3f7a728dc0136d5e6e"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.2,
+          "utility": 0.964,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "c0fb8705ab97f1fdeb0b8aa8117838f44f931b09c6c4be3bddaf895de2778d11"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.2,
+          "utility": 0.964,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "4bdd211e4a81095149f1f3b595b31f913969d4794796c656a4aa7a2c1c8b153b"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.2,
+          "utility": 0.964,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "c72230e1e0ca355769baa6cf242b69e52ad3911b643469a56215f36f4cc37486"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.2,
+          "help_units": 0.0,
+          "utility": 0.964
+        }
+      }
+    },
+    {
+      "seed": 894206,
+      "reset": {
+        "reset_sha256": "f4093b1ab4b4331598e4d647d4a6aea9e290adbe9e79c47043a25e957810c433",
+        "initial_rgb_sha256": "66df739ded9b58f480fca255eb986ce94cef3e05d1dd9c47d666f044e6e2fb77",
+        "camera_sha256": "648c02653c890ee0be68d865fc395637a1347d069895d354fdd3a57b0f0254cd",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "bf265c9993b644f1782b2344ab497e491a0298a45965aaae1f1d0ef4daf5d9df"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 8.605759737111478e-05,
+          "receipt_sha256": "f7a51e8cf5cdd52dc4827cd0789d19da77865d56cc7622905b8c699c5c6143e5"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2489949287630863,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "2b124feed79ddfd21369c2bf5c26de6afb1f289a582fbfc42008a75ca1fcee4a"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.24899486306206528,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "df568c7a1207972ce173249d67f58addd477f30dffe516adaab5c6c377c4471f"
+        },
+        "local_first": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "help_units": 0.0,
+          "utility": -0.015
+        }
+      }
+    },
+    {
+      "seed": 894207,
+      "reset": {
+        "reset_sha256": "f1d08f7da934f2669a1c96028df9042e24bac929300f1a47f6d17e02ebbcaf0e",
+        "initial_rgb_sha256": "0f08741fb72920dc8f3585e0f0fc60c2b4846a74e7f01bccf1173c0bdd244b62",
+        "camera_sha256": "6449598645411d63c06fdd96c0e075c69a50991db5ce24daa722dd5a7380daf5",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.5999999999999893,
+          "seconds": 6.95,
+          "utility": 0.9652499999999999,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "8b4be283f5e926dca684c015617e16823c63b128cc6f1ed88b0909f4e4aa6523"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.5999999999999893,
+          "seconds": 6.95,
+          "utility": 0.9652499999999999,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "83723c8677c300c41233943125130cf563e478e98cfaad34d303d56603970de2"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.5999999999999893,
+          "seconds": 6.95,
+          "utility": 0.9652499999999999,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "9ae4056919bf91c79cb89f454ef94e46ebf68fdd57a82e96e9e80f3d505f6680"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.5999999999999893,
+          "seconds": 6.95,
+          "utility": 0.9652499999999999,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "1f4eb9c231e22592110eb54789dd15ff7ed7bd2abebe29fc1f1a1b18aa2e612b"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.5999999999999893,
+          "seconds": 6.95,
+          "help_units": 0.0,
+          "utility": 0.9652499999999999
+        }
+      }
+    },
+    {
+      "seed": 894208,
+      "reset": {
+        "reset_sha256": "e6bf6a28c9d4b17f1f2bf5bcb13039da5495a1dbb6d2b808a8979bdc823ceb90",
+        "initial_rgb_sha256": "c01f293e93c3b50351d0392db897183fd00c2a7404219a3fec012825aeaeb844",
+        "camera_sha256": "e108714836eea352ffc19dc599f093c24aea2f57271be5951017142376abb89f",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "dbea6816a8346ac9e1f493e2567dd7cf191b23baf88dce1711ad025b9b8bdbd9"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 2.81428600689226e-06,
+          "receipt_sha256": "423ad9f6a77012cae2ec33f5feed3002e6f08c771244e823293c1784cc2147c8"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2326798535050692,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "41f88bd9b85407e045da709e168c7b09b6144b5d52954da6d6a5a354cdfcc6e2"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.23267985238957348,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "9963b83ec2b2e9f15b91dc37c13a8e63f39abe6aa2a9a46263819c504e93d214"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 1,
+          "sensing_s": 5.999999999999394,
+          "seconds": 13.65,
+          "help_units": 1.0,
+          "utility": 0.83175
+        }
+      }
+    },
+    {
+      "seed": 894209,
+      "reset": {
+        "reset_sha256": "256894c21f40f2c7e6ac8f5c5f1f4ae19538a047cf27d73ac549ff5fd2968b3c",
+        "initial_rgb_sha256": "2dbfea6c18dff493bcaeb6b85794bb717daca6522ed8e3b5a42baaaa438ef176",
+        "camera_sha256": "222b62a9dec9557e6fc7230a135af1a8297b7b91ea276c962b72409f9a36f45c",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "9a6a86ee3edb74f660aee9f64872f6e1a4bc95e23092b3d26d29bc52b804790c"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "eb382056eb84ecd85784b03efd72fda59bd1aaeb7500e4682d63ae1ad6af80d2"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "952e4d605f81f83dd0fd966405f4ee8e6544c7f63e76851274de8314e7d30dce"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "ca8b78c920aba57b69e9585525f567748353e5a6bc29ead853335f3464bdab05"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "help_units": 0.0,
+          "utility": 0.96325
+        }
+      }
+    },
+    {
+      "seed": 894210,
+      "reset": {
+        "reset_sha256": "b57d283006281dcb4a6ea9f648d8a49018f5723fe94d21d47f3fd517d961e93f",
+        "initial_rgb_sha256": "79c2acc09b40ac7574755977d42f2d2977c629cf1bfc4761d309e1e58ca10d2d",
+        "camera_sha256": "4d0ecb5b6b40895adf5ad8d9c1ffcaea8060b70c6c1573d3f63779d873173992",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "1ee43e734e1e6dc2c06beaf2e7ce5b6260dd236b4d4634797ac2b4d244784de6"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 5.7711786974392876e-05,
+          "receipt_sha256": "2fe3ea933725ff71584467fa8839139aa8baa598766be7001859cdf51fb84e7e"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.25212995352654216,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "f172d1ee0252354412aedec0a5ee621a09f17c2888281cfa85ef200220549d09"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2521300108850318,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "a99e5c07b23541cd92104fee898a7ffe4ace967db3d5aa7a65fd4033e86082ef"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 1,
+          "sensing_s": 5.999999999999394,
+          "seconds": 13.45,
+          "help_units": 2.0,
+          "utility": 0.73275
+        }
+      }
+    },
+    {
+      "seed": 894211,
+      "reset": {
+        "reset_sha256": "76f8efa7200f32a8e637338e22db4941f3c4e05efa38b6d3839904cba13cf973",
+        "initial_rgb_sha256": "561b0f1d8d4adfb9c2f78c9820326b6a6cfbf6897fc88632571f021fccabe2b7",
+        "camera_sha256": "6e8ffb39b9b4b1c447cca514d243c168d1cf836eea9a907acbae165744c18687",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.3,
+          "utility": 0.9635,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "f4b85fa13f9f1812a888b77a815fb500b7eab80a5d930597bf71ac26b5df0249"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.3,
+          "utility": 0.9635,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "0fae89306329af997ad51f31ee87fab4f4ac05e6c34277cb0cf43193d821a296"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.3,
+          "utility": 0.9635,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "abbab58b63dc405dc20792cd57ec2ce2051760c2ba0ef84817312653d06dae8c"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.3,
+          "utility": 0.9635,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "b6a84c6e83e009fc7891ec6219cd55d5ec4f08ef1ff2102fa4e0cde04a4fff47"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.3,
+          "help_units": 0.0,
+          "utility": 0.9635
+        }
+      }
+    },
+    {
+      "seed": 894212,
+      "reset": {
+        "reset_sha256": "1fe2e8cf48719344f229b75e83f13ce87a4158dfc9924a98e52b5238d03c6485",
+        "initial_rgb_sha256": "1b61b05f91e8562bd8e3650572c0abd4503f13685f46af5993cf4f6bc7d918de",
+        "camera_sha256": "fe1c3b8d83d4e4f3110f9285bdaa151f7961d351b18d691b21ca5a75d2b508c9",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "04d6c2d1312c21b0905796d70dd53e2953a5469f9ca6d5651c5a4e3c51a8bfe2"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.010075598857785837,
+          "receipt_sha256": "74a3c29c641876b312261502d53ee925184c291e98eecc9854b926eef6f0b981"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.26664944848999317,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "c477ecb4ed528ae05b81b2ed5294442f1a96d4c5ec71f613b54b9af05eb3ea69"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2666440939269324,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "55aa8a586ed384275e35ebc01833a37b3d33a54e5355fa7a6d9ed8d8a2c38a59"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 1,
+          "sensing_s": 5.999999999999394,
+          "seconds": 12.8,
+          "help_units": 1.5,
+          "utility": 0.786
+        }
+      }
+    },
+    {
+      "seed": 894213,
+      "reset": {
+        "reset_sha256": "115ab021c29b6387915c171a2556a330abd81187c38c42b3b69209a3db2f8e8e",
+        "initial_rgb_sha256": "e81f42b26a030dbf7f19e66d060afa3db2e23cb37074cf6b29a2f59bc031e9cb",
+        "camera_sha256": "da18228efe482395934aaab427b7d66e75b4568eec9e51b50501867b8dbd1991",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "8fcfd29e377511f48b548410275016c75a0147f14b774184ec7266be5f3559ee"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "27f875193be7a7f61fc705e2fab07ffaac028992ae10e742532c1ebebabe0565"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "cebbdfa62a4b93ce81babef12a7d5a0c30790c821799549084cd11d1d348646a"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "utility": 0.96325,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "19b160d928ab112850766c74be51cab4cd408672406fcc1908c6a4a82411001a"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.35,
+          "help_units": 0.0,
+          "utility": 0.96325
+        }
+      }
+    },
+    {
+      "seed": 894214,
+      "reset": {
+        "reset_sha256": "cda104a916b5e473bf11f1b9fb431e9736fbb6e229aa3bed7685b3979102db5f",
+        "initial_rgb_sha256": "e3509f567a52980225ce2d69b9a06cb9d124f332f56f854787f00a58a826cffa",
+        "camera_sha256": "a0dcd1343ed5815e2c34f170aea87c22fc35654b9d95cd9eca68cae71889ec6f",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "utility": -0.015,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "26cd7e17715d7bc606d3236b68a3ea0868f2ed050743d2662211852b506c31b9"
+        },
+        "extend_heading": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.00020265296668385555,
+          "receipt_sha256": "de9e43d72c9f16c157cf6c76af14514eb63e1ecf835d5e5ab19cb133e4a4b6a2"
+        },
+        "arc_left": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.2532443709502246,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "01465f0aad9a56bfd9b9285c4ef83687b479f03fae55ec46952b7e90d23af52d"
+        },
+        "arc_right": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 5.999999999999394,
+          "seconds": 6.0,
+          "utility": -0.03,
+          "had_packet_by_three": false,
+          "observed_local_packet": false,
+          "extra_ticks": 60,
+          "extra_displacement_m": 0.25324453925124046,
+          "max_extra_speed": 0.16,
+          "max_extra_turn": 0.65,
+          "receipt_sha256": "885a071c894c9bf3deb8c4130b429217dddd9ea1346a02b594f059be7a5ac46a"
+        },
+        "local_first": {
+          "win": 0,
+          "calls": 0,
+          "sensing_s": 3.000000000000169,
+          "seconds": 3.0,
+          "help_units": 0.0,
+          "utility": -0.015
+        }
+      }
+    },
+    {
+      "seed": 894215,
+      "reset": {
+        "reset_sha256": "e8625ae0480f6055bad7f9aa535886a9c2e63e3002bd7105db82dbef0ef17e64",
+        "initial_rgb_sha256": "5a9086862dac4e7dad1e60b0c437b28f2e063c0c33dd15b8d195fceffb351b03",
+        "camera_sha256": "e8f827b76aa1814bb5a424520c985d1d9f2ddba5291d42b29104d0d0f9bc000d",
+        "world_xml_sha256": "4c17847bec8dbdb26a960544d4e9e53cc5d99ad155983255a52ed47f308a6014"
+      },
+      "methods": {
+        "repeat_3s": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.85,
+          "utility": 0.96075,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "d0f1168373985e24141f4a9cd97e5333b6302af61814a161e59daddb1d52138c"
+        },
+        "extend_heading": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.85,
+          "utility": 0.96075,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "6a896b3e27ea8a6cf8d79cbe779230e888ebec91e2f88c189308bd04c5ee5861"
+        },
+        "arc_left": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.85,
+          "utility": 0.96075,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "66f56ad1f743f9522320e8cff281854d77c026ff05b8afb4fac7fae117530977"
+        },
+        "arc_right": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.85,
+          "utility": 0.96075,
+          "had_packet_by_three": true,
+          "observed_local_packet": true,
+          "extra_ticks": 0,
+          "extra_displacement_m": 0.0,
+          "max_extra_speed": 0.0,
+          "max_extra_turn": 0.0,
+          "receipt_sha256": "4bfa4e107334d9dd2062daa80ff1ddb79479eab8bf925e37df9a63c32dfb317d"
+        },
+        "local_first": {
+          "win": 1,
+          "calls": 0,
+          "sensing_s": 0.0,
+          "seconds": 7.85,
+          "help_units": 0.0,
+          "utility": 0.96075
+        }
+      }
+    }
+  ]
+}
