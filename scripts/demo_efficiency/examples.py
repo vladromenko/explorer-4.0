@@ -140,7 +140,10 @@ def rollout(env, arm, packet, plan, ident, starts, seed, *, save=False):
         "shuffled_seed": wrong if arm == "T3" else None,
     }
     if carry:
-        row.update(endpoint=ENDPOINT, terminal_samples=carry.samples[-(env.fps + 1):])
+        row.update(
+            endpoint=ENDPOINT,
+            terminal_samples=[list(sample) for sample in carry.samples[-(env.fps + 1):]],
+        )
     if capture:
         spool = capture.finish("success" if passed else "failure", reason)
         return row, spool
