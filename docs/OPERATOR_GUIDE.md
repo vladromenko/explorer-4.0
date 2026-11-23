@@ -46,6 +46,16 @@ On November 13, a motor-controller USB disconnect prevented delivery of a stop c
 4. Return control to the Hiwonder app through the phone-app control panel if needed. Keep one controller in charge at a time.
 5. The correction pilot requires a validated policy and a physically checked decision point and delay. During the correction window, use the arrows and select the completion action to hand control back before the 10-second limit. **STOP** aborts the trial. The Tank correction pilot still requires physical acceptance.
 
+### Inspect Tank before updating onboard software
+
+From the Explorer 4.0 checkout on Homebrain, run the following command after the Pi rejoins the network. It reads the agent’s health twice and reads software fingerprints, operator limits and permission-marker fingerprints inside the existing MentorPi container. It requires the configured Tank endpoint and the existing trusted SSH host key. The inspection sends zero motion commands. A successful check leaves the installed version untouched.
+
+```sh
+.venv/bin/python -B scripts/deploy_tank_recording.py --inspect-live
+```
+
+Read `compatible`, `reason`, `live_software` and `disk_software`. Exit status 2 means the comparison failed or the robot could not be reached. When `matches_archived_v1` is true, retain that installation. All seven runtime file hashes in the 14 November receipt matched the archived Tank bundle. That agent required fresh battery, IMU and lidar samples, checked tilt, applied profile-specific docking clearance, and required a new start after lease expiry. Its incident, bench and neutral-only permission rules also differ. Copying the old limits into the current agent would lose parts of this behaviour. The read-only result and the original bundle identify the exact base for a version-specific update. Compatible installations also require a disarmed agent with its motor connection closed and matching effective settings before an operator schedules an update. [Inspector and deployment checks](../scripts/deploy_tank_recording.py) · [Onboard agent](../agents/tank/agent.py)
+
 ## Training budget and controls
 
 For each task, the initial target is three usable demonstrations and a smoke test. The standard starting budget is 50 usable demonstrations per task spread across independent layouts. A split needs at least three independent groups.

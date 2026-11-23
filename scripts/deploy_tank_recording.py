@@ -10,15 +10,23 @@ import shlex
 import subprocess
 import sys
 import time
+import uuid
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from explorer4.paths import ROOT,DATA
 from agents.tank.limits import DEFAULTS, load as effective_limits
 from scripts.build_staging_bundles import build
-from scripts.install_tank_bundle import LEGACY as PERMISSION_FILES
+from scripts.install_tank_bundle import LEGACY
+
+PERMISSION_FILES = (*LEGACY, 'neutral-diagnostic.json')
+ARCHIVED_V1_INVENTORY_SHA256 = '3c11381ff20074b938c9cc23c7f6438b9a87dccf9a729ebd37e230581081536a'
 
 HEALTH_FILES = ('agent.py', 'native_driver.py', 'native_client.py', 'limits.py', 'motor_link.py',
                 'motion_permission.py', 'sensors.py')
 PREVIOUS_PERMISSION_SHA = 'b7c34ba88d19c487fd3e388754af76c26be2a0eadec15289673c0fb042a2b22c'
+REVIEWED_V2_AGENTS = {
+    'bb82cf1a83f08d1fb610949110308543c8fe834efeababe9f813a43f21130ccb',  # 251f1c5
+    'feb4046f3209914d2a7c1378fd31134dc0c68b50881bb160066e1bdc936e1fc1',  # f7822b8
+}
 
 
 HOST_STAGE='/home/pi/explorer3-recording-r2-staging'
@@ -28,7 +36,7 @@ SERVICES=('explorer3-tank-agent.service','explorer3-tank-sensors@0.service','exp
 
 
 def ssh(*args,timeout=40):
-    return subprocess.run(['ssh','-o','BatchMode=yes','-o','ConnectTimeout=5','tank',shlex.join(args)],capture_output=True,text=True,timeout=timeout,check=True).stdout
+    return subprocess.run(['ssh','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','UpdateHostKeys=no','-o','ConnectTimeout=5','tank',shlex.join(args)],capture_output=True,text=True,timeout=timeout,check=True).stdout
 
 
 def docker(*args):return ssh('docker','exec','-u','ubuntu','MentorPi',*args)
@@ -51,11 +59,15 @@ def read_policy():
 from pathlib import Path
 root = Path(sys.argv[1])
 caps = root / 'configs/tank-limits.json'
-names = sys.argv[2:]
+names = json.loads(sys.argv[2])
+sources = json.loads(sys.argv[3])
+def stamp(name):
+    path=root/name
+    return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
 print(json.dumps({'limits_hex': caps.read_bytes().hex() if caps.exists() else None,
-                  'permission_sha256': {n: hashlib.sha256((root/n).read_bytes()).hexdigest()
-                                        if (root/n).exists() else None for n in names}}))"""
-    return json.loads(docker('python3', '-c', program, REMOTE, *PERMISSION_FILES))
+                  'permission_sha256': {n:stamp(n) for n in names},
+                  'software_on_disk': {n:stamp(n) for n in sources}}))"""
+    return json.loads(docker('python3', '-B', '-c', program, REMOTE, json.dumps(PERMISSION_FILES), json.dumps(HEALTH_FILES)))
 
 
 def require_inert(status):
@@ -93,6 +105,10 @@ def preflight(status, raw):
     if (status.get('software') or {}).get('motion_permission.py') not in {
         PREVIOUS_PERMISSION_SHA, source_hash('motion_permission.py')}:
         raise ValueError('Existing onboard permission implementation is unrecognized; explicit migration required')
+    live = status['software']
+    if (live.get('limits.py') != source_hash('limits.py') or
+            live.get('agent.py') not in REVIEWED_V2_AGENTS | {source_hash('agent.py')}):
+        raise ValueError('The running agent or guard implementation is unrecognized; preserve custom safety behaviour until reviewed')
     return {'effective_limits':expected,'operator_config_sha256': hashlib.sha256(raw).hexdigest() if raw is not None else None}
 
 
@@ -100,13 +116,46 @@ def configuration_bytes(snapshot):
     return bytes.fromhex(snapshot['limits_hex']) if snapshot['limits_hex'] is not None else None
 
 
+def inspected_receipt(first, snapshot, last):
+    live = last.get('software', {})
+    on_disk = snapshot['software_on_disk']
+    identity = hashlib.sha256(json.dumps(live, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    raw = configuration_bytes(snapshot)
+    receipt = {'observed_unix_s':time.time(), 'read_only':True, 'physical_commands':0,
+               'armed':last.get('armed'), 'hardware_open':last.get('hardware_open'),
+               'live_software':live, 'disk_software':on_disk,
+               'matches_archived_v1':identity == ARCHIVED_V1_INVENTORY_SHA256 and live == on_disk,
+               'operator_config_sha256':hashlib.sha256(raw).hexdigest() if raw is not None else None,
+               'reported_limits':last.get('limits'), 'permission_sha256':snapshot['permission_sha256']}
+    try:
+        if (set(live) != set(HEALTH_FILES) or live != on_disk
+                or not all(isinstance(x,str) and len(x)==64 for x in live.values())):
+            raise ValueError('Live and installed software inventories differ or are incomplete')
+        if (any(first.get(k)!=last.get(k) for k in ('software','limits','armed','hardware_open')) or
+                not all(type(h.get('monotonic_ns')) is int for h in (first,last)) or
+                first['monotonic_ns'] > last['monotonic_ns']):
+            raise ValueError('Agent state or clock changed during inspection; repeat after it settles')
+        checked = preflight(last, raw)
+        receipt.update(compatible=True, expected_limits=checked['effective_limits'])
+    except (ValueError, TypeError) as error:
+        receipt.update(compatible=False, reason=str(error))
+    return receipt
+
+
+def inspect_live():
+    first = health()
+    snapshot = read_policy()
+    return inspected_receipt(first, snapshot, health())
+
+
 def verify_installation(actual, expected, before, after):
     require_inert(actual)
-    if before != after:
+    if any(before.get(k) != after.get(k) for k in ('limits_hex','permission_sha256')):
         raise ValueError('Onboard settings or permission markers changed during deployment')
     if actual.get('limits') != expected['effective_limits']:
         raise ValueError('Published limits differ from the preflight operator limits')
-    if actual.get('software') != {name:source_hash(name) for name in HEALTH_FILES}:
+    expected_sources = {name:source_hash(name) for name in HEALTH_FILES}
+    if actual.get('software') != expected_sources or after.get('software_on_disk') != expected_sources:
         raise ValueError('Runtime source inventory differs from the full expected Tank build')
 
 
@@ -115,7 +164,10 @@ def deploy():
     require_inert(current)
     before = read_policy()
     expected = preflight(current, configuration_bytes(before))
-    out=DATA/'validation/recording-r2/staging';build(DATA,out)
+    if current.get('software') != before.get('software_on_disk'):
+        raise ValueError('Live and installed software disagree before deployment')
+    destination=DATA/'validation/tank-software-updates'/(time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())+'-'+uuid.uuid4().hex[:8])
+    out=destination/'staging';build(DATA,out)
     ssh('mkdir','-p',HOST_STAGE);docker('mkdir','-p',STAGE)
     for source,name in ((out/'tank-staging.tar','bundle.tar'),(ROOT/'scripts/install_tank_bundle.py','installer.py')):
         subprocess.run(['scp','-q',str(source),'tank:'+HOST_STAGE+'/'+name],check=True,timeout=30)
@@ -156,9 +208,9 @@ def deploy():
             for unit in SERVICES:
                 if original_services[unit]:ssh('sudo','-n','systemctl','restart',unit)
             report['status']='rolled_back'
-        (DATA/'validation/recording-r2/deployment.json').write_text(json.dumps(report,indent=2))
+        (destination/'deployment.json').write_text(json.dumps(report,indent=2))
         raise
-    (DATA/'validation/recording-r2/deployment.json').write_text(json.dumps(report,indent=2))
+    (destination/'deployment.json').write_text(json.dumps(report,indent=2))
     return report
 
 
@@ -166,12 +218,22 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     action=parser.add_mutually_exclusive_group(required=True)
     action.add_argument('--apply',action='store_true')
+    action.add_argument('--inspect-live',action='store_true',help='Read live agent health and installed policy files only')
     action.add_argument('--preflight-health',type=Path, help='Offline checks using a saved GET /health JSON')
     stored=parser.add_mutually_exclusive_group()
     stored.add_argument('--limits-file',type=Path, help='Exact file captured on the robot')
     stored.add_argument('--no-limits-file',action='store_true', help='The operator configuration was verified absent')
     args=parser.parse_args()
-    if args.preflight_health:
+    if args.inspect_live:
+        if args.limits_file or args.no_limits_file:
+            parser.error('--inspect-live reads the current robot configuration')
+        try:
+            result = inspect_live()
+        except Exception as error:
+            parser.exit(2, 'Live inspection unavailable: '+str(error)+'\n')
+        print(json.dumps(result,indent=2))
+        raise SystemExit(0 if result['compatible'] else 2)
+    elif args.preflight_health:
         if not args.limits_file and not args.no_limits_file:
             parser.error('Supply the saved --limits-file or verified --no-limits-file')
         status=json.loads(args.preflight_health.read_bytes())

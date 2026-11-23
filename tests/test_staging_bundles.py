@@ -67,9 +67,12 @@ def test_tank_preflight_uses_exact_active_limits_and_preserves_operators_files(t
     permissions = onboard / 'bench-authorized.json'
     permissions.write_bytes(b'operator decision')
     status = {'armed': False, 'hardware_open': False, 'limits': limits.load(onboard),
-              'software': {'motion_permission.py': deploy.PREVIOUS_PERMISSION_SHA}}
+              'software': {'motion_permission.py': deploy.PREVIOUS_PERMISSION_SHA, 'limits.py':deploy.source_hash('limits.py'),
+                           'agent.py':next(iter(deploy.REVIEWED_V2_AGENTS))}}
     actual = {**status, 'software': {k: deploy.source_hash(k) for k in deploy.HEALTH_FILES}}
     verified = deploy.preflight(status, raw)
+    with pytest.raises(ValueError, match='guard implementation is unrecognized'):
+        deploy.preflight({**status, 'software': {**status['software'], 'agent.py':'custom_guard'}}, raw)
     assert verified['effective_limits']['manual']['v'] == .08
     assert verified['effective_limits']['command_ttl_s'] == .25
     assert verified['effective_limits']['battery_stop_v'] == 7.1
@@ -80,7 +83,7 @@ def test_tank_preflight_uses_exact_active_limits_and_preserves_operators_files(t
     manifest = {'platform': 'tank', 'files': {'payload/agent.py': hashlib.sha256(b'updated').hexdigest()}}
     (stage / 'MANIFEST.json').write_text(json.dumps(manifest))
     def snapshot():
-        return {'limits_hex': config.read_bytes().hex(), 'permission_sha256':{
+        return {'limits_hex': config.read_bytes().hex(), 'software_on_disk':actual['software'], 'permission_sha256':{
             permissions.name: hashlib.sha256(permissions.read_bytes()).hexdigest()}}
     before = snapshot()
     changed = install(stage, onboard)
@@ -136,3 +139,39 @@ def test_tank_payload_cannot_write_operator_settings(tmp_path, name):
     with pytest.raises(ValueError, match='Protected onboard'):
         install(stage,tmp_path/'robot')
     assert not (tmp_path/'robot').exists()
+
+
+def test_live_inspection_reads_running_agent_and_unchanged_installed_files(tmp_path, monkeypatch):
+    import json
+    import subprocess
+    import sys
+    from scripts import deploy_tank_recording as deploy
+
+    robot = tmp_path / 'robot'
+    robot.mkdir()
+    monkeypatch.setattr(deploy, 'REMOTE', str(robot))
+    for name in deploy.HEALTH_FILES:
+        (robot/name).write_bytes((deploy.ROOT/'agents/tank'/name).read_bytes())
+    (robot/'incident-block.json').write_bytes(b'keep this operator marker')
+    before = {p.name: p.read_bytes() for p in robot.iterdir()}
+    state = {'armed':False, 'hardware_open':False, 'limits':deploy.DEFAULTS,
+             'software':{n:deploy.source_hash(n) for n in deploy.HEALTH_FILES}, 'monotonic_ns':1}
+    events = []
+    def get_health():
+        events.append('GET /health')
+        return {**state, 'monotonic_ns':len(events)}
+    def read_files(*cmd):
+        assert cmd[:3] == ('python3','-B','-c') and cmd[4] == str(robot)
+        events.append('read hashes')
+        return subprocess.check_output([sys.executable,*cmd[1:]],text=True)
+    monkeypatch.setattr(deploy,'health',get_health)
+    monkeypatch.setattr(deploy,'docker',read_files)
+    receipt = deploy.inspect_live()
+    assert events == ['GET /health','read hashes','GET /health']
+    assert receipt['compatible'] and receipt['physical_commands'] == 0
+    assert receipt['permission_sha256']['incident-block.json']
+    assert receipt['live_software'] == receipt['disk_software']
+    assert {p.name:p.read_bytes() for p in robot.iterdir()} == before
+    (robot/'agent.py').write_bytes(b'updated on disk, old process')
+    rejected = deploy.inspect_live()
+    assert not rejected['compatible'] and 'inventories differ' in rejected['reason']
