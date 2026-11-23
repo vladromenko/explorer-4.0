@@ -1,0 +1,27 @@
+{
+  "conditioned-grasp-v1/simulation-grasp-bundle.zip": {
+    "sha256": "85e26da30e59836440a11eec75822238344f1dd271879ae4c6a97836bd2cfff2",
+    "bytes": 5595358,
+    "matched_members": 1
+  },
+  "wrist-cube-heatmap-v1/image-splits.zip": {
+    "sha256": "f331dd5cac322117438e2aa1135853913121c488ac20cb9dffcd90d6af8962d0",
+    "bytes": 12274867,
+    "matched_members": 72
+  },
+  "wrist-cube-heatmap-v1/model-evidence.zip": {
+    "sha256": "4744687d55d1b7733339b1adbd4ecfc1ab38f891fdfcd81fdf48b658641b5cb4",
+    "bytes": 2911060,
+    "matched_members": 21
+  },
+  "peer-action-value-v1/reproduction.zip": {
+    "sha256": "8cd23f44237df87c2efe50ca1b3142d95b2c8c28691e7b195c229870ffbddd63",
+    "bytes": 2741934,
+    "matched_members": 5
+  },
+  "wrist-video-failure-watch-v1/evidence.zip": {
+    "sha256": "33cac0c25bebc9399f6d3819422123f581366a419fa9b04a97674db0c216ff4c",
+    "bytes": 11845725,
+    "matched_members": 68
+  }
+}
