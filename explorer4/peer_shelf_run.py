@@ -14,7 +14,7 @@ from .fleet_map import FleetLocalizer, FleetMap
 from .paths import DATA, ROOT
 from .peer_dock_config import MAX_AGE_S
 from .peer_dock_real import map_from_base, operator_session, write_json
-from .peer_dock_shelf import goal_from_shelf, observe, tank_base_from_depth
+from .peer_dock_shelf import from_tf, goal_from_shelf, observe, tank_base_from_depth
 from .sensors import SensorClient, stream_age
 
 REFERENCE = ROOT / "docs/results/markerless-shelf-20261124"
@@ -38,11 +38,39 @@ def read_still(robot):
             break
     else:
         raise ValueError(f"{robot}: нет свежего кадра. Камера Tank запускается при включении управления.")
+    if robot == "tank" and isolated:
+        client = SensorClient(robot=robot)
+        try:
+            packet["mount_source"] = client.clock_sample()["remote"]
+        finally:
+            client.close()
     if robot == "rosmaster":
         odom = packet["arrays"].get("odometry")
         if odom is None or odom.shape != (9,) or np.linalg.norm(odom[6:]) > .02:
             raise ValueError("ROSMASTER должен оставаться неподвижным")
     return packet
+
+
+def tank_mount(packet):
+    source = packet.get("mount_source")
+    if source is None:
+        return tank_base_from_depth(packet)
+    active = packet["meta"]
+    streams = active["streams"]
+    factory = source["streams"]
+    if (source.get("read_only") is not True or source.get("motion_commands_sent") != 0
+            or any(not active.get(key) or active[key] != source.get(key)
+                   for key in ("boot_id", "source_sha256"))):
+        raise ValueError("Потоки Tank не подтвердили общий источник калибровки")
+    camera_fields = ("frame_id", "width", "height", "k", "p", "r", "d", "distortion_model")
+    if any(field not in streams[name] or streams[name][field] != factory.get(name, {}).get(field)
+           for name in ("rgb_info", "depth_info") for field in camera_fields):
+        raise ValueError("Калибровка активной камеры Tank отличается от заводского потока")
+    depth, rgb = (streams[name]["frame_id"] for name in ("depth", "rgb"))
+    native_tf, factory_tf = (s["tf_static"]["transforms"] for s in (streams, factory))
+    if not np.allclose(from_tf(depth, rgb, native_tf), from_tf(depth, rgb, factory_tf), atol=1e-6):
+        raise ValueError("Потоки Tank расходятся по взаимному положению камер")
+    return from_tf("base_footprint", depth, factory_tf)
 
 
 def current_pose(fleet):
@@ -57,7 +85,7 @@ def calibrated_goal(tank, donor, reference, calibration):
     present = {name: observe(p, reference[name])
                for name, p in (("tank", tank), ("rosmaster", donor))}
     tank_shelf, donor_shelf = [np.asarray(present[name]["depth_from_shelf"]) for name in ROBOTS]
-    tank_base = tank_base_from_depth(tank)
+    tank_base = tank_mount(tank)
     arm = donor["arrays"].get("arm")
     original_arm = np.asarray(calibration["rosmaster_arm_deg"])
     if arm is None or arm.shape != (6,) or np.max(np.abs(arm - original_arm)) > 1.:
@@ -123,6 +151,8 @@ def probe():
     folder.mkdir(mode=0o700, parents=True, exist_ok=False)
     for k, p in zip(ROBOTS, (tank, donor), strict=True):
         (folder / f"{k}.npz").write_bytes(p["payload"])
+    if (mount := tank.get("mount_source")) is not None:
+        write_json(folder / "tank-mount.json", mount)
     write_json(folder / "result.json", receipt)
     return receipt, fleet
 

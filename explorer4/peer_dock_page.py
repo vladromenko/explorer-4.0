@@ -1,6 +1,7 @@
 """Operator view and explicit handoff to the existing Tank session."""
 import asyncio
 import json
+import logging
 import math
 import re
 
@@ -234,6 +235,7 @@ def add_operator_action(control,session,owner):
                 ui.notify('Tank принял точку стеллажа от ROSMASTER. STOP останавливает попытку.')
             except Exception as exc:
                 shelf_status.set_text(str(exc))
+                logging.getLogger(__name__).warning('Shelf approach did not start: %s', exc)
                 ui.notify(str(exc), type='negative')
             finally:
                 shelf_button.enable()
