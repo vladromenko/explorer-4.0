@@ -21,7 +21,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictBool
 
 if __package__:
     from .native_client import NativeDriver
@@ -361,18 +361,24 @@ class Hardware:
             self.close()
             raise
 
-    def guarded(self,v,w):
+    def guarded(self,v,w,*,autonomous_goal=False):
         now=time.monotonic_ns()
         age=lambda stamp:float('inf') if stamp is None else max(0.,(now-stamp)/1e9)
         # Factory SDK returns acceleration in g and gyro in degrees/s.
         acceleration=[x*9.80665 for x in self.imu[:3]] if self.imu and len(self.imu)>=6 else None
-        autonomous=self.mode!='manual'
+        autonomous = self.mode != 'manual' or autonomous_goal
         if autonomous and (v or w):
             if self.scan_time is None or not 0 <= now - self.scan_time <= 500_000_000:
                 return (0., 0.), 'Нет свежего лидара Tank'
             sectors = (self.scan_front, self.scan_rear) if w else (self.scan_front if v > 0 else self.scan_rear,)
             if any(d is None or not math.isfinite(d) or d <= 0 for d in sectors):
                 return (0., 0.), 'Лидар Tank не подтвердил направление движения'
+            camera_stamp = (self.image_info or {}).get("received_ns")
+            if type(camera_stamp) is not int or not 0 <= now - camera_stamp <= 500_000_000:
+                return (0., 0.), 'Нет свежей камеры Tank'
+            if self.environment or self.task_profile == 'tank_dock_rgbd_lidar':
+                if self.depth_time is None or not 0 <= now - self.depth_time <= 500_000_000:
+                    return (0., 0.), 'Нет свежей глубины Tank'
         front=self.scan_front
         if autonomous and v>0. and self.depth_time is not None and age(self.depth_time)<1.:
             if self.depth_front is not None:
@@ -380,7 +386,7 @@ class Hardware:
         return sensor_guard(self.limits,v,w,battery=self.battery,front=front,rear=self.scan_rear,
                             autonomous=autonomous)
 
-    def command(self,lease,sequence,v,w):
+    def command(self,lease,sequence,v,w,*,autonomous_goal=False):
         with self.lock:
             now=time.monotonic()
             if not self.armed or lease!=self.lease:
@@ -390,11 +396,16 @@ class Hardware:
             if not all(math.isfinite(value) for value in (v,w)):
                 raise ValueError('Nonfinite command')
             requested=(v,w)
-            v,w=limited_command(ROOT,v,w,mode=self.mode)
+            active_limits = load_limits(ROOT)
+            def clamp(v, w):
+                return limited_command(ROOT, v, w, mode=self.mode, autonomous_goal=autonomous_goal, limits=active_limits)
+            v,w=clamp(v,w)
             if requested!=(v,w):self.limit_events+=1
             self.requested_action=[v,w]
-            (v,w),self.guard_reason=self.guarded(v,w)
-            v,w=self.ramp.apply(v,w)
+            (v,w),self.guard_reason=self.guarded(v,w,autonomous_goal=autonomous_goal)
+            # A previous manual velocity can exceed the tighter automatic envelope at handoff.
+            v,w=clamp(*self.ramp.apply(v,w))
+            self.ramp.previous = (v, w)
             try:sent=self.board.command(v,w)
             except PermissionError:raise
             except Exception as exc:
@@ -406,7 +417,7 @@ class Hardware:
             self.last_serial_write={k:sent[k] for k in ('send_start_ns','send_end_ns') if k in sent}
             self.last_action=sent['action'];self.last_sequence=sequence;self.expires=now+self.limits['command_ttl_s']
             return {**sent,'sequence':sequence,'accepted_by_agent':True,'motor_acknowledged':False,
-                    'motion_paused':self.guard_reason is not None,
+                    'motion_paused':self.guard_reason is not None, 'autonomous_guard':self.mode!='manual' or autonomous_goal,
                     'pause_reason':self.guard_reason,
                     'limits':self.limits,'limited':requested!=tuple(sent['action'])}
 
@@ -505,6 +516,7 @@ class Command(BaseModel):
     sequence:int
     v:float
     w:float
+    autonomous_goal:StrictBool=False
 
 class SessionStart(BaseModel):
     mode:Literal['manual','policy','replay']='manual'
@@ -528,7 +540,7 @@ def start(value:SessionStart|None=None):
     except (PermissionError,RuntimeError) as exc:raise HTTPException(409,str(exc)) from exc
 @app.post('/command')
 def command(value:Command):
-    try:return hardware.command(value.lease,value.sequence,value.v,value.w)
+    try:return hardware.command(value.lease,value.sequence,value.v,value.w,autonomous_goal=value.autonomous_goal)
     except (PermissionError,ValueError,RuntimeError) as exc:raise HTTPException(409,str(exc)) from exc
 @app.post('/stop')
 def stop():

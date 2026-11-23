@@ -83,3 +83,55 @@ def test_stop_always_works(hw):
     arm(hw, Board())
     hw.stop('STOP')
     assert hw.board.sent[-1] == 'STOP' and not hw.armed
+
+
+@pytest.fixture
+def command_http(hw, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    arm(hw, Board())
+    monkeypatch.setattr(agent, 'hardware', hw)
+    monkeypatch.setattr(agent, 'CONFIG', {'allowed_clients': ['testclient'], 'token': 'test-token'})
+    # The in-process transport without a lifespan uses only our explicit fake hardware.
+    client = TestClient(agent.app, headers={'X-Explorer-Token': 'test-token'})
+    yield lambda seq, **fields: client.post('/command', json={
+        'lease': 'op', 'sequence': seq, 'v': .5, 'w': .5, **fields})
+    client.close()
+
+
+@pytest.mark.parametrize('mode,flag', [('manual', True), ('policy', False), ('replay', False)])
+def test_http_autonomous_sources_stop_before_fake_board_on_expired_sensor(hw, command_http, mode, flag):
+    hw.mode = mode
+    hw.scan_front = hw.scan_rear = 1.0
+    hw.scan_time = time.monotonic_ns() - 600_000_000
+    hw.ramp.previous = (.15, .4)
+    for index, reason in enumerate(('лидара', 'камеры', 'глубины')):
+        if index >= 1:
+            hw.scan_time = time.monotonic_ns()
+        if index == 2:
+            hw.image_info = {'received_ns': time.monotonic_ns()}
+            hw.environment = True
+        result = command_http(index, autonomous_goal=flag)
+        assert result.status_code == 200
+        assert result.json()['autonomous_guard'] and reason in result.json()['pause_reason']
+        assert hw.board.sent[-1] == [0., 0.]
+
+
+def test_http_goal_adds_policy_caps_to_manual_caps_and_keeps_plain_manual(hw, command_http, tmp_path):
+    import json
+
+    (tmp_path / 'configs').mkdir()
+    (tmp_path / 'configs/tank-limits.json').write_text(json.dumps(
+        {'version': 2, 'manual': {'v': .20, 'w': .22}, 'policy': {'v': .08, 'w': .40}}))
+    hw.ramp.previous = (.20, .22)
+    ordinary = command_http(1)
+    assert ordinary.status_code == 200 and not ordinary.json()['autonomous_guard']
+    assert hw.board.sent[-1] == [.20, .22]
+    hw.scan_front = hw.scan_rear = 1.0
+    hw.scan_time = time.monotonic_ns()
+    hw.image_info = {'received_ns': time.monotonic_ns()}
+    automatic = command_http(2, autonomous_goal=True)
+    assert automatic.status_code == 200 and automatic.json()['autonomous_guard']
+    assert hw.board.sent[-1] == [.08, .22]
+    assert command_http(3, autonomous_goal='false').status_code == 422
+    assert len(hw.board.sent) == 2

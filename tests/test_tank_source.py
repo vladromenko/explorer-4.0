@@ -160,3 +160,36 @@ def test_onboard_guard_stops_unobserved_rotation_before_ramp():
     board.scan_time, board.scan_rear = time.monotonic_ns(), None
     command, reason = Hardware.guarded(board, .1, .3)
     assert reason and ramp.apply(*command) == (0., 0.)
+
+
+@pytest.mark.parametrize('replace_before', ['first_post', 'retry'])
+def test_replaced_goal_sends_neutral_without_cancelling_successor(source, replace_before):
+    src, previous = source
+    obs = src.observe()
+    obs['motion_sensors'] = {'scan_age_ns': 1000, 'front': 1., 'rear': 1.}
+    a = SimpleNamespace(active=True)
+    b = SimpleNamespace(active=True, cancel=lambda _: pytest.fail('successor cancelled'))
+    src.control.goal = a
+    sent = []
+    original = src.http.post
+
+    def transmit(path, **kwargs):
+        sent.append(kwargs['json'].copy())
+        if replace_before == 'retry' and len(sent) == 1:
+            src.control.goal = b
+            raise httpx.ReadTimeout('simulated transport retry')
+        return original(path, **kwargs)
+
+    src.http.post = transmit
+    if replace_before == 'first_post':
+        src.control.goal = b
+    result = src.send([.1, .1], obs, autonomous_goal=True, expected_goal=a)
+    src.http.post = original
+    assert src.control.goal is b and b.active and result['motion_paused']
+    assert sent[-1]['v'] == sent[-1]['w'] == 0 and sent[-1]['autonomous_goal'] is True
+    assert 'заменено' in result['pause_reason']
+    if replace_before == 'retry':
+        assert sent[0]['v'] == .1 and sent[0]['autonomous_goal']
+    src.control.goal = None
+    src.send([.1, 0], obs)
+    assert 'autonomous_goal' not in previous[-1]

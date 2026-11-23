@@ -24,5 +24,9 @@ def require_motion_permission(root):
     return None
 
 
-def limited_command(root, v, w, mode='manual'):
-    return clip(load(root), v, w, mode)
+def limited_command(root, v, w, mode='manual', *, autonomous_goal=False, limits=None):
+    current = load(root) if limits is None else limits
+    v, w = clip(current, v, w, mode)
+    if autonomous_goal and mode == 'manual':
+        return clip(current, v, w, 'policy')
+    return v, w

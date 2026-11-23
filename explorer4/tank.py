@@ -153,13 +153,14 @@ class TankSource:
                            '_sensor_packet':packet})
         return result
 
-    def send(self,requested,observation=None, *, autonomous_goal=False):
+    def send(self,requested,observation=None, *, autonomous_goal=False, expected_goal=None):
         if self.stop_requested():raise InterruptedError('STOP before command')
         if len(requested)!=2 or not all(math.isfinite(v) for v in requested):
             raise ValueError('Tank requires two finite velocity channels')
         intent = list(requested)
         goal = getattr(self.control, "goal", None)
-        autonomous = self.mode != "manual" or autonomous_goal or bool(goal and goal.active)
+        bound_goal = expected_goal if expected_goal is not None else goal
+        autonomous = self.mode != "manual" or autonomous_goal or bool(bound_goal and bound_goal.active)
         index=self.sequence;self.sequence+=1
         a=time.monotonic_ns()
         self.provenance['last_command_attempt']={'sequence':index,'requested':intent,'send_start_ns':a,'accepted':'unknown'}
@@ -170,16 +171,21 @@ class TankSource:
                 raise InterruptedError("STOP before command")
             now = time.monotonic_ns()
             if any(intent) and autonomous:
-                hold = ("Задание Tank завершено" if autonomous_goal and (goal is None or not goal.active)
-                        else autonomy_hold(observation, intent, now))
+                hold = autonomy_hold(observation, intent, now)
             elif observation is not None and now - observation['observation_timestamp_ns'] > 2_000_000_000:
                 hold = "Наблюдение Tank устарело"
+            owns_goal = bound_goal is not None and getattr(self.control, "goal", None) is bound_goal
+            if autonomous_goal and (not owns_goal or not bound_goal.active):
+                hold = "Задание Tank завершено или заменено"
             command = [0., 0.] if hold else intent
-            if hold and goal and goal.active:
-                goal.cancel(hold)
+            if hold and owns_goal and bound_goal.active:
+                bound_goal.cancel(hold)
             self.provenance['last_command_attempt'].update(sequence=index, dispatched=command, guard_reason=hold)
             try:
-                response=self.http.post('/command',json={'lease':self.lease,'sequence':index,'v':command[0],'w':command[1]},timeout=.5)
+                payload={'lease':self.lease,'sequence':index,'v':command[0],'w':command[1]}
+                if autonomous and self.mode == "manual":
+                    payload["autonomous_goal"] = True
+                response=self.http.post('/command',json=payload,timeout=.5)
                 break
             except httpx.TimeoutException as exc:
                 if attempt:raise RuntimeError('Tank: нет ответа по Wi-Fi дважды подряд') from exc
@@ -189,7 +195,8 @@ class TankSource:
         return {'action':sent['action'],'requested_action':intent,
                 'motion_paused':bool(hold) or sent.get('motion_paused',False),'pause_reason':hold or sent.get('pause_reason'),
                 'action_send_start_ns':a,'action_send_end_ns':b,'action_acknowledged':False,
-                'agent_accepted_command':True,'robot_serial_send_start_ns':sent['send_start_ns'],
+                'agent_accepted_command':True,'agent_autonomy_guard':sent.get('autonomous_guard'),
+                'robot_serial_send_start_ns':sent['send_start_ns'],
                 'robot_serial_send_end_ns':sent['send_end_ns'],'motor_targets_rps':sent['motor_targets_rps']}
 
     def sample(self,index,stop=lambda:False):
@@ -202,14 +209,10 @@ class TankSource:
             goal=None
         goal_control = goal is not None and goal.active
         if goal_control:
-            image = observation['images']['front']
-            if hasattr(goal, 'command_from_camera'):
-                requested = goal.command_from_camera(image['image'], image, image.get('homebrain_receive_timestamp_ns'))
-            else:
-                requested = goal.command(image['image'])
+            requested=goal.command(observation['images']['front']['image'])
         else:
             requested=self.control.base_action()
-        action=self.send(requested,observation,autonomous_goal=goal_control)
+        action=self.send(requested,observation,autonomous_goal=goal_control,expected_goal=goal if goal_control else None)
         if goal is not None:action['_goto']=goal.status()   # not recorded
         if action['motion_paused']:self.control.clear_base_inputs()
         return {**observation,**action,'frame_id':index,'teleoperation_phase':'paused' if action['motion_paused'] else 'following'}
