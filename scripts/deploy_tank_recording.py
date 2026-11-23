@@ -13,7 +13,7 @@ import time
 import uuid
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from explorer4.paths import ROOT,DATA
-from agents.tank.limits import DEFAULTS, load as effective_limits
+from agents.tank.limits import DEFAULTS, load as effective_limits, reconcile_v1
 from scripts.build_staging_bundles import build
 from scripts.install_tank_bundle import LEGACY
 
@@ -22,8 +22,10 @@ ARCHIVED_V1_INVENTORY_SHA256 = '3c11381ff20074b938c9cc23c7f6438b9a87dccf9a729ebd
 
 HEALTH_FILES = ('agent.py', 'native_driver.py', 'native_client.py', 'limits.py', 'motor_link.py',
                 'motion_permission.py', 'sensors.py')
+PREVIOUS_LIMITS_SHA = 'ad3d19532565799f6c9ea718a0d78284bb653770af7fb744f3c5daff0c1597af'
 PREVIOUS_PERMISSION_SHA = 'b7c34ba88d19c487fd3e388754af76c26be2a0eadec15289673c0fb042a2b22c'
 REVIEWED_V2_AGENTS = {
+    '541cb7e724f4ca443f89f36a3e2681fd72b0966ff5ea241404259fa4f9539cdd',
     'f926990099fca0092b47a1d41fbc71438221636eb33bee453e5a3929a9d553e4',  # c4cf849
     'bb82cf1a83f08d1fb610949110308543c8fe834efeababe9f813a43f21130ccb',  # 251f1c5
     'feb4046f3209914d2a7c1378fd31134dc0c68b50881bb160066e1bdc936e1fc1',  # f7822b8
@@ -76,7 +78,38 @@ def require_inert(status):
         raise ValueError('Tank must report both disarmed and its motor hardware closed')
 
 
-def preflight(status, raw):
+def preflight(status, raw, *, reconcile_legacy=False):
+    require_inert(status)
+    stored = json.loads(raw) if raw is not None else None
+    if isinstance(stored, dict) and stored.get("version") == 1:
+        expected = reconcile_v1(stored)
+        live = status.get("software", {})
+        loaded = live.get("limits.py")
+        if (status.get("limits") == expected and loaded == source_hash("limits.py")
+                and live.get("agent.py") == source_hash("agent.py")):
+            verify_reviewed_agent(live)
+        elif (
+            reconcile_legacy and loaded == PREVIOUS_LIMITS_SHA
+            and status.get("limits") == DEFAULTS
+        ):
+            verify_reviewed_agent(live)
+        else:
+            raise ValueError("Version 1 limits are not active. Reconcile only the reviewed fallback runtime.")
+        return {"effective_limits": expected,
+                "operator_config_sha256": hashlib.sha256(raw).hexdigest(),
+                "legacy_v1_read_compatible": True}
+    return preflight_v2(status, raw)
+
+
+def verify_reviewed_agent(live):
+    if live.get("motion_permission.py") not in {PREVIOUS_PERMISSION_SHA, source_hash("motion_permission.py")}:
+        raise ValueError("Existing onboard permission implementation is unrecognized; explicit migration required")
+    if (live.get("limits.py") not in {PREVIOUS_LIMITS_SHA, source_hash("limits.py")}
+            or live.get("agent.py") not in REVIEWED_V2_AGENTS | {source_hash("agent.py")}):
+        raise ValueError("The running agent or guard implementation is unrecognized; preserve custom safety behaviour until reviewed")
+
+
+def preflight_v2(status, raw):
     require_inert(status)
     with tempfile.TemporaryDirectory() as work:
         if raw is not None:
@@ -103,13 +136,7 @@ def preflight(status, raw):
             raise ValueError('Candidate loader would ignore an integer-valued operator override')
     if status.get('limits') != expected:
         raise ValueError('Candidate effective limits differ from the running operator limits. Preserve current configuration and reconcile explicitly before deployment.')
-    if (status.get('software') or {}).get('motion_permission.py') not in {
-        PREVIOUS_PERMISSION_SHA, source_hash('motion_permission.py')}:
-        raise ValueError('Existing onboard permission implementation is unrecognized; explicit migration required')
-    live = status['software']
-    if (live.get('limits.py') != source_hash('limits.py') or
-            live.get('agent.py') not in REVIEWED_V2_AGENTS | {source_hash('agent.py')}):
-        raise ValueError('The running agent or guard implementation is unrecognized; preserve custom safety behaviour until reviewed')
+    verify_reviewed_agent(status.get('software') or {})
     return {'effective_limits':expected,'operator_config_sha256': hashlib.sha256(raw).hexdigest() if raw is not None else None}
 
 
@@ -160,11 +187,11 @@ def verify_installation(actual, expected, before, after):
         raise ValueError('Runtime source inventory differs from the full expected Tank build')
 
 
-def deploy():
+def deploy(*, reconcile_legacy=False):
     current=health()
     require_inert(current)
     before = read_policy()
-    expected = preflight(current, configuration_bytes(before))
+    expected = preflight(current, configuration_bytes(before), reconcile_legacy=reconcile_legacy)
     if current.get('software') != before.get('software_on_disk'):
         raise ValueError('Live and installed software disagree before deployment')
     destination=DATA/'validation/tank-software-updates'/(time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())+'-'+uuid.uuid4().hex[:8])
@@ -184,7 +211,7 @@ def deploy():
     try:
         # Recheck immediately before changing code; no /session, /command or handoff call.
         current=health()
-        if read_policy() != before or preflight(current, configuration_bytes(before)) != expected:
+        if read_policy() != before or preflight(current, configuration_bytes(before), reconcile_legacy=reconcile_legacy) != expected:
             raise ValueError('Onboard operator state changed before installation')
         installed=json.loads(docker('python3',STAGE+'/installer.py','--stage',STAGE))
         archive=installed['archive'];report['archive']=archive
@@ -224,7 +251,10 @@ if __name__=='__main__':
     stored=parser.add_mutually_exclusive_group()
     stored.add_argument('--limits-file',type=Path, help='Exact file captured on the robot')
     stored.add_argument('--no-limits-file',action='store_true', help='The operator configuration was verified absent')
+    parser.add_argument('--reconcile-legacy', action='store_true', help='Explicitly apply reviewed V1 limits without replacing the saved file')
     args=parser.parse_args()
+    if args.reconcile_legacy and args.inspect_live:
+        parser.error('--inspect-live verifies only the actually running policy')
     if args.inspect_live:
         if args.limits_file or args.no_limits_file:
             parser.error('--inspect-live reads the current robot configuration')
@@ -239,12 +269,12 @@ if __name__=='__main__':
             parser.error('Supply the saved --limits-file or verified --no-limits-file')
         status=json.loads(args.preflight_health.read_bytes())
         try:
-            result=preflight(status.get('health',status),args.limits_file.read_bytes() if args.limits_file else None)
+            result=preflight(status.get('health',status),args.limits_file.read_bytes() if args.limits_file else None, reconcile_legacy=args.reconcile_legacy)
         except (ValueError, TypeError) as error:
             parser.exit(2, 'Offline preflight refused: '+str(error)+'\n')
         print(json.dumps(result,indent=2))
     else:
         if args.limits_file or args.no_limits_file:
             parser.error('--apply reads and preserves operator settings from the robot')
-        report=deploy()
+        report=deploy(reconcile_legacy=args.reconcile_legacy)
         print(json.dumps({k:report[k] for k in ('status','archive','host_backup','physical_commands')},indent=2))

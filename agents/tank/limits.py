@@ -26,18 +26,65 @@ DEFAULTS = {
 }
 
 
+LEGACY_V1_FIELDS = {
+    "version", "manual", "policy", "absolute", "acceleration", "command_ttl_s",
+    "lidar_stop_m", "dock_stop_m", "dock_max_speed_m_s", "sector_half_angle_deg",
+    "tilt_stop_deg", "battery_stop_v", "battery_warning_v", "sensor_max_age_s",
+}
+
+
+def reconcile_v1(saved):
+    """Apply the historical policy with the newer guard's stricter bounds."""
+    if set(saved) != LEGACY_V1_FIELDS or saved["version"] != 1:
+        raise ValueError("Unrecognized Tank V1 operator limits")
+    groups = ("manual", "policy", "absolute", "acceleration")
+    values = []
+    for name in groups:
+        group = saved[name]
+        if not isinstance(group, dict) or set(group) != {"v", "w"}:
+            raise ValueError(f"Invalid Tank V1 group {name}")
+        values.extend(group.values())
+    values.extend(saved[k] for k in LEGACY_V1_FIELDS - {"version", *groups})
+    if any(type(x) not in (int, float) or not math.isfinite(x) or x <= 0 for x in values):
+        raise ValueError("Invalid Tank V1 limit values")
+    if (saved["battery_warning_v"] < saved["battery_stop_v"]
+            or not .2 <= saved["command_ttl_s"] <= 1
+            or not 1 <= saved["sector_half_angle_deg"] <= 90):
+        raise ValueError("Inconsistent Tank V1 limits")
+    active = json.loads(json.dumps(DEFAULTS))
+    for name in groups:
+        active[name] = {axis: min(saved[name][axis], DEFAULTS[name][axis]) for axis in ("v", "w")}
+    active.update(
+        command_ttl_s=min(saved["command_ttl_s"], DEFAULTS["command_ttl_s"]),
+        lidar_stop_m=max(saved["lidar_stop_m"], DEFAULTS["lidar_stop_m"]),
+        autonomous_stop_m=max(DEFAULTS["autonomous_stop_m"], saved["dock_stop_m"] + .17),
+        sector_half_angle_deg=max(saved["sector_half_angle_deg"], DEFAULTS["sector_half_angle_deg"]),
+        battery_warning_v=max(saved["battery_warning_v"], DEFAULTS["battery_warning_v"]),
+        battery_stop_v=max(saved["battery_stop_v"], DEFAULTS["battery_stop_v"]),
+        legacy_v1_guard={
+            "dock_max_speed_m_s": min(saved["dock_max_speed_m_s"], active["policy"]["v"]),
+            "tilt_stop_deg": min(saved["tilt_stop_deg"], 20.),
+            "sensor_max_age_s": min(saved["sensor_max_age_s"], .5),
+        },
+    )
+    return active
+
+
 def load(root):
     value = json.loads(json.dumps(DEFAULTS))
     path = Path(root) / 'configs/tank-limits.json'
     if path.exists():
         try:
             user = json.loads(path.read_text())
-            if user.get('version') == 2:
+        except (OSError, ValueError):
+            user = {}
+        if isinstance(user, dict):
+            if user.get("version") == 1:
+                return reconcile_v1(user)
+            if user.get("version") == 2:
                 for key, default in DEFAULTS.items():
                     if key in user and type(user[key]) is type(default):
                         value[key] = user[key]
-        except (OSError, ValueError):
-            pass
     value['absolute']['v'] = min(value['absolute']['v'], .6)
     value['absolute']['w'] = min(value['absolute']['w'], 2.)
     value['command_ttl_s'] = min(max(value['command_ttl_s'], .2), 1.)

@@ -1,0 +1,38 @@
+{
+  "compatible": true,
+  "armed": false,
+  "hardware_open": false,
+  "physical_commands": 0,
+  "operator_config_sha256": "fba34d71e7fd9c03ad42e44a045d585aec8031105ce1c81733ae963628524a38",
+  "expected_limits": {
+    "version": 2,
+    "manual": {
+      "v": 0.2,
+      "w": 0.5
+    },
+    "policy": {
+      "v": 0.3,
+      "w": 1.0
+    },
+    "absolute": {
+      "v": 0.6,
+      "w": 2.0
+    },
+    "acceleration": {
+      "v": 0.5,
+      "w": 2.0
+    },
+    "command_ttl_s": 0.35,
+    "obstacle_stop": false,
+    "lidar_stop_m": 0.15,
+    "autonomous_stop_m": 0.25,
+    "sector_half_angle_deg": 30.0,
+    "battery_warning_v": 7.2,
+    "battery_stop_v": 6.9,
+    "legacy_v1_guard": {
+      "dock_max_speed_m_s": 0.1,
+      "tilt_stop_deg": 20.0,
+      "sensor_max_age_s": 0.5
+    }
+  }
+}

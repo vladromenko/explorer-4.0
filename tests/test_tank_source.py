@@ -157,9 +157,9 @@ def test_goal_on_manual_lease_never_dispatches_motion_after_sensor_loss(source, 
 
 def test_onboard_guard_stops_unobserved_rotation_before_ramp():
     from agents.tank.agent import Hardware
-    from agents.tank.limits import Ramp
+    from agents.tank.limits import DEFAULTS, Ramp
     board = SimpleNamespace(mode="policy", imu=None, scan_time=time.monotonic_ns()-700_000_000,
-                            scan_front=1., scan_rear=1.)
+                            scan_front=1., scan_rear=1., limits=DEFAULTS)
     command, reason = Hardware.guarded(board, 0., .4)
     ramp = Ramp({"acceleration": {"v": 1., "w": 1.}})
     ramp.previous = (.15, .3)

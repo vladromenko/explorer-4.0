@@ -146,3 +146,59 @@ def test_onboard_health_attests_only_the_current_open_lease(hw):
     assert hw.status()['autonomous_command_guard']['lease_sha256'] == hashlib.sha256(b'next').hexdigest()
     hw.armed=False
     assert hw.status()['autonomous_command_guard']['lease_sha256'] is None
+
+
+def test_legacy_limits_guard_the_real_command_entry_point(tmp_path, monkeypatch):
+    from pathlib import Path
+    from shutil import copyfile
+
+    monkeypatch.setattr(agent, 'ROOT', tmp_path)
+    config = tmp_path / 'configs/tank-limits.json'
+    config.parent.mkdir()
+    copyfile(Path(__file__).resolve().parents[1] / 'configs/tank-limits.json', config)
+    hw = agent.Hardware()
+    try:
+        arm(hw, Board())
+        active = hw.status()['limits']
+        assert active['manual']['v'] == .2
+        assert active['command_ttl_s'] == .35
+        assert active['acceleration'] == {'v': .5, 'w': 2.}
+        assert active['battery_stop_v'] == 6.9
+        assert active['autonomous_stop_m'] >= .25
+
+        def sensor_sample():
+            stamp = time.monotonic_ns()
+            hw.scan_front = hw.scan_rear = .6
+            hw.scan_time = hw.depth_time = hw.imu_time = hw.battery_time = stamp
+            hw.image_info = {'received_ns': stamp}
+            hw.imu = [0., 0., 1., 0., 0., 0.]
+            hw.battery = 7.4
+
+        def command(number):
+            hw.ramp.previous = (.2, 0.)
+            return hw.command('op', number, .3, 0., autonomous_goal=True)
+
+        sensor_sample()
+        assert command(1)['action'] == [.1, 0.]
+        sensor_sample()
+        hw.imu_time -= 600_000_000
+        assert command(2)['action'] == [0., 0.]
+        sensor_sample()
+        hw.imu = [.5, 0., .86, 0., 0., 0.]
+        assert command(3)['action'] == [0., 0.]
+        sensor_sample()
+        hw.battery = 6.8
+        assert command(4)['action'] == [0., 0.]
+        sensor_sample()
+        hw.scan_front = .21
+        assert command(5)['action'] == [0., 0.]
+        sensor_sample()
+        assert command(6)['action'] == [.1, 0.]
+        with hw.lock:
+            hw.expires = time.monotonic() - .01
+            with pytest.raises(PermissionError, match='Срок команды'):
+                command(7)
+        assert not hw.armed and hw.board.sent[-1] == 'STOP'
+    finally:
+        hw.done.set()
+        hw.watchdog.join(timeout=1)

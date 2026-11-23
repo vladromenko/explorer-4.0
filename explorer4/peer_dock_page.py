@@ -60,6 +60,20 @@ def install(control=None):
             raise HTTPException(404)
         return FileResponse(path,media_type='application/json' if suffix.endswith('.json') else 'application/octet-stream')
 
+    @app.get('/api/peer-dock/shelf-readiness')
+    async def shelf_readiness():
+        from . import peer_shelf_run, peer_dock_survey
+        from .fleet_map import FLEET
+        try:
+            if control is not None:
+                peer_dock_survey.require_stopped(control)
+            receipt = await asyncio.to_thread(peer_shelf_run.probe, FLEET)
+            return {'ready': True, 'receipt': receipt['id'],
+                    'goal_disagreement_m': receipt['donor_local_disagreement_m'],
+                    'no_motion': True}
+        except (ValueError, KeyError, OSError) as exc:
+            return {'ready': False, 'reason': str(exc)}
+
     @ui.page('/peer-dock-real')
     async def page():
         ui.dark_mode().enable()
@@ -199,4 +213,28 @@ def add_operator_action(control,session,owner):
         except Exception as exc:
             ui.notify(str(exc),type='negative')
     ui.button('Подъехать к измеренной совместной цели',on_click=accept).props('outline no-caps')
+    with ui.expansion('Пробный подъезд к стеллажу без меток'):
+        ui.label('Одна проверка на сохранённой расстановке. ROSMASTER остаётся на месте.')
+        supervised = ui.checkbox('Я рядом, вижу Tank и могу сразу нажать STOP')
+
+        async def start_shelf():
+            from . import peer_shelf_run
+            from .fleet_map import FLEET
+            if not supervised.value:
+                ui.notify('Подтвердите, что видите Tank и можете его остановить', type='warning')
+                return
+            shelf_button.disable()
+            try:
+                expected = study.operator_session(control, session, owner)
+                receipt = await asyncio.to_thread(peer_shelf_run.probe, FLEET)
+                if not supervised.value:
+                    return
+                peer_shelf_run.handoff(control, session, owner, expected, receipt, FLEET)
+                ui.notify('Tank принял точку стеллажа от ROSMASTER. STOP останавливает попытку.')
+            except Exception as exc:
+                ui.notify(str(exc), type='negative')
+            finally:
+                shelf_button.enable()
+
+        shelf_button = ui.button('Начать один пробный подъезд', on_click=start_shelf).props('outline no-caps')
     series_page.operator_button(control,session,owner)

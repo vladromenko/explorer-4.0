@@ -217,11 +217,14 @@ class Hardware:
                             now=time.monotonic_ns()
                             if native['latched']:
                                 self.stop('Драйвер моторов остановлен: '+str(native['reason']))
-                            elif time.monotonic()>self.expires and any(self.last_action):
-                                # No command for command_ttl_s: zero, but keep the session open.
-                                self.ramp.reset();self.requested_action=[0.,0.]
-                                self.last_action=self.board.command(0.,0.)['action']
-                                self.expires=time.monotonic()+self.limits['command_ttl_s']
+                            elif time.monotonic() > self.expires and any(self.last_action):
+                                if self.limits.get('legacy_v1_guard'):
+                                    self.stop('Срок команды Tank истёк. Включите управление заново.')
+                                else:
+                                    self.ramp.reset()
+                                    self.requested_action = [0., 0.]
+                                    self.last_action = self.board.command(0., 0.)['action']
+                                    self.expires = time.monotonic() + self.limits['command_ttl_s']
                     except Exception as exc:
                         self.latch_fault('Связь с моторным контроллером потеряна: '+str(exc))
                         try:
@@ -371,17 +374,28 @@ class Hardware:
         acceleration=[x*9.80665 for x in self.imu[:3]] if self.imu and len(self.imu)>=6 else None
         autonomous = self.mode != 'manual' or autonomous_goal
         if autonomous and (v or w):
-            if self.scan_time is None or not 0 <= now - self.scan_time <= 500_000_000:
+            legacy = self.limits.get('legacy_v1_guard')
+            freshness = int(1e9 * legacy['sensor_max_age_s']) if legacy else 500_000_000
+
+            def fresh(stamp):
+                return type(stamp) is int and 0 <= now - stamp <= freshness
+
+            if not fresh(self.scan_time):
                 return (0., 0.), 'Нет свежего лидара Tank'
             sectors = (self.scan_front, self.scan_rear) if w else (self.scan_front if v > 0 else self.scan_rear,)
             if any(d is None or not math.isfinite(d) or d <= 0 for d in sectors):
                 return (0., 0.), 'Лидар Tank не подтвердил направление движения'
-            camera_stamp = (self.image_info or {}).get("received_ns")
-            if type(camera_stamp) is not int or not 0 <= now - camera_stamp <= 500_000_000:
+            if not fresh((self.image_info or {}).get("received_ns")):
                 return (0., 0.), 'Нет свежей камеры Tank'
             if self.environment or self.task_profile == 'tank_dock_rgbd_lidar':
-                if self.depth_time is None or not 0 <= now - self.depth_time <= 500_000_000:
+                if not fresh(self.depth_time):
                     return (0., 0.), 'Нет свежей глубины Tank'
+            if legacy:
+                if not fresh(self.battery_time) or not self.battery or not math.isfinite(self.battery):
+                    return (0., 0.), 'Нет свежего напряжения батареи Tank'
+                tilt = tilt_degrees(acceleration) if fresh(self.imu_time) else None
+                if tilt is None or tilt >= legacy['tilt_stop_deg']:
+                    return (0., 0.), 'Наклон Tank или данные IMU вне допуска'
         front=self.scan_front
         if autonomous and v>0. and self.depth_time is not None and age(self.depth_time)<1.:
             if self.depth_front is not None:
@@ -394,6 +408,9 @@ class Hardware:
             now=time.monotonic()
             if not self.armed or lease!=self.lease:
                 raise PermissionError(self.reason or 'Сессия не запущена: нажмите «Включить управление»')
+            if self.limits.get('legacy_v1_guard') and now > self.expires and any(self.last_action):
+                self.stop('Срок команды Tank истёк. Включите управление заново.')
+                raise PermissionError(self.reason)
             if sequence<=self.last_sequence:
                 raise ValueError('Stale command sequence')
             if not all(math.isfinite(value) for value in (v,w)):
@@ -401,7 +418,13 @@ class Hardware:
             requested=(v,w)
             active_limits = load_limits(ROOT)
             def clamp(v, w):
-                return limited_command(ROOT, v, w, mode=self.mode, autonomous_goal=autonomous_goal, limits=active_limits)
+                v, w = limited_command(ROOT, v, w, mode=self.mode,
+                                       autonomous_goal=autonomous_goal, limits=active_limits)
+                legacy = active_limits.get('legacy_v1_guard')
+                if legacy and (self.mode != 'manual' or autonomous_goal):
+                    cap = legacy['dock_max_speed_m_s']
+                    v = max(-cap, min(cap, v))
+                return v, w
             v,w=clamp(v,w)
             if requested!=(v,w):self.limit_events+=1
             self.requested_action=[v,w]
