@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "scope": "One supervised markerless physical pilot with a separate continuation after the first leg was interrupted. No paired control or independent external pose observation.",
+  "started_local": "2026-11-24T01:47:44.038764+03:00",
+  "software_git_head": "f18194cb8763a47136c005d5db0e95e518910b68",
+  "episode": "20261124-014744-tank-drive",
+  "continued_episode": "20261124-013314-tank-drive",
+  "observation_id": "3dee5c5cfc4a4eb9b204ea3bacff0c6c",
+  "anchor_observation_id": "8b89d84f817e444ca26aea0965df1f05",
+  "observer_robot": "rosmaster",
+  "moving_robot": "tank",
+  "controller_outcome": "arrived",
+  "elapsed_s": 8.9,
+  "camera_holds": 1,
+  "endpoint_observed_pose": [
+    0.06499999999999365,
+    -6.342149028171207e-15,
+    0.8857545953871142
+  ],
+  "target_pose": [
+    0.07778528214944946,
+    0.007137117974096829,
+    0.9964992967064461
+  ],
+  "controller_endpoint_position_error_m": 0.0146,
+  "controller_endpoint_heading_error_deg": 6.35,
+  "position_tolerance_m": 0.045,
+  "heading_tolerance_deg": 8.59,
+  "post_stop_scan_registration": {
+    "sensor": "Same Tank lidar, ten distinct stationary scans registered to the continuation start scan.",
+    "scans_within_both_tolerances": 10,
+    "scans_total": 10,
+    "position_error_m_range": [
+      0.0214,
+      0.0285
+    ],
+    "heading_error_deg_range": [
+      5.35,
+      5.85
+    ],
+    "observations": [
+      {
+        "pose": [
+          0.054999999999993665,
+          -6.321332346459485e-15,
+          0.9032078879070573
+        ],
+        "position_error_m": 0.023876924751872367,
+        "heading_error_rad": 0.0932914087993888,
+        "scan_overlap": 0.9571428571428572
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -0.010000000000006323,
+          0.8944812416470862
+        ],
+        "position_error_m": 0.02851052253271831,
+        "heading_error_rad": 0.1020180550593599,
+        "scan_overlap": 0.9414414414414415
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -6.321332346459485e-15,
+          0.9032078879070573
+        ],
+        "position_error_m": 0.023876924751872367,
+        "heading_error_rad": 0.0932914087993888,
+        "scan_overlap": 0.9541284403669725
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -0.010000000000006323,
+          0.8944812416470862
+        ],
+        "position_error_m": 0.02851052253271831,
+        "heading_error_rad": 0.1020180550593599,
+        "scan_overlap": 0.9279279279279279
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -6.321332346459485e-15,
+          0.8944812416470862
+        ],
+        "position_error_m": 0.023876924751872367,
+        "heading_error_rad": 0.1020180550593599,
+        "scan_overlap": 0.9369369369369369
+      },
+      {
+        "pose": [
+          0.06499999999999367,
+          -0.010000000000006323,
+          0.9032078879070573
+        ],
+        "position_error_m": 0.021380931974531003,
+        "heading_error_rad": 0.0932914087993888,
+        "scan_overlap": 0.9551569506726457
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -6.321332346459485e-15,
+          0.9032078879070573
+        ],
+        "position_error_m": 0.023876924751872367,
+        "heading_error_rad": 0.0932914087993888,
+        "scan_overlap": 0.958139534883721
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -0.010000000000006323,
+          0.9032078879070573
+        ],
+        "position_error_m": 0.02851052253271831,
+        "heading_error_rad": 0.0932914087993888,
+        "scan_overlap": 0.947136563876652
+      },
+      {
+        "pose": [
+          0.06499999999999367,
+          -0.010000000000006323,
+          0.8944812416470862
+        ],
+        "position_error_m": 0.021380931974531003,
+        "heading_error_rad": 0.1020180550593599,
+        "scan_overlap": 0.9551569506726457
+      },
+      {
+        "pose": [
+          0.054999999999993665,
+          -6.321332346459485e-15,
+          0.8944812416470862
+        ],
+        "position_error_m": 0.023876924751872367,
+        "heading_error_rad": 0.1020180550593599,
+        "scan_overlap": 0.9363636363636364
+      }
+    ]
+  },
+  "physical_attempts_from_original_start": 1,
+  "autonomous_arrivals_from_original_start_without_interruption": 0,
+  "resumed_arrivals": 1,
+  "independent_external_pose_measurement": null,
+  "paired_protocol_attempt": false,
+  "private_input_sha256": {
+    "post-stop.npz": "332cdeeef090113c5498bbe3ed8aaeb816e23d3c20e18e816eee492251831227",
+    "rosmaster.npz": "614c0f137fb2b07d7ff413f1b22ef328c95b7ff2d6c2f5701ab38071bb3ffc5a",
+    "tank-first.npz": "08fced152d7b57fb179a50cd24fadd8d26251a0534a33019173e6015b1cfe410",
+    "tank.npz": "ad43f6553570269c094c7440c8dd27c7fa73cdf2773b6ec3e424e80e643da958"
+  }
+}
