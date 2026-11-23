@@ -448,12 +448,15 @@ def index(request:Request):
                             ui.button('Отправить Tank',on_click=send_tank()).props('dense flat')
                             ui.button('Отправить ROSMASTER',on_click=send_ros()).props('dense flat')
         memory_list()
-        def memory_refresh():
+        async def memory_refresh():
             from . import world_memory
             poses=[f"{n}: ({p.x:.1f}; {p.y:.1f}) {p.source}" if p.known() else f"{n}: место неизвестно" for n,p in (('Tank',world_memory.POSES['tank']),('ROSMASTER',world_memory.POSES['rosmaster']))]
             memory_status.set_text(' · '.join(poses))
             from .fleet_map import FLEET,LOCALIZER
-            st=FLEET.status();names={'tank':'Tank','rosmaster':'ROSMASTER'}
+            st, rel = await asyncio.to_thread(
+                lambda: (FLEET.status(), FLEET.relative('tank', 'rosmaster'))
+            )
+            names={'tank':'Tank','rosmaster':'ROSMASTER'}
             states={'mapping':'строит карту','submap':'строит свою карту','tracking':'знает, где он','weak':'неуверенно','searching':'ищет себя на карте','no_scan':'лидар молчит'}
             lines=[]
             for robot in ('rosmaster','tank'):
@@ -462,7 +465,6 @@ def index(request:Request):
                 if not info:lines.append(f"<b>{names[robot]}</b>: ждём скан");continue
                 where=f" · ({info['pose'][0]:.2f}; {info['pose'][1]:.2f}) м, курс {math.degrees(info['pose'][2]):.0f}°" if info.get('pose') else ''
                 lines.append(f"<b>{names[robot]}</b>: {states.get(info.get('state'),info.get('state'))}{where} · {info.get('message','')}")
-            rel=FLEET.relative('tank','rosmaster')
             if rel:
                 side='слева' if rel['bearing']>.2 else 'справа' if rel['bearing']<-.2 else 'впереди' if abs(rel['bearing'])<1.5 else 'сзади'
                 lines.append(f"На общей карте ROSMASTER в {rel['distance']:.1f} м {side} от Tank ({math.degrees(rel['bearing']):.0f}°)")

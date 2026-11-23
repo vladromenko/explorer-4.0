@@ -502,7 +502,7 @@ def install(app, ui, control, notify_error, css=''):
                                 ui.button('Отменить запрос навыка', on_click=cancel_request).props('flat dense no-caps')
             checks = await asyncio.to_thread(readiness, control)
             map_img.set_source(f'/api/swarm/map.png?t={t:.1f}')
-            st = FLEET.status()
+            st = await asyncio.to_thread(FLEET.status)
             contrib = st.get('contrib', {})
             map_note.set_text(f"сканов: {st['scans']} · вклад: " + ', '.join(f"{NAMES.get(r, r)} {n}" for r, n in contrib.items()))
             ready_row.clear()

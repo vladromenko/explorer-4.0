@@ -212,9 +212,10 @@ def add_operator_action(control,session,owner):
         except Exception as exc:
             ui.notify(str(exc),type='negative')
     ui.button('Подъехать к измеренной совместной цели',on_click=accept).props('outline no-caps')
-    with ui.expansion('Пробный подъезд к стеллажу без меток'):
+    with ui.expansion('Пробный подъезд к стеллажу без меток', value=True):
         ui.label('Одна проверка на сохранённой расстановке. ROSMASTER остаётся на месте.')
         supervised = ui.checkbox('Я рядом, вижу Tank и могу сразу нажать STOP')
+        shelf_status = ui.label('Включите управление Tank и подтвердите наблюдение.').classes('muted')
 
         async def start_shelf():
             from . import peer_shelf_run
@@ -224,12 +225,15 @@ def add_operator_action(control,session,owner):
             shelf_button.disable()
             try:
                 expected = study.operator_session(control, session, owner)
+                shelf_status.set_text('Проверяю свежие кадры и маршрут…')
                 receipt, shelf_map = await asyncio.to_thread(peer_shelf_run.probe)
                 if not supervised.value:
                     return
                 peer_shelf_run.handoff(control, session, owner, expected, receipt, shelf_map)
+                shelf_status.set_text('Tank принял цель. Держите STOP под рукой.')
                 ui.notify('Tank принял точку стеллажа от ROSMASTER. STOP останавливает попытку.')
             except Exception as exc:
+                shelf_status.set_text(str(exc))
                 ui.notify(str(exc), type='negative')
             finally:
                 shelf_button.enable()
